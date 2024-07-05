@@ -68,12 +68,6 @@ void initializeMaze(int **maze) {
     }
 }
 
-/*
-    0   1   2   3           1   2   3   4
-    4   5   6   7           5   6   7   8
-    8   9   10  11          9   10  11  12
-*/
-
 int traverse(int *currentPosition, int **maze) {
     int row, col; Pos2Coord(currentPosition, &row, &col);
     maze[row][col] = VISITED;   // Dont explore this position again
@@ -133,7 +127,8 @@ int main(){
     initializeMaze(maze);
     printMaze(maze);
 
-    int currentPostition=0;
+    int currentPostition = 0;
+    printf("Nodes visited");
     int status = traverse(&currentPostition, maze);
     printf("%s\n\n", (status==SUCCESS) ? "Success":"Failure");
 

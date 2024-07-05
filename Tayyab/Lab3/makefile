@@ -9,6 +9,9 @@ main.o : main.c
 functions.o : functions.c
 	gcc -c functions.o functions.c
 
+%.o : %.c
+	gcc -c %.o %.c
+
 debug:
 	gcc -d -o main main.o functions.o -lm
 

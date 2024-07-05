@@ -636,13 +636,13 @@ void Task7(void){
 
 int main() {
     srand(time(NULL));
-    //Task1();
-    //Task2();
-    //Task3();
+    Task1();
+    Task2();
+    Task3();
     Task4();
-    //Task5();
-    //Task6();
-    //Task7();
+    Task5();
+    Task6();
+    Task7();
 
     printf("\n\n");
 
