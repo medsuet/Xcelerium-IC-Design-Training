@@ -82,7 +82,11 @@ install: $(SCRIPTS)
 clean:
 	@echo "Cleaning for C Compilation"
 	@echo ""
+<<<<<<< HEAD
 	rm -rf $(OBJ_DIR) $(BIN_DIR) $(INSTALL_DIR)
+=======
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
+>>>>>>> 6881720 (Added the Folders of code for Lab 1,2,3 )
 	@echo ""
 	@echo "Nothing to clean for Shell Scripts"
 
