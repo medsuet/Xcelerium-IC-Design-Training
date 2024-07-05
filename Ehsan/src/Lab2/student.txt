@@ -1,0 +1,5 @@
+Name : 12
+ID : 12
+grades in sub 1 : 12.000
+grades in sub 2 : 12.000
+grades in sub 3 : 12.000
