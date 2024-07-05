@@ -1,0 +1,3 @@
+Name: faisal
+Id: 123
+Grades: 1.00, 2.00, 3.00
