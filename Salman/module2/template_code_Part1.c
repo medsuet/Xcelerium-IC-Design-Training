@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <assert.h>
 
 #define UPPER 99
 #define LOWER 1
@@ -745,12 +746,13 @@ void readStudentFromBinaryFile(struct Student* s, const char* filename) {
 void logMessage(const char* message, const char* logfile) {
     // TODO: Append a timestamped message to the log file
     FILE *fptr;
-//    int i;
 
-    time_t t;
-    time(&t);
-
-    char timestamp[] = ctime(&t);
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+    char timestamp[64];
+    size_t ret = strftime(timestamp, sizeof(timestamp), "%c", tm);
+    assert(ret);
+    printf("%s\n", timestamp);
 
     fptr = fopen(logfile, "a");
 
@@ -760,17 +762,50 @@ void logMessage(const char* message, const char* logfile) {
         exit(0);
     }
 
+    printf("\nAdding message into log file\n");
+
     strcat(timestamp,": "); // adding space between timestamp and message
+
+    fwrite("\n",sizeof(char),strlen("\n"),fptr);
 
     fwrite(timestamp,sizeof(char),strlen(timestamp),fptr); // writing timestamp in beggining and message later
 
-    fwrite(message,sizeof(char),100,fptr);
+    fwrite(message,sizeof(char),strlen(message),fptr);
+
+    printf("\nAdded the message succesfully\n");
 
     fclose(fptr);
 }
 
 void displayLog(const char* logfile) {
     // TODO: Read and display the contents of the log file
+    FILE *fptr;
+    int ch;
+
+    fptr = fopen(logfile, "r");
+
+    if (fptr == NULL)
+    {
+        printf("\nThe file failed to open");
+        exit(0);
+    }
+    else
+    {
+        printf("\nThe file contents are:\n");
+
+        ch = fgetc(fptr);
+
+        while (ch != EOF)
+        {
+            printf("%c",ch);
+//            printf("(%d)", ch);
+            ch = fgetc(fptr);
+        }
+    }
+
+    printf("\n");
+
+    fclose(fptr);
 }
 
 
@@ -1041,7 +1076,13 @@ int main() {
 
     readStudentFromBinaryFile(&student,"file.bin");
 
+//    logMessage("Added the first log","logfile.txt");
 
+//    logMessage("Added the second log","logfile.txt");
+
+//    logMessage("Added the third log","logfile.txt");
+
+    displayLog("logfile.txt");
 
 
 //    checkMemoryLeaks();
