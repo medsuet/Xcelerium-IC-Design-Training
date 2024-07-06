@@ -140,20 +140,42 @@ void guessingGame() {
 
 // 0.4 Functions
 int isPrime(int num) {
-    // TODO: Check if a number is prime
+    if (num <= 1) return 0;
+    for (int i = 2; i * i <= num; ++i) {
+        if (num % i == 0) return 0;
+    }
+    return 1;
 }
 
 int factorial(int n) {
-    // TODO: Calculate factorial recursively
+    if (n == 0) return 1;
+    return n * factorial(n - 1);
 }
 
 // 0.5 Arrays and Strings
 void reverseString(char* str) {
-    // TODO: Reverse a string in-place
+    int len = strlen(str);
+    for (int i = 0; i < len / 2; ++i) {
+        char temp = str[i];
+        str[i] = str[len - 1 - i];
+        str[len - 1 - i] = temp;
+    }
 }
 
+// Function to find the second largest element in array
 int secondLargest(int arr[], int size) {
-    // TODO: Find and return the second largest element in the array
+    int largest = arr[0], second = -1;
+
+    for (int i = 1; i < size; ++i) {
+        if (arr[i] > largest) {
+            second = largest;
+            largest = arr[i];
+        } else if (arr[i] > second && arr[i] != largest) {
+            second = arr[i];
+        }
+    }
+
+    return second;
 }
 
 
@@ -177,7 +199,7 @@ int main() {
     guessingGame();
 
     // 0.4 Functions
-    printf("Prime numbers between 1 and 100:\n");
+    printf("The Prime numbers between 1 and 100 are:\n");
     for (int i = 1; i <= 100; i++) {
         if (isPrime(i)) {
             printf("%d ", i);
@@ -185,20 +207,19 @@ int main() {
     }
     printf("\n");
 
-    printf("Factorial of 5: %d\n", factorial(5));
+    printf("Factorial of 5 is: %d\n", factorial(5));
 
     // 0.5 Arrays and Strings
-    char str[] = "Hello, World!";
-    printf("Original string: %s\n", str);
+    char string[] = "Hello, World!";
+    printf("Original string: %s\n", string);
     reverseString(str);
-    printf("Reversed string: %s\n", str);
+    printf("Reversed string: %s\n", string);
 
+    // initialize an array of elements
     int arr[] = {5, 2, 8, 1, 9, 3, 7};
     int size = sizeof(arr) / sizeof(arr[0]);
     printf("Second largest element: %d\n", secondLargest(arr, size));
 
-    // Parts 1-4: Advanced Pointer Concepts
-    printf("\nAdvanced Pointer Concepts\n");
     // TODO: Implement and call functions for Parts 1-4 as in the previous template
 
     return 0;
