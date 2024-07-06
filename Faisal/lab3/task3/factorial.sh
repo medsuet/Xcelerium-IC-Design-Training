@@ -7,8 +7,7 @@ factorial() {
   if [ "$num" -le 1 ]; then
     echo 1
   else
-    local prev_factorial=$(factorial $((num - 1)))
-    echo $((num * prev_factorial))
+    echo $((num * $(factorial $((num - 1)))))
   fi
 }
 
