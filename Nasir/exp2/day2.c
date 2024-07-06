@@ -4,12 +4,12 @@
 #include <string.h>
 
 // Part 1: Pointer Basics and Arithmetic
-void swap(int *a, int *b) {
+void swap(int *firstNumber, int *secondNumber) {
     // TODO: Implement swap function
     // Swapping values of *a and *b using a temporary variable
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+    int temporaryVariable = *firstNumber;
+    *firstNumber = *secondNumber;
+    *secondNumber = temporaryVariable;
 }
 
 // function for printing all elements of array
@@ -183,7 +183,7 @@ void extendArray(int** arr, int* size, int newSize) {
     int *newArray= (int *)realloc(*arr, (newSize * sizeof(int)));
     if (newArray == NULL){
         printf("realloc failed");
-        free(*newArray);
+        free(newArray);
         exit(1);
     }
     // declaring previous array with extended array
@@ -244,6 +244,7 @@ void inputStudentData(struct Student* s) {
     for (int i = 0; i < 3; i++){
         scanf("%f", &(s->grades[i]));
     }
+    printf("\n");
 }
 
 // Function to initialize a department
@@ -288,6 +289,7 @@ void printDepartmentInfo(struct Department* department) {
     printf("Department Name: %s\n", department->name);
     printf("Number of Students: %d\n", department->numStudents);
     for (int i = 0; i < department->numStudents; i++) {
+        printf("Student Information\n");
         printStudentInfo(&(department->students[i]));
     }
 }
@@ -297,6 +299,7 @@ void printUniversityInfo(struct University* university) {
     printf("University Name: %s\n", university->name);
     printf("Number of Departments: %d\n", university->numDepartments);
     for (int i = 0; i < university->numDepartments; i++) {
+        printf("Student Information\n");
         printDepartmentInfo(&(university->departments[i]));
     }
 }
@@ -455,30 +458,30 @@ int main() {
     printf("The changed value of a using pointer is: %d\n", a);
 
     // Declare two integers and initialize them with random values
-    int num1 = rand() % 100;  // Random value between 0 and 99
-    int num2 = rand() % 100;  // Random value between 0 and 99
+    int integer1 = rand() % 100;  // Random value between 0 and 99
+    int integer2 = rand() % 100;  // Random value between 0 and 99
 
     // Print unswapped values
-    printf("The unswapped value of num1 is: %d\n", num1);
-    printf("The unswapped value of num2 is: %d\n", num2);
+    printf("The unswapped value of integer1 is: %d\n", integer1);
+    printf("The unswapped value of integer2 is: %d\n", integer2);
 
     // Call swap function
-    swap(&num1, &num2);
+    swap(&integer1, &integer2);
 
     // Print swapped values
-    printf("The swapped value of num1 is: %d\n", num1);
-    printf("The swapped value of num2 is: %d\n", num2);
+    printf("The swapped value of integer1 is: %d\n", integer1);
+    printf("The swapped value of integer2 is: %d\n", integer2);
     
     // initialize array
     int arr[5] = {1, 2, 3, 4, 5};
-    int size;
-    size = sizeof(arr)/sizeof(arr[0]);
+    int sizeArray;
+    sizeArray = sizeof(arr)/sizeof(arr[0]);
     // print array
-    printArr(arr, size);
+    printArr(arr, sizeArray);
     // calculate sum of array
-    sum(arr,size);
+    sum(arr,sizeArray);
     // reversing array and printing reversed array
-    reverseArray(arr, size);
+    reverseArray(arr, sizeArray);
 
 
     // Part 2: Pointers and Arrays
@@ -502,32 +505,32 @@ int main() {
     // size of array
     int n;
     n = 5;
-    int arr[5] = {15, 33, 49, 10, 20}; //initialize an array 
+    int array[5] = {15, 33, 49, 10, 20}; //initialize an array 
     printf("Array before Sorting: ");
     // printing array
     for(int i = 0; i<n; i++) {
-        printf("%d ",arr[i]);
+        printf("%d ",array[i]);
     }
     printf("\n");
-    bubbleSort(arr, n);
+    bubbleSort(array, n);
     printf("Array after Sorting by Bubble Sort Algorithm: ");
     // printing array
     for(int i = 0; i<n; i++){
-        printf("%d ", arr[i]);
+        printf("%d ", array[i]);
     }
     printf("\n");
 
-    int arr2[5] = {12, 19, 55, 2, 16}; // initialize the array
+    int array2[5] = {12, 19, 55, 2, 16}; // initialize the array
     printf("Array before Sorting: ");
     // printing array
     for(int i = 0; i<n; i++)
-        printf("%d ",arr2[i]);
+        printf("%d ",array2[i]);
     printf("\n");
-    selectionSort(arr2, n);
+    selectionSort(array2, n);
     printf("Array after Sorting by Selection Sort Algorithm: ");
     // printing array
     for(int i = 0; i<n; i++)
-        printf("%d ", arr2[i]);
+        printf("%d ", array2[i]);
     printf("\n");
 
     // 3.2
@@ -549,13 +552,13 @@ int main() {
     // Part 3: Function Pointers
     printf("\nPart 3: Function Pointers\n");
     // TODO: Implement exercises 3.1, 3.2, and 3.3
-    int num1 = 2;
-    int num2 = 3;
+    int number1 = 2;
+    int number2 = 3;
     // Pointer Functions calling
-    printf("The addition of num1 and num2 is: %d\n", addPtr(num1,num2));
-    printf("The subtraction of num1 and num2 is: %d\n", subtractPtr(num1,num2));
-    printf("The multiplication of num1 and num2 is: %d\n", multiplyPtr(num1,num2));
-    printf("The division of num1 and num2 is: %d\n", dividePtr(num1,num2));
+    printf("The addition of number1 and number2 is: %d\n", addPtr(number1,number2));
+    printf("The subtraction of number1 and number2 is: %d\n", subtractPtr(number1,number2));
+    printf("The multiplication of number1 and number2 is: %d\n", multiplyPtr(number1,number2));
+    printf("The division of num1 and number2 is: %d\n", dividePtr(number1,number2));
 
     // Part 4: Advanced Challenge
     printf("\nPart 4: Advanced Challenge\n");
@@ -571,45 +574,47 @@ int main() {
     printf("Enter size of Array: ");
     scanf("%d", &size);
     // calling function for creating dynamic memory array
-    int *array;
-    array = createDynamicArray(size);
+    int *array1;
+    array1 = createDynamicArray(size);
     // creating variable for taking user inputs of elements of array
     int arr_element;
     // for loop for getting elements of array from user
     for (int i = 0; i < size;i++){
         scanf("%d", &arr_element);
-        *(array + i) = arr_element;
+        *(array1 + i) = arr_element;
         }
     // printing array
     printf("Enter %d Elements of Array\n", size);
     for (int i = 0; i < size; i++){
-            printf("%d ", array[i]);
+            printf("%d ", array1[i]);
         }
     printf("\n");
-    free(array);
+    // free(array1);
 
     // 5.2 
     int newSize;
     printf("Enter New size of Array: ");
     scanf("%d", &newSize);
-    extendArray(&array, &size, newSize);
+    extendArray(&array1, &size, newSize);
     
 
     // creating variable for taking user inputs of elements of array
-    int arr_element;
+    // int arr_element;
     // for loop for getting elements of array from user
     printf("Enter %d Elements of Array\n", size);
     for (int i = 0; i < size;i++){
         scanf("%d", &arr_element);
-        *(array + i) = arr_element;
+        *(array1 + i) = arr_element;
         }
     // printing array
    
     for (int i = 0; i < size; i++){
-            printf("%d ", array[i]);
+            printf("%d ", array1[i]);
         }
     printf("\n");
 
+    // free dynamic array
+    free(array1);
 
     // 5.3
 
@@ -635,8 +640,11 @@ int main() {
     initializeUniversity(&university, "Tech University", departments, 1);
 
     // Print university information
+    printf("University information\n");
     printUniversityInfo(&university);
 
+    // Print Department information
+    printf("Department information\n");
     printDepartmentInfo(departments);
 
     union Data data;
@@ -644,17 +652,17 @@ int main() {
     // Store an integer in the union
     data.i = 42;
     printf("After storing an integer:\n");
-    printData(&data, 'i');
+    printUnionData(&data, 'i');
 
     // Store a float in the union
     data.f = 3.14;
     printf("After storing a float:\n");
-    printData(&data, 'f');
+    printUnionData(&data, 'f');
 
     // Store a character in the union
     data.c = 'A';
     printf("After storing a character:\n");
-    printData(&data, 'c');
+    printUnionData(&data, 'c');
 
     // Demonstrate the overlapping storage
     printf("\nDemonstrating overlapping storage:\n");
@@ -667,11 +675,11 @@ int main() {
     // Part 7: File I/O
     printf("\nPart 7: File I/O\n");
     // TODO: Implement exercises 7.1, 7.2, and 7.3
-    // const char* filename = "student.txt";
-    // writeStudentToFile(&student1, filename);
+    const char* filename = "student.txt";
+    writeStudentToFile(&student1, filename);
 
-    // // read data
-    // readStudentFromFile(&student1, filename);
+    // read data
+    readStudentFromFile(&student1, filename);
 
     const char* filename1 = "student1.dat"; // Use .dat extension for binary files
     writeStudentToBinaryFile(&student1, filename1);
