@@ -220,6 +220,7 @@ int main() {
     int arr[] = {9, 2, 1, 1, 8, 2, 7};
     int size = sizeof(arr) / sizeof(arr[0]);
     printf("Second largest element is: %d\n", secondLargest(arr, size));
+   
 
     // TODO: Implement and call functions for Parts 1-4 as in the previous template
 

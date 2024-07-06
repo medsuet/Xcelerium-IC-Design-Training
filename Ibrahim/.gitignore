@@ -6,6 +6,16 @@
 # Object files
 *.o
 
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+>>>>>>> 2a12ef3 (Added src, docs and .gitignore)
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -18,6 +28,17 @@
 
 # Executables
 *.exe
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+>>>>>>> 2a12ef3 (Added src, docs and .gitignore)
 *.app
 *.i*86
 *.x86_64
@@ -26,6 +47,7 @@
 # Debug files
 *.dSYM/
 *.su
+
 
 # Ignore ModelSim/QuestaSim log files and work directories
 transcript
@@ -43,3 +65,15 @@ src/Sequential_Multiplier/tb_seq_multiplier
 # Simulation Files
 *.vvp
 *.vcd
+
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf

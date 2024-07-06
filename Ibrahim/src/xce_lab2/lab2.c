@@ -570,6 +570,7 @@ int main() {
     
 	// Part 3.1
     int arr1[] = {64, 25, 12, 22, 11};  // Example array
+
     int size = sizeof(arr1) / sizeof(arr1[0]);
 
     // Print original array
