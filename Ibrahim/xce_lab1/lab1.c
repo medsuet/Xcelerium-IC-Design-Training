@@ -212,7 +212,7 @@ int main() {
     // 0.5 Arrays and Strings
     char string[] = "Hello, World!";
     printf("Original string: %s\n", string);
-    reverseString(str);
+    reverseString(string);
     printf("Reversed string: %s\n", string);
 
     // initialize an array of elements
