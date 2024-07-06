@@ -4,8 +4,9 @@
 #include <string.h>
 
 // Part 1: Pointer Basics and Arithmetic
+
+//following function swaps the values of variables by swaping their pointers
 void swap(int *a, int *b) {
-    // TODO: Implement swap function
     int temp = *a;
     *a = *b;
     *b = temp;
@@ -23,6 +24,7 @@ void reverseArray(int *arr, int size) {
 }
 
 // Part 2: Pointers and Arrays
+
 //following function takes no. of rows and columns and matrix pointer and make matrix elements using random function 
 void initializeMatrix(int rows, int cols, int (*matrix)[cols]) {
     srand(time(NULL));
@@ -46,16 +48,15 @@ void printMatrix(int rows, int cols, int (*matrix)[cols]) {
 //following function takes no. of rows and columns and matrix pointer and finds the maximum value in matrix
 int findMaxInMatrix(int rows, int cols, int (*matrix)[cols]) {
     int max = 0;
-    int max_value = **(matrix);
+    int max_value = *(*matrix);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            if (max_value < (**((matrix+i)+j))) {
-                max_value = **((matrix+i)+j);
+            if (max_value < (*(*(matrix+i)+j))) {
+                max_value = *(*(matrix+i)+j);
             }
         }
-
     }
-    printf("max of matrix is %d",max);
+    return max_value;
 }
 
 // Part 3: Function Pointers
@@ -264,7 +265,6 @@ void writeStudentToBinaryFile(struct Student* s, const char* filename) {
 
 //following code takes binary file and makes structure from the binary file
 void readStudentFromBinaryFile(struct Student* s, const char* filename) {
-    // TODO: Read student data from a binary file
     FILE* file = fopen(filename, "rb");
     if (file == NULL) {
         printf("Could not open file for reading.\n");
@@ -296,7 +296,6 @@ int main() {
     printf("value with direct access : %d\n",x);
     printf("value with pointer : %d\n",*ptr);
 
-    //1.2
     int a = 10;
     int b = 20;
     int *ptr1 = &a;
@@ -310,8 +309,7 @@ int main() {
     printf("new value of a : %d\n",*ptr1);
     printf("new value of b : %d\n",*ptr2);
 
-    //1.3
-    //printing_array
+    //printing_array using pointer
     int arr[10]={0,1,2,3,4,5,6,7,8,9};
     int *ptr_arr = arr;
     for (int i=0; i<(sizeof(arr)/sizeof(arr[0])); i++) {
@@ -320,104 +318,114 @@ int main() {
     printf("\n");
 
     //printing_sum_of_array
-    int temp = 0;
+    int sum = 0;
     for (int i=0; i<(sizeof(arr)/sizeof(arr[0])); i++) {
-        temp = *(ptr_arr + i) + temp;
+        sum = *(ptr_arr + i) + sum;
     }
-    printf("sum of array is : %d\n",temp);
-    reverseArray(ptr_arr,(sizeof(arr)/sizeof(arr[0])));
+    printf("sum of array is : %d\n",sum);
 
-    //printing_reverse_array
+    //reversing array using pointers
+    reverseArray(ptr_arr,(sizeof(arr)/sizeof(arr[0])));
+    //printing_reversed_array
     for (int i=0; i<(sizeof(arr)/sizeof(arr[0])); i++) {
 	    printf("%d ",*(ptr_arr + i));
     }
-    printf("");
 
     // Part 2: Pointers and Arrays
     printf("\n \nPart 2: Pointers and Arrays\n");
-    // TODO: Implement exercises 2.1 and 2.2
 
     int rows = 3;
     int cols = 3;
     int matrix[rows][cols];
     int (*matrix_ptr)[cols] = matrix;
-    //calling function that 
+
+    //initializing the matrix 
     initializeMatrix(rows, cols, matrix_ptr);
 
-    printMatrix(rows,cols,matrix);
+    //printing the matrix
+    printMatrix(rows,cols,matrix_ptr);
 
-    findMaxInMatrix(rows, cols, matrix);
+    //finding the maximum value in the matrix using pointers 
+    printf("Max value in matrix is %d",findMaxInMatrix(rows, cols, matrix_ptr));
+
     // Part 3: Function Pointers
     printf("\nPart 3: Function Pointers\n");
-    // TODO: Implement exercises 3.1, 3.2, and 3.3
-    //3.1
-    //sorting array
+
+    //sorting array with bubble sort
     int array[10] = {6,5,7,4,2,7,9,0,3,1};
     int *array_ptr = array;
-    int size_of_array = sizeof(arr)/sizeof(arr[0]);
+    int size_of_array = sizeof(array)/sizeof(array[0]);
     //printing_unsorted_array
     printf("unsorted array : ");
-    for (int i=0; i<(sizeof(array)/sizeof(array[0])); i++) {
+    for (int i=0; i<size_of_array; i++) {
         printf("%d ",*(array_ptr + i));
     }
     printf("\n");
 
     //sorting array with bubble sort
     bubbleSort(array_ptr,size_of_array);
-    //printing sorted array sort with bubble sort 
+
+    //printing sorted array sorted with bubble sort 
     printf("sorted array by bubble sort: ");
-    for (int i=0; i<(sizeof(array)/sizeof(array[0])); i++) {
+    for (int i=0; i<size_of_array; i++) {
         printf("%d ",*(array_ptr + i));
     }
+
     //sorting array with selection sort
     int a_array[10] = {9,6,4,8,6,4,5,1,0,1};
     int *a_array_ptr = a_array;
     int size_of_a_array = sizeof(a_array)/sizeof(a_array[0]);
-    //sorting
+    
+    //sorting array with bubble sort
     selectionSort(a_array_ptr,size_of_a_array);
-    //printing_sorted_array
+
+    //printing_sorted_array sorted with selection sort
     printf("\nsorted array by selection sort: ");
-    for (int i=0; i<(sizeof(a_array)/sizeof(a_array[0])); i++) {
+    for (int i=0; i<size_of_a_array; i++) {
         printf("%d ",*(a_array_ptr + i));
     }
 
-    //3.2
     //selecting_sorting_algorithm
     int a_arr1[10] = {9,6,4,8,6,4,5,1,0,1};
     int *a_arr1_ptr = a_arr1;
     int size_of_a_arr1 = sizeof(a_arr1)/sizeof(a_arr1[0]);
     SortFunction_a (a_arr1_ptr,size_of_a_arr1);
-    //printing sorted array using selection sort
+
+    //printing sorted array using selection sort with function pointers
     printf("\nsorted array by selection sort: ");
     for (int i=0; i<(size_of_a_arr1); i++) {
         printf("%d ",*(a_arr1_ptr + i));
     }
 
-    //3.3
-
-    //simple calculator
-    int r = 10;
+    //simple calculator using function pointer
+    int r = 20;
     int s = 20;
-    printf("Addition using ptr : %d",addition(r,s));
-    subtraction(a,b);
-    multiplication(a,b);
-    division(a,b);
+    printf("\nAddition using function ptr of %d and %d : %d",r,s,addition(r,s));
+    printf("\nSubtraction using function ptr of %d and %d : %d",r,s,subtraction(r,s));
+    printf("\nMultiplition using function ptr of %d and %d : %d",r,s,multiplication(r,s));
+    printf("\nDivision using function ptr of %d and %d : %d",r,s,division(r,s));
 
     // Part 4: Advanced Challenge
-    printf("\nPart 4: Advanced Challenge\n");
+    printf("\n \nPart 4: Advanced Challenge\n");
     
+    //linked list
+    //making head node
     struct Node* head  = NULL;
 
     //inserting node at beginning of linked list
     insertAtBeginning(&head,32);
     insertAtBeginning(&head,69);
     printList(head);
+
     //deleting node by value
     deleteByValue(&head,32);
+
+    //printing linked list
     printList(head);
 
+    free(head);
 
-    Part 5: Dynamic Memory Allocation
+    //Part 5: Dynamic Memory Allocation
     printf("\nPart 5: Dynamic Memory Allocation\n");
 // 
 //    take inputs from user
@@ -448,9 +456,8 @@ int main() {
 
 
     // Part 6: Structures and Unions
-    printf("\nPart 6: Structures and Unions\n");
+    printf("\nPart 6: Structures and Unions");
 
-    
     //following code is of make structure of students and put values by assinging 
     //struct Student student;
     //snprintf(student.name, sizeof(student.name), "John");
@@ -472,7 +479,7 @@ int main() {
     struct Student student2;
     struct Student student3;
 
-    //input student data
+    //making student data with user input
     inputStudentData(&student1);
     inputStudentData(&student2);
     inputStudentData(&student3);
@@ -483,6 +490,8 @@ int main() {
     //printStudentInfo(&student1);
     //printStudentInfo(&student2);
     //printStudentInfo(&student3);
+
+    /*
     int no_of_students = 3;
     struct Department* EE = (struct Department*)malloc(no_of_students*(sizeof(struct Department)));
 
@@ -498,8 +507,20 @@ int main() {
     printf("\nDepartment name : %s",UET.departments->name);
 
     free(EE);
+    */
+    int no_of_students = 3;
+    printf("\n dsdsdsdd");
+    int sizzz=(no_of_students*sizeof(struct Student))+sizeof(int)+sizeof(char[50]);
+    printf("\n dsdsdsdd");
+    
+    struct Department* EE = (struct Department*)malloc(sizzz);
+    
+    EE->numStudents = 3;
+    EE->students[0] = student1;
+    EE->students[1] = student2;
+    EE->students[2] = student3;
 
-    //struct University UET = (struct UET)malloc(1*(sizeof(struct University)));
+
 
     union Data data_type;
 
@@ -511,11 +532,12 @@ int main() {
     printf("\nCharacter data type : %c",data_type.c);
 
     // Part 7: File I/O
-    printf("\nPart 7: File I/O\n");
-    // TODO: Implement exercises 7.1, 7.2, and 7.3
+    printf("\nPart 7: File I/O\n \n");
+
 
     const char* filename = "student.txt";
     const char* binary_filename = "student_binary.bin";
+    
     //writing student data to file
     writeStudentToFile(&student1,filename);
 
