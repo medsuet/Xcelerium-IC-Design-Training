@@ -1,8 +1,11 @@
 #!/bin/bash
 
+i=0
+
 while read line
 do
-	echo $line
+	echo "$i: $line"
+	i=$(($i+1))
 done < file.txt
 
-echo $line
+echo "$i: $line"
