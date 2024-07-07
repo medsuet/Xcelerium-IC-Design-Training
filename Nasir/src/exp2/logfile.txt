@@ -1,0 +1,3 @@
+[2024-07-06 19:25:38] This is the first log message.
+[2024-07-06 19:25:38] This is the second log message.
+[2024-07-06 19:25:38] This is the third log message.
