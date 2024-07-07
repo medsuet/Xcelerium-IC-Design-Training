@@ -6,7 +6,8 @@
 // Part 0: Quick Revision Exercises
 
 // 0.1 Basic Syntax and Data Types
-// printing differnet datatypes sizes and using typecasting
+// printing differnet datatypes sizes and using typecasting then using built in sizeof functin to see the number
+//bytes of each datat type
 void printSizes() {
     int i;
     float f;
@@ -19,6 +20,7 @@ void printSizes() {
     printf("Size of char: %lu bytes\n", sizeof(c));
 
     // Demonstrate type casting
+
     i = 65;
     f = (float)i;
     d = (double)f;
@@ -33,6 +35,7 @@ void printSizes() {
 
 // 0.2 Operators and Expressions
 //making simple calculator
+//using switch statementband taking operator and operands from user using scanf
 void simpleCalculator() {
     char operator;
     double num1, num2;
@@ -84,6 +87,7 @@ void printFibonacci(int n) {
     printf("\n");
 }
 // guessing game
+//creating random number and then guessing it, using conditional statement and do while loop till user guess the right number
 void guessingGame() {
     int number, guess, attempts = 0;
     number = rand() % 100 + 1;  // random number between 1 and 100
@@ -121,6 +125,7 @@ int factorial(int n) {
 
 // 0.5 Arrays and Strings
 //reversing the string
+//swapping the ith character from array with Length-i-1 character
 void reverseString(char* str) {
     int length = strlen(str);
     for (int i = 0; i < length / 2; i++) {
@@ -129,6 +134,8 @@ void reverseString(char* str) {
         str[length - i - 1] = temp;
     }
 }
+//initialzing one variable name second equal to zero and then traversing the array to find largest
+//then traversing the loop again and adding condition arr[j] != largest so it does give the second largest
 
 int secondLargest(int arr[], int size) {
     int second = 0;
@@ -187,3 +194,4 @@ int main() {
 
     return 0;
 }
+
