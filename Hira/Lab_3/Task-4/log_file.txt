@@ -1,0 +1,8 @@
+2023-07-01 alice login
+2023-07-01 bob logout
+2023-07-02 alice upload
+2023-07-03 charlie login
+2023-07-03 alice download
+2023-07-04 bob login
+2023-07-04 charlie upload
+2023-07-05 alice logout

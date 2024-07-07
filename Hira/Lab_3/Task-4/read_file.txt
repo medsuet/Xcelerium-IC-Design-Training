@@ -1,0 +1,4 @@
+Hi this is a text file
+through this file am gonna check the functionallity of my code
+to get better understanding and 
+to grab the better concepts
