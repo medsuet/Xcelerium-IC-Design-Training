@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 
+
 // Part 1: Pointer Basics and Arithmetic
 void swap(int *a, int *b) {
     int temp;
@@ -336,6 +337,13 @@ struct University {
 
 
 
+void freeUniversity(struct University* uni) {
+    for (int i = 0; i < uni->numDepartments; i++) {
+        freeMemory(uni->departments[i].students);
+    }
+    freeMemory(uni->departments);
+}
+
 
 void inputStudentData(struct Student* s) {
     printf("Enter the name of the student: ");
@@ -418,42 +426,87 @@ void printUniversityHierarchy(struct University* uni) {
     }
 }
 
-void freeUniversity(struct University* uni) {
-    for (int i = 0; i < uni->numDepartments; i++) {
-        freeMemory(uni->departments[i].students);
-    }
-    freeMemory(uni->departments);
-}
-
 // Part 7: File I/O
 
 void writeStudentToFile(struct Student* s, const char* filename) {
-    // TODO: Write student data to a text file
+    FILE* file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error opening file for writing.\n");
+        return;
+    }
+    fprintf(file, "%s\n%d\n%f %f %f\n", s->name, s->id, s->grades[0], s->grades[1], s->grades[2]);
+    fclose(file);
+    printf("Student data written to file: %s\n", filename);
 }
 
 void readStudentFromFile(struct Student* s, const char* filename) {
-    // TODO: Read student data from a text file
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error opening file for reading.\n");
+        return;
+    }
+    fgets(s->name, sizeof(s->name), file);
+    s->name[strcspn(s->name, "\n")] = '\0'; // Remove newline character
+    fscanf(file, "%d", &s->id);
+    fscanf(file, "%f %f %f", &s->grades[0], &s->grades[1], &s->grades[2]);
+    fclose(file);
+    printf("Student data read from file: %s\n", filename);
 }
 
 void writeStudentToBinaryFile(struct Student* s, const char* filename) {
-    // TODO: Write student data to a binary file
+    FILE* file = fopen(filename, "wb");
+    if (file == NULL) {
+        printf("Error opening file for writing.\n");
+        return;
+    }
+    fwrite(s, sizeof(struct Student), 1, file);
+    fclose(file);
+    printf("Student data written to binary file: %s\n", filename);
 }
 
 void readStudentFromBinaryFile(struct Student* s, const char* filename) {
-    // TODO: Read student data from a binary file
+    FILE* file = fopen(filename, "rb");
+    if (file == NULL) {
+        printf("Error opening file for reading.\n");
+        return;
+    }
+    fread(s, sizeof(struct Student), 1, file);
+    fclose(file);
+    printf("Student data read from binary file: %s\n", filename);
 }
 
+
 void logMessage(const char* message, const char* logfile) {
-    // TODO: Append a timestamped message to the log file
+    FILE* file = fopen(logfile, "a");
+    if (file == NULL) {
+        printf("Error opening log file.\n");
+        return;
+    }
+
+    time_t now = time(NULL);
+    char* timestamp = ctime(&now);
+    timestamp[strcspn(timestamp, "\n")] = '\0'; // Remove newline character
+
+    fprintf(file, "[%s] %s\n", timestamp, message);
+    fclose(file);
 }
 
 void displayLog(const char* logfile) {
-    // TODO: Read and display the contents of the log file
+    FILE* file = fopen(logfile, "r");
+    if (file == NULL) {
+        printf("Error opening log file.\n");
+        return;
+    }
+
+    char line[256];
+    while (fgets(line, sizeof(line), file)) {
+        printf("%s", line);
+    }
+    fclose(file);
 }
 
 
 int main() {
-    
     srand(time(NULL));
     int x = 10;
     int *prtx = &x;
@@ -491,7 +544,7 @@ int main() {
     }
     printf("\n");
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Part 2: Pointers and Arrays
     printf("\nPart 2: Pointers and Arrays\n");
@@ -501,24 +554,24 @@ int main() {
     int matrix[rows][cols];
     int (*prt_matrix)[cols] = matrix;
 
-    //initializing the matrix
-    initializeMatrix(rows,cols,prt_matrix);
+    // Initializing the matrix
+    initializeMatrix(rows, cols, prt_matrix);
 
-    //printing the matrix
-    printMatrix(rows,cols,prt_matrix);
+    // Printing the matrix
+    printMatrix(rows, cols, prt_matrix);
 
-    //Finding the max number out of a matrix
-    printf("The maximum number in the matrix is : %d\n", findMaxInMatrix(rows,cols,prt_matrix) );
+    // Finding the max number out of a matrix
+    printf("The maximum number in the matrix is : %d\n", findMaxInMatrix(rows, cols, prt_matrix));
 
-    sumOfMatrixRow(rows,cols,prt_matrix);
+    sumOfMatrixRow(rows, cols, prt_matrix);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     // Part 3: Function Pointers
     printf("\nPart 3: Function Pointers\n");
-        // Initializing the array with random numbers
+    // Initializing the array with random numbers
     int array[9];
-    int length_arr = sizeof(array) / sizeof(array[0]); 
+    int length_arr = sizeof(array) / sizeof(array[0]);
     for (int i = 0; i < length_arr; i++) {
         array[i] = rand() % 100;
     }
@@ -534,22 +587,22 @@ int main() {
     // Sorting the array
     bubbleSort(array, length_arr);
 
-    selectionSort(array,length_arr);
+    selectionSort(array, length_arr);
     
-    printf("Sorting the Array using the Function Pointor\n");
+    printf("Sorting the Array using the Function Pointer\n");
 
-    void (*SortFunction)(int*,int);
-    // calling the Bubble Sort by function pointer
+    void (*SortFunction)(int*, int);
+    // Calling the Bubble Sort by function pointer
     SortFunction = bubbleSort;
-    printf("Bubble Sort by Funnction Pointor Method\n");
-    SortFunction(array,length_arr);
+    printf("Bubble Sort by Function Pointer Method\n");
+    SortFunction(array, length_arr);
 
-    // calling the Selection Sort by function pointer
+    // Calling the Selection Sort by function pointer
     SortFunction = selectionSort;
-    printf("Selection Sort by Funnction Pointor Method\n");
-    SortFunction(array,length_arr);
+    printf("Selection Sort by Function Pointer Method\n");
+    SortFunction(array, length_arr);
 
-// Calculator by Function Pointer
+    // Calculator by Function Pointer
     int operand_1, operand_2, choice;
     int result;
     int (*operation)(int, int); // Function Pointer
@@ -584,24 +637,23 @@ int main() {
     result = operation(operand_1, operand_2);
     printf("The result is: %d\n", result);
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     // Part 4: Advanced Challenge
     printf("\nPart 4: Advanced Challenge\n");
     struct Node* head = NULL;
 
-    union Data n1, n2, n3,n4;
+    union Data n1, n2, n3, n4;
 
     n1.i = 3;
     n2.f = 3.76;
     n3.c = 'A';
-    n4.i = 7 ;
+    n4.i = 7;
 
-    insertAtBeginning(&head,n1);
-    insertAtBeginning(&head,n2);
-    insertAtBeginning(&head,n3);
-    insertAtBeginning(&head,n4);
+    insertAtBeginning(&head, n1);
+    insertAtBeginning(&head, n2);
+    insertAtBeginning(&head, n3);
+    insertAtBeginning(&head, n4);
 
     printList(head);     
 
@@ -610,26 +662,24 @@ int main() {
     printf("List after deleting n4\n");
     printList(head);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     // Part 5: Dynamic Memory Allocation
     printf("Part 5: Dynamic Memory Allocation\n");
     int size;
     printf("Enter the size of the array: ");
     scanf("%d", &size);
 
-    int* array = (int*)allocateMemory(size * sizeof(int));
+    int* dynamicArray = (int*)allocateMemory(size * sizeof(int));
 
     printf("Enter %d elements: ", size);
     for (int i = 0; i < size; i++) {
-        scanf("%d", &array[i]);
+        scanf("%d", &dynamicArray[i]);
     }
 
-    int sum;
+    int sumArray;
     float average;
-    calculateSumAndAverage(array, size, &sum, &average);
+    calculateSumAndAverage(dynamicArray, size, &sumArray, &average);
 
-    printf("Sum: %d\n", sum);
+    printf("Sum: %d\n", sumArray);
     printf("Average: %.2f\n", average);
 
     // Extend the array
@@ -637,47 +687,60 @@ int main() {
     printf("Enter the new size of the array: ");
     scanf("%d", &newSize);
     int oldSize = size;
-    extendArray(&array, &size, newSize);
+    extendArray(&dynamicArray, &size, newSize);
 
     printf("Enter additional %d elements: ", newSize - oldSize);
     for (int i = oldSize; i < newSize; i++) {
-        scanf("%d", &array[i]);
+        scanf("%d", &dynamicArray[i]);
     }
 
-    calculateSumAndAverage(array, newSize, &sum, &average);
+    calculateSumAndAverage(dynamicArray, newSize, &sumArray, &average);
 
-    printf("Sum after extending: %d\n", sum);
+    printf("Sum after extending: %d\n", sumArray);
     printf("Average after extending: %.2f\n", average);
 
     // Free the array
-    freeMemory(array);
+    freeMemory(dynamicArray);
 
     // Check for memory leaks
     checkMemoryLeaks();
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Part 6: Structures and Unions
-    printf("\nPart 6: Structures and Unions\n");
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    struct University uet;
-    createUniversity(&uet);
+    // Part 6: Structures and Unions && Part 7:
+    printf("\nPart 6: Structures and Unions\n");
 
-    printUniversityHierarchy(&uet);
+    struct University uni;
+    createUniversity(&uni);
+    printUniversityHierarchy(&uni);
+
+    // Example: Writing and Reading student data to/from text and binary files
+    struct Student s = uni.departments[0].students[0];
+
+    // Write and read from text file
+    writeStudentToFile(&s, "student.txt");
+    struct Student s_read;
+    readStudentFromFile(&s_read, "student.txt");
+    printStudentInfo(&s_read);
+
+    // Write and read from binary file
+    writeStudentToBinaryFile(&s, "student.bin");
+    readStudentFromBinaryFile(&s_read, "student.bin");
+    printStudentInfo(&s_read);
+
+    // Example: Logging messages
+    logMessage("University data processed.", "logfile.txt");
+    logMessage("Student data written to files.", "logfile.txt");
+
+    // Display log file
+    printf("\nLog file contents:\n");
+    displayLog("logfile.txt");
 
     // Free allocated memory
-    freeUniversity(&uet);
-
-    // Check for memory leaks
-    checkMemoryLeaks();
-
-    
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
-    // Part 7: File I/O
-    printf("\nPart 7: File I/O\n");
-    // TODO: Implement exercises 7.1, 7.2, and 7.3
-
-    checkMemoryLeaks();
+    for (int i = 0; i < uni.numDepartments; i++) {
+        freeMemory(uni.departments[i].students);
+    }
+    freeMemory(uni.departments);
 
     return 0;
 }
