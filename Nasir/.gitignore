@@ -43,3 +43,6 @@ compile_commands.json
 # Temporary files
 *.tmp
 *.temp
+
+# vs code .Identifiers files
+*.Identifiers
