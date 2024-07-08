@@ -42,7 +42,7 @@ void simpleCalculator() {
             printf("%d * %d = %d\n", number1, number2, number1 * number2);
             break;
         case '/':
-            if (b != 0)
+            if (number2 != 0)
                 printf("%d / %d = %d\n", number1, number2, number1 / number2);
             else
                 printf("undefine.\n");
@@ -160,6 +160,7 @@ int secondLargest(int arr[], int size) {
         } 
 
         }
+    return max2;
 
 }
 
