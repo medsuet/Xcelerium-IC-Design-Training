@@ -34,4 +34,13 @@ gcc lab1.c -o lab1
 ./lab1
 ```
 
+## Running TCL Files
+
+To run a TCL script, navigate to the directory containing the script and use the tclsh command followed by the script name. For example:
+
+```bash
+tclsh script_name.tcl
+```
+
+
 
