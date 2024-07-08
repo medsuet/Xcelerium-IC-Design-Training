@@ -25,7 +25,7 @@ __int64_t boothMultiplier(int multiplier, int multiplicant) {
     
     for (int i = 0; i < n - 1; i++) {
         // Print current state for debugging
-        printf("%d, %d, %d, %d, %d, %d\n", accumulator, accumalator1, multiplier, Q_1, multiplier_lsb, multiplicant);
+//        printf("%d, %d, %d, %d, %d, %d\n", accumulator, accumalator1, multiplier, Q_1, multiplier_lsb, multiplicant);
         
         multiplier_lsb = multiplier & 1; // Get LSB of multiplier
   
@@ -47,5 +47,13 @@ __int64_t boothMultiplier(int multiplier, int multiplicant) {
 
 int main() {
     // Perform Booth's multiplication on the given multiplier and multiplicant
-    printf("%ld\n", boothMultiplier(-58000, 0));
+ printf("the product of -58000 and 0 is %ld\n", boothMultiplier(-58000, 0));
+ printf("the product of -58000 and -58000 is %ld\n", boothMultiplier(-58000,-58000));
+ printf("the product of -58000 and 12 is %ld\n", boothMultiplier(-58000, 12));
+ printf("the product of 13 and 13 is %ld\n", boothMultiplier(13, 13));
+ printf("the product of -169 and 169 is %ld\n", boothMultiplier(-169, 169));
+ printf("the product of 780 and 0 is %ld\n", boothMultiplier(780, 0));
+ printf("the product of 456 and 2 is %ld\n", boothMultiplier(456, 2));
+ printf("the product of -1 and -1 is %ld\n", boothMultiplier(-1, -1));
+
 }
