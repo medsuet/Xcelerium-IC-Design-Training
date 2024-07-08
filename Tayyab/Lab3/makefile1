@@ -1,0 +1,16 @@
+all : main
+
+main : main.o functions.o
+	gcc main.o functions.o -o main -lm
+
+main.o : main.c functions.h /usr/include/stdio.h
+	gcc -c main.c -o main.o
+
+functions.o : functions.c /usr/include/math.h
+	gcc -c functions.c -o functions.o
+
+debug : main.o functions.o
+	gcc -g main.o functions.o -o main -lm
+
+clean :
+	rm -f *.o main
