@@ -13,7 +13,6 @@
 
 // 0.1 Basic Syntax and Data Types
 void printSizes() {
-    // TODO: Declare variables of different types and print their sizes
 	char character_variable;
 	int integer_variable;
 	double double_variable;
@@ -34,7 +33,6 @@ void printSizes() {
 
 // 0.2 Operators and Expressions
 void simpleCalculator() {
-    // TODO: Implement a simple calculator using switch statement.
 	printf("Following program will contain the calculator code ");
 
 	char operator;
@@ -81,8 +79,7 @@ void simpleCalculator() {
 
 // 0.3 Control Structures
 void printFibonacci(int n) {
-    // TODO: Print Fibonacci sequence up to n terms
-	// TODO: Print Fibonacci sequence up to n terms
+   /*Takes number and print its fibonacci series*/
 	/*
 	so we know that for fibonacci its always
 	fib(n-1)+fib(n-2)
@@ -109,7 +106,6 @@ void printFibonacci(int n) {
 }
 
 void guessingGame() {
-    // TODO: Implement a number guessing game
 	printf("Lets play the number guessing game : \n So i will give you hints and you have to guess it \n");
 	/*
 	initializing the seed,
@@ -137,7 +133,7 @@ void guessingGame() {
 
 // 0.4 Functions
 int isPrime(int n) {
-    // TODO: Check if a number is prime
+    // Check if a number is prime
 	if (n <= 1) {
         	return 0;  // Not prime if less than or equal to 1
     	}
@@ -161,7 +157,7 @@ int isPrime(int n) {
 }
 
 int factorial(int n) {
-    // TODO: Calculate factorial recursively
+    // Calculate factorial recursively
 	if (n == 0) {
         	return 1;
     	}
@@ -172,6 +168,8 @@ int factorial(int n) {
 
 // 0.5 Arrays and Strings
 void reverseString(char* str) {
+	/*argument: array 
+		return reversed array*/
     int temp_first = 0;
     int temp_last = strlen(str) - 1;
     char temp_var;
@@ -186,7 +184,7 @@ void reverseString(char* str) {
 }
 
 int secondLargest(int arr[], int size) {
-    // TODO: Find and return the second largest element in the array
+    // Find and return the second largest element in the array
 	if (size < 2) {
         printf("Array size should be at least 2.\n");
         return -1;  // Error condition: array size is less than 2
