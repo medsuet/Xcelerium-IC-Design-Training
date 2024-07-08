@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <limits.h>
 
 // Part 0: Quick Revision Exercises
 
@@ -9,9 +10,9 @@
 void printSizes() {
     // TODO: Declare variables of different types and print their sizes
     int x = 10;
-    char y = char(x);
-    float z = float(x);
-    double w = double(x);
+    char y = (char)x;
+    float z = (float)x;
+    double w = (double)x;
     printf("Size of x = %zu\n", sizeof(x));
     printf("Size of y = %zu\n", sizeof(y));
     printf("Size of z = %zu\n", sizeof(z));
@@ -21,7 +22,7 @@ void printSizes() {
 // 0.2 Operators and Expressions
 void simpleCalculator() {
     // TODO: Implement a simple calculator using switch statement
-    / user inputs
+    // user inputs
     int x;
     int y;
     printf("Input x = ");
@@ -74,7 +75,6 @@ void printFibonacci(int n) {
 	     term1 = term2;
 	     term2 = next_term;
 	 }
-	return 0;
 }
 
 void guessingGame() {
@@ -85,7 +85,7 @@ void guessingGame() {
 
     rand_value = (rand() % 100 + 1);
 
-    printf("Type the initial guess:%d", rand_value);
+    printf("\nType the initial guess:", rand_value);
     scanf("%d", &user_input);
 
     while(user_input != rand_value)
@@ -100,8 +100,7 @@ void guessingGame() {
 	    scanf("%d", &user_input);}
     }
     printf("Your Value matched. CONGRATULATIONS!!!\n");
-    return 0;
-}
+ }
 
 // 0.4 Functions
 int isPrime(int num) {
@@ -127,7 +126,6 @@ int factorial(int n) {
 // 0.5 Arrays and Strings
 void reverseString(char* str) {
     // TODO: Reverse a string in-place
-    {
     int start = 0;
     int end = sizeof(str) - 1;
     char temp;
