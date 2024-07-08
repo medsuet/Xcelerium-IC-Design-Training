@@ -82,7 +82,7 @@ install: $(SCRIPTS)
 clean:
 	@echo "Cleaning for C Compilation"
 	@echo ""
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm -rf $(OBJ_DIR) $(BIN_DIR) $(INSTALL_DIR)
 	@echo ""
 	@echo "Nothing to clean for Shell Scripts"
 
