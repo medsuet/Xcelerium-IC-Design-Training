@@ -51,5 +51,5 @@ Thumbs.db
 *.old
 
 # VS Code
-/Faisal/lab1/.vscode
+/lab1/.vscode/
 
