@@ -146,7 +146,12 @@ To compile the programs, use the provided Makefile. Open your terminal or comman
 
     Alternatively, you can compile each part individually by specifying the target:
 
+<<<<<<< HEAD
     ```sh
+=======
+    ```markdown
+
+>>>>>>> 371e5ee (Added the Reademe and gitignore file in each folder)
         make part0
         make part1
         make maze
@@ -157,6 +162,7 @@ To compile the programs, use the provided Makefile. Open your terminal or comman
 
     After successfully compiling, you can run each program directly from the command line:
 
+<<<<<<< HEAD
 ```sh
 ./part0
 ./part1
@@ -171,4 +177,21 @@ To clean up (delete) all compiled executables, use:
 make clean
 
 ```
+=======
+    ```markdown
+
+        ./part0
+        ./part1
+        ./maze
+        ./boothMultiplier
+    ```
+## Cleaning Up
+
+    To clean up (delete) all compiled executables, use:
+
+    ```markdown
+
+        make clean
+    ```
+>>>>>>> 371e5ee (Added the Reademe and gitignore file in each folder)
 
