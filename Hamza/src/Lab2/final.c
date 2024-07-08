@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 // Function to dynamically allocate memory for a maze of given size
 int** allocateMaze(int maze_size) {
@@ -110,72 +111,64 @@ int calculateBitCount(int number) {
     return count;
 }
 
-void ArithmeticRightShift(int *A, int *Q, int *Q0, int iterations) {
-    int aLSB = *A & 1;
-    int qLSB = *Q & 1;
+
+// Function to calculate 2's complement of a number
+int complement(int a) {
+    return (~a) + 1;
+}
+
+// Function to perform arithmetic right shift on combined multiplier and accumulator
+long long arithmeticRightshift(int multiplier, int accumulator) {
+    long long value;
+    value = (long long)accumulator << 32; 
+    value = value | (unsigned int)multiplier; 
+    value = value >> 1; 
+    return value;
+}
+
+
+// Function to perform Booth's multiplication algorithm
+long long boothMultiplier(int multiplier, int multiplicand) {
+    int n = 8 * sizeof(int); 
+    int Q1 = 0; 
+    int multiplierLsb; 
+    int accumulator = 0; 
     
-    *A >>= 1;
-    *Q >>= 1;
-    *Q |= (qLSB << (iterations - 1));
-
-    *Q0 = qLSB;  // Update Q0 to qLSB for next iteration
-}
-
-void Add(int *A, int M, int iterations) {
-    *A += M;
-}
-
-void Subtract(int *A, int M, int iterations) {
-    *A -= M;
-}
-
-int boothMultiplier(int multiplicand, int multiplier, int count) {
-    int product = 0;
-    int A = 0;
-    int Q = multiplier;
-    int M = multiplicand;
-    int Q0 = 0;
-    int iterations = count;
-    int multiplierLSB = 0;
-    
-    // Calculating the multiplierLSB using bitwise Anding
-    multiplierLSB = Q & 1;
-
-    while (iterations > 0) {
-        Q0 = Q & 1;
-
-        if (multiplierLSB == 0 && Q0 == 1) {
-            Add(&A, M, iterations);  // A = A + M
-        } else if (multiplierLSB == 1 && Q0 == 0) {
-            Subtract(&A, M, iterations);  // A = A - M
+    for (int i = 0; i < n - 1; i++) {
+        
+        multiplierLsb = multiplier & 1;
+  
+        if ((multiplierLsb == 0) && (Q1 == 1)) {
+            accumulator = accumulator + multiplicand; 
+        } 
+        else if ((multiplierLsb == 1) && (Q1 == 0)) {
+            accumulator = accumulator + complement(multiplicand);
         }
 
-        ArithmeticRightShift(&A, &Q, &Q0, iterations);
-        iterations--;
+        Q1 = multiplierLsb; 
+        int accumalator1 = (int)(arithmeticRightshift(multiplier, accumulator) >> 32) & 0xFFFFFFFF; // Perform arithmetic right shift and get updated accumulator
+        multiplier = (int)arithmeticRightshift(multiplier, accumulator) & 0xFFFFFFFF; // Update multiplier with shifted value
+        accumulator = accumalator1;
     }
 
-    product = A | Q;
-
-    return product;
+    return arithmeticRightshift(multiplier, accumulator);
 }
 
 int main() {
 
     // Task Y
 
-    int multiplicand = 84;
-    int multiplier = 7;
+    // Initialize random number generator
+    srand(time(NULL));
 
-    // Calculating the multiplicand and multiplier bits
-    int multiplicandBits = calculateBitCount(multiplicand);
-    int multiplierBits = calculateBitCount(multiplier);
+    // Generate random multiplier and multiplicand
+    int multiplier = rand() % 1000; 
+    int multiplicand = rand() % 1000;
+    
+    // Perform Booth's multiplication on the generated multiplier and multiplicand
+    printf("Multiplier: %d, Multiplicand: %d\n", multiplier, multiplicand);
+    printf("Result: %lld\n", boothMultiplier(multiplier, multiplicand));
 
-    // Setting the count equal to multiplier bits for number of iterations
-    int count = multiplierBits;
-
-    int product = boothMultiplier(multiplicand, multiplier, count);
-
-    printf("The product of %d and %d is %d\n", multiplicand, multiplier, product);
 
     // Task Z
 
