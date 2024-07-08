@@ -1,5 +1,5 @@
 # Xcelerium_Training
-<<<<<<< HEAD
+
 ## Table of Contents
 1. [Lab 1 - Basics of C language](#lab-1---basics-of-c-language)
 2. [Lab 2 - Advanced C Programming Exercises](#lab-2---advanced-c-programming-exercises)
@@ -11,11 +11,7 @@
 
 ## Overview
 
-<<<<<<< HEAD
 `lab1.c` is a C program that includes various functions to demonstrate fundamental concepts and syntax in C programming. This program is divided into several parts, covering basic data types, operators, control structures, functions, arrays, and strings. 
-=======
-`lab1.c` is a C program that includes various functions to demonstrate fundamental concepts and syntax in C programming. This program is divided into several parts, covering basic data types, operators, control structures, functions, arrays, and strings. Each section contains practical exercises and examples to help understand these concepts better.
->>>>>>> e5fdb7d (Added README.md)
 
 ## Contents
 
@@ -38,24 +34,16 @@
     - `secondLargest(int arr[], int size)`: Finds the second largest element in an array.
 
 ## How to Use
-<<<<<<< HEAD
 ``` bash
 cd xce_lab1
 ```
 1. **Compilation**
     ```sh
     make all
-=======
 
-1. **Compilation**
-    ```sh
-    gcc lab1.c -o lab1
->>>>>>> e5fdb7d (Added README.md)
-    ```
 
 2. **Execution**
     ```sh
-<<<<<<< HEAD
     make run
     ```
 3. **Clean Up**
@@ -65,26 +53,14 @@ cd xce_lab1
 # Lab 2 - Advanced C Programming Exercises
 
 This project contains a series of exercises in C programming including structures, pointers, dynamic memory allocation, linked lists, file I/O, and unions.
-=======
-    ./lab1
-    ```
-
-# Lab 2 - Advanced C Programming Exercises
-
-This project contains a series of exercises designed to enhance your understanding of advanced C programming concepts, including structures, pointers, dynamic memory allocation, linked lists, file I/O, and unions.
->>>>>>> e5fdb7d (Added README.md)
 
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Compilation](#compilation)
-<<<<<<< HEAD
 3. [Running Executables](#running-executables)
 4. [Clean Up](#clean-up)
 5. [Exercises](#exercises)
-=======
-3. [Execution](#execution)
-4. [Exercises](#exercises)
->>>>>>> e5fdb7d (Added README.md)
+
    - [Part 1: Basic Operations](#part-1-basic-operations)
    - [Part 2: Structures](#part-2-structures)
    - [Part 3: Pointers and Functions](#part-3-pointers-and-functions)
@@ -142,8 +118,12 @@ gcc -o lab2 lab2.c
 ```
 ## Execution
 ```bash
+<<<<<<< HEAD
 ./lab1
 >>>>>>> e5fdb7d (Added README.md)
+=======
+./lab2
+>>>>>>> 520b661 (Added README.md)
 ```
 ## Exercises
 
