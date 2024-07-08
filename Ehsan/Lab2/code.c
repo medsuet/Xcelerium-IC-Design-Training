@@ -100,42 +100,65 @@ int (*multiplication)(int a, int b) = multiply;
 int (*division)(int a, int b) = divide;
 
 // Part 4: Linked List
+union Data {
+    int i;
+    float f;
+    char c;
+}; 
+
 struct Node {
-    int data;
+    union Data data;
     struct Node* next;
 };
 
+
 //following function insert node at beginning of linked list
-void insertAtBeginning(struct Node** head, int value) {
+/*void insertAtBeginning(struct Node** head, int value) {
     struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
     new_node->data = value;
     new_node->next = *head;
     *head = new_node;
+}*/
+void insertAtBeginning(struct Node** head, union Data data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL){
+        printf("Memory allocation Failed\n");
+        return;
+    } 
+    if (data.i) {
+        newNode->data.i = data.i;
+    } else if (data.f) {
+        newNode->data.f = data.f;
+    } else if (data.c) {
+        newNode->data.c = data.c;
+    } 
+    newNode->next = *head;
+    *head = newNode;
 }
-//following function delete node by matching value in linked list
-void deleteByValue(struct Node** head, int value) {
 
-    struct Node* temp = *head;
+//following function delete node by matching value in linked list
+void deleteByValue(struct Node** head, union Data value) {
+    struct Node* curr = *head;
     struct Node* prev = NULL;
-    if(temp != NULL && temp->data == value) {
-        *head = temp->next;
-        free(temp);
-        return ;
+    while (curr != NULL) {
+        // Check if the current node's data matches the value
+        if ((curr->data.i && value.i == curr->data.i) || (curr->data.f && value.f == curr->data.f) || (curr->data.c && value.c == curr->data.c)) {
+            prev = curr;
+            curr = curr->next;           
+            break;
+        }
     }
-    while (temp !=NULL && temp->data !=value) {
-        prev = temp;
-        temp = temp->next;
-    }
-    if(temp == NULL) return;
-    prev->next = temp->next;
-    free(temp);
+    prev->next = curr->next;
+    free(curr);
 }
 
 //following function prints the linked list
 void printList(struct Node* head) {
     struct Node* temp = head;
     while(temp != NULL) { 
-        printf("%d -> ", temp->data);
+        if (temp->data.i) {printf("%d -> ", temp->data.i);}
+        else if(temp->data.f) {printf("%f -> ", temp->data.f);}
+        else if (temp->data.c) {printf("%c -> ", temp->data.c);}
         temp = temp->next;
     }
     printf("NULL\n");
@@ -150,8 +173,8 @@ int* createDynamicArray(int size) {
 }
 //following function extend the existing array
 void extendArray(int** arr, int* size, int newSize) {
-    int *arr_ptr = (int *)realloc(arr,newSize * sizeof(int));
-    free(arr_ptr);
+    int *arr_ptr = (int *)realloc(*arr,newSize * sizeof(int));
+    *arr = arr_ptr;
 }
 // Memory leak detector
 void* allocateMemory(size_t size) {
@@ -186,11 +209,6 @@ struct University {
     int numDepartments;
 };
 
-union Data {
-    int i;
-    float f;
-    char c;
-};
 
 //following function take input from user and make the student data 
 void inputStudentData(struct Student* s) {
@@ -220,7 +238,6 @@ void printStudentInfo(struct Student* s) {
     printf("\ngrades in sub 3 : %.2lf",s->grades[2]);
 }
 
-
 // Part 7: File I/O
 
 //following function write the student data to the file
@@ -228,7 +245,7 @@ void writeStudentToFile(struct Student* s, const char* filename) {
     FILE* file = fopen(filename,"w");
     if(file == NULL) {
         printf("Error in file opening");
-        exit(1);
+        return;
     }
     fprintf(file,"Name : %s\n",s->name);
     fprintf(file,"ID : %d\n",s->id);
@@ -243,6 +260,7 @@ void readStudentFromFile(struct Student* s, const char* filename) {
     FILE *file = fopen(filename,"r");
     if(file == NULL) {
         printf("Error in file opening");
+        return;
     }
     fscanf(file, "Name : %s\n",s->name);
     fscanf(file, "ID : %d\n",&s->id);
@@ -257,7 +275,7 @@ void writeStudentToBinaryFile(struct Student* s, const char* filename) {
     FILE* file = fopen(filename, "wb");
     if (file == NULL) {
         printf("Could not open file for writing.\n");
-        return ;
+        return;
     }
     fwrite(s, sizeof(struct Student), 1, file);
     fclose(file);
@@ -270,7 +288,6 @@ void readStudentFromBinaryFile(struct Student* s, const char* filename) {
         printf("Could not open file for reading.\n");
         return;
     }
-    struct University uni;
     fread(s, sizeof(struct Student), 1, file);
     fclose(file);
 }
@@ -349,7 +366,7 @@ int main() {
     printf("Max value in matrix is %d",findMaxInMatrix(rows, cols, matrix_ptr));
 
     // Part 3: Function Pointers
-    printf("\nPart 3: Function Pointers\n");
+    printf("\n\nPart 3: Function Pointers\n");
 
     //sorting array with bubble sort
     int array[10] = {6,5,7,4,2,7,9,0,3,1};
@@ -392,7 +409,7 @@ int main() {
     SortFunction_a (a_arr1_ptr,size_of_a_arr1);
 
     //printing sorted array using selection sort with function pointers
-    printf("\nsorted array by selection sort: ");
+    printf("\nsorted array by selection sort using function pointer: ");
     for (int i=0; i<(size_of_a_arr1); i++) {
         printf("%d ",*(a_arr1_ptr + i));
     }
@@ -406,57 +423,85 @@ int main() {
     printf("\nDivision using function ptr of %d and %d : %d",r,s,division(r,s));
 
     // Part 4: Advanced Challenge
-    printf("\n \nPart 4: Advanced Challenge\n");
+    printf("\n\nPart 4: Advanced Challenge\n");
     
     //linked list
     //making head node
-    struct Node* head  = NULL;
-
+    //struct Node* head  = NULL;
     //inserting node at beginning of linked list
-    insertAtBeginning(&head,32);
-    insertAtBeginning(&head,69);
-    printList(head);
-
+    //insertAtBeginning(&head,32);
+    //insertAtBeginning(&head,69);
+    //printList(head);
     //deleting node by value
-    deleteByValue(&head,32);
-
+    //deleteByValue(&head,32);
     //printing linked list
-    printList(head);
+    //printList(head);
+    //free(head);
 
-    free(head);
+    //generic linked list
+    struct Node* head = NULL;
+    union Data n1, n2, n3,n4;
+    n1.i = 3;
+    n2.f = 3.76;
+    n3.c = 'A';
+    n4.i = 7 ;
+    insertAtBeginning(&head,n1);
+    insertAtBeginning(&head,n2);
+    insertAtBeginning(&head,n3);
+    insertAtBeginning(&head,n4);
+    printList(head);     
+    // deleteByValue(&head,n1);
+    // printList(head);
+
 
     //Part 5: Dynamic Memory Allocation
     printf("\nPart 5: Dynamic Memory Allocation\n");
-// 
-//    take inputs from user
-    // int size = 3;
-    // int newsize = 10;
-    // int *pointer = createDynamicArray(size);
-    // for (int i=0; i<size; i++) {
-        // printf("Enter [%d] value : ",i);
-        // scanf("%d",&(*(pointer+i)));
-    // }
-    //calculates and print sum and average of elements
-    // int sum = 0;
-    // for (int j=0; j<size; j++) {
-        // sum = *(pointer+j) + sum;
-    // }
-// 
-    // printf("Sum of array : %d",sum);
-    // printf("\nsize : %d",size);
-    // printf("\nAverage of array : %f",(float)sum / size);
-// 
+    
+    int size;
+    printf("Enter size of array : ");
+    scanf("%d",&size);
+    int *pointer = createDynamicArray(size);
+    //initialing the array elements
+    for (int i=0; i<size; i++) {
+        printf("Enter [%d] value : ",i);
+        scanf("%d",&(*(pointer+i)));
+    }
+
+    //calculates sum of elements
+    int sum_array = 0;
+    for (int j=0; j<size; j++) {
+        sum_array = *(pointer+j) + sum_array;
+    }
+    //printing sum and average of array elements
+    printf("Sum of array : %d",sum_array);
+    printf("\nsize : %d",size);
+    printf("\nAverage of array : %f",(float)sum_array / size);
+
+    //printing allocated array
+    printf("\nPrinting allocated array : "); 
+    for (int q=0; q<size; q++) {
+        printf("%d ",*(pointer+q));
+    }
+
     //extending array
-    // int *ptttr = createDynamicArray(newsize);
-    // for (int i=0; i<(newsize-size); i++) {
-        // printf("Enter [%d] value : ",i);
-        // scanf("%d",&(*(pointer+i)));
-    // }
+    int new_size;
+    printf("\nEnter new size of array : ");
+    scanf("%d",&new_size);
+    extendArray(&pointer,&size,new_size);
+    //initialing the extended array elements
+    for (int i=size; i<new_size; i++) {
+        printf("Enter [%d] value : ",i);
+        scanf("%d",&(*(pointer+i)));
+    }
 
-
+    //printing extended array
+    printf("Printing extended array : "); 
+    for (int y=0; y<new_size; y++) {
+        printf("%d ",*(pointer+y));
+    }
 
     // Part 6: Structures and Unions
-    printf("\nPart 6: Structures and Unions");
+    printf("\n\nPart 6: Structures and Unions");
 
     //following code is of make structure of students and put values by assinging 
     //struct Student student;
@@ -465,14 +510,11 @@ int main() {
     //student.grades[0] = 2.5;
     //student.grades[1] = 3.0;
     //student.grades[2] = 3.5;
-
-    //following code is of make structure of students and put values by user input
-    //printf("\ndata of student");
-    //printf("\nname : %s",student.name);
-    //printf("\nid : %d",student.id);
-    //printf("\ngrades in sub1 : %f",student.grades[0]);
-    //printf("\ngrades in sub2 : %f",student.grades[1]);
-    //printf("\ngrades in sub3 : %f",student.grades[2]);
+    
+    //printing average
+    //printf("Average : %f\n",calculateAverage(&student));
+    //printing student info
+    //printStudentInfo(&student1);
 
     //making student structure
     struct Student student1;
@@ -484,48 +526,45 @@ int main() {
     inputStudentData(&student2);
     inputStudentData(&student3);
 
-    //printing average
-    //printf("Average : %f\n",calculateAverage(&student12));
-    //printing student info
-    //printStudentInfo(&student1);
-    //printStudentInfo(&student2);
-    //printStudentInfo(&student3);
+    //making departments data
+    //taking 2 departments in university 2 students in department1 and 1 student in department 2
+    struct Department department1;
+    int noOfStudentsInDepartment1 = 2;
+    strcpy (department1.name,"EE");
+    department1.numStudents = noOfStudentsInDepartment1;
+    department1.students = (struct Student*) malloc(noOfStudentsInDepartment1 * sizeof(struct Student));
+    department1.students[0] = student1;
+    department1.students[1] = student2;
 
-    /*
-    int no_of_students = 3;
-    struct Department* EE = (struct Department*)malloc(no_of_students*(sizeof(struct Department)));
+    int noOfStudentsInDepartment2 = 1;
+    struct Department department2;
+    strcpy (department2.name,"ME");
+    department2.numStudents = noOfStudentsInDepartment2;
+    department2.students = (struct Student*) malloc(noOfStudentsInDepartment2 * sizeof(struct Student));
+    department2.students[0] = student3;
 
-    EE[0] = (struct Department){"EE", &student1, no_of_students};
-    EE[1] = (struct Department){"EE", &student2, no_of_students};
-    EE[2] = (struct Department){"EE", &student3, no_of_students};
-    for (int i = 0; i < no_of_students; i++) {
-        printf("\nDepartment: %s, Student Name: %s, Number of Students: %d\n", EE[i].name, EE[i].students->name, EE[i].numStudents);
-    }
-    struct University UET = {"UET LHR",EE,1};
-    printf("\nUniversity name : %s", UET.name);
-    printf("\nNo. of departments : %d",UET.numDepartments);  
-    printf("\nDepartment name : %s",UET.departments->name);
+    //making university data
+    struct University university;
+    int noOfDepartmentInUniversity = 2;
+    strcpy(university.name,"UET, LHR");
+    university.numDepartments = 2;
+    university.departments = (struct Department*) malloc(noOfDepartmentInUniversity*sizeof(struct Department));
+    university.departments[0] = department1;
+    university.departments[1] = department2;
 
-    free(EE);
-    */
-    int no_of_students = 3;
-    printf("\n dsdsdsdd");
-    int sizzz=(no_of_students*sizeof(struct Student))+sizeof(int)+sizeof(char[50]);
-    printf("\n dsdsdsdd");
-    
-    struct Department* EE = (struct Department*)malloc(sizzz);
-    
-    EE->numStudents = 3;
-    EE->students[0] = student1;
-    EE->students[1] = student2;
-    EE->students[2] = student3;
+    printf("\nname of university : %s", university.name);
+    printf("\nno. of departments in %s : %d ",university.name,university.numDepartments);
+    printf("\nno. of students in %s : %d ",university.departments[0].name,university.departments[0].numStudents);
+    printf("\nno. of students in %s : %d ",university.departments[1].name,university.departments[1].numStudents);
 
-
+    free(university.departments);
+    if (university.departments == NULL) {printf("\n pointer freed");}
+    free(department1.students);
+    free(department2.students);
 
     union Data data_type;
-
     data_type.i=10;
-    printf("\ninteger data type : %d",data_type.i);
+    printf("\n\ninteger data type : %d",data_type.i);
     data_type.f=2.5;
     printf("\nfloat data type : %f",data_type.f);
     data_type.c='H';
@@ -533,7 +572,6 @@ int main() {
 
     // Part 7: File I/O
     printf("\nPart 7: File I/O\n \n");
-
 
     const char* filename = "student.txt";
     const char* binary_filename = "student_binary.bin";

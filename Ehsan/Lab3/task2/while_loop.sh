@@ -1,6 +1,6 @@
 #!/bin/bash
 
-target=$(( RANDOM % 100 + 1 ))
+target=$(( RANDOM % 10 + 1 ))
 guess=0
 
 while [ $guess -ne $target ]; do
