@@ -146,8 +146,7 @@ To compile the programs, use the provided Makefile. Open your terminal or comman
 
     Alternatively, you can compile each part individually by specifying the target:
 
-    ```markdown
-
+    ```sh
         make part0
         make part1
         make maze
@@ -158,19 +157,18 @@ To compile the programs, use the provided Makefile. Open your terminal or comman
 
     After successfully compiling, you can run each program directly from the command line:
 
-    ```markdown
-
-        ./part0
-        ./part1
-        ./maze
-        ./boothMultiplier
-    ```
+```sh
+./part0
+./part1
+./maze
+./boothMultiplier
+```
 ## Cleaning Up
 
-    To clean up (delete) all compiled executables, use:
+To clean up (delete) all compiled executables, use:
 
-    ```markdown
+```sh
+make clean
 
-        make clean
-    ```
+```
 
