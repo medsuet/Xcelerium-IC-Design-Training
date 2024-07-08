@@ -17,6 +17,7 @@ The objective of this training is to enhance the skills of the students and equi
 Each `README.md` file within the lab folders provides specific instructions on how to compile, run, and understand the tasks associated with that lab. Follow the instructions in each lab's `README.md` to execute the tasks effectively.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 # Xcelerium Training
@@ -50,3 +51,5 @@ Each `README.md` file within the lab folders provides specific instructions on h
 =======
     * Each folder also contains the ***gitignore file***
 >>>>>>> 0d2faee (Added the Reademe and gitignore file in each folder)
+=======
+>>>>>>> cbcc141 (Update the main reademe file)
