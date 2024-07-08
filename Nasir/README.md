@@ -6,12 +6,15 @@ This repository contains code for the Xcelerium IC Design Training. The code is 
 
 /Xcelerium-IC-Design-Training
 └── Nasir
-└── src
-├── exp1
-│ └── day1.c
-└── exp2
-├── day2.c
-└── final.c
+  └── src
+     ├── exp1
+        └── day1.c
+
+└── Nasir
+   └── src
+     └── exp2
+        ├── day2.c
+        └── final.c
 
 
 ## How to Clone the Repository
