@@ -7,6 +7,7 @@
 4. [Lab6 RISC-V Assembly Exercises](#lab6-risc-v-assembly-exercises)
 5. [LAB 7 - Python](#lab-7---python)
 
+
 # Lab 1 - Basics of C language
 
 ## Overview
