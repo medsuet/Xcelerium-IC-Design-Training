@@ -64,7 +64,7 @@ gcc -o lab2 lab2.c
 ```
 ## Execution
 ```bash
-./lab1
+./lab2
 ```
 ## Exercises
 
