@@ -21,6 +21,9 @@ test :
 	./Ex4.22.sh
 	./Ex4.3.sh
 
-install:
+install:$(INSTALLDIR)
 	cp -t $(INSTALLDIR) $(SCRIPTS)
 	@echo "Scripts copied to /$(INSTALLDIR)"
+
+$(INSTALLDIR):
+	mkdir $(INSTALLDIR)
