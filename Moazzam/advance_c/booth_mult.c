@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define RANGE 32767
+#define RANGE 1073741823   
 
 
 void rightShiftFunc(signed int *a,unsigned int *b, signed int shift) {
@@ -12,14 +12,16 @@ void rightShiftFunc(signed int *a,unsigned int *b, signed int shift) {
 
     // Perform the circular right shift
     shift = shift % 64; // Ensure shift is within the range of 0-63
-    int64_t rightShifted = (combined >> shift) | (combined << (64 - shift));
+    //int64_t rightShifted = (combined >> shift) | (combined << (64 - shift));
+    int64_t rightShifted = combined >> shift;
+
 
     // Split the combined number back into two integers
-    *a = (signed int)(rightShifted >> 32);
-    *b = (unsigned int)(rightShifted & 0xFFFFFFFF);
+    *a = (int)((rightShifted >> 32) & 0xFFFFFFFF);
+    *b = (int)(rightShifted & 0xFFFFFFFF);
 }
 
-uint64_t booth_mult(int M, int Q){
+int64_t booth_mult(int M, int Q){
     //M = Multiplicant      Q = Multiplier
     char n = sizeof(M) * 8; //to find number to bits of input number
 
@@ -30,12 +32,12 @@ uint64_t booth_mult(int M, int Q){
     int AC = 0;
     
 
-    if ((Q == 0 || M == 0) ) //special case multiply be ZERO
-    {
-        return 0;
-    }
+    //if ((Q == 0 || M == 0) ) //special case multiply be ZERO
+    //{
+    //    return 0;
+    //}
 
-    while (1)
+    while (1)   //check cases 
     {
         
         if ((Q_n == 0 & Q_n1 == 0) | (Q_n == 1 & Q_n1 == 1)) 
@@ -71,10 +73,7 @@ uint64_t booth_mult(int M, int Q){
         
     }
 
-    //printf("AC = %d, Q = %d\n",AC,Q);
-    // Assuming int is 32 bits((int64_t) AC << 32) |
-    //int64_t product =  ((int64_t) AC << 32) |(int32_t) Q;
-    int64_t product =  (int32_t) Q;
+    int64_t product =  ((int64_t)AC << 32) |(uint32_t) Q;
 
     return product;
 }
@@ -88,7 +87,7 @@ void CheckFunc(int test_n){
         int a = (rand() % (2 * RANGE + 1)) - RANGE;
         int b = (rand() % (2 * RANGE + 1)) - RANGE;
         int64_t booth_result = booth_mult(a, b);
-        int64_t simple_result = a*b;
+        int64_t simple_result = (int64_t)a*(int64_t)b;
         if (booth_result == simple_result) {pass++;}
         else
         {
@@ -102,27 +101,25 @@ void CheckFunc(int test_n){
     printf("Total test: %d, Passed Test: %d\n",copy_n, pass);
 }
 
-
 int main() {
     
     srand(time(NULL));
-    int a, b;
+    int multiplier, multiplicant;
     int test_n = 0;
 
-    //a = (rand() % (RANGE - LOW_NUM)) + LOW_NUM;
-    //b = (rand() % (RANGE - LOW_NUM)) + LOW_NUM;
     // Read two integers from the user
-    printf("Enter first integer: ");
-    scanf("%d", &a);
-    printf("Enter second integer: ");
-    scanf("%d", &b);
+    printf("Enter multiplier integer: ");
+    scanf("%d", &multiplier);
+    printf("Enter multiplicant integer: ");
+    scanf("%d", &multiplicant);
     printf("Enter number of test for Booth_Multi.: ");
     scanf("%d", &test_n);
 
    
-    printf("the Product of %d and %d is equal to %ld\n",a,b,booth_mult(a,b));
+    printf("the Product of %d and %d is equal to %ld\n",multiplier,multiplicant,booth_mult(multiplicant, multiplier));
     CheckFunc(test_n);
 
 
     return 0;
 }
+
