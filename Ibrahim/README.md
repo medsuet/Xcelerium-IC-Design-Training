@@ -1,4 +1,9 @@
 # Xcelerium_Training
+## Table of Contents
+1. [Lab 1 - Basics of C language](#lab-1---basics-of-c-language)
+2. [Lab 2 - Advanced C Programming Exercises](#lab-2---advanced-c-programming-exercises)
+3. [Lab 3 - Shell Scripting & MakeFile](#lab-3---shell-scripting--makefile)
+
 # Lab 1 - Basics of C language
 
 ## Overview
