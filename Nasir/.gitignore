@@ -48,4 +48,4 @@ compile_commands.json
 *.Identifiers
 
 # readme.txt
-*.txt
+Readme.txt
