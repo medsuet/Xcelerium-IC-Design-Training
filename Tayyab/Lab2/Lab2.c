@@ -86,6 +86,7 @@ int findMaxInMatrix(int rows, int cols, int (*matrix)[cols]) {
     return max;
 }
 void sumRows(int *sum, int rows, int cols, int (*matrix)[cols]) {
+    // Sum rows of a matrix
     CHECKNULLv(matrix);
     for (int r=0; r<rows; r++) {
         CHECKNULLv(*(matrix+r));

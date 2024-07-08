@@ -8,56 +8,63 @@
 // 0.1 Basic Syntax and Data Types
 void printSizes() {
     // TODO: Declare variables of different types and print their sizes
-short s; int i; char c; double d; long l; float f; unsigned short int usi;
+    short s; int i; char c; double d; long l; float f; unsigned short int usi;
 
-printf("SIZES: short:%lu\tint:%lu\tchar:%lu\tdouble:%lu\tlong:%lu\tfloat:%lu\tushortint:%lu\n", sizeof(short), sizeof(int), sizeof(char), sizeof(double), sizeof(long), sizeof(float), sizeof(unsigned short int));
+    printf("SIZES: short:%lu\tint:%lu\tchar:%lu\tdouble:%lu\tlong:%lu\tfloat:%lu\tushortint:%lu\n", sizeof(short), sizeof(int), sizeof(char), sizeof(double), sizeof(long), sizeof(float), sizeof(unsigned short int));
 
 }
 
 // 0.2 Operators and Expressions
 void simpleCalculator() {
     // TODO: Implement a simple calculator using switch statement
-int a,b,result;
-char op;
-printf("Expression: ");
-scanf("%d %c %d", &a, &op, &b);
+    // Inputs an expression with 2 numbers and 1 operator e.g (3+2) 
+    // and prints the result.
 
-switch (op) {
-	case '+': result = a+b; break;
-	case '-': result = a-b; break;
-	case '*': result = a*b; break;
-	case '/': result = a/b; break;
-	case '%': result = a%b; break;
-}
-printf("= %d \n",result);
+    int a,b,result;
+    char op;
+    printf("Expression: ");
+    scanf("%d %c %d", &a, &op, &b);
+
+    switch (op) {
+        case '+': result = a+b; break;
+        case '-': result = a-b; break;
+        case '*': result = a*b; break;
+        case '/': result = a/b; break;
+        case '%': result = a%b; break;
+    }
+    printf("= %d \n",result);
 }
 
 // 0.3 Control Structures
 void printFibonacci(int n) {
     // Print Fibonacci sequence up to n terms
-int Tk=1, prevTk=1, nextTk;
-printf("1, 1");
-for (int i=1; i<=n; i++) {
-	nextTk = Tk + prevTk;
-	prevTk = Tk;
-	Tk = nextTk;
-	printf(", %d",Tk);
-}
-printf("\n");
+    int Tk=1, prevTk=1, nextTk;
+    printf("1, 1");
+    for (int i=1; i<=n; i++) {
+        nextTk = Tk + prevTk;
+        prevTk = Tk;
+        Tk = nextTk;
+        printf(", %d",Tk);
+    }
+    printf("\n");
 }
 
 void guessingGame() {
     // TODO: Implement a number guessing game
 
-    // get random number between 0 and 100
+    // generate a random number between 0 and 100
     int secretnum = rand() % 101;
     int guessnum;
     
     printf("There is a secret number between 0 and 100 (inc)\n");
 
+    // loop until correct number guessed
     do {
+        // input guess
 	    printf("Guess number: ");
 	    scanf("%d",&guessnum);
+
+        // give hint
 	    if (guessnum<secretnum) {printf("Try a larger number\n\n");}
 	    else if (guessnum>secretnum) {printf("Try a smaller number\n\n");}
     }while (guessnum != secretnum);
@@ -69,10 +76,15 @@ void guessingGame() {
 // 0.4 Functions
 int isPrime(int num) {
     // TODO: Check if a number is prime
-    int prime;
+    // Returns -1 (prime) or 0 (not prime)
+    
+    int prime;  // flag to store prime or not
 
+    // 1 is not prime
     prime = num==1 ? 0:-1;
 
+    // check all numbers from 2 till num. If num is divisible by any 
+    // number in this range, it is not prime (else it is).
     for (int i=2; i<num; i++) {
 	    if (num % i == 0) {
 		prime = 0;
@@ -96,10 +108,11 @@ void reverseString(char* str) {
     char temp;
     int len = strlen(str);
 
+    // swap characters 1st with last, 2nd with 2nd last and so o
     for (i=0;i<len/2;i++) {
     	temp = str[i];
-	str[i] = str[len-1 - i];
-	str[len-1 - i] = temp;
+	    str[i] = str[len-1 - i];
+	    str[len-1 - i] = temp;
     }
 }
 
@@ -110,10 +123,11 @@ int secondLargest(int arr[], int size) {
     int i;
     
     for (i=1; i<size; i++) {
+        // if we find an number greater than current max, current max becomes the second max
         if (arr[i]>max) {
-	   max2nd = max;
-	   max = arr[i];
-	}   
+            max2nd = max;
+            max = arr[i];
+	    }   
     }
 
    return max2nd;
@@ -123,6 +137,8 @@ int secondLargest(int arr[], int size) {
 
 int main() {
     srand(time(NULL));
+
+    // Run and demonstrate functions defined above
 
     printf("Part 0: Quick Revision Exercises\n");
 

@@ -12,8 +12,8 @@
     1. Correct result for -16384<= r <=16383 but -32767<= m <=32767
     2. Correct result even for overflow cases if one of operands is 0
 
-    Explaination:
-    1. Booth multiplier assumes width of multiplier(m) and multiplicand(r) (operands) to be x and y bits,
+    Explaination of bug 1:
+    Booth multiplier assumes width of multiplier(m) and multiplicand(r) (operands) to be x and y bits,
     and width of A, S and P to be x+y+1 bits. In this implementation, all these numbers are 
     represented in integer (32 bits), but operands are assumed to be 15 bits wide. Therefore, only
     31 bits in A, S and P are used and one bit is free. However, this extra 1 bit allows multiplier to
@@ -107,7 +107,7 @@ void testRangeBoothMultiplier(int min, int max){
 }
 
 int main(void) {
-    system("clear");
+    system("clear");    
 
     /*
     Testing scheme:     (all combinations of these)

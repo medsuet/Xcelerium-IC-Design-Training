@@ -5,7 +5,7 @@
 # Lists unique usernames
 # Counts actions per user
 
-FILE=logfile.txt        # stores path of file to work on
+FILE=logfile.log        # stores path of file to work on
 
 numEntries=0
 # assosiative array to store [users]=number of actions
@@ -16,12 +16,21 @@ do
     lineParts=($line)       # split line by spaces
     user=${lineParts[1]}    # get user from parts of line
     ((users[$user]+=1))     # increment actions of user
-    ((numEntries++  ))      # increment total number of entries
+    ((numEntries++))      # increment total number of entries
 done < $FILE
 
 # print results
 echo "Number of entries: $numEntries"
-echo "Users: ${!users[@]}"
+echo -n "Unique users: " 
+
+for user in ${!users[@]}
+do
+    if [[ ${users[$user]} == 1 ]]
+    then
+        echo $user
+    fi
+done
+
 echo -e "\n User \t\t Actions "
 echo -e "------\t\t---------"
 

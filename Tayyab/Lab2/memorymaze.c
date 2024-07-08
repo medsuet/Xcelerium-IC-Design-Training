@@ -17,10 +17,12 @@
 #define CHECKNULLv(ptr) if(ptr==NULL) return
 
 void Pos2Coord(int *position, int *row, int *col) {
+    // Converts matrix position to row and coloum indexes
     *row = *position / NUMROWS;
     *col = *position % NUMCOLS;
 }
 int Coord2Pos(int row, int col) {
+    // Converts row and coloum indexes to matrix position
     return ((NUMROWS * row) + col);
 }
 
@@ -47,6 +49,7 @@ void freeMaze(int **maze) {
 }
 
 void printMaze(int **maze) {
+
     for (int i=0; i<NUMROWS; ++i) {
         for (int j=0; j<NUMCOLS; j++) {
             printf("%s", (maze[i][j]==WALL) ? "█" : " ");
@@ -69,49 +72,54 @@ void initializeMaze(int **maze) {
 }
 
 int traverse(int *currentPosition, int **maze) {
+    // Traverses matrix recursively in each direction to find end position
+
     int row, col; Pos2Coord(currentPosition, &row, &col);
-    maze[row][col] = VISITED;   // Dont explore this position again
+    maze[row][col] = VISITED;   // Don't explore current position again
     
-    printf("%d, %d\n", row, col);
+    printf("%d, %d\n", row, col);       // Print locations visited on terminal
 
     int currentElement = maze[row][col];
     if (currentElement == WALL) {
         return DEADEND;
     }
+    // if currentElement is a path
     else {
+        // Check end condition (last row, last coloum)
         if ((row==(NUMROWS-1)) && (col==(NUMCOLS-1))){
             return SUCCESS;
         }
         else {
+            // If not end condition, check to where you can move and explore.
             // Check up
-            if (row > 0) {
-                if (maze[row-1][col] != VISITED) {
+            if (row > 0) {                                      // If within array bounds
+                if (maze[row-1][col] != VISITED) {              // and not already visited
                     int newPosition = Coord2Pos(row-1, col);
-                    int status = traverse(&newPosition, maze);
+                    int status = traverse(&newPosition, maze);  // explore there
                     if (status==SUCCESS) return SUCCESS;
                 }
             }
             // Check down
-            if (row < (NUMROWS-1)) {
-                if (maze[row+1][col] != VISITED) {
+            if (row < (NUMROWS-1)) {                            // If within array bounds
+                if (maze[row+1][col] != VISITED) {              // and not already visited
                     int newPosition = Coord2Pos(row+1, col);
-                    int status = traverse(&newPosition, maze);
+                    int status = traverse(&newPosition, maze);  // explore there
                     if (status==SUCCESS) return SUCCESS;
                 }
             }
             // Check left
-            if (col > 0) {
-                if (maze[row][col-1] != VISITED) {
+            if (col > 0) {                                      // If within array bounds
+                if (maze[row][col-1] != VISITED) {              // and not already visited
                     int newPosition = Coord2Pos(row, col-1);
-                    int status = traverse(&newPosition, maze);
+                    int status = traverse(&newPosition, maze);  // explore there
                     if (status==SUCCESS) return SUCCESS;
                 }
             }
-            // Check up
-            if (col < (NUMCOLS-1)) {
-                if (maze[row][col+1] != VISITED) {
+            // Check right
+            if (col < (NUMCOLS-1)) {                            // If within array bounds
+                if (maze[row][col+1] != VISITED) {              // and not already visitedv
                     int newPosition = Coord2Pos(row, col+1);
-                    int status = traverse(&newPosition, maze);
+                    int status = traverse(&newPosition, maze);  // explore there
                     if (status==SUCCESS) return SUCCESS;
                 }
             }
@@ -122,11 +130,14 @@ int traverse(int *currentPosition, int **maze) {
 
 int main(){
     system("clear");
+
+    // Create a maze
     int **maze = createMaze(NUMROWS,NUMCOLS);
 
     initializeMaze(maze);
     printMaze(maze);
 
+    // Start from position 0 in matrix and search for end condition.
     int currentPostition = 0;
     printf("Nodes visited");
     int status = traverse(&currentPostition, maze);
