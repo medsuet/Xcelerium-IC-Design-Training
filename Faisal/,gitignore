@@ -52,4 +52,5 @@ Thumbs.db
 
 # VS Code
 Faisal/lab1/.vscode/
-
+# Ignore all .vscode folders
+**/.vscode/
