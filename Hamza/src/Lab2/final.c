@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define WALL 1
+#define PATH 0
+#define SUCCESS 1
+#define DEAD_END 0
+
 // Function to dynamically allocate memory for a maze of given size
 int** allocateMaze(int maze_size) {
     // Allocate memory for maze_size rows
@@ -58,46 +63,62 @@ void printMaze(int **maze, int maze_size) {
 
 // Function to navigate the maze recursively
 int navigateMaze(int *current_position, int **maze, int maze_size) {
-    int row = current_position[0]; // Current row index
-    int col = current_position[1]; // Current column index
+    int row = current_position[0];
+    int col = current_position[1];
 
-    // Check if current position is outside maze boundaries
+    // Check for maze boundaries
     if (row < 0 || row >= maze_size || col < 0 || col >= maze_size) {
-        return 0; // Out of bounds
+        return DEAD_END;
     }
 
-    // Check if current position is a wall
-    if (maze[row][col] == 1) {
-        return 0; // Dead end (wall)
+    // Check if the current element is a wall
+    if (maze[row][col] == WALL) {
+        return DEAD_END;
     }
 
-    // Check if current position is the exit (bottom-right corner)
+    // Check if the current position is the exit
     if (row == maze_size - 1 && col == maze_size - 1) {
-        return 1; // Success (found exit)
+        return SUCCESS;
     }
 
-    // Mark current position as visited (optional, depends on requirements)
-    maze[row][col] = 2; // Example: Mark as visited (2 means visited)
+    // Mark the current path as visited to avoid cycles
+    maze[row][col] = WALL;
 
-    // Define possible moves (up, down, left, right)
-    int moves[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    for (int i = 0; i < 4; ++i) {
-        int new_row = row + moves[i][0];
-        int new_col = col + moves[i][1];
+    // Explore adjacent positions (up, down, left, right)
+    int new_position[2];
 
-        // Recursively navigate to adjacent positions
-        if (navigateMaze(&(maze[new_row][new_col]), maze, maze_size)) {
-            return 1; // Found exit through this path
-        }
+    // Down
+    new_position[0] = row + 1;
+    new_position[1] = col;
+    if (navigateMaze(new_position, maze, maze_size) == SUCCESS) {
+        return SUCCESS;
     }
 
-    // Unmark current position (backtrack) if no path found
-    // This step is optional depending on maze marking requirements
-    maze[row][col] = 0; // Reset to path (0)
+    // Up
+    new_position[0] = row - 1;
+    new_position[1] = col;
+    if (navigateMaze(new_position, maze, maze_size) == SUCCESS) {
+        return SUCCESS;
+    }
 
-    return 0; // Dead end (no path found)
+    // Right
+    new_position[0] = row;
+    new_position[1] = col + 1;
+    if (navigateMaze(new_position, maze, maze_size) == SUCCESS) {
+        return SUCCESS;
+    }
+
+    // Left
+    new_position[0] = row;
+    new_position[1] = col - 1;
+    if (navigateMaze(new_position, maze, maze_size) == SUCCESS) {
+        return SUCCESS;
+    }
+
+    // No path found, backtrack
+    maze[row][col] = PATH;
+    return DEAD_END;
 }
-
 // Function to calculate the total bits in a number
 int calculateBitCount(int number) {
     int count = 0;
@@ -172,7 +193,7 @@ int main() {
 
     // Task Z
 
-    int maze_size = 5; // Example maze size
+    int maze_size = 4; // Example maze size
     int **maze;
 
     // Allocate memory for the maze
@@ -183,7 +204,8 @@ int main() {
 
     // Accessing and modifying maze elements
     printf("Modifying maze:\n");
-    maze[1][1] = 1;
+    maze[maze_size - 1][maze_size - 1] = 0;
+    maze[0][0] = 0;
 
     // Print modified maze
     printMaze(maze, maze_size);

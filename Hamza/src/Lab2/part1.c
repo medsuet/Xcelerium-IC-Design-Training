@@ -141,8 +141,6 @@ struct Node {
 };
 
 
-
-
 void insertAtBeginning(struct Node** head, int value) {
     // Allocate memory for the new node
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
@@ -540,7 +538,6 @@ int main() {
     reverseArray(arr, size);
     printf("Reversed array: ");
     printArray(arr, size);
-
 
 
     // Part 2: Pointers and Arrays
