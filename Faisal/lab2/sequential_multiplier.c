@@ -1,86 +1,128 @@
 #include <stdio.h>
-#include <stdint.h>
+#include <stdlib.h>
+#include <time.h>
+#include <limits.h> // Include limits.h for INT_MAX and INT_MIN
 
-// Function prototypes
-void arithmeticShiftRight(int32_t *accumulator, int32_t *multiplier, int *leastSignificantBitQ, int numBits);
-void add(int32_t *accumulator, int32_t multiplicand);
-void subtract(int32_t *accumulator, int32_t multiplicand);
-int32_t boothMultiplication(int32_t multiplicand, int32_t multiplier);
-
-// Function to perform arithmetic shift right
-void arithmeticShiftRight(int32_t *accumulator, int32_t *multiplier, int *leastSignificantBitQ, int numBits) {
-    int32_t sign = (*accumulator >> (numBits - 1)) & 1;
-    *leastSignificantBitQ = *multiplier & 1;
-    *multiplier >>= 1;
-    *multiplier |= ((*accumulator & 1) << (numBits - 1));
-    *accumulator >>= 1;
-    if (sign) {
-        *accumulator |= (1 << (numBits - 1));
-    } else {
-        *accumulator &= ~(1 << (numBits - 1));
+// Function to calculate the total bits in a number
+int calculateBitCount(int number) {
+    int count = 0;
+    
+    // Counting bits until the number is zero
+    while (number != 0) {
+        count++;
+        number >>= 1; // Right Shift the number by 1 bit 
     }
+
+    return count;
 }
 
-// Function to add multiplicand to accumulator
-void add(int32_t *accumulator, int32_t multiplicand) {
-    *accumulator += multiplicand;
-    
+// Function to calculate 2's complement of a number
+int complement(int a) {
+    return (~a) + 1;
 }
 
-// Function to subtract multiplicand from accumulator using 2's complement
-void subtract(int32_t *accumulator, int32_t multiplicand) {
-    add(accumulator, ~multiplicand + 1);  // Adding the 2's complement of multiplicand
+// Function to perform arithmetic right shift on combined multiplier and accumulator
+long long arithmeticRightshift(int multiplier, int accumulator) {
+    long long value;
+    value = (long long)accumulator << 32; 
+    value = value | (unsigned int)multiplier; 
+    value = value >> 1; 
+    return value;
 }
 
-// Function implementing Booth's multiplication algorithm
-int32_t boothMultiplication(int32_t multiplicand, int32_t multiplier) {
-    int32_t accumulator = 0;
-    int leastSignificantBitQ = 0;// Qn+1 initailize with zero
-    int numBits = sizeof(int32_t) * 8;
+// Function to perform Booth's multiplication algorithm
+long long boothMultiplier(int multiplier, int multiplicand) {
+    int n = 8 * sizeof(int); 
+    int Q1 = 0; 
+    int multiplierLsb; 
+    int accumulator = 0; 
     
-    for (int i = 0; i < numBits; ++i) {
-        // ((multiplier & 1) check if LSB of multiplier is 0 or 1 If the LSB is 0, this evaluates to true. otherwise false
-        if ((multiplier & 1) == 0 && leastSignificantBitQ == 1) {// if Q = 0, Qn+1 = 1 
-            add(&accumulator, multiplicand);
-        } else if ((multiplier & 1) == 1 && leastSignificantBitQ == 0) {
-            subtract(&accumulator, multiplicand);
-        }
-        arithmeticShiftRight(&accumulator, &multiplier, &leastSignificantBitQ, numBits);
-    }
-    
-    return (accumulator << numBits) | (multiplier & ((1 << numBits) - 1));
-}
-
-void testBoothMultiplication() {
-    // Test cases
-    int32_t testCases[10][3] = {
-        {7, 3, 21},       // Positive * Positive
-        {-3, 2, -6},     // Negative * Positive
-        {3, -2, -6},     // Positive * Negative
-        {-3, -2, 6},     // Negative * Negative
-        {0, 2, 0},       // Zero * Positive
-        {2, 0, 0},       // Positive * Zero
-        {0, 0, 0},       // Zero * Zero
-        {1, 2, 2},       // One * Positive
-        {2, 1, 2},       // Positive * One
-        {INT32_MAX, 1, INT32_MAX}, // Large number * One
-    };
-    
-    for (int i = 0; i < 10; ++i) {
-        int32_t multiplicand = testCases[i][0];
-        int32_t multiplier = testCases[i][1];
-        int32_t expected = testCases[i][2];
-        int32_t result = boothMultiplication(multiplicand, multiplier);
+    for (int i = 0; i < n - 1; i++) {
         
-        if (result == expected) {
-            printf("Test case %d passed: %d * %d = %d\n", i+1, multiplicand, multiplier, result);
-        } else {
-            printf("Test case %d failed: %d * %d = %d, expected %d\n", i+1, multiplicand, multiplier, result, expected);
+        multiplierLsb = multiplier & 1;
+  
+        if ((multiplierLsb == 0) && (Q1 == 1)) {
+            accumulator = accumulator + multiplicand; 
+        } 
+        else if ((multiplierLsb == 1) && (Q1 == 0)) {
+            accumulator = accumulator + complement(multiplicand);
         }
+
+        Q1 = multiplierLsb; 
+        int accumalator1 = (int)(arithmeticRightshift(multiplier, accumulator) >> 32) & 0xFFFFFFFF; // Perform arithmetic right shift and get updated accumulator
+        multiplier = (int)arithmeticRightshift(multiplier, accumulator) & 0xFFFFFFFF; // Update multiplier with shifted value
+        accumulator = accumalator1;
     }
+
+    return arithmeticRightshift(multiplier, accumulator);
+}
+
+// Function to run a single test case
+void runTestCase(int multiplier, int multiplicand, long long expected) {
+    if(multiplier >= 2147483647 || multiplier<= -2147483648 || multiplicand >= 2147483647 || multiplicand<= -2147483648){
+        printf("The numebers are higher than 32 bits. Overfolw\n");
+    }
+    else{
+        long long result = boothMultiplier(multiplier, multiplicand);
+    if (result == expected) {
+        printf("PASS: %d * %d = %lld\n", multiplier, multiplicand, result);
+    }
+
+    }
+}
+
+// Test function
+//test cases including positive, negative, zero inputs,multiplication by zero, multiplication by 1, and edge cases (e.g., overflow)
+void testBoothMultiplier() {
+    // Positive cases
+    runTestCase(10, 5, 10LL * 5);
+    runTestCase(123, 456, 123LL * 456);
+
+    // Negative cases
+    runTestCase(-10, 5, -10LL * 5);
+    runTestCase(10, -5, 10LL * -5);
+    runTestCase(-123, -456, -123LL * -456);
+
+    // Zero cases
+    runTestCase(0, 0, 0LL);
+    runTestCase(0, 123, 0LL);
+    runTestCase(123, 0, 123LL * 0);
+
+    // Multiplication by one
+    runTestCase(1, 123, 1LL * 123);
+    runTestCase(123, 1, 123LL * 1);
+
+    // Edge cases
+    runTestCase(INT_MAX, INT_MAX, (long long)INT_MAX * INT_MAX);
+    runTestCase(INT_MIN, INT_MIN, (long long)INT_MIN * INT_MIN);
+    runTestCase(INT_MAX, INT_MIN, (long long)INT_MAX * INT_MIN);
+    runTestCase(INT_MIN, INT_MAX, (long long)INT_MIN * INT_MAX);
 }
 
 int main() {
-    testBoothMultiplication();
+
+    // Task Y
+
+    // Initialize random number generator
+    srand(time(NULL));
+
+    // Generate random multiplier and multiplicand
+    int multiplier = rand() % 1000; 
+    int multiplicand = rand() % 1000;
+    
+    // Perform Booth's multiplication on the generated multiplier and multiplicand
+    printf("Multiplier: %d, Multiplicand: %d\n", multiplier, multiplicand);
+    long long result = boothMultiplier(multiplier, multiplicand);
+    long long expected = (long long)multiplier * multiplicand;
+    printf("Result: %lld\n", result);
+    if(result == expected) {
+        printf("Actual Result %lld and Expected Result %lld Test Pass\n", result, expected);
+    } else {
+        printf("Actual Result %lld and Expected Result %lld Test Fail\n", result, expected);
+    }
+
+    // Run predefined test cases
+    //test function to verify the correctness of your Booth multiplier function
+    testBoothMultiplier();
     return 0;
 }

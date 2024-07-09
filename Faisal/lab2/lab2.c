@@ -233,7 +233,7 @@ union Data {
 void inputStudentData(struct Student* s) {
     // TODO: Implement this function
     printf("Enter student name: ");
-    scanf("%s", s->name);
+    scanf("%s", &s->name);
     printf("Enter student ID: ");
     scanf("%d", &s->id);
     printf("Enter grades for three subjects: ");
