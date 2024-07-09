@@ -38,6 +38,8 @@
 *.x86_64
 *.hex
 
+/src/Lab2/final
+
 # Debug files
 *.dSYM/
 *.su
