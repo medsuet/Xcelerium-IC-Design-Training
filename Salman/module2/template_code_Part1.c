@@ -13,7 +13,7 @@ int *mem_ptr;
 // Part 1: Pointer Basics and Arithmetic
 void swap(int *a, int *b) {
     // TODO: Implement swap function
-    int n = *a;
+    int n = *a;                                                                 // temp variable
     *a = *b;
     *b = n;
 }
@@ -21,12 +21,12 @@ void swap(int *a, int *b) {
 void reverseArray(int *arr, int size) {
     // TODO: Implement array reversal using pointers
     int i;
-    int *arr_end = arr + size - 1; // array ending pointer, arr is array starting pointer
+    int *arr_end = arr + size - 1;                                              // array ending pointer, arr is array starting pointer
     for (i=0; i<((int) (size/2)); i++ )
     {
         swap(arr,arr_end);
-        arr++; // incrementing from beginning
-        arr_end--; // decrementing from end
+        arr++;                                                                  // incrementing from beginning
+        arr_end--;                                                              // decrementing from end
     }
 }
 
@@ -39,15 +39,15 @@ void initializeMatrix(int rows, int cols, int (*matrix)[cols]) {
     {
         for (j=0; j<cols; j++)
         {
-            *((*(matrix+i) + j)) = ( rand() % (UPPER-LOWER+1)) + LOWER;
-        }
+            *((*(matrix+i) + j)) = ( rand() % (UPPER-LOWER+1)) + LOWER;         // outer pointer - column traversal
+        }                                                                       // inner pointer - row traversal
     }
 }
 
 void printMatrix(int rows, int cols, int (*matrix)[cols]) {
     // TODO: Print the matrix
 
-    int i,j; // i for rows, j for columns
+    int i,j;                                                                    // i for rows, j for columns
 
     printf("The Initialized Matrix is: \n");
 
