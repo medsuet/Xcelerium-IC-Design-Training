@@ -1,10 +1,22 @@
+/*
+============================================================================
+ * Filename:    Multiplier.c
+ * Description: Contains the implementation of Multiplier
+ * Author:      Hira Firdous
+ * Date:        08/07/2024
+* ===========================================================================
+*/
+
+
 #include <stdio.h>
 #include <stdint.h>
-
+#include <stdlib.h>
+#include <time.h>
 
 
 void print_binary(int *num){
     /*Print the binary of the decimal number*/
+
     int *ptr;
     ptr = num;
     for (int i = sizeof(int) * 8 - 1; i >= 0; i--) {
@@ -14,9 +26,21 @@ void print_binary(int *num){
 
 }
 
+void print_binary64(int *num){
+    /*Print the binary of the decimal number*/
+
+    int *ptr;
+    ptr = num;
+    for (int i = sizeof(int) * 8 - 1; i >= 0; i--) {
+    printf("%d", (*ptr >> i) & 1);
+    }
+    printf("\n");
+
+}
+
+
 int binary_width(int num) {
     /*Calculate the number of bits required to represent the number, including the sign bit*/
-
     int width = 0;
     
     // Handle the special case when the number is 0
@@ -52,14 +76,19 @@ void arithmeticRightShift(int *A, int *Q, int *Q_minus_1, int bit_width) {
     *A = (*A >> 1) | (sign_bit_A << (bit_width - 1));
 
     
-    
 }
 
-int combineBits(int A, int Q, int bit_width) {
+int64_t combineBits(int A, int Q, int bit_width) {
     // Combine the LSB_A and MSB_Q into a single value
+    /*
     int LSB_A = A <<bit_width;
     int combined = LSB_A | Q;
+    */
 
+    int64_t combined=0;
+    combined=combined | A;
+    combined= combined << bit_width ;
+    combined=combined | Q;
     return combined;
 }
 
@@ -105,7 +134,7 @@ void complement(int *m, int bit_width) {
 
 
 
-int booth_multiplication(int multiplicand, int multiplier) {
+int64_t booth_multiplication(int multiplicand, int multiplier) {
     if ((multiplier == 0) || (multiplicand == 0)) {
         return 0;
     }
@@ -113,22 +142,16 @@ int booth_multiplication(int multiplicand, int multiplier) {
     int A = 0;
     int Q = (multiplier < 0) ? -multiplier : multiplier;  // Absolute value of multiplier
     int M = (multiplicand < 0) ? -multiplicand : multiplicand;  // Absolute value of multiplicand
+
+    if (Q>M){
+        int temp= M;
+        M=Q;
+        Q=temp;
+    }
     int Q_minus_1 = 0;
     int width = binary_width(M);  // Bit width of multiplier (and Q)
 
 
-    // This is for debugging To check the values on debugging
-     /*
-    printf("Initial values:\n");
-    printf("A: \n");
-    print_binary(&A);
-    printf("Q: \n");
-    print_binary(&Q);
-    printf("M: \n");
-    print_binary(&M);
-    printf("Q_minus_1: %d\n", Q_minus_1);
-    printf("Width: %d\n", width);
-    */
 
     // Main Booth's algorithm loop
     for (int i = 0; i < width; i++) {
@@ -151,49 +174,14 @@ int booth_multiplication(int multiplicand, int multiplier) {
                 break;
         }
 
-        // This is for debugging To check the values on debugging
-     /*
-        printf("Before arithmeticRightShift:\n");
-        printf("A: \n");
-        print_binary(&A);
-        printf("M: \n");
-        print_binary(&M);
-        printf("Q: \n");
-        print_binary(&Q);
-        printf("Q_minus_1:%d \n", Q_minus_1);
-        printf("----------------------------------------------------------------------- \n");
-        */
-
         // Arithmetic right shift on A, Q, Q_minus_1
         arithmeticRightShift(&A, &Q, &Q_minus_1,binary_width(M));
-
-        // This is for debugging To check the values on debugging
-     /*
-        printf("After arithmeticRightShift:\n");
-        printf("A: \n");
-        print_binary(&A);
-        printf("M: \n");
-        print_binary(&M);
-        printf("Q: \n");
-        print_binary(&Q);
-        printf("Q_minus_1:%d \n", Q_minus_1);
-        */
     }
 
    
-    // This is for debugging To check the values on debugging
-     /*
-    printf("Final values:\n");
-    printf("A: \n");
-    print_binary(&A);
-    printf("Q: \n");
-    print_binary(&Q);
-    printf("Q_minus_1: %d\n", Q_minus_1);
-    
-    */
 
     // Final adjustment for negative multiplier
-    int combined = combineBits(A, Q, width);
+    int64_t  combined = combineBits(A, Q, width);
     if ((multiplier < 0 && multiplicand >= 0) || (multiplier >= 0 && multiplicand < 0)) {
         combined =-combined;
     }
@@ -202,6 +190,7 @@ int booth_multiplication(int multiplicand, int multiplier) {
 }
 
 void run_test_cases() {
+    //test the code with hardcoded testcases
     struct test_case {
         int multiplicand;
         int multiplier;
@@ -232,13 +221,53 @@ void run_test_cases() {
     }
 }
 
+void testing_by_random_testcases(){
+    /*Input a random number form the */
+
+    srand(time(NULL));
+    int input_num=rand();
+
+    int test_cases=0;
+
+    printf("Enter the number of test cases you want to run:\n");
+    scanf("%d", &test_cases);
+
+    for (int i = 0;i <= test_cases; i++){
+        //variables
+        int input_number_1=rand() % 65536;
+        int input_number_2=rand() % 65536;
+
+        //output from my function
+        int64_t booth_answer=booth_multiplication(input_number_1,input_number_2);
+        //output from operator
+        int64_t original_answer=input_number_1 * input_number_2;
+        printf("Test case %d:\n", i + 1);
+        printf("%d x %d \n",input_number_1,input_number_2 );
+        if (booth_answer == original_answer){
+            print_binary( &booth_answer);
+            print_binary( &original_answer);
+            printf("Passed\n");
+        }
+        else{
+            printf("Failed\n");
+            
+            print_binary( &booth_answer);
+            print_binary( &original_answer);
+        }
+    }
+
+}
 
 
 int main(){
+ 
+    testing_by_random_testcases();
+
+    //-------------------------------------------------------Testing for print binary and binary width---------------------
+
     int num1 = 5; 
     int num2 = 10; 
 
-    //-------------------------------------------------------Testing for print binary and binary width---------------------
     print_binary(&num1);
     print_binary(&num2);
     printf("The width of number is %d is %d",num1,binary_width(num1));
@@ -263,29 +292,34 @@ int main(){
 
 //----------------------------------------------------------Testing and understanding of algo-----------------------------------------------
 
-    int multiplicand = 9256; // Example multiplicand
-    int multiplier = 458; // Example multiplier
+    int multiplicand = 51741; // Example multiplicand
+    int multiplier = 49062; // Example multiplier
 
-    printf("The width of multiplicand %d is %d \n",multiplicand,binary_width(multiplicand));
-    printf("The width of multiplier  %d is %d\n",multiplier,binary_width(multiplier));
-
-    printf("Multiplicand (M): ");
-    print_binary(&multiplicand);
-
-    printf("Multiplier (Q): ");
-    print_binary(&multiplier);
-
-    int result = booth_multiplication(multiplicand, multiplier);
-
-    printf("Result: %d\n", result);
+printf("-------------------------------------------------------------------------");
+    int64_t result = booth_multiplication(multiplicand, multiplier);
+    printf("Result: %ld\n", result);
     printf("Result in binary: ");
     print_binary(&result);
+
+    int64_t original_answer=  multiplicand * multiplier;
+    if (result == (multiplicand * multiplier)){
+        printf("Passed\n");
+    }
+    else{
+        printf("Failed\n");
+    
+    }
+    print_binary(&original_answer);
+
+
+
+
+    printf("Static run cases\n");
 
     //Test Cases
     run_test_cases();
 
     return 0;
-
 
 //-------------------------------------------------------Testing and understanding for Shift-----------------------------------------------
    /*  
