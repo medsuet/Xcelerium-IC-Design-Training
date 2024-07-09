@@ -353,18 +353,40 @@ void printStudentInfo(struct Student* s) {
 
 void writeStudentToFile(struct Student* s, const char* filename) {
     // TODO: Write student data to a text file
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        exit(1);
+    }
+    fprintf(file, "Name: %s\n", s->name);
+    fprintf(file, "id: %d\n", s->id);
+    fprintf(file, "grade1: %.2f\n", s->grades[0]);
+    fprintf(file, "grade2: %.2f\n", s->grades[1]);
+    fprintf(file, "grade3: %.2f\n", s->grades[2]);
+    fclose(file);
 }
 
 void readStudentFromFile(struct Student* s, const char* filename) {
-    // TODO: Read student data from a text file
+    FILE *file = fopen(filename, "r");
+     if (file == NULL) {
+        printf("Error opening file!\n");
+        exit(1);
+    }
+    fscanf(file, "Name: %s\n", s->name);
+    fscanf(file, "id: %d\n", &s->id);
+    fscanf(file, "grade1: %f\n", &s->grades[0]);
+    fscanf(file, "grade2: %f\n", &s->grades[1]);
+    fscanf(file, "grade3: %f\n", &s->grades[2]);
+    fclose(file);
 }
 
 void writeStudentToBinaryFile(struct Student* s, const char* filename) {
-    // TODO: Write student data to a binary file
+
 }
 
 void readStudentFromBinaryFile(struct Student* s, const char* filename) {
     // TODO: Read student data from a binary file
+
 }
 
 void logMessage(const char* message, const char* logfile) {
@@ -623,8 +645,21 @@ int main() {
     // Part 7: File I/O
     printf("\nPart 7: File I/O\n");
     // TODO: Implement exercises 7.1, 7.2, and 7.3
+    const char* filename = "student_data.txt";
+    printf("Write into Stusent_data.txt\n");
+    writeStudentToFile(&student, filename);
 
-    
+    //making a struct student and initialziing all of it to zero to read into it
+    struct Student empty_student ;
+    readStudentFromFile(&empty_student,filename);
+    printf("Printing data read from the file\n");
+    printf("Name: %s\n", empty_student.name);
+    printf("id: %d\n", empty_student.id);
+    printf("grade1: %.2f\n", empty_student.grades[0]);
+    printf("grade2: %.2f\n", empty_student.grades[1]);
+    printf("grade3: %.2f\n", empty_student.grades[2]);
+
+
 
     return 0;
 }
