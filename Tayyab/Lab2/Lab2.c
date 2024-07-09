@@ -252,7 +252,7 @@ struct GenericNode{
     union Data value;
     struct GenericNode *next;
 };
-void insertGenericNodeAtBeginning(struct Node** head, union Data value) {
+void insertGenericNodeAtBeginning(struct GenericNode** head, union Data value) {
     // insert at beginning
     CHECKNULLv(head);
     struct GenericNode *newNode = (struct GenericNode *) malloc(sizeof(struct GenericNode));
@@ -497,12 +497,12 @@ void Task4(void){
 
     // generic linked list
     struct GenericNode node10;
-    struct GenericNode *root2 = &node0;
+    struct GenericNode *root2 = &node10;
     union Data d1; d1.c='x';
     node10.value = d1;
     
-    d1.i=11; insertGenericNodeAtBeginning(root2, d1);
-    d1.f=12; insertGenericNodeAtBeginning(root2, d1);
+    d1.i=11; insertGenericNodeAtBeginning(&root2, d1);
+    d1.f=12; insertGenericNodeAtBeginning(&root2, d1);
 
 
 }
