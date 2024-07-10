@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <stdint.h>
+
 //following function takes 2's compliment of a number
 int towsCompliment(int a) {
     a = ~a + 1;  //taking 2's compliment
@@ -43,9 +46,66 @@ __int64_t boothMultiplier(int multiplier, int multiplicand) {
     return product;
 }
 
+//following function takes inputs from file and check booth multiplier
+void testBoothMultiplierWithFile(const char* filename) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error in file opening\n");
+        return;
+    }
+    __int64_t check;
+    int multiplicand, multiplier;
+    __int64_t product;
+    for (int i = 0; i < 1000; i++) {
+    //while (file != NULL) { 
+        if (file != NULL) {
+            fscanf(file, "%d %d %ld", &multiplicand, &multiplier, &product); //taking values from input file 
+            //printf("%d %d %ld\n", multiplicand, multiplier, product);
+            check = boothMultiplier(multiplicand,multiplier);  //checking multiplier
+            if (check == product) {
+                printf("\nPassed");
+            }
+            else {
+                printf("\nFailed");
+            }
+        }
+    }
+    fclose(file);
+}
+
+
+//following function takes inputs from file and check booth multiplier
+void testBoothMultiplier() {
+    srand(time(NULL));
+    __int64_t check;
+    int multiplicand, multiplier;
+    __int64_t product;
+    for (int i = 0; i < 10; i++) {
+        multiplicand = (rand() << 1 | 1); 
+        multiplier   = (rand() << 1 | 1);
+        product = (int64_t)multiplier * (int64_t)multiplicand;
+        printf("%d X %d = %ld",multiplicand,multiplier,product);
+
+        check = boothMultiplier(multiplicand,multiplier);  //checking multiplier
+        if (check == product) {
+            printf("\nPassed");
+        }
+        else {
+            printf("\nFailed");
+        }
+    }
+}
+    
+
+
 int main() {
-int multiplicand = 66666;
-int multiplier = 66666;
-printf ("%d x %d = %ld\n",multiplicand,multiplier,boothMultiplier(multiplier, multiplicand));
+    const char* filename = "32b_signed_test_inputs.txt";
+    //testBoothMultiplierWithFile(filename);
+    testBoothMultiplier();
+
+    //int multiplicand =  0x7fffffff;
+    //int multiplier =  0x80000000;
+    //printf ("%d x %d = %ld\n",multiplicand,multiplier,boothMultiplier(multiplier, multiplicand));
+    //return 0;
 }
 

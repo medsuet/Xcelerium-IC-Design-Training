@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 //following function dynamically allocate memory
 int** allocateMemory(int mazeSize) {
@@ -45,18 +46,32 @@ void printMaze(int **maze, int mazeSize) {
     }    
 }
 
-int navigateMaze(int **maze, int mazeSize) {
-
+int deallocateMaze(int **maze, int mazeSize) {
+    for (int i = 0; i < mazeSize; i++) {
+            free(maze[i]);
+    }
+    free(maze);
     
 }
 
 
 
+
+// Function to navigate the maze using recursion
+int navigate_maze(int **maze, int maze_size, int row, int col) {
+
+
+}
+
+
+
 int main () {
+    srand(time(NULL));
     int mazeSize = 5;
-    int** ptr = allocateMemory(mazeSize);
-    initializeMazeElements(ptr,mazeSize);
-    printMaze(ptr, mazeSize);
-    navigateMaze(ptr,mazeSize);
+    int** maze = allocateMemory(mazeSize);
+    initializeMazeElements(maze,mazeSize);
+
+    deallocateMaze(maze, mazeSize);
+    return 0;
     
 }

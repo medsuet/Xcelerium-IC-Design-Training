@@ -187,6 +187,11 @@ void freeMemory(void* ptr) {
 
 void checkMemoryLeaks() {
     // TODO: Check for memory leaks
+    // for (int i = 0; i < allocation_size; i++)
+    // {
+        // /* code */
+    // }
+    
 }
 
 // Part 6: Structures and Unions
