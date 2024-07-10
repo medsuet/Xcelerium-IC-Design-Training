@@ -49,3 +49,12 @@ compile_commands.json
 
 # readme.txt
 Readme.txt
+
+# Ignore files in src/exp2
+src/exp2/day2
+src/exp2/student.txt
+src/exp2/student1.dat
+src/exp2/finalTask
+src/exp2/logfile.txt
+
+
