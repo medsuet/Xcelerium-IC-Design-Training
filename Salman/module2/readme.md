@@ -58,6 +58,7 @@
 **Task Z: Implement Memory Management Maze Game**
 
 ### Executing Scripts
+---
 
 To execute **Task 1 to Task 7**, simply open the *module2* folder and run the following command on terminal:
 `make module2`
