@@ -111,14 +111,7 @@ struct Node {
     struct Node* next;
 };
 
-
 //following function insert node at beginning of linked list
-/*void insertAtBeginning(struct Node** head, int value) {
-    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
-    new_node->data = value;
-    new_node->next = *head;
-    *head = new_node;
-}*/
 void insertAtBeginning(struct Node** head, union Data data) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     if (newNode == NULL){
@@ -176,22 +169,22 @@ void extendArray(int** arr, int* size, int newSize) {
     int *arr_ptr = (int *)realloc(*arr,newSize * sizeof(int));
     *arr = arr_ptr;
 }
-// Memory leak detector
+//following function allocate memory of give size and make pointer which points any data type
 void* allocateMemory(size_t size) {
-    // TODO: Allocate memory and keep track of it
+    void* ptr = malloc(size);
+    return ptr;   
 }
-
+//following function free memory by freeing pointer and make pointer equals null
 void freeMemory(void* ptr) {
-    // TODO: Free memory and update tracking
+    if (ptr != NULL) {
+        free(ptr);
+        ptr = NULL;
+    }
 }
 
 void checkMemoryLeaks() {
     // TODO: Check for memory leaks
-    // for (int i = 0; i < allocation_size; i++)
-    // {
-        // /* code */
-    // }
-    
+
 }
 
 // Part 6: Structures and Unions
@@ -504,22 +497,11 @@ int main() {
     for (int y=0; y<new_size; y++) {
         printf("%d ",*(pointer+y));
     }
+    //freeing pointer
+    freeMemory(pointer);
 
     // Part 6: Structures and Unions
     printf("\n\nPart 6: Structures and Unions");
-
-    //following code is of make structure of students and put values by assinging 
-    //struct Student student;
-    //snprintf(student.name, sizeof(student.name), "John");
-    //student.id = 12345;
-    //student.grades[0] = 2.5;
-    //student.grades[1] = 3.0;
-    //student.grades[2] = 3.5;
-    
-    //printing average
-    //printf("Average : %f\n",calculateAverage(&student));
-    //printing student info
-    //printStudentInfo(&student1);
 
     //making student structure
     struct Student student1;
@@ -532,7 +514,7 @@ int main() {
     inputStudentData(&student3);
 
     //making departments data
-    //taking 2 departments in university 2 students in department1 and 1 student in department 2
+    //taking 2 departments in university, 2 students in department1 and 1 student in department 2
     struct Department department1;
     int noOfStudentsInDepartment1 = 2;
     strcpy (department1.name,"EE");
@@ -557,15 +539,16 @@ int main() {
     university.departments[0] = department1;
     university.departments[1] = department2;
 
+    //printing university data
     printf("\nname of university : %s", university.name);
     printf("\nno. of departments in %s : %d ",university.name,university.numDepartments);
     printf("\nno. of students in %s : %d ",university.departments[0].name,university.departments[0].numStudents);
     printf("\nno. of students in %s : %d ",university.departments[1].name,university.departments[1].numStudents);
 
-    free(university.departments);
-    if (university.departments == NULL) {printf("\n pointer freed");}
-    free(department1.students);
-    free(department2.students);
+    //freeing pointers
+    freeMemory(university.departments);
+    freeMemory(department1.students);
+    freeMemory(department2.students);
 
     union Data data_type;
     data_type.i=10;

@@ -67,10 +67,10 @@ int navigate_maze(int **maze, int maze_size, int row, int col) {
 
 int main () {
     srand(time(NULL));
-    int mazeSize = 5;
+    int mazeSize = 10;
     int** maze = allocateMemory(mazeSize);
     initializeMazeElements(maze,mazeSize);
-
+    printMaze(maze, mazeSize);
     deallocateMaze(maze, mazeSize);
     return 0;
     
