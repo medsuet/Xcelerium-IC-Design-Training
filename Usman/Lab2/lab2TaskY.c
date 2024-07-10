@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-// Function to return the 2's complement of a 32-bit integer
+
 int complement(int a){
     return ~a + 1;
 }
@@ -9,7 +9,7 @@ int complement(int a){
 int boothAlgorithm(int BR, int QR){
    int AC = 0;
    int Qn1 = 0;
-   int SC = 32; // Assuming 32-bit integers
+   int SC = 32; 
    int lsb;
    int AC_lsb;
 
@@ -22,10 +22,10 @@ int boothAlgorithm(int BR, int QR){
           AC = AC + complement(BR) + 1;
       }
 
-      // Perform arithmetic right shift
+    
       Qn1 = QR & 1;
       AC_lsb = AC & 1;
-      AC = (AC >> 1) | (AC & 0x80000000); // Arithmetic right shift for AC
+      AC = (AC >> 1) | (AC & 0x80000000); 
       QR = (QR >> 1) | (AC_lsb << 31);
 
       SC = SC - 1;

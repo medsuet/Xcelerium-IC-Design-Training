@@ -15,7 +15,7 @@
 CC = gcc
 CFLAGS = -I -Wall -MMD -MP
 
-SRC = src/XL2.c src/XL2P6.cc src/XL2P7.c src/XL2Task4.2.c
+SRC = src/XL2.c src/XL2P6.c src/XL2P7.c src/XL2Task4.2.c
 OBJ = $(SRC:.c=.o)
 DEP = $(OBJ:.o=.d)	
 Target = myprogram
