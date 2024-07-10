@@ -1,3 +1,9 @@
+# Name: makefile
+# Author: Muhammad Tayyab
+# Date: 10-7-2024
+# Description: makefile for Lab 3 task 5.1 and 5.2
+
+
 all : main
 
 main : main.o functions.o

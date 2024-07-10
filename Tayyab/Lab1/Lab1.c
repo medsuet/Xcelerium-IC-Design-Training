@@ -1,3 +1,10 @@
+/*
+    Name: Lab1.c
+    Author: Muhammad Tayyab
+    Date: 10-7-2024
+    Description: Tasks of Lab 1
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

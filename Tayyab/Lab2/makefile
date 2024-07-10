@@ -1,3 +1,9 @@
+
+# Name: makefile
+# Author: Muhammad Tayyab
+# Date: 10-7-2024
+# Description: makefile for Lab 2 tasks
+
 all : Lab2 boothmultiplier memorymaze
 
 Lab2 : Lab2.c
@@ -11,3 +17,7 @@ memorymaze : memorymaze.c
 
 clean : 
 	@rm -f Lab2 boothmultiplier memorymaze
+
+help :
+	@cat readme.md
+	@echo ""

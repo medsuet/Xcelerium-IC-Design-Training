@@ -1,14 +1,9 @@
 # Name: makefile
 # Author: Muhammad Tayyab
 # Date: 10-7-2024
-# Description: makefile for Lab 1
+# Description: makefile for giving help
 
-Lab1 : Lab1.c
-	@gcc -o Lab1 Lab1.c
-
-clean :
-	rm -f Lab1
-
+all :
 help :
 	@cat readme.md
 	@echo ""

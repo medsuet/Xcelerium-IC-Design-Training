@@ -1,12 +1,15 @@
+/*
+    Name: Lab2.c
+    Author: Muhammad Tayyab
+    Date: 10-7-2024
+    Description: Tasks 1-7 of Lab 2
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
-// Macro to check if a pointer is NULL
-#define CHECKNULL(ptr) if(ptr==NULL) return 1
-// Macro to check if a pointer is NULL for functions returning void
-#define CHECKNULLv(ptr) if(ptr==NULL) return
+#include "checknull.h"
 
 // Part 1: Pointer Basics and Arithmetic
 void swap(int *a, int *b) {

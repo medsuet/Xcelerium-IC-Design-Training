@@ -1,5 +1,13 @@
+/*
+    Name: memorymaze.c
+    Author: Muhammad Tayyab
+    Date: 10-7-2024
+    Description: Recursively solves a maze.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
+#include "checknull.h"
 
 #define NUMROWS 4
 #define NUMCOLS 4
@@ -10,11 +18,6 @@
 #define WALL 1
 #define PATH 0
 #define VISITED 2
-
-// Macro to check if a pointer is NULL
-#define CHECKNULL(ptr) if(ptr==NULL) return -1
-// Macro to check if a pointer is NULL for functions returning void
-#define CHECKNULLv(ptr) if(ptr==NULL) return
 
 void Pos2Coord(int *position, int *row, int *col) {
     // Converts matrix position to row and coloum indexes
