@@ -207,19 +207,20 @@ void printList(struct Node* head) {
 
   
 /* A linked list node */
-struct Node 
+/*
+struct Node1 
 { 
     // Any data type can be stored in this node 
-    void  data;
-    struct Node *next;
+    void*  data;
+    struct Node1 *next;
 };    
   
 // Function to add a node at the beginning of Linked List. 
    
-void push(struct Node** head_ref, void *new_data, size_t data_size) 
+void push(struct Node1** head_ref, void *new_data, size_t data_size) 
 { 
    
-    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node)); 
+    struct Node1* new_node = (struct Node1*)malloc(sizeof(struct Node1)); 
   
     new_node->data  = malloc(data_size); 
     new_node->next = (*head_ref); 
@@ -234,10 +235,8 @@ void push(struct Node** head_ref, void *new_data, size_t data_size)
     (*head_ref)    = new_node; 
 } 
   
-/* Function to print nodes in a given linked list. fpitr is used 
-   to access the function to be used for printing current node data. 
-   Note that different data types need different specifier in printf() */
-void printList(struct Node *node, void (*fptr)(void *)) 
+
+void printList(struct Node1 *node, void (*fptr)(void *)) 
 { 
     while (node != NULL) 
     { 
@@ -258,11 +257,13 @@ void printFloat(void *f)
    printf(" %f", *(float *)f); 
 }
 
+*/
+
 // part 5.2
 
 int* extendArray(int *array, int currentSize, int newSize) {
     // Use realloc to extend the array
-    int *newArray = realloc(array, newSize * sizeof(int));
+    int *newArray = (int *)realloc(array, newSize * sizeof(int));
 
     // Check if realloc succeeded
     if (newArray == NULL) {
@@ -334,10 +335,10 @@ printList(head);
 printf("Deleting node with value 5 (not in the list):\n");
 deleteByValue(&head, 5);
 printList(head);
-
+/*
 printf("part 4.2");
 
- struct Node *start = NULL;
+ struct Node1 *start = NULL;
 
 // Create and print an int linked list
 unsigned int_size = sizeof(int);
@@ -355,51 +356,51 @@ for (i=4; i>=0; i--)
        push(&start, &arr2[i], float_size);
 printf("\n\nCreated float linked list is \n");
 printList(start, printFloat);
-
+*/
 printf("Part 5.1");
 
-int *array;
-    int size;
+    int* array3;
+    int size3;
     int sum = 0;
     float average;
 
     // Asking user for the size of the array
     printf("Enter the size of the array: ");
-    scanf("%d", &size);
+    scanf("%d", &size3);
 
     // Dynamically allocating memory for the array
-    array = (int*)malloc(size * sizeof(int));
-    if (array == NULL) {
+    array3 = (int*)malloc(size3 * sizeof(int));
+    if (array3 == NULL) {
         printf("Memory allocation failed!\n");
         return 1;
     }
 
     // Asking user to input elements of the array
-    printf("Enter %d elements:\n", size);
-    for (int i = 0; i < size; i++) {
+    printf("Enter %d elements:\n", size3);
+    for (int i = 0; i < size3; i++) {
         printf("Element %d: ", i + 1);
-        scanf("%d", &array[i]);
+        scanf("%d", &array3[i]);
     }
 
     // Calculating the sum of the elements
-    for (int i = 0; i < size; i++) {
-        sum += array[i];
+    for (int i = 0; i < size3; i++) {
+        sum += array3[i];
     }
 
     // Calculating the average of the elements
-    average = (float)sum / size;
+    average = (float)sum / size3;
 
     // Printing the sum and average
     printf("Sum of the elements: %d\n", sum);
     printf("Average of the elements: %.2f\n", average);
 
     // Freeing the allocated memory
-    free(array);
+    free(array3);
 
 
 printf("Part 5.2");
 
-int *array;
+int *array4;
 int currentSize, newSize;
 
 // Asking user for the current size of the array
@@ -407,8 +408,8 @@ printf("Enter the current size of the array: ");
 scanf("%d", &currentSize);
 
 // Dynamically allocating memory for the array
-array = (int*)malloc(currentSize * sizeof(int));
-if (array == NULL) {
+array4 = (int*)malloc(currentSize * sizeof(int));
+if (array4 == NULL) {
       printf("Memory allocation failed!\n");
        return 1;
 }
@@ -425,20 +426,20 @@ printf("Enter the new size of the array: ");
 scanf("%d", &newSize);
 
 // Extending the array
-array = extendArray(array, currentSize, newSize);
-if (array == NULL) {
-       free(array);
+array4 = extendArray(array4, currentSize, newSize);
+if (array4 == NULL) {
+       free(array4);
        return 1;
 }
 
 // Displaying the extended array
 printf("Extended array elements:\n");
 for (int i = 0; i < newSize; i++) {
-        printf("Element %d: %d\n", i + 1, array[i]);
+        printf("Element %d: %d\n", i + 1, array4[i]);
 }
 
 // Freeing the allocated memory
-free(array);
+free(array4);
 
 return 0;
 
