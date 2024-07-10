@@ -181,6 +181,14 @@ void extendArray(int** arr, int* size, int newSize) {
     *size = newSize;
 }
 
+struct memoryTrack {
+    void* address;
+    int size;
+    struct memoryTrack* next;
+};
+
+struct memoryTrack* head = NULL;
+
 // Memory leak detector
 void* allocateMemory(size_t size) {
     // TODO: Allocate memory and keep track of it
@@ -190,16 +198,68 @@ void* allocateMemory(size_t size) {
         return NULL;
     }
     return ptr;
+
+    // track memory 
+    struct memoryTrack* newBlockMemory = (struct memoryTrack*)malloc(sizeof(struct memoryTrack));
+    newBlockMemory -> address = ptr;
+    newBlockMemory -> size = size;
+    newBlockMemory -> next = head;
+    head = newBlockMemory;
+
+
+
+
 }
 
 void freeMemory(void* ptr) {
     // TODO: Free memory and update tracking
-    if (ptr != NULL)
-        free(ptr);
+    // if (ptr != NULL)
+    //     free(ptr);
+    struct memoryTrack* currentNode = head;
+    struct memoryTrack* prevoiusNode = NULL;
+
+
+    // search the ptr in tracked memory
+    while ((currentNode != NULL) && (currentNode -> address != ptr)){
+        prevoiusNode = currentNode;
+        currentNode = currentNode->next;
+ 
+    }
+    // if ptr no found
+    if (currentNode == NULL) {
+        printf("The required pointer not Found");
+        return;
+    }
+
+    // if the head node has value
+    if (prevoiusNode == NULL){
+        head= currentNode->next;
+    }
+    else{
+        prevoiusNode-> next = currentNode->next;
+    }
+    // free pointer and block of memory
+    free(ptr);
+    free(currentNode);
+
 }
 
 void checkMemoryLeaks() {
     // TODO: Check for memory leaks
+    struct memoryTrack* currentNode = head;
+    int leak =0;
+
+    while ( currentNode != NULL){
+        printf("memory leak detected: address %p, size %d bytes\n", currentNode->address, currentNode->size);
+        leak=1;
+        currentNode = currentNode ->next;
+    }
+    if (!leak){
+        printf("No memory leak\n");
+    }
+
+        
+   
     
 }
 
@@ -233,7 +293,7 @@ union Data {
 void inputStudentData(struct Student* s) {
     // TODO: Implement this function
     printf("Enter student name: ");
-    scanf("%s", &s->name);
+    scanf("%s", s->name);
     printf("Enter student ID: ");
     scanf("%d", &s->id);
     printf("Enter grades for three subjects: ");

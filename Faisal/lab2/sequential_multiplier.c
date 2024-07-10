@@ -3,22 +3,10 @@
 #include <time.h>
 #include <limits.h> // Include limits.h for INT_MAX and INT_MIN
 
-// Function to calculate the total bits in a number
-int calculateBitCount(int number) {
-    int count = 0;
-    
-    // Counting bits until the number is zero
-    while (number != 0) {
-        count++;
-        number >>= 1; // Right Shift the number by 1 bit 
-    }
-
-    return count;
-}
 
 // Function to calculate 2's complement of a number
-int complement(int a) {
-    return (~a) + 1;
+int complement(int multipicand) {
+    return (~multipicand) + 1;
 }
 
 // Function to perform arithmetic right shift on combined multiplier and accumulator
@@ -32,25 +20,26 @@ long long arithmeticRightshift(int multiplier, int accumulator) {
 
 // Function to perform Booth's multiplication algorithm
 long long boothMultiplier(int multiplier, int multiplicand) {
-    int n = 8 * sizeof(int); 
-    int Q1 = 0; 
-    int multiplierLsb; 
-    int accumulator = 0; 
+    int numBits = 8 * sizeof(int); 
+    int Qn = 0; // Qn+1 = 0
+    int multiplierLsb; //Qn
+    int accumulator = 0; // AC
     
-    for (int i = 0; i < n - 1; i++) {
+    for (int i = 0; i < numBits - 1; i++) {
         
         multiplierLsb = multiplier & 1;
   
-        if ((multiplierLsb == 0) && (Q1 == 1)) {
+        if ((multiplierLsb == 0) && (Qn == 1)) {
             accumulator = accumulator + multiplicand; 
         } 
-        else if ((multiplierLsb == 1) && (Q1 == 0)) {
+        else if ((multiplierLsb == 1) && (Qn == 0)) {
             accumulator = accumulator + complement(multiplicand);
         }
 
-        Q1 = multiplierLsb; 
-        int accumalator1 = (int)(arithmeticRightshift(multiplier, accumulator) >> 32) & 0xFFFFFFFF; // Perform arithmetic right shift and get updated accumulator
-        multiplier = (int)arithmeticRightshift(multiplier, accumulator) & 0xFFFFFFFF; // Update multiplier with shifted value
+
+        Qn = multiplierLsb; // update the Qn+1 with previous value of multiplierLsb bit (Qn)
+        int accumalator1 = (int)(arithmeticRightshift(multiplier, accumulator) >> 32); // Perform arithmetic right shift and get updated accumulator
+        multiplier = (int)arithmeticRightshift(multiplier, accumulator); // Update multiplier with shifted value
         accumulator = accumalator1;
     }
 
