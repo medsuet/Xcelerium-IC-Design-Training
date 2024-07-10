@@ -168,16 +168,15 @@ void reverseString(char *str) {
 
 int secondLargest(int arr[], int size) {
     // TODO: Find and return the second largest element in the array
-    int count = 0;
-    int large_ele;
+    int large_ele = arr[0];
+    int prev_ele;
     for (int i=0; i<size-1; i++){
-        if (arr[i] > arr[i+1]){
-            large_ele = arr[i];
-            count++;
-            if (count == 2)
-                return large_ele;
+        if (large_ele < arr[i+1]){
+            prev_ele = large_ele;
+            large_ele = arr[i+1];
         }
     }
+    return prev_ele;
 }
 
 
