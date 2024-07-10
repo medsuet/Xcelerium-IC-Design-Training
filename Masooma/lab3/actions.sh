@@ -1,5 +1,5 @@
 #!/bin/bash
-FILE="actions.txt"
+FILE="./lab3/actions.txt"
 countEntries(){
     local entries=$(wc -l < "$FILE")
     echo "Total number of $entries"

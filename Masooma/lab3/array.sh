@@ -1,3 +1,4 @@
+#!/bin/bash
 array=("apple" "orange" "banana")
 printArray(){
     for fruit in "${array[@]}"

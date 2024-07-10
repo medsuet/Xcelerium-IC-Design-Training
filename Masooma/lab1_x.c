@@ -41,13 +41,13 @@ void printSizes() {
     int double_new;
     double int_new;
     float_new = (short int) num_float;
-    printf("Size of typecasting of float %ld",sizeof(float_new));
+    printf("Size of typecasting of float into short integer %ld",sizeof(float_new));
     printf("\n");
     double_new = (int) num_double;
-    printf("Size of typecasting of double %ld",sizeof(double_new));
+    printf("Size of typecasting of double into integer %ld",sizeof(double_new));
     printf("\n");
     int_new = (double) num_int;
-    printf("Size of typecasting of integer %ld",sizeof(int_new));
+    printf("Size of typecasting of integer into double %ld",sizeof(int_new));
     printf("\n");
 }
 // 0.2 Operators and Expressions
@@ -58,11 +58,12 @@ void simpleCalculator() {
     int num2;
     char opr;
     int sum, minus, product, divide, reminder;
+    printf("------Simple Calculator------\n");
     printf("Enter the first number:");
     scanf("%d",&num1);
     printf("Enter the second number:");
     scanf("%d",&num2);
-    printf("Enter the operation:");
+    printf("Enter the operation(A,S,P,D,R):");
     while (getchar() != '\n');  // Flush the input buffer to avoid issues with newline characters
     scanf("%c",&opr); // Use %c to read a single character
     printf("\n");
@@ -113,7 +114,8 @@ void guessingGame() {
     int guess;
     srand(time(NULL));
     rnd_num=rand()%11;
-    printf("Enter your guess:");
+    printf("------Guessing Game------\n");
+    printf("Enter your guess b/w 0 and 10:");
     scanf("%d",&guess);
     while (guess!=rnd_num){
         if (guess<rnd_num) {
@@ -194,13 +196,16 @@ int main() {
 
     printf("Part 0: Quick Revision Exercises\n");
 
-    // 0.1 Basic Syntax and Data Types
+    printf("------0.1 Basic Syntax and Data Types------\n");
+    printf("\n");
     printSizes();
 
-    // 0.2 Operators and Expressions
+    printf("-------0.2 Operators and Expressions------\n");
+    printf("\n");
     simpleCalculator();
 
-    // 0.3 Control Structures
+    printf("------0.3 Control-------\n");
+    printf("\n");
     int n;
     printf("Enter the number of Fibonacci terms to print: ");
     scanf("%d", &n);
@@ -208,7 +213,8 @@ int main() {
 
     guessingGame();
 
-    // 0.4 Functions
+    printf("------0.4 Functions------\n");
+    printf("\n");
     printf("Prime numbers between 1 and 100:\n");
     for (int i = 1; i <= 100; i++) {
         
@@ -219,7 +225,8 @@ int main() {
     
     printf("\nFactorial of 5: %d\n", factorial(5));
 
-    // 0.5 Arrays and Strings
+    printf("------0.5 Arrays and Strings------\n");
+    printf("\n");
     char str[] = "Hello, World!";
     printf("Original string: %s\n", str);
     reverseString(str);
@@ -227,11 +234,7 @@ int main() {
 
     int arr[] = {5, 2, 8, 1, 9, 3, 7};
     int size = sizeof(arr) / sizeof(arr[0]);
-    printf("Second largest element: %d\n", secondLargest(arr, size));
-
-    // Parts 1-4: Advanced Pointer Concepts
-    printf("\nAdvanced Pointer Concepts\n");
-    // TODO: Implement and call functions for Parts 1-4 as in the previous template
+    printf("Second largest element in {5, 2, 8, 1, 9, 3, 7} is: %d\n", secondLargest(arr, size));
 
     return 0;
 }

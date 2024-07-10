@@ -58,12 +58,13 @@ void initializeMatrix(int rows, int cols, int (*matrix)[cols]) {
 void printMatrix(int rows, int cols, int (*matrix)[cols]) {
     for (int i=0;i<rows;i++){
         for (int j=0;j<cols;j++){
-            printf("%d\n", *(*(matrix+i)+j));
+            printf("%d ", *(*(matrix+i)+j));
         }
+        printf("\n");
     }
 }
 //Function used to find out the maximum integer among all the elements of a matrix using pointer to matrix
-int findMaxInMatrix(int rows, int cols, int (*matrix)[cols]) {  
+int findMaxInMatrix(int rows, int cols, int (*matrix)[cols]) {
     int temp=0;
     for (int i=0;i<rows;i++){
         for (int j=0;j<cols;j++){
@@ -82,7 +83,7 @@ void matrixSum(int row, int col, int matrix[row][col]){
         for (int j=0;j<col;j++){
             sum+=*(*(matrix+i)+j);
             if (j==col-1){
-                printf("%d row sum is\n %d\n",i,sum);
+                printf("%d row sum is: %d\n",i,sum);
                 sum=0;
             }
             else{}
@@ -374,6 +375,7 @@ void writeStudentToFile(struct Student* s, const char* filename) {
             fprintf(file,"%f ",*(ptr_arr+i));
         }
         fprintf(file,"\n");
+        printf("Successfully write in txt file\n");
     }
     fclose(file);
 }
@@ -387,7 +389,10 @@ void readStudentFromFile(struct Student* s, const char* filename) {
     else{
        if (fscanf(file, "%s %d %f %f %f", s->name, &s->id, &s->grades[0], &s->grades[1], &s->grades[2]) != 5) {
         printf("Error reading student data\n");
-    }
+        }
+        else{
+            printf("Successfully read from .txt file\n");
+        }
 
     fclose(file);
     }
@@ -403,7 +408,7 @@ void writeStudentToBinaryFile(struct Student* s, const char* filename) {
             printf("Failure in writing\n");
         }
         else{
-            printf("Successfully written\n");
+            printf("Successfully written in binary format\n");
         }
     }
     fclose(file);
@@ -419,7 +424,7 @@ void readStudentFromBinaryFile(struct Student* s, const char* filename) {
             printf("Failure in reading\n");
         }
         else{
-            printf("Successful read\n");
+            printf("Successful read from binary file\n");
 
         }
     }
@@ -457,8 +462,7 @@ void displayLog(const char* logfile) {
 int main() {
     srand(time(NULL));
 
-    // Part 1: Pointer Basics and Arithmetic
-    printf("Part 1: Pointer Basics and Arithmetic\n");
+    printf("------Part 1: Pointer Basics and Arithmetic------\n\n");
     int var = 8;
     int num1=9;
     int num2=1;
@@ -475,8 +479,7 @@ int main() {
     printf("Numbers after swap:\n a=%d and b=%d\n",*ptr_num1,*ptr_num2);
    
    
-    // Part 2: Pointers and Arrays
-    printf("\nPart 2: Pointers and Arrays\n");
+    printf("------Part 2: Pointers and Arrays------\n\n");
     int arr[]={1,2,3,4,5,6,7,8,9};
     int size;
     size=sizeof(arr)/sizeof(arr[0]);
@@ -488,18 +491,18 @@ int main() {
     reverseArray(arr,size);
     printArray(arr,size);
     
-    int matrix[3][4]={{1,2,3,4},{5,6,7,8},{9,10,11,12}};
-    int row = sizeof(matrix)/sizeof(matrix[0]);
-    int col = sizeof(matrix[0])/sizeof(matrix[0][0]);
+    //int matrix[3][4]={{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+    //int row = sizeof(matrix)/sizeof(matrix[0]);
+    //int col = sizeof(matrix[0])/sizeof(matrix[0][0]);
+    int matrix[3][4];
     int (*ptr_matrix)[4]=matrix;
-    printf("Matrix Initialization with random numbers\n");
-    initializeMatrix(row,col,ptr_matrix);
-    printMatrix(row,col,ptr_matrix);
-    printf("Max number of matrix is:%d\n",findMaxInMatrix(row,col,ptr_matrix));
-    matrixSum(row,col,matrix);
+    printf("Matrix Initialization with random numbers having 3 rows and 4 columns\n");
+    initializeMatrix(3,4,ptr_matrix);
+    printMatrix(3,4,ptr_matrix);
+    printf("Max number of matrix is:%d\n",findMaxInMatrix(3,4,ptr_matrix));
+    matrixSum(3,4,matrix);
 
-    // Part 3: Function Pointers
-    printf("\nPart 3: Function Pointers\n");
+    printf("------Part 3: Function Pointers------\n\n");
     int array1[5]={6,3,1,2,0};
     int size_array1=sizeof(array1)/sizeof(array1[0]);
     printf("Original Array\n");
@@ -526,50 +529,59 @@ int main() {
 
     int num_1,num_2;
     char opra;
+    printf("------Calculator------\n");
     printf("Enter first number:");
     scanf("%d",&num_1);
     printf("Enter second number:");
     scanf("%d",&num_2);
-    printf("Enter the operation:");
+    printf("Enter the operation:(a,s,m,d)");
     while(getchar()!='\n');
     scanf("%c",&opra);
     myCalculator(opra,num_1,num_2);
     
-    // Part 4: Advanced Challenge
-    printf("\nPart 4: Advanced Challenge\n");
+    printf("------Part 4: Advanced Challenge------\n\n");
     struct Node* head=NULL;
     insertAtBeginning(&head,11);
     insertAtBeginning(&head,24);
     insertAtBeginning(&head,4);
     insertAtBeginning(&head,5);
     insertAtBeginning(&head,89);
+    printf("Linkedlist Nodes' Values\n");
     printList(head);
 
     deleteByValue(&head,11);
+    printf("Linkedlist Nodes' Values after deletion of last node: ");
     printList(head);
-    // Part 5: Dynamic Memory Allocation
+    deleteByValue(&head,89);
+    printf("Linkedlist Nodes' Values after deletion of first node: ");
+    printList(head);
+    deleteByValue(&head,4);
+    printf("Linkedlist Nodes' Values after deletion of middle(4) node: ");
+    printList(head);
+    printf("------Part 5: Dynamic Memory Allocation------\n\n");
     printf("Part 5: Dynamic Memory Allocation\n");
     int size_allocate,value;
     int i=0;
     int *arr2;
-    printf("Array allocated using malloc\n");
+    printf("Array allocated using malloc of size 5\n");
     printArray(createDynamicArray(5),5);
-    printf("Enter size:");
+    printf("Enter size of array dynamically allocated:");
     scanf("%d",&size_allocate);
     arr2=createDynamicArray(size_allocate);
     while (i<size_allocate){
-        printf("Enter number:");
+        printf("Enter element of array of %d index: ",i);
         scanf("%d",&value);
         printArray(putNumber(arr2,value,i),size_allocate);
         i++; 
     }
     int *ptr_arr=arr2;
-    printf("Sum of all array elements%d\n",sumArray(arr2,size_allocate));
-    printf("Average of all array elements%d\n",averageArray(arr2,size_allocate));
+    printf("Sum of all array elements: %d\n",sumArray(arr2,size_allocate));
+    printf("Average of all array elements: %d\n",averageArray(arr2,size_allocate));
     int *si=&size_allocate;
+    printf("Above Array after reallocation with size 10\n");
     extendArray(&ptr_arr,si,10);
 
-
+    printf("------Memory Leakage Detector------\n");
     void *memory=allocateMemory(10);
     printArray(global_arr,10);
     freeMemory(memory);
@@ -577,13 +589,12 @@ int main() {
 
 
 
-    // Part 6: Structures and Unions
-    printf("\nPart 6: Structures and Unions\n");
+    printf("------Part 6: Structures and Unions------\n\n");
     struct Student student;
     inputStudentData(&student);
-    printf("Average of grades%f \n",calculateAverage(&student));
+    printf("Average of grades: %f \n",calculateAverage(&student));
     printStudentInfo(&student);
-
+    printf("------Display contents of Nested structure (University)------\n");
     struct Department dept={"Electrical",&student,45};
     struct University uni={"UET",&dept,21};
     printf("No. of departments:%d\n",uni.numDepartments);
@@ -600,12 +611,11 @@ int main() {
     printf("Integer of union is(should be unpredictable valued) %d\n",data.i);
     printf("Float of union is (should be unpredictable valued) %f\n",data.f);
     char flag;
-    printf("Enter data type for linkedlist:");
+    printf("Enter data type for linkedlist(i,f,c):");
     while(getchar()!='\n');
     scanf("%c",&flag);
     initializeLL(flag);
-    // Part 7: File I/O
-    printf("\nPart 7: File I/O\n");
+    printf("------Part 7: File I/O------\n");
     // TODO: Implement exercises 7.1, 7.2, and 7.3
     const char filename[10]="data.txt";
     const char file_bin[20]="data_new.txt";
@@ -628,6 +638,7 @@ int main() {
     logMessage(buffer_log1,logfile);
     char buffer_log2[50]="My Registration number is 2021-EE-1\n";
     logMessage(buffer_log2,logfile);
+    printf("------Log file Contents------\n");
     displayLog(logfile);
     return 0;
 }

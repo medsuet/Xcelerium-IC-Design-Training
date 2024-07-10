@@ -1,3 +1,4 @@
+#!/bin/bash
 all:execute
 	@echo "Done!!!"
 execute:main.o function.o

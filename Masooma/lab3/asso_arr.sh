@@ -8,13 +8,13 @@ capital(){
     for key in "${!arr_asso[@]}"
     do
         if [ "${arr_asso[$1]}" == "${arr_asso[$key]}" ]; then
-            echo "${arr_asso[$1]}"
+            echo "Capital of $key is ${arr_asso[$key]}"
             count=1
             break
         fi
     done
     if [ $count -eq 0 ]; then
-        echo "Desired capital not found"
+        echo "Capital of $1 not found"
     fi
 }
 echo $(capital Pakistan)
