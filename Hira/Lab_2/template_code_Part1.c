@@ -1,9 +1,12 @@
+/*
 ============================================================================
  * Filename:    template_code_Part1.c
  * Description: File consists of codes based on advanced concepts of C language
  * Author:      Hira Firdous
  * Date:        7/2024
  * ===========================================================================
+
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -234,11 +237,9 @@ struct generic_node {
 
 /*Function pointer initializing either 
     we are adding generic data of int*/
-//typedef Node* (*NodeInitializer)(Node*, void);
+typedef Node* (*NodeInitializer)(Node*, void);
 
-//void generic_link_list(struct Node** head,void value, NodeInitializer link_list_type){
-//	struck link_list_type* Node;
-//}
+
 
 
 struct Node nodes[100];                                  // Array to hold nodes (static allocation)
@@ -262,24 +263,6 @@ void insertAtBeginning(struct Node** head, int value) {
     nodeCount++;
 }
 
-/*
-void insertAtBeginning(struct Node** head, int value) {
-    //------------------Segmentation_fault-------------------
-    //argument: starting index(head), value wanna add
-    // Add the value in the linklist of it have space.
-    
-
-    struct Node temp;
-   // Assign data to the new node
-    temp. = value;
-    temp.next = *head;
-    // Update head to point to the new node
-    *head = &temp;
-    // Increment node count
-    nodeCount++;
-}
-
-*/
 
 
 void deleteByValue(struct Node** head, int value) {
@@ -370,6 +353,7 @@ void freeMemory(void* ptr) {
 }
 
 void checkMemoryLeaks() {
+    /*Function to check the memory leak*/
     if (memory_allocated!=0){
         printf("There is still unfreed memory left.");
     }

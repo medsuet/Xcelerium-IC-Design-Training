@@ -1,3 +1,12 @@
+/*
+============================================================================
+ * Filename:    Maze.c
+ * Description: Contains the implementation of Maze
+ * Author:      Hira Firdous
+ * Date:        08/07/2024
+* ===========================================================================
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 

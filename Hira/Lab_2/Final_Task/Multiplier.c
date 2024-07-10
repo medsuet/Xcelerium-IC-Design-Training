@@ -222,7 +222,8 @@ void run_test_cases() {
 }
 
 void testing_by_random_testcases(){
-    /*Input a random number form the */
+    /*Input a random number form the user and run 
+    random test cases to check the valaidity of the code*/
 
     srand(time(NULL));
     int input_num=rand();
@@ -234,13 +235,13 @@ void testing_by_random_testcases(){
 
     for (int i = 0;i <= test_cases; i++){
         //variables
-        int input_number_1=rand() % 65536;
-        int input_number_2=rand() % 65536;
+        int input_number_1=rand();
+        int input_number_2=rand();
 
         //output from my function
         int64_t booth_answer=booth_multiplication(input_number_1,input_number_2);
         //output from operator
-        int64_t original_answer=input_number_1 * input_number_2;
+        int64_t original_answer=((int64_t)input_number_1) * input_number_2;
         printf("Test case %d:\n", i + 1);
         printf("%d x %d \n",input_number_1,input_number_2 );
         if (booth_answer == original_answer){
@@ -262,100 +263,6 @@ void testing_by_random_testcases(){
 int main(){
  
     testing_by_random_testcases();
-
-    //-------------------------------------------------------Testing for print binary and binary width---------------------
-
-    int num1 = 5; 
-    int num2 = 10; 
-
-    print_binary(&num1);
-    print_binary(&num2);
-    printf("The width of number is %d is %d",num1,binary_width(num1));
-    printf("\n");
-    printf("The width of number is %d is %d",num2,binary_width(num2));
-    printf("\n");
-    int carry=binary_addition(&num1,&num2, binary_width(num2));
-    printf("carry: %d", carry);
-    printf("\n");
-    print_binary(&num1);
-
-
-    int m = -5; // Example number
-    printf("Original number (m): %d",m);
-    print_binary(&m);
-    
-    printf("The width of number is %d is %d \n",num1,binary_width(m));
-    complement(&m, binary_width(m));
-
-    printf("2's complement (m):%d \n",m);
-    print_binary(&m);
-
-//----------------------------------------------------------Testing and understanding of algo-----------------------------------------------
-
-    int multiplicand = 51741; // Example multiplicand
-    int multiplier = 49062; // Example multiplier
-
-printf("-------------------------------------------------------------------------");
-    int64_t result = booth_multiplication(multiplicand, multiplier);
-    printf("Result: %ld\n", result);
-    printf("Result in binary: ");
-    print_binary(&result);
-
-    int64_t original_answer=  multiplicand * multiplier;
-    if (result == (multiplicand * multiplier)){
-        printf("Passed\n");
-    }
-    else{
-        printf("Failed\n");
-    
-    }
-    print_binary(&original_answer);
-
-
-
-
-    printf("Static run cases\n");
-
-    //Test Cases
-    run_test_cases();
-
-    return 0;
-
-//-------------------------------------------------------Testing and understanding for Shift-----------------------------------------------
-   /*  
-    int A = 7, M = 3, width;
-    width = sizeof(int) * 8;
-    
-    printf("Binary representation of A: ");
-    print_binary(&A);
-    
-    printf("Binary representation of M: ");
-    print_binary(&M);
-    
-    printf("Binary width of A: %d\n", binary_width(A));
-    printf("Binary width of M: %d\n", binary_width(M));
-    
-    binary_addition(&A, &M, width);
-    printf("Binary representation of A after addition: ");
-    print_binary(&A);
-    
-    int Q = 3, Q_minus_1 = 0;
-    printf("Binary representation of A before shift: ");
-    print_binary(&A);
-    printf("Binary representation of Q before shift: ");
-    print_binary(&Q);
-    printf("Value of Q_minus_1 before shift: %d\n", Q_minus_1);
-    
-    arithmeticRightShift(&A, &Q, &Q_minus_1,binary_width(A));
-    
-    printf("Binary representation of A after shift: ");
-    print_binary(&A);
-    printf("Binary representation of Q after shift: ");
-    print_binary(&Q);
-    printf("Value of Q_minus_1 after shift: %d\n", Q_minus_1);
-
-    return 0;
-    */
     
 }
 
