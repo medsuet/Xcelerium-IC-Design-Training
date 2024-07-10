@@ -74,15 +74,15 @@ void allocate2DArray(int rows, int cols){
                 }
         }
 
-    printf("\nInitializing the matrix!\n");
-    int temp;
-//    int count = 1;
+
+    // adding random values to maze
+    printf("\nInitializing the Maze!\n");
+
     for (i=0; i<rows; i++)
         {
             for (j=0; j<cols; j++)
                 {                                                                   // inner pointer: row traversal, outer pointer: for columns
                     *( *(maze+i) + j) = rand() % 2;                                 // randomly allocating 0's and 1's
-//                    count++;
                 }
         }
 
@@ -90,7 +90,8 @@ void allocate2DArray(int rows, int cols){
     *( *(maze+ (rows-1)) + (cols-1) ) = 0;      // end of maze should be 0
 
 
-    printf("\nThe initialized matrix is\n");
+    // printing the maze
+    printf("\nThe initialized Maze is\n");
     *maze = *starting_position;
     for (i=0; i<rows; i++)
         {
@@ -104,6 +105,8 @@ void allocate2DArray(int rows, int cols){
 
     int start[] = {0,0};
 
+
+    // navigate maze
     if ( navigateMaze(start,maze) == 1)
         {
             printf("\nSuccess! Path Found!\n");
@@ -123,7 +126,7 @@ void allocate2DArray(int rows, int cols){
     free(maze);
 }
 
-void main(){
+int main(){
     srand(time(NULL));
 
     int maze_size;

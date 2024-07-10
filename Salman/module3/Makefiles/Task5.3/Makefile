@@ -2,13 +2,13 @@
 SCRIPTS = script1.sh script2.sh
 
 # Installation directory
-INSTALL_DIR = /home/salman/work/xcelerium/training/Salman-Xcelerium-IC-Design-Training/Salman/module3/Makefiles/Task5.3/test
+INSTALL_DIR = ./test
 
 # Default target
 all: check test install
 
 # Check scripts for syntax errors
-# base -n to check for syntax errors
+# bash -n to check for syntax errors
 check:
 	for script in $(SCRIPTS); do \
 	    echo "Checking $$script for syntax errors..."; \
@@ -21,7 +21,7 @@ test: check
 	bash test_script.sh
 
 # Install scripts to the specified directory
- ## 755 = r+w+x, -m also sets permissions
+# permission: 755 = r+w+x, -m sets permissions
 install: check
 	echo "Installing scripts to $(INSTALL_DIR)..."
 	for script in $(SCRIPTS); do \

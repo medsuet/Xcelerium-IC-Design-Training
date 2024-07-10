@@ -1,20 +1,20 @@
 #!/bin/bash
 
-backup_files="/home/salman/work/xcelerium/training/Salman-Xcelerium-IC-Design-Training/Salman/module3/backup-directory" #location of directory to create backup of
+backup_files="./backup-directory" #location of directory to create backup of
 
-destination="/home/salman/work/xcelerium/training/Salman-Xcelerium-IC-Design-Training/Salman/module3" #destination of tar file
+destination="./" #destination of tar file
 
 #tar file names starts with time
-date=$(date '+%Y-%m-%d')
+date=$(date '+%Y-%m-%d') #date has 3 components, Y, m, d
 
-hostname=$(hostname -s)
-
+hostname=$(hostname -s) # hostname for username
+# archive file name starts with hostname + date
 archive_file="$hostname-$date.tgz"
 
 echo "Backing up $backup_files to $dest/$archive_file"
-date
+date # prints date
 echo
-
+# -d to check if directory exists
 if [ -d $backup_files ]; then
     echo "Directory Found!"
     #Backing up files using tar

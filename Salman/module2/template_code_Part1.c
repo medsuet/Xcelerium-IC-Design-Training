@@ -350,44 +350,15 @@ void extendArray(int** arr, int* size, int newSize) {
     int* starting_address;
 
 	starting_address = *arr;
-
-/*	printf("Newsize * Int = %ld\n",newSize*sizeof(int));
-	printf("*arr = %p\n",*arr);
-	printf("**arr = %d\n",**arr);
-	printf("starting_address = %p\n",starting_address);
-	printf("*starting_address = %d\n",*starting_address);
-*/
     *arr = (int *) realloc(*arr, newSize*sizeof(int));
-
-//    starting_address = *arr; // reseting pointer address to start of array
-/*
-	printf("\nAfter reallocating!\n");
-	printf("*arr = %p\n",*arr);
-	printf("**arr = %d\n",**arr);
-	printf("starting_address = %p\n",starting_address);
-	printf("*starting_address = %d\n",*starting_address);
-*/
-	starting_address = *arr; // reseting pointer address to start of array
-/*	printf("\nAfter changing starting address\n");
-	printf("starting_address = %p\n",starting_address);
-	printf("*starting_address = %d\n",*starting_address);
-*/
-
-
+	starting_address = *arr;    // reseting pointer address to start of array
 
     printf("\nExtended array size by %d\n",newSize);
 
-	*arr = (*arr) + (*size);
+	*arr = (*arr) + (*size);    // pointing to the newly added element
+    printf("\n");
 
-/*
-	printf("\nAfter parsing half of the array:\n");
-	printf("\nAfter reallocating!\n");
-	printf("*arr = %p\n",*arr);
-	printf("**arr = %d\n",**arr);
-	printf("starting_address = %p\n",starting_address);
-	printf("*starting_address = %d\n",*starting_address);
-*/
-	printf("\n");
+    // to allocate new numbers
     for (i=*size;i<newSize;i++)
     {
         printf("Enter Number %d: ", i+1);
@@ -405,8 +376,6 @@ void extendArray(int** arr, int* size, int newSize) {
         (*arr)++;
     }
     printf("\n");
-
-
 }
 
 // Memory leak detector
@@ -422,13 +391,11 @@ void* allocateMemory(size_t size) {
 
 void freeMemory(void* ptr) {
     // TODO: Free memory and update tracking
-//    printf("%p",*mem_ptr);
 	free(ptr);
 }
 
 void checkMemoryLeaks() {
     // TODO: Check for memory leaks
-//    printf("%p",*mem_ptr);
     if (mem_ptr != NULL)
     {
         printf("There is a memory leak");
@@ -437,7 +404,6 @@ void checkMemoryLeaks() {
     {
         printf("No memory leaks!");
     }
-
 }
 
 // Part 6: Structures and Unions
@@ -514,32 +480,6 @@ void printStudentInfo(struct Student* s) {
 // Part 7: File I/O
 
 void writeStudentToFile(struct Student* s, const char* filename) {
-/*    // TODO: Write student data to a text file
-    FILE *fptr;
-    int i;
-
-    fptr = fopen(filename, "w");
-
-    if (fptr == NULL)
-    {
-        printf("File failed to open!");
-        exit(0);
-    }
-    else
-    {
-
-        fprintf(fptr, "\nStudent Name: %s",s->name);
-        fprintf(fptr, "\nStudent ID: %d",s->id);
-
-        for (i=0; i<3; i++)
-        {
-            fprintf(fptr, "\nGrade of Subject %d: %.2f",i,s->grades[i]);
-        }
-
-    }
-    fclose(fptr);
-*/
-
     // TODO: Write student data to a binary file
     FILE *fptr;
     int i;
@@ -555,11 +495,8 @@ void writeStudentToFile(struct Student* s, const char* filename) {
     }
 
     printf("\nWriting Student's Record");
-
     size_t nameLength = strlen(s->name) + 1; // adding 1 to include the null terminator in the end
     elementsWritten = fwrite(s->name,sizeof(char),nameLength,fptr);
-//    printf("\nnameLength = %ld",nameLength);
-//    printf("\nNumber of Elements Written = %ld",elementsWritten);
 
     if (elementsWritten != nameLength)
     {
@@ -569,12 +506,8 @@ void writeStudentToFile(struct Student* s, const char* filename) {
     }
 
     sprintf(str, "%d", s->id); // converting integer to string since fwrite works only on integers
-
     elementsWritten = fwrite("\n",sizeof(char),strlen("\n"),fptr); // adding new line myself
-
     elementsWritten = fwrite(str,sizeof(char),strlen(str),fptr);
-
-//    printf("\nNumber of Elements Written: %ld\n",elementsWritten);
 
     if (elementsWritten != strlen(str))
     {
@@ -587,20 +520,16 @@ void writeStudentToFile(struct Student* s, const char* filename) {
     {
 
         memset(str, '\0',sizeof(str)); // resetting the string, \0 is considered as a null
-
         sprintf(str, "%.2f", s->grades[i]);
-
         elementsWritten = fwrite("\n",sizeof(char),sizeof("\n"),fptr);
-
         elementsWritten = fwrite(str,sizeof(char),sizeof(str),fptr);
-//        printf("Number of Elements Written: %ld",elementsWritten);
 
         if (elementsWritten != sizeof(str))
-        {
-            printf("\nError writing Student's Grades");
-            fclose(fptr);
-            exit(0);
-        }
+            {
+                printf("\nError writing Student's Grades");
+                fclose(fptr);
+                exit(0);
+            }
 
     }
     fclose(fptr);
@@ -613,7 +542,6 @@ void readStudentFromFile(struct Student* s, const char* filename) {
     // TODO: Read student data from a text file
     FILE *fptr;
     int ch;
-
     fptr = fopen(filename, "r");
 
     if (fptr == NULL)
@@ -624,19 +552,16 @@ void readStudentFromFile(struct Student* s, const char* filename) {
     else
     {
         printf("\nThe file contents are:\n");
-
         ch = fgetc(fptr);
 
         while (ch != EOF)
-        {
-            printf("%c",ch);
-//            printf("(%d)", ch);
-            ch = fgetc(fptr);
-        }
+            {
+                printf("%c",ch);
+                ch = fgetc(fptr);
+            }
     }
 
     printf("\n");
-
     fclose(fptr);
 }
 
@@ -656,11 +581,8 @@ void writeStudentToBinaryFile(struct Student* s, const char* filename) {
     }
 
     printf("\nWriting Student's Record");
-
     size_t nameLength = strlen(s->name) + 1; // adding 1 to include the null terminator in the end
     elementsWritten = fwrite(s->name,sizeof(char),nameLength,fptr);
-//    printf("\nnameLength = %ld",nameLength);
-//    printf("\nNumber of Elements Written = %ld",elementsWritten);
 
     if (elementsWritten != nameLength)
     {
@@ -670,12 +592,8 @@ void writeStudentToBinaryFile(struct Student* s, const char* filename) {
     }
 
     sprintf(str, "%d", s->id); // converting integer to string since fwrite works only on integers
-
     elementsWritten = fwrite("\n",sizeof(char),strlen("\n"),fptr); // adding new line myself
-
     elementsWritten = fwrite(str,sizeof(char),strlen(str),fptr);
-
-//    printf("\nNumber of Elements Written: %ld\n",elementsWritten);
 
     if (elementsWritten != strlen(str))
     {
@@ -688,13 +606,9 @@ void writeStudentToBinaryFile(struct Student* s, const char* filename) {
     {
 
         memset(str, '\0',sizeof(str)); // resetting the string, \0 is considered as a null
-
         sprintf(str, "%.2f", s->grades[i]);
-
         elementsWritten = fwrite("\n",sizeof(char),sizeof("\n"),fptr);
-
         elementsWritten = fwrite(str,sizeof(char),sizeof(str),fptr);
-//        printf("Number of Elements Written: %ld",elementsWritten);
 
         if (elementsWritten != sizeof(str))
         {
@@ -715,8 +629,7 @@ void readStudentFromBinaryFile(struct Student* s, const char* filename) {
 
     FILE *fptr;
     int i;
-    unsigned char buffer[100];
-    size_t elementsRead;
+    char buffer[100];
 
     fptr = fopen(filename, "rb");
 
@@ -752,7 +665,7 @@ void logMessage(const char* message, const char* logfile) {
     char timestamp[64];
     size_t ret = strftime(timestamp, sizeof(timestamp), "%c", tm);
     assert(ret);
-    printf("%s\n", timestamp);
+    printf("%s\n", timestamp);                                  // generating timestamp
 
     fptr = fopen(logfile, "a");
 
@@ -763,15 +676,10 @@ void logMessage(const char* message, const char* logfile) {
     }
 
     printf("\nAdding message into log file\n");
-
-    strcat(timestamp,": "); // adding space between timestamp and message
-
+    strcat(timestamp,": ");                                     // adding space between timestamp and message
     fwrite("\n",sizeof(char),strlen("\n"),fptr);
-
-    fwrite(timestamp,sizeof(char),strlen(timestamp),fptr); // writing timestamp in beggining and message later
-
+    fwrite(timestamp,sizeof(char),strlen(timestamp),fptr);      // writing timestamp in beggining and message later
     fwrite(message,sizeof(char),strlen(message),fptr);
-
     printf("\nAdded the message succesfully\n");
 
     fclose(fptr);
@@ -781,7 +689,6 @@ void displayLog(const char* logfile) {
     // TODO: Read and display the contents of the log file
     FILE *fptr;
     int ch;
-
     fptr = fopen(logfile, "r");
 
     if (fptr == NULL)
@@ -792,14 +699,12 @@ void displayLog(const char* logfile) {
     else
     {
         printf("\nThe file contents are:\n");
-
         ch = fgetc(fptr);
 
-        while (ch != EOF)
+        while (ch != EOF)           // loop will stop at End of File EOF
         {
-            printf("%c",ch);
-//            printf("(%d)", ch);
-            ch = fgetc(fptr);
+            printf("%c",ch);        // printing character by character
+            ch = fgetc(fptr);       // traversing character to next character
         }
     }
 
@@ -812,8 +717,12 @@ void displayLog(const char* logfile) {
 
 int main() {
     srand(time(NULL));
-    int i,j;
-/*
+    int i;
+    int number;
+
+    printf("\nEnter ANY NUMBER to continue: ");
+    scanf("%d",&number);
+
     // Part 1: Pointer Basics and Arithmetic
     printf("Task 1: Pointer Basics and Arithmetic\n");
     // TODO: Implement exercises 1.1, 1.2, and 1.3
@@ -835,13 +744,12 @@ int main() {
 
     printf("\n Task 1.3: Array using Pointers\n");
 
-    int i;
     int sum = 0;
-*/    int size = 10;
+    int size = 10;
     int arr[10] = {1,2,3,4,5,6,7,8,9,10};
 
     int *ptr_arr = arr;
-/*
+
     printf("Printing Array: ");
     for (i=0; i<size; i++)
     {
@@ -854,7 +762,7 @@ int main() {
 
     reverseArray(arr,size);
     printf("Reversed Array is: ");
-    
+
     ptr_arr = arr; // initializing the pointer to array beginning
     for (i=0; i<size; i++)
     {
@@ -862,6 +770,9 @@ int main() {
         ptr_arr++;
     }
     printf("\nTask 1.3 Complete\n");
+
+    printf("\nEnter ANY NUMBER to continue: ");
+    scanf("%d",&number);
 
 
 
@@ -885,6 +796,9 @@ int main() {
     findSumOfEachRowInMatrix(rows,cols,matrix);
     printf("Task 2.2 Complete!\n");
 
+    printf("\nEnter ANY NUMBER to continue: ");
+    scanf("%d",&number);
+
 
     // Part 3: Function Pointers
     printf("\nPart 3: Function Pointers\n");
@@ -902,7 +816,7 @@ int main() {
         ptr_arr++;
     }
 
-    
+
 
     bubbleSort(arr_bbsort,10);
     printf("\nThe sorted array using Bubble Sort is is: ");
@@ -923,7 +837,7 @@ int main() {
         ptr_arr++;
     }
 
-    
+
 
     selectionSort(arr_selsort,10);
     printf("\nThe sorted array using Selection Sort is: ");
@@ -951,7 +865,7 @@ int main() {
     printf("\n\nUsing Function of SortFunction() (function pointer) to sort the array!\n");
 
     void (*SortFunction) (int*, int);
-    
+
     SortFunction = selectionSort;
 
     SortFunction(arr_sort,10);
@@ -970,6 +884,9 @@ int main() {
     simpleCalculator(add,subtract,multiply,divide);
 
     printf("\nTask 3.3 Complete!\n");
+
+    printf("\nEnter ANY NUMBER to continue: ");
+    scanf("%d",&number);
 
 
     // Part 4: Advanced Challenge
@@ -995,6 +912,8 @@ int main() {
     printList(head);
     printf("\n");
     free(head);
+
+    printf("\nTask 4.1 Complete!\n");
 
     // TASK 4.2 : GENERIC LINKED LIST
 
@@ -1027,8 +946,12 @@ int main() {
     genericprintList(float_head,printFloat);
     printf("\n");
     free(float_head);
+    printf("\nTask 4.2 Complete\n");
 
+    printf("\nPart 4 Complete\n");
 
+    printf("\nEnter ANY NUMBER to continue: ");
+    scanf("%d",&number);
 
 
     // Part 5: Dynamic Memory Allocation
@@ -1050,8 +973,13 @@ int main() {
 
     checkMemoryLeaks();
 
+    printf("\nPart 5 Complete!\n");
 
-*/
+    printf("\nEnter ANY NUMBER to continue: ");
+    scanf("%d",&number);
+
+
+
     // Part 6: Structures and Unions
     printf("\nPart 6: Structures and Unions\n");
     // TODO: Implement exercises 6.1, 6.2, 6.3, and 6.4
@@ -1063,6 +991,11 @@ int main() {
     printf("The average grade is: %f",calculateAverage(&student));
 
     printStudentInfo(&student);
+
+    printf("\nPart 6 Complete!\n");
+
+    printf("\nEnter ANY NUMBER to continue: ");
+    scanf("%d",&number);
 
     // Part 7: File I/O
     printf("\nPart 7: File I/O\n");
@@ -1076,14 +1009,18 @@ int main() {
 
     readStudentFromBinaryFile(&student,"file.bin");
 
-//    logMessage("Added the first log","logfile.txt");
+    logMessage("Added the first log","logfile.txt");
 
-//    logMessage("Added the second log","logfile.txt");
+    logMessage("Added the second log","logfile.txt");
 
-//    logMessage("Added the third log","logfile.txt");
+    logMessage("Added the third log","logfile.txt");
 
     displayLog("logfile.txt");
 
+    printf("\nPart 7 Complete!\n");
+
+    printf("\nEnter ANY NUMBER to continue: ");
+    scanf("%d",&number);
 
 //    checkMemoryLeaks();
 
