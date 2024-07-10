@@ -1,3 +1,0 @@
-Name: Faisal
-Id: 113
-Grades: 2.00, 3.00, 4.00
