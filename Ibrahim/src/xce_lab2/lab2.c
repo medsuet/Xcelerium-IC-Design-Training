@@ -570,7 +570,7 @@ int main() {
     
 	// Part 3.1
     int arr1[] = {64, 25, 12, 22, 11};  // Example array
-    int size = sizeof(arr) / sizeof(arr[0]);
+    int size = sizeof(arr1) / sizeof(arr1[0]);
 
     // Print original array
     printf("Original array:\n");
@@ -604,7 +604,7 @@ int main() {
     // Part 3.2
     SortFunction sortFunc = bubbleSort;
     int arr3[] = {64, 25, 12, 22, 11};  // Example array
-    size = sizeof(arr) / sizeof(arr[0]);
+    size = sizeof(arr3) / sizeof(arr3[0]);
 
     // Print original array
     printf("\nOriginal array:\n");
