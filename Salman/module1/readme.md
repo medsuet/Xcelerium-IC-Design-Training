@@ -23,11 +23,11 @@ In module 1, the following tasks were included:
 
 ### Executing the Script
 To execute the code, simply move to the *module1* directory and run the following command on ubuntu terminal with gcc pre-installed to complite the code:
-`gcc -o run template_code_part0.c'
+`gcc -o run template_code_part0.c`
 
 If there are any errors, make sure to uncomment a few lines within main function only.
 
 After succesful compilation of the code, run it through:
-'./run'
+`./run`
 
 Provide inputs as it requires by you, if you want to provide a different input, you may edit the code.
