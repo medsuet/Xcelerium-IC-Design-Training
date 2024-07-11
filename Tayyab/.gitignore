@@ -7,6 +7,6 @@
 /Lab2/studentdata.txt
 /Lab3/installscripts/
 /Lab3/a.tar
-/Lab3/main.o
-/Lab3/functions.o
 /Lab3/main
+*.o
+*.elf
