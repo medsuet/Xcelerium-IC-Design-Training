@@ -1,12 +1,15 @@
 FIRSTTARGET=lab1_exe
 SECTARGET=lab2_exe
 THIRDTARGET=booth_exe
+FOURTHTARGET=maze_exe
 .PHONY: lab3 lab5
 $(FIRSTTARGET):lab1_x.c
 	gcc -o $@ $^
 $(SECTARGET):lab2_x.c
 	gcc -o $@ $^
 $(THIRDTARGET):booth.c
+	gcc -o $@ $^
+$(FOURTHTARGET):maze.c
 	gcc -o $@ $^
 lab1:$(FIRSTTARGET)
 	./$(FIRSTTARGET)
@@ -101,6 +104,12 @@ lab5:
 	@echo "--------------------------------------"
 	@echo "Done LAB 5!!"
 	@echo "--------------------------------------"
+maze: $(FOURTHTARGET)
+	./maze_exe
+	@echo "--------------------------------------"
+	@echo "Done MAZE!!"
+	@echo "--------------------------------------"
+
 
 
 

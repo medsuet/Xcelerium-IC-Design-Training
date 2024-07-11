@@ -44,4 +44,10 @@ The file booth.c contains the source code for Booth Multiplication and its test 
 The folder named lab5 contains the tcl files. To run both of the files write the following command in the Xcelerium-IC-Design-Training/Masooma directory:
 
     make lab5
+## 	Maze code
+To compile and run maze code execute the following command in the Xcelerium-IC-Design-Training/Masooma directory:
+
+    make maze
+
+
 
