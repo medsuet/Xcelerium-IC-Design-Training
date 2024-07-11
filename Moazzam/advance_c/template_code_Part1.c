@@ -83,18 +83,6 @@ void bubbleSort(int *arr, int size) {
     }
 }
 
-void selectionSort(int *arr, int size) {
-    // TODO: Implement selection sort
-    for(int i=0; i<size-1 ; i++ ){
-        int min_index = i;
-        for(int j=i+1; j<size; j++){
-            if (*(arr+min_index) > *(arr+j)){
-                min_index = j;
-            }    
-        }
-        swap(arr+i,arr+min_index);
-    }
-}
 
 void SelectionSort(int *arr, int size) {
     // TODO: Implement bubble sort
