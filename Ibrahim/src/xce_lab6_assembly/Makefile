@@ -11,6 +11,7 @@ TASKS = Tasks/task_1 Tasks/task_2 Tasks/task_3
 # Default target
 all: $(PROGS) $(TASKS)
 
+
 # Rule to assemble and link each program
 $(PROGS): %: %.s
 	$(AS) -o $@.o $<
@@ -42,6 +43,7 @@ debug:
 ifeq ($(PROG),)
 	@echo "Please specify a program using PROG=..."
 else
+
 	$(SPIKE) -d --log-commits $(PROG)
 endif
 

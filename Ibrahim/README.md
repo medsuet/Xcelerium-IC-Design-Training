@@ -72,6 +72,7 @@ This project contains a series of exercises in C programming including structure
 
 ## Introduction
 <<<<<<< HEAD
+<<<<<<< HEAD
 This lab focuses on applying advanced concepts in C programming.
 ## Compilation
 ``` bash
@@ -112,11 +113,23 @@ make clean
 =======
 This lab focuses on applying advanced concepts in C programming. Each part builds on previous knowledge and incorporates new techniques to solve problems.
 
+=======
+This lab focuses on applying advanced concepts in C programming.
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 ## Compilation
+``` bash
+cd xce_lab2
+```
 To compile the code, use the following command:
 ```bash
 gcc -o lab2 lab2.c
 ```
+To compile booth multiplier and memory management maze
+```bash
+gcc -o boothMultiplier boothMultiplier.c
+gcc -o memoryMaze memoryMaze.c
+```
+
 ## Execution
 ```bash
 <<<<<<< HEAD
@@ -124,7 +137,12 @@ gcc -o lab2 lab2.c
 >>>>>>> e5fdb7d (Added README.md)
 =======
 ./lab2
+<<<<<<< HEAD
 >>>>>>> 520b661 (Added README.md)
+=======
+./boothMultiplier
+./memoryMaze
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 ```
 ## Exercises
 
@@ -137,6 +155,7 @@ gcc -o lab2 lab2.c
 
 ### Part 2: Structures
 <<<<<<< HEAD
+<<<<<<< HEAD
 - **Student Structure**
 - **Department Structure**
 - **University Structure** 
@@ -144,6 +163,11 @@ gcc -o lab2 lab2.c
 - **Student Structure**: Define a structure to store student information.
 - **Department Structure**: Define a structure to store department information, which includes an array of students.
 >>>>>>> e5fdb7d (Added README.md)
+=======
+- **Student Structure**
+- **Department Structure**
+- **University Structure** 
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 
 ### Part 3: Pointers and Functions
 - **Function Pointers**: Define and use function pointers for arithmetic operations.
@@ -187,10 +211,14 @@ This lab is designed to provide hands-on experience with Linux shell scripting a
     ```
 ## Task 5 - Makefiles
 <<<<<<< HEAD
+<<<<<<< HEAD
 This project demonstrates the use of a Makefile for compiling and managing a C program with `main.c` and `functions.c`. It handles multiple source files automatically and implements dependency tracking for header files.
 =======
 This project demonstrates the use of a Makefile for compiling and managing a C program with `main.c` and `functions.c`. The Makefile includes various targets to build the project, clean up generated files, and compile with debugging symbols. Additionally, it handles multiple source files automatically and implements dependency tracking for header files.
 >>>>>>> e5fdb7d (Added README.md)
+=======
+This project demonstrates the use of a Makefile for compiling and managing a C program with `main.c` and `functions.c`. It handles multiple source files automatically and implements dependency tracking for header files.
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 
 ### Makefile Targets
 
@@ -223,8 +251,12 @@ This project demonstrates the use of a Makefile for compiling and managing a C p
    make debug
    ```
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 # Lab6 RISC-V Assembly Exercises
+=======
+  # Lab6 RISC-V Assembly Exercises
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 
 This lab contains RISC-V assembly programs demonstrating basic operations such as arithmetic calculations and bit manipulation. The programs are run on spike simulator.
 
@@ -232,10 +264,21 @@ This lab contains RISC-V assembly programs demonstrating basic operations such a
 
 ### Problem 1: Absolute Difference Calculation
 
+
+This program calculates the absolute difference between two predefined integers. 
+
+**Key Features:**
+- Loads two integers from memory.
+- Computes the difference between them.
+- Calculates the absolute value of the result.
+- Stores the final result in memory.
+
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 **Assembly File:** `Problems/Problem_1/problem_1.s`
 
 ### Problem 2: Bit Count in a 32-bit Number
 
+<<<<<<< HEAD
 **Assembly File:** `Problems/Problem_2/problem_2.s`
 
 ### Problem 3: Factorial of a number
@@ -261,6 +304,17 @@ This lab contains RISC-V assembly programs demonstrating basic operations such a
 
 **Assembly File:** `Tasks/task_3.s`
 
+=======
+This program counts the number of set bits (1s) in a 32-bit integer.
+
+**Key Features:**
+- Loads a 32-bit integer from memory.
+- Iterates through each bit to count the number of set bits.
+- Stores the count of set bits in memory.
+
+**Assembly File:** `Problems/Problem_2/problem_2.s`
+
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 ## Build and Run
 
 To build and run the programs, use the provided `Makefile`. The Makefile includes rules to assemble, link, and run the programs using Spike.
@@ -271,7 +325,11 @@ move to directory
 cd xce_lab6_assembly
 ```
 ```bash
+<<<<<<< HEAD
 make all 
+=======
+make
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 ```
 ### Run a Specific Program
 
@@ -280,24 +338,33 @@ To run a specific program, set the `PROG` variable: x could be 1, 2, 3, 4 and 5.
 ```bash
 make run PROG=Problems/Problem_x/problem_x
 ```
+<<<<<<< HEAD
 To run a specific Task, set the `PROG` variable: x could be 1,2 and 3.
 ```bash
 make run PROG=Tasks/task_x
 ```
 ### Debug a Specific Program
 To debug a specific program, set the `PROG` variable and use the debug rule:
+=======
+### Debug a Specific Program
+To debug a specific program, set the PROG variable and use the debug rule:
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 Replace x with 1, 2, 3, 4, and 5.
 ```bash
 make debug PROG=Problems/Problem_x/problem_x
 ```
+<<<<<<< HEAD
 To debug a specific task, set `PROG` variable, set x as 1,2 and 3. Use the debug rule:
 ```bash
 make debug PROG=Tasks/task_x 
 ```
+=======
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
 ### Clean Up
 To clean up the generated files:
 ```bash
 make clean
+<<<<<<< HEAD
 ```
 # LAB 7 - Python
 This lab contains three tasks:
@@ -349,3 +416,6 @@ make clean
 =======
    
 >>>>>>> e5fdb7d (Added README.md)
+=======
+```
+>>>>>>> 3a7bf0b (Added lab6(riscv assembly) and modified readme.md)
