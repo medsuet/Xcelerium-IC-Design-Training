@@ -51,23 +51,24 @@ int navigateMaze(int *current_position, int **DArray, int maze_size) {
         return 2;
     }
 
-    // Move to the next cell (right or down)
-    int new_crow = crow;
-    int new_ccol = ccol;
+    // Already visted
+    DArray[crow][ccol] = 1;
 
-    if (ccol < maze_size - 1) {
-        new_ccol++;
-    } else if (crow < maze_size - 1) {
-        new_crow++;
-    } else {
-        return 1; // No more moves available
+    // Add the possible moves in array (up, down, right, left)
+    int moves[][2] = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+    for (int i=0; i<4; i++){
+        // Update the indices
+        int new_crow = crow + moves[i][0];
+        int new_ccol = ccol + moves[i][1];
+
+        if (new_crow >= 0 && new_ccol >= 0 && new_ccol < maze_size && new_crow < maze_size && DArray[new_crow][new_ccol] == 0){
+            printf("crow: %d ccol: %d ", new_crow, new_ccol);
+            *current_position = new_crow * maze_size + new_ccol;
+            int valid = navigateMaze(current_position, DArray, maze_size);
+            if (valid == 2) return 2;
+        }
     }
-
-    // Update the current position
-    *current_position = new_crow * maze_size + new_ccol;
-
-    // Recursively navigate the maze
-    return navigateMaze(current_position, DArray, maze_size);
+    return 0;
 }
 
 int main(void){
@@ -90,11 +91,11 @@ int main(void){
     printf("Solving the maze......\n");
     maze_status = navigateMaze(&current_position, DArray, maze_size);
     if (maze_status == 0){
-        printf("No more moves!\n");
+        printf("\nNo more moves!\n");
     }else if (maze_status == 1){
-        printf("Hit a Wall. Dead End\n");
+        printf("\nHit a Wall. Dead End\n");
     } else if (maze_status == 2){
-        printf("Successfully Solved. Reached to the end.\n");
+        printf("\nSuccessfully Solved. Reached to the end.\n");
     }
     freeMemory(DArray, maze_size);
     return 0;
