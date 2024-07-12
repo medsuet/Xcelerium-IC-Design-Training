@@ -8,7 +8,7 @@
 
 ## Overview
 
-`lab1.c` is a C program that includes various functions to demonstrate fundamental concepts and syntax in C programming. This program is divided into several parts, covering basic data types, operators, control structures, functions, arrays, and strings. Each section contains practical exercises and examples to help understand these concepts better.
+`lab1.c` is a C program that includes various functions to demonstrate fundamental concepts and syntax in C programming. This program is divided into several parts, covering basic data types, operators, control structures, functions, arrays, and strings. 
 
 ## Contents
 
@@ -31,7 +31,9 @@
     - `secondLargest(int arr[], int size)`: Finds the second largest element in an array.
 
 ## How to Use
-
+``` bash
+cd xce_lab1
+```
 1. **Compilation**
     ```sh
     gcc lab1.c -o lab1
@@ -41,10 +43,9 @@
     ```sh
     ./lab1
     ```
-
 # Lab 2 - Advanced C Programming Exercises
 
-This project contains a series of exercises designed to enhance your understanding of advanced C programming concepts, including structures, pointers, dynamic memory allocation, linked lists, file I/O, and unions.
+This project contains a series of exercises in C programming including structures, pointers, dynamic memory allocation, linked lists, file I/O, and unions.
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -60,16 +61,26 @@ This project contains a series of exercises designed to enhance your understandi
    - [Part 7: File I/O](#part-7-file-io)
 
 ## Introduction
-This lab focuses on applying advanced concepts in C programming. Each part builds on previous knowledge and incorporates new techniques to solve problems.
-
+This lab focuses on applying advanced concepts in C programming.
 ## Compilation
+``` bash
+cd xce_lab2
+```
 To compile the code, use the following command:
 ```bash
 gcc -o lab2 lab2.c
 ```
+To compile booth multiplier and memory management maze
+```bash
+gcc -o boothMultiplier boothMultiplier.c
+gcc -o memoryMaze memoryMaze.c
+```
+
 ## Execution
 ```bash
 ./lab2
+./boothMultiplier
+./memoryMaze
 ```
 ## Exercises
 
@@ -81,8 +92,9 @@ gcc -o lab2 lab2.c
   - `divide`: Divides the first integer by the second (if the second is not zero).
 
 ### Part 2: Structures
-- **Student Structure**: Define a structure to store student information.
-- **Department Structure**: Define a structure to store department information, which includes an array of students.
+- **Student Structure**
+- **Department Structure**
+- **University Structure** 
 
 ### Part 3: Pointers and Functions
 - **Function Pointers**: Define and use function pointers for arithmetic operations.
@@ -125,7 +137,7 @@ This lab is designed to provide hands-on experience with Linux shell scripting a
     ./taska_b.sh
     ```
 ## Task 5 - Makefiles
-This project demonstrates the use of a Makefile for compiling and managing a C program with `main.c` and `functions.c`. The Makefile includes various targets to build the project, clean up generated files, and compile with debugging symbols. Additionally, it handles multiple source files automatically and implements dependency tracking for header files.
+This project demonstrates the use of a Makefile for compiling and managing a C program with `main.c` and `functions.c`. It handles multiple source files automatically and implements dependency tracking for header files.
 
 ### Makefile Targets
 
@@ -157,4 +169,62 @@ This project demonstrates the use of a Makefile for compiling and managing a C p
    ```sh
    make debug
    ```
-   
+  # Lab6 RISC-V Assembly Exercises
+
+This lab contains RISC-V assembly programs demonstrating basic operations such as arithmetic calculations and bit manipulation. The programs are run on spike simulator.
+
+## Programs
+
+### Problem 1: Absolute Difference Calculation
+
+This program calculates the absolute difference between two predefined integers. 
+
+**Key Features:**
+- Loads two integers from memory.
+- Computes the difference between them.
+- Calculates the absolute value of the result.
+- Stores the final result in memory.
+
+**Assembly File:** `Problems/Problem_1/problem_1.s`
+
+### Problem 2: Bit Count in a 32-bit Number
+
+This program counts the number of set bits (1s) in a 32-bit integer.
+
+**Key Features:**
+- Loads a 32-bit integer from memory.
+- Iterates through each bit to count the number of set bits.
+- Stores the count of set bits in memory.
+
+**Assembly File:** `Problems/Problem_2/problem_2.s`
+
+## Build and Run
+
+To build and run the programs, use the provided `Makefile`. The Makefile includes rules to assemble, link, and run the programs using Spike.
+
+### Build All Programs
+move to directory
+``` bash
+cd xce_lab6_assembly
+```
+```bash
+make
+```
+### Run a Specific Program
+
+To run a specific program, set the `PROG` variable: x could be 1, 2, 3, 4 and 5.
+
+```bash
+make run PROG=Problems/Problem_x/problem_x
+```
+### Debug a Specific Program
+To debug a specific program, set the PROG variable and use the debug rule:
+Replace x with 1, 2, 3, 4, and 5.
+```bash
+make debug PROG=Problems/Problem_x/problem_x
+```
+### Clean Up
+To clean up the generated files:
+```bash
+make clean
+```
