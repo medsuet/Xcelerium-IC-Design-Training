@@ -10,3 +10,5 @@
 /Lab3/main
 *.o
 *.elf
+*.Identifier
+Lab6/test.s
