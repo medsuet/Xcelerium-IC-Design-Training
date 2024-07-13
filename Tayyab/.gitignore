@@ -11,4 +11,5 @@
 *.o
 *.elf
 *.Identifier
+*.ds.s
 Lab6/test.s
