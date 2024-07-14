@@ -1,6 +1,7 @@
 
 General form of make commands:\
-`make <action> FILE="filename"`
+`make <action> FILE="filename FLAG="-flag"`\
+`FLAG` is optional and used to pass flags to the risc v toolchain or spike.
 
 For example: `make assemble FILE="example.s"` assembles example.s and outputs example.o
 
