@@ -76,6 +76,8 @@ void runTestCase(uint32_t dividend, uint32_t divisor) {
 // Main function to run multiple test cases
 int main() {
     // TODO: Implement multiple test cases
+    // Seed the random number generator
+    srand(time(NULL));
     // runTestCase(dividend, divisor)
     runTestCase(20, 3);
     runTestCase(100, 10);
