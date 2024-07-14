@@ -3,13 +3,13 @@
 
 
 ## Build
-General form of make commands:\
-`make <action> FILE="filename FLAG="-flag"`\
-`FLAG` is optional and used to pass flags to the risc v toolchain or spike.
+General form of make commands:
+
+`make <action> FILE="filename"`
 
 For example: `make assemble FILE="example.s"` assembles example.s and outputs example.o
 
-#Actions:\
+### Actions:
 `assemble`: Assemble an assembly file.\
 `link`: Link object file using $(LINKERSCRIPT). The default is link.ld. Generates execuatble with .elf extention.\
 `dump`: Disassembles a binary file and outputs assembly in a .s text file with same filename.\
@@ -20,6 +20,6 @@ For example: `make assemble FILE="example.s"` assembles example.s and outputs ex
 `spikelog`: Runs the specified file on Spike simulator in debug mode with --log-commits flag.\
 `clean`: Removes all .o , .elf , .o.s , .elf.s files (the last two extentions are for disassembled files).
 
-#Requirements:\
+### Requirements:
 1. RISCV GNU Toolchain. Can be installed using `sudo apt-get install gcc-riscv64-unknown-elf`\
 2. Spike (for `spike` and `spikelog` targets).
