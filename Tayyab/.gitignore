@@ -1,3 +1,8 @@
+*.o
+*.elf
+*.Identifier
+*.ds.s
+*_c.s
 /Lab1/Lab1
 /Lab2/Lab2
 /Lab2/boothmultiplier
@@ -8,8 +13,3 @@
 /Lab3/installscripts/
 /Lab3/a.tar
 /Lab3/main
-*.o
-*.elf
-*.Identifier
-*.ds.s
-Lab6/test.s

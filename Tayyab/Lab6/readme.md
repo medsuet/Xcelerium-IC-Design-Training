@@ -1,4 +1,8 @@
 
+## About
+
+
+## Build
 General form of make commands:\
 `make <action> FILE="filename FLAG="-flag"`\
 `FLAG` is optional and used to pass flags to the risc v toolchain or spike.
@@ -9,7 +13,7 @@ For example: `make assemble FILE="example.s"` assembles example.s and outputs ex
 `assemble`: Assemble an assembly file.\
 `link`: Link object file using $(LINKERSCRIPT). The default is link.ld. Generates execuatble with .elf extention.\
 `dump`: Disassembles a binary file and outputs assembly in a .s text file with same filename.\
-`compile`: Compiles a c program and generates assembly.\
+`compile`: Compiles a c program and generates assembly. Modifes toolchain output to enable running on spike.\
 `build_as`: Assemble and link an assembly file.\
 `build_c`: Compile, assemble and link a c file.\
 `spike`: Assembles, links and runs the specified file on Spike simulator in debug mode.\

@@ -9,17 +9,25 @@
 .global _start
 
 .section .text
-_start:
-    # Initialize registers
-    li a2, 5                    # dividend
-    li a3, 3                    # divisor (M)
+restoring_division:
+    # Routine for restoring division algorithem
+    # Arguments: a2: dividend       a3: divisor
+    # Outputs:   a0: quotient       a1: reminder
+    # Returns to ra 
+
+    bne a3, x0, step1          # check divide by zero case
+    li a0, 0
+    li a1, 0
+    ret
+
+step1:
     add a0, x0, a2              # (quotient) Q = dividend
     li a1, 0                    # (reminder) A = 0
     li t0, 32                   # (number of bits) N = 32
 
 step2:
     # shift AQ left
-    lui t3, 0x80000
+    li t3, 0x80000000
     and t4, a0, t3              # get msb of Q
     srli t4, t4, 31             # shift it to lsb position
     slli a0, a0, 1              # shift Q left
@@ -44,10 +52,17 @@ step4right:
 
 step5:
     addi t0, t0, -1             # decrement counter
+
 step6:
     bne t0, x0, step2           # if counter is not 0, we loop back to step2
 
-# quotient: a0      reminder: a1  
+return:
+    ret
+
+_start:
+    li a2, 5                    # dividend
+    li a3, 3                    # divisor (M)
+    call restoring_division
 
 end:
     # Signal test pass to Spike
