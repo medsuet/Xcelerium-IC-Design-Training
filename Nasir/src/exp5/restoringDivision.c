@@ -1,6 +1,17 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
+
+// division by zero 
+
+void divisionByZero(){
+    // handling division by zero 
+    printf("Error: Division by zero.\n");
+    // exit from program
+    exit(1);
+    return;
+}
 
 // TODO: Implement the restoringDivision function
 
@@ -19,6 +30,11 @@ void restoringDivision(uint32_t dividend, uint32_t divisor, uint32_t *quotient, 
     // initialization 
     // *remainder = 0;
     // *quotient = 0;
+
+    // handling division by zero 
+    if (divisor == 0){
+        divisionByZero();
+    }
     int bitLength = sizeof(uint32_t) * 8;
 
     for (int i = 0; i < bitLength; i++){
@@ -57,6 +73,10 @@ void runTestCase(uint32_t dividend, uint32_t divisor) {
     uint32_t quotient = 0;
     uint32_t remainder = 0;
     restoringDivision(dividend, divisor, &quotient, &remainder);
+    // handling division by zero 
+    // if (divisor == 0){
+    //     divisionByZero();
+    // }
 
     uint32_t expected_quotient = dividend / divisor;
     uint32_t expected_remainder = dividend % divisor;
@@ -80,11 +100,15 @@ int main() {
     srand(time(NULL));
     // runTestCase(dividend, divisor)
     runTestCase(20, 3);
+    runTestCase(1, 20);
     runTestCase(100, 10);
     runTestCase(4294967295, 1);
     runTestCase(1234567890, 987654321);
     runTestCase(11, 3);  // Added the original test case you provided
     runTestCase(( rand() % 100000 ), ( rand() % 1000 ) );
+    // division by zero
+    runTestCase(20, 0);
+    // runTestCase(0, 0);
     return 0;
 }
 
