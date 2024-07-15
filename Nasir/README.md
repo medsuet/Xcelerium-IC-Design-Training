@@ -106,8 +106,8 @@ cd /Xcelerium-IC-Design-Training/Nasir/src/exp3
 #### Explanation:
 
    It will change mode of .sh file into executable
-   #### Note: 
-            Change filename with actual filename to execute
+#### Note: 
+      Change filename with actual filename to execute
 
 3. run shell script
 
@@ -118,8 +118,8 @@ cd /Xcelerium-IC-Design-Training/Nasir/src/exp3
 #### Explanation:
 
    It will run .sh file
-   #### Note: 
-            Change filename with actual filename to execute
+#### Note: 
+      Change filename with actual filename to execute
 
 ### Experiment 4 (exp4) TCL Scripting
 
@@ -142,8 +142,8 @@ cd /Xcelerium-IC-Design-Training/Nasir/src/exp4
 ```
 #### Explanation:
    It will change mode of TCL file into executable
-   #### Note:
-            Change filename with actual filename to execute
+#### Note:
+      Change filename with actual filename to execute
 
 3. run .tcl script
 
@@ -154,8 +154,8 @@ cd /Xcelerium-IC-Design-Training/Nasir/src/exp4
 #### Explanation:
 
    It will run TCL file
-   #### Note: 
-            Change filename with actual filename to execute
+#### Note: 
+      Change filename with actual filename to execute
 
 ### Experiment 5 (exp3) RISC-V Assembly
 
