@@ -2,8 +2,6 @@
 
 # booth multiplier 
 
-import sys
-
 # function to calculate twos complement
 def twoscomplement(multiplicand):
     return (~multiplicand + 1)
@@ -51,14 +49,64 @@ def boothMultiplier(multiplicand, multiplier):
         incrementedQBit = multiplierLsb
         
     return product
-        
-        
-        
 
-print("The result is: ", boothMultiplier(-100, -10))
-# integer size 
+# Function to run a test case
+def runTestCase(multiplicand, multiplier):
+    result = boothMultiplier(multiplicand, multiplier)
+    expected = multiplicand * multiplier
 
-# my_int = 10
-# print(f"Memory size of {my_int} = {sys.getsizeof(my_int)} bytes")
-# print(sys.getsizeof(sys.maxsize))
-# print(f"{my_int.bit_length()} ")
+    print(f"Multiplier: {multiplier}, Multiplicand: {multiplicand}")
+    print(f"Computed Result: {result}")
+    print(f"Expected Result: {expected}")
+
+    if result == expected:
+        print("Test case passed.")
+    else:
+        print("Test case failed.")
+    print()
+
+# Main function to run multiple test cases
+def main():
+    import random
+
+    # Seed the random number generator
+    random.seed()
+
+    # Run test cases
+    print("'Multiplication by zero' \n")
+    print("The result of 10 x 0 is: ", boothMultiplier(10, 0))
+    print("The result of 0 x 10 is: ", boothMultiplier(0, 10), "\n")
+    print("'Multiplication by 1' \n")
+    print("The result of 10 x 1 is: ",boothMultiplier(0, 10))
+    print("\n") 
+    print("The result of 2**31-1 x 2**31-1 is: ", boothMultiplier(2**31-1, 2**31-1))
+    print("Expected: ", (2**31-1) * (2**31-1))
+
+    for i in range(10):
+        print("\n###########################\n")
+        # Generate a random number between 0 and RAND_MAX
+        random_value = random.randint(0, 2**31 - 1)
+        random_value2 = random.randint(0, 2**31 - 1)
+        # Transform the random value to get a positive or negative value
+        # This will map the range [0, RAND_MAX] to [-RAND_MAX/2, RAND_MAX/2]
+        posNegRandomMultiplier = random_value - (2**31 // 2)
+        posNegRandomMultiplicand = random_value2 - (2**31 // 2)
+
+        print(f"The Multiplier is: {posNegRandomMultiplier}")
+        print(f"The Multiplicand is: {posNegRandomMultiplicand}")
+
+        multiplier = posNegRandomMultiplier
+        multiplicand = posNegRandomMultiplicand
+        result = boothMultiplier(multiplicand, multiplier)
+        print(f"The Computed result of {multiplicand} and {multiplier} is: {result}")
+        actual = multiplicand * multiplier
+        print(f"Expected: {actual}")
+        # checking test
+        if result == actual:
+            print(f"Test {i}: Passed")
+        else:
+            print(f"Test {i}: Failed")
+
+if __name__ == "__main__":
+    main()
+
