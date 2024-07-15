@@ -109,7 +109,6 @@ def ArtithmeticLeftShift(array_AQ):
     for j in range(0,63,1):
         array_AQ[j]=array_AQ[j+1]
     array_AQ[63]=0
-    array_AQ[0]=0
     return array_AQ
 def TwoArraysSplitter(array_AQ):
     array_A=[0]*32
