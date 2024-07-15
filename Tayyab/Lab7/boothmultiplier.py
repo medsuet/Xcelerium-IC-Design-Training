@@ -5,6 +5,8 @@ Author: Muhammad Tayyab
 Description: Booth's multipler algorithem for 32 bit integers
 """
 
+import random
+
 def boothMultiplier(BR,QR):
     """
     Booth's multipler algorithem for 32 bit integers
@@ -13,17 +15,15 @@ def boothMultiplier(BR,QR):
     """
     AC = 0
     Qn1 = 0                             # Qn+1 register
-    n = 4                              # number of bits in integer
+    n = 32                              # number of bits in integer
 
     for SC in range(n, 0, -1):          # SC from 32 to 0
         Qn = (QR & 1)                   # get last bit of QR
-        
-        print(f"AC:{bin(AC)}\nQ:{bin(QR)}\nBR:{bin(BR)}\nSC::{SC}\n")
 
         if ((Qn==0) and (Qn1==1)):      
             AC = AC + BR
         elif ((Qn==1) and (Qn1==0)):
-            AC = AC + (~BR) + 1
+            AC = AC + (~BR) + 1         
 
         # Arthematic shift right 1 place
         # <AC bits><QR bits> as 1 group
@@ -38,19 +38,29 @@ def boothMultiplier(BR,QR):
             QR = QR | (1<<(n-1))
         else:
             QR = QR & (~(1<<(n-1)))
-    
-        if (Qn1 == 1):                  # place Qn+1 at msb of AC
-            AC = AC | (1<<(n-1))
-        #else:
-        #    AC = AC & (~(1<<(n-1)))
+        
+        #if (Qn1 == 1):                  # place Qn+1 at msb of AC
+        #    AC = AC | (1<<(n-1))
+        
         AC = AC | (AC_msb)
-        
+
         Qn1 = QR_lsb
-        
+
+    QR = QR % (1<<n)
+
     return ( (AC << n) | QR )           # result is <AC bits><QR bits> (possibly a 64 bit number)
 
-a=15
-b=1
-product = boothMultiplier(a,b)
-print(bin(product), "  ", product)
-print(bin(a*b), "  ", a*b)
+# Random tests
+numTests = 1e6
+testNumRange = 1e6
+
+for i in range(int(numTests)):
+    num1 = random.randint(0,testNumRange)
+    num2 = random.randint(0,testNumRange)
+    test_result = boothMultiplier(num1, num2)
+    actual_result = num1 * num2
+    if (test_result != actual_result):
+        print(f"Failed at {num1} x {num2}  ({i+1}th test)")
+        break
+else:
+    print(f"Passed all {i+1} tests")

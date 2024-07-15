@@ -10,13 +10,13 @@ nrd : non_restoringdivision
 
 # Targets for python scripts
 boothmultiplier : boothmultiplier.py
-	@python boothmultiplier.py
+	@python3 boothmultiplier.py
 
 cache_simulator: cache_simulator.py
-	@python cache_simulator.py
+	@python3 cache_simulator.py
 
 non_restoringdivision : non_restoringdivision.py
-	@python non_restoringdivision.py
+	@python3 non_restoringdivision.py
 
 # clean
 clean :
