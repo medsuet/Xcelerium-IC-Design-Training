@@ -60,6 +60,7 @@ int findMaxInMatrix(int rows, int cols, int (*matrix)[cols]) {
 }
 
 // Part 3: Function Pointers
+
 //following function takes array pointer and size of array and sort the array using bubble sort algorithm
 void bubbleSort(int *arr, int size) {
     for (int i = 0; i<(size-1); i++) {
@@ -100,6 +101,7 @@ int (*multiplication)(int a, int b) = multiply;
 int (*division)(int a, int b) = divide;
 
 // Part 4: Linked List
+
 union Data {
     int i;
     float f;
@@ -182,9 +184,12 @@ void freeMemory(void* ptr) {
     }
 }
 
-void checkMemoryLeaks() {
+void checkMemoryLeaks(int *ptr, int allocated_size) {
     // TODO: Check for memory leaks
-
+    for (int i = 0; i < allocated_size; i++) {
+        
+    }
+    
 }
 
 // Part 6: Structures and Unions
@@ -583,6 +588,7 @@ int main() {
     struct Student student_from_file_bin;
     readStudentFromBinaryFile(&student_from_file_bin,binary_filename);
     
+    //printing student info that is read by binary file
     printStudentInfo(&student_from_file_bin);
 
     //checkMemoryLeaks(8);
