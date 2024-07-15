@@ -1,8 +1,8 @@
 .global _start
 .section .text
 _start:
-    li t0, 10        #(Q) dividend
-    li t1, 2         #(M) divisor
+    li t0, 66        #(Q) dividend
+    li t1, 5         #(M) divisor
     li t2, 0         #(A) accumulator
     li t3, 64        #(N) no. of bits
     li t4, 0x8000000000000000  #for taking msb
@@ -22,6 +22,8 @@ loop:
 
 msb_is_one:
     add t2, t2, t1   #A=A+M
+    and t0, t0, t5   #making lsb 0
+
 
 decrement:
     addi t3, t3, -1  #(N=N-1)decrementing counter

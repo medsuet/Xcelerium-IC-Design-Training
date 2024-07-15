@@ -2,16 +2,16 @@
 .section .text
 
 _start:
-    li t0, 1  # t0 = 0 storing results
-    li t1, 5  # t1 = 5 input number
-    li t2, 0  # t2 = 0 counter
+    li t0, 1  #storing results
+    li t1, 6  #input number
+    li t2, 0  #counter
 
 loop: 
-    addi t2, t2, 1  # increment counter
-    mul t0, t0, t2  # multiply t0 by t2
-
-    bge t1, t2, loop # continue looping if t2 < t1
-
+    beq t1, t2, end  #if t1 == t2 break the loop 
+    addi t2, t2, 1   #increment counter
+    mul t0, t0, t2   #multiply t0 by t2
+    j loop
+end:
 # Code to exit for Spike
 li t0, 1
 la t1, tohost
