@@ -21,18 +21,18 @@ Similary for all other tasks.<br>
 ## module_04 (Github Setting)
 *Complete.* <br>
 ## module_05 (TCL Programming)
-All codes are running with proper modifications.
+All codes are running with proper modifications.<br>
 ## module_06 (Lab Experiment- Introduction to RISCV Assembly Programming)
 In first portion of this module i have added two basic example whichhave already been provided in module. <br>
 I also added linker and create a **make file** so that i can debug my assembly programmes in **spike**. <br>
 ### Problems:
 **Basic commands to run any problem:** <br>
-1.*make filename without extension*
-2.*make debug*
-3.*make clean* 
-**Description:**
+1.*make filename without extension*  <br>
+2.*make debug* <br>
+3.*make clean* <br>
+**Description:**<br>
  In this section i have added first five task of problem section part.<br>
- they all can be run via necessary commnds in terminal which i have already been put above.
+ they all can be run via necessary commnds in terminal which i have already been put above.<br>
  
 
 
