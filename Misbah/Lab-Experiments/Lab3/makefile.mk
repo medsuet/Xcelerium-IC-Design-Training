@@ -1,10 +1,13 @@
-all: execute
-	@echo "Done!"
-execute: main.o functions.o
-	gcc main.o functions.o -o execute
-main.o: main.c
-	gcc -c main.c -o main.o
-functions.o: functions.c
-	gcc -c functions.c -o functions.o
-clean:
-	rm -f execute main.o functions.o
+FILES:= HelloWorld.sh name.sh number.sh sum.sh multiples.sh guessgame.sh factorial.sh fruits.sh capitals.sh filereader.sh logreader.sh backup.sh
+
+all: $(FILES)
+
+$(FILES):
+	@if [ "$@" =  "number.sh" ] || [ "$@" = "multiples.sh"  ]; then \
+		chmod +x "$@" && ./"$@" 3; \
+	else \
+		chmod +x $@ && ./$@; \
+	fi
+
+.PHONY: all $(FILES)
+
