@@ -8,6 +8,7 @@ SPIKE = spike
 PROGS = Problems/Problem_1/problem_1 Problems/Problem_2/problem_2 Problems/Problem_3/problem_3 Problems/Problem_4/problem_4 Problems/Problem_5/problem_5
 TASKS = Tasks/task_1 Tasks/task_2 Tasks/task_3
 
+
 # Default target
 all: $(PROGS) $(TASKS)
 
