@@ -99,6 +99,7 @@ int main() {
     // Seed the random number generator
     srand(time(NULL));
     // runTestCase(dividend, divisor)
+    runTestCase(0, 15);
     runTestCase(20, 3);
     runTestCase(1, 20);
     runTestCase(100, 10);
