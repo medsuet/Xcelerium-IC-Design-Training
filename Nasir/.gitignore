@@ -56,6 +56,7 @@ src/exp2/student.txt
 src/exp2/student1.dat
 src/exp2/finalTask
 src/exp2/logfile.txt
+# Ignore files in src/exp5
 src/exp5/example
 src/exp5/htif
 src/exp5/e1p1
