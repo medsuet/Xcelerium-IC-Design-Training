@@ -1,4 +1,4 @@
-filepath="to_read.txt"
+filepath="logfile.txt"
 num=1
 if [ -f "$filepath" ]; then
    while IFS= read -r  line; do
