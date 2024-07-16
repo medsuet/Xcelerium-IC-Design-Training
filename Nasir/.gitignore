@@ -63,4 +63,6 @@ src/exp5/e1p1
 src/exp5/factorial
 src/exp5/reverseArray
 src/exp5/restoringDivision
+src/exp5/nonRestoringDivision
+src/exp5/nonRestoringDivision2
 
