@@ -5,6 +5,8 @@ Author: Muhammad Tayyab
 Description: Non restoring division algorithem for 32 bit integers
 """
 
+import random
+
 def getbit(number, n):
     """
     Returns nth bit of number (lsb is bit 0)
@@ -24,6 +26,7 @@ def nonRestoringDivision(Q,M):
     n = 32
 
     for i in range(n, 0, -1):
+        print(f"i:{i} \nQ: {bin(Q)} \nA: {bin(A)}\n")
         signbit_A = getbit(A, n-1)
 
         # Shift AQ left
@@ -47,8 +50,23 @@ def nonRestoringDivision(Q,M):
     if (signbit_A == 1):
         A=A+M
 
+    A = A % (1<<n)
+
     return (Q, A)
 
-Q,M = 6,3
-Q,A = nonRestoringDivision(Q,M)
-print(bin(Q),bin(A))
+# Random tests
+numTests = 1
+testNumRange = 1e6
+
+for i in range(int(numTests)):
+   num1 = random.randint(0,testNumRange)
+   num2 = random.randint(1 ,testNumRange)
+   num1 = 5
+   num2 = 2
+   test_results =  nonRestoringDivision(num1, num2)
+   correct_results = num1//num2, num1%num2
+   if (test_results != correct_results):
+       print(f"Failed at {num1} x {num2}  ({i+1}th test)")
+       break
+else:
+   print(f"Passed all {i+1} tests")

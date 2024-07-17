@@ -39,14 +39,11 @@ def boothMultiplier(BR,QR):
         else:
             QR = QR & (~(1<<(n-1)))
         
-        #if (Qn1 == 1):                  # place Qn+1 at msb of AC
-        #    AC = AC | (1<<(n-1))
-        
-        AC = AC | (AC_msb)
+        AC = AC | (AC_msb)              
 
-        Qn1 = QR_lsb
+        Qn1 = QR_lsb                    # Store
 
-    QR = QR % (1<<n)
+    QR = QR % (1<<n)                    # Take only left n bits from QR
 
     return ( (AC << n) | QR )           # result is <AC bits><QR bits> (possibly a 64 bit number)
 

@@ -3,10 +3,11 @@
 *.Identifier
 *.ds.s
 *_c.s
+*.log
+!/Lab3/logfile.log
 /Lab1/Lab1
 /Lab2/Lab2
 /Lab2/boothmultiplier
-/Lab2/logfile.log
 /Lab2/maze
 /Lab2/memorymaze
 /Lab2/studentdata.txt
