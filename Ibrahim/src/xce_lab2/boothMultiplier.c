@@ -57,7 +57,7 @@ __int64_t boothMultiplier(int multiplicand, int multiplier) {
         product = rightShifting(multiplier, accumulator, &Q_1, &lsbMultiplier);
         accumulator = ((product >> 32) & 0xFFFFFFFF);
         multiplier  = ((product) & 0xFFFFFFFF);
-        //printf("accumulator: %d, multiplier: %d\n", accumulator, multiplier); 
+        // printf("accumulator: %d, multiplier: %d\n", accumulator, multiplier); 
     }
 
     return product;
