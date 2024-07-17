@@ -2,10 +2,12 @@
 // #include <stdint.h>
 // #include <limits.h>
 
+
 // Define the number of bits in a 32-bit unsigned integer
 #define BITS_IN_UINT32 32
 
 // Function prototypes
+
 void non_restoring_division(unsigned int dividend, unsigned int divisor, unsigned int *quotient, unsigned int *remainder);
 void run_test_case(unsigned int dividend, unsigned int divisor);
 
@@ -34,6 +36,7 @@ void non_restoring_division(unsigned int dividend, unsigned int divisor, unsigne
     while(n != 0){
         if(A & 0x80000000) {
             combinedAQ = ((unsigned long long)A << 32) | Q;
+
             combinedAQ = (combinedAQ << 1);
             Q = combinedAQ & 0xFFFFFFFF;
             A = (combinedAQ >> 32) & 0xFFFFFFFF;
@@ -41,6 +44,7 @@ void non_restoring_division(unsigned int dividend, unsigned int divisor, unsigne
         }
         else {
             combinedAQ = ((unsigned long long)A << 32) | Q;
+
             combinedAQ = (combinedAQ << 1);
             Q = combinedAQ & 0xFFFFFFFF;
             A = (combinedAQ >> 32) & 0xFFFFFFFF;
@@ -72,6 +76,7 @@ void run_test_case(unsigned int dividend, unsigned int divisor) {
     unsigned int quotient, remainder;
     unsigned int actualQ, actualR;
 
+
     // Call restoring_division
     non_restoring_division(dividend, divisor, &quotient, &remainder);
 
@@ -85,13 +90,15 @@ void run_test_case(unsigned int dividend, unsigned int divisor) {
     // printf("Restored Quotient: %u, Restored Remainder: %u\n", quotient, remainder);
     // printf("Operator Quotient: %u, Operator Remainder: %u\n", actualQ, actualR);
 
+
     // Validate results
     // If restored values are equal to actual, print results matched.
-    if (quotient == actualQ && remainder == actualR) {
+    // if (quotient == actualQ && remainder == actualR) {
         // printf("Results match!\n\n");
-    } else {
+    // } else {
         // printf("Results do not match.\n\n");
-    }
+
+    // }
 }
 
 int main() {
