@@ -146,37 +146,23 @@ To compile the programs, use the provided Makefile. Open your terminal or comman
 
     Alternatively, you can compile each part individually by specifying the target:
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     ```sh
-=======
-    ```markdown
-
->>>>>>> 371e5ee (Added the Reademe and gitignore file in each folder)
-=======
-    ```sh
->>>>>>> 505ff64 (Update the Readme.md file for the Lab1&2)
-        make part0
-        make part1
-        make maze
-        make boothMultiplier
-
+    make part0
+    make part1
+    make maze
+    make boothMultiplier
     ```
 ## Running the Programs
 
-    After successfully compiling, you can run each program directly from the command line:
+After successfully compiling, you can run each program directly from the command line:
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 505ff64 (Update the Readme.md file for the Lab1&2)
 ```sh
 ./part0
 ./part1
 ./maze
 ./boothMultiplier
 ```
-<<<<<<< HEAD
+
 ## Cleaning Up
 
 To clean up (delete) all compiled executables, use:
@@ -185,28 +171,3 @@ To clean up (delete) all compiled executables, use:
 make clean
 
 ```
-=======
-    ```markdown
-
-        ./part0
-        ./part1
-        ./maze
-        ./boothMultiplier
-    ```
-=======
->>>>>>> 505ff64 (Update the Readme.md file for the Lab1&2)
-## Cleaning Up
-
-To clean up (delete) all compiled executables, use:
-
-```sh
-make clean
-
-<<<<<<< HEAD
-        make clean
-    ```
->>>>>>> 371e5ee (Added the Reademe and gitignore file in each folder)
-=======
-```
->>>>>>> 505ff64 (Update the Readme.md file for the Lab1&2)
-
