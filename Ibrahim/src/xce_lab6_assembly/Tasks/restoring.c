@@ -1,26 +1,37 @@
-// #include <stdio.h>
-// #include <stdint.h>
-// #include <limits.h>
-
-// Define the number of bits in a 32-bit unsigned integer
+// Define the number of bits in a uint32_t integer
 #define BITS_IN_UINT32 32
-
-// Function prototypes
-void non_restoring_division(unsigned int dividend, unsigned int divisor, unsigned int *quotient, unsigned int *remainder);
+/*
+ * Function: restoring_division
+ * Implements the restoring division algorithm.
+ */
+void restoring_division(unsigned int dividend, unsigned int divisor, unsigned int *quotient, unsigned int *remainder);
+/*
+  Function: run_test_case
+  Runs a test case to verify the restoring division algorithm.
+ */
 void run_test_case(unsigned int dividend, unsigned int divisor);
 
-// Implement the non-restoring division algorithm
-void non_restoring_division(unsigned int dividend, unsigned int divisor, unsigned int *quotient, unsigned int *remainder) {
-    // Initialize registers
-    unsigned int Q = dividend;        // Dividend
-    unsigned int M = divisor;         // Divisor
-    unsigned int A = 0;               // Accumulator
-    unsigned int n = BITS_IN_UINT32;  // Number of bits
-    unsigned int Q0;                  // Least significant bit of Q
-    unsigned long long combinedAQ;          // Combined A and Q for shifting
+// It should take dividend and divisor as inputs and return quotient and remainder
+void restoring_division(unsigned int dividend, unsigned int divisor, unsigned int *quotient, unsigned int *remainder) {
+    // TODO: Implement the non-restoring division algorithm
+    // Remember to handle division by zero
 
-    // Handle division by zero
+    // Step 1: Initializing Q: Dividend, M: Divisor, n: No of bits in dividend and A: remainder
+    unsigned int Q = dividend;        
+    unsigned int M = divisor; 
+
+    // Initialize Remainder A to 0        
+    unsigned int A = 0;               
+    unsigned int n = BITS_IN_UINT32;  
+
+    // This will hold A and Q combined for the purpose of shifting
+    // To keep two 32 bit integer together we require a 64 bit integer 
+    unsigned long long combinedAQ;
+
+
+    // Handling division by zero
     if (divisor == 0) {
+        // Print error and return 
         // printf("Error: Division by zero.\n");
         *quotient = 0;
         *remainder = 0;
@@ -31,40 +42,40 @@ void non_restoring_division(unsigned int dividend, unsigned int divisor, unsigne
     *quotient = 0;
     *remainder = 0;
 
-    while(n != 0){
-        if(A & 0x80000000) {
-            combinedAQ = ((unsigned long long)A << 32) | Q;
-            combinedAQ = (combinedAQ << 1);
-            Q = combinedAQ & 0xFFFFFFFF;
-            A = (combinedAQ >> 32) & 0xFFFFFFFF;
-            A = A + M;
-        }
-        else {
-            combinedAQ = ((unsigned long long)A << 32) | Q;
-            combinedAQ = (combinedAQ << 1);
-            Q = combinedAQ & 0xFFFFFFFF;
-            A = (combinedAQ >> 32) & 0xFFFFFFFF;
-            A = A - M;
-        }
+    // Set the value for counter
+    unsigned int i = n;
 
-        if(A & 0x80000000) {
+    // Step 6: If the value of n becomes zero, we get of the loop otherwise we repeat from step 2 
+    while (i > 0){
+        // Step 2: The content of register A and Q is shifted left as if they are a single unit 
+        combinedAQ = ((unsigned long long)A << 32) | Q;
+        combinedAQ = (combinedAQ << 1);
+        Q = combinedAQ & 0xFFFFFFFF;
+        A = (combinedAQ >> 32) & 0xFFFFFFFF;
+
+        // Part 3: Subtract M from A
+        A -= M;
+
+        // Part 4: Check the most significant bit of A
+        if (A & 0x80000000) {
             // MSB of A is 1, so set the LSB of Q to 0 and restore A
             Q &= 0xFFFFFFFE;
-        }
-        else {
+            A += M;
+        } else {
             // MSB of A is 0, so set the LSB of Q to 1
             Q |= 1;
         }
-        
-        n = n - 1;
+
+    // Step 5: decrement n
+        i = i - 1;
     }
-    if(A & 0x80000000) {
-        A = A + M;
-    }
-    // Step 9: Finally, the register Q contains the quotient and A contains remainder
+
+    // Step 7: Finally, the register Q contains the quotient and A contains remainder
     *quotient = Q;
     *remainder = A;
+
 }
+
 
 // TODO: Implement test cases
 void run_test_case(unsigned int dividend, unsigned int divisor) {
@@ -73,7 +84,7 @@ void run_test_case(unsigned int dividend, unsigned int divisor) {
     unsigned int actualQ, actualR;
 
     // Call restoring_division
-    non_restoring_division(dividend, divisor, &quotient, &remainder);
+    restoring_division(dividend, divisor, &quotient, &remainder);
 
     // Compare with standard division
     actualQ = dividend / divisor;
@@ -122,5 +133,8 @@ int main() {
     run_test_case(443, 722);
     run_test_case(122, 222);
     run_test_case(10000, 2000);
+    // run_test_case(0, 1);
+    // //run_test_case(1000000, 0);
+    // run_test_case(99999999, 100000000);
     return 0;
 }
