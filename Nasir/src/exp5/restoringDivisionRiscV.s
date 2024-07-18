@@ -1,6 +1,7 @@
 .global _start
 
 # data section 
+# data section
 .section .data
     dividend: .word 20 # 20 will be stored in dividend variable on stack
     divisor: .word 1   # 3 will be stored in variable divisor
