@@ -9,6 +9,7 @@
 .section .text
 .global _start
 
+
 _start:
     la t0, dividend  # load address of dividend in t0
     lw t1, (t0)      # store value at address 0 in t1 = dividend
@@ -29,6 +30,7 @@ loop:
     or t4, t4,x11       # replace lsb of remainder with x11, a sign bit of dividend
     slli t1, t1,1       # shift left dividend by 1 bit
     addi x12, t4,0      # store remainder in x12 for restoring it 
+
     sub t4,t4,t2        # remainder = remainder - divisor
     and x13, t4, t5     # extract sign bit of remainder
     srli x13, x13, 31   # store sign bit of remainder in x13
@@ -42,7 +44,6 @@ updateQuotientOne:
 updateQuotient0RestoreA:  # A = Remainder
     slli t3, t3, 1        # update quotient by q[0] = 0
     addi t4, x12, 0       # restore remainder
-
 
 decrementLoop:
     sub t6, t6, x10  # decrement loop counter by 1
