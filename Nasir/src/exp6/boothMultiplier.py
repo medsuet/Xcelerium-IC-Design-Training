@@ -21,7 +21,7 @@ def rightArithmeticShift(accumulator, multiplier):
 # function to calculate multiplication of two signed numbers or integers
 def boothMultiplier(multiplicand, multiplier):
     # initialize accumulator and multiplierLsb and incremented bit of multiplier
-    accumultor = 0
+    accumulator = 0
     multiplierLsb = 0
     incrementedQBit = 0
     # for loop upto length of signed integer
@@ -31,24 +31,32 @@ def boothMultiplier(multiplicand, multiplier):
         # if 10  accumulator - multiplicand
         if ((multiplierLsb == 1) & (incrementedQBit == 0)):
             result = twoscomplement(multiplicand)
-            accumultor = accumultor + result
+            accumulator = accumulator + result
+            # print(f'accumulator1 = {accumulator}')
         # if 01 accumulator + multiplicand
         elif ((multiplierLsb == 0) & (incrementedQBit == 1)):
-            accumultor = accumultor + multiplicand
+            accumulator = accumulator + multiplicand
             
         # arithmetic right shift
         # cancatenation of accumulator and multiplier
-        product = rightArithmeticShift(accumultor, multiplier)
+        product = rightArithmeticShift(accumulator, multiplier)
         # extract updated accumulator and multiplier
-        accumultorUpdated = (rightArithmeticShift(accumultor, multiplier) >> 32)
-        multiplierUpdated = rightArithmeticShift(accumultor, multiplier) & 0xFFFFFFFF
+        accumultorUpdated = (product >> 32)
+        multiplierUpdated = product & 0xFFFFFFFF
         # update accumulator and multiplier
-        accumultor = accumultorUpdated
+        accumulator = accumultorUpdated
         multiplier = multiplierUpdated
-        # print(f"A: {accumultor}\n Q: {multiplier}\n")
+        # print(f"A: {accumulator}\n Q: {multiplier}\n")
         incrementedQBit = multiplierLsb
         
+        # print(f'accumulator3 = {accumulator}, multiplier3 = {multiplier}')
+        # print(f'accumulator: {bin(accumulator)[2:]}')
+        # print(f'multiplier: {bin(multiplier)[2:]}')
+        # print(f'product: {bin(product)[2:]}')
+        
     return product
+
+
 
 # Function to run a test case
 def runTestCase(multiplicand, multiplier):
@@ -77,7 +85,7 @@ def main():
     print("The result of 10 x 0 is: ", boothMultiplier(10, 0))
     print("The result of 0 x 10 is: ", boothMultiplier(0, 10), "\n")
     print("'Multiplication by 1' \n")
-    print("The result of 10 x 1 is: ",boothMultiplier(0, 10))
+    print("The result of 10 x 1 is: ",boothMultiplier(10,1))
     print("\n") 
     print("The result of 2**31-1 x 2**31-1 is: ", boothMultiplier(2**31-1, 2**31-1))
     print("Expected: ", (2**31-1) * (2**31-1))
