@@ -54,3 +54,9 @@ dkms.conf
 # Ignore Visual Studio Code settings folder
 .vscode/
 
+# Ignore binary files
+*.bin
+
+# Ignore text files
+*.txt
+

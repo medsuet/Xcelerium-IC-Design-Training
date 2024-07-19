@@ -320,13 +320,39 @@ void readStudentFromBinaryFile(struct Student* s, const char* filename) {
     fread(s, sizeof(struct Student), 1, file);
     fclose(file);
 }
+// Function to get the current timestamp
+void getTimestamp(char* buffer, size_t bufferSize) {
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    strftime(buffer, bufferSize, "%Y-%m-%d %H:%M:%S", t);
+}
 
 void logMessage(const char* message, const char* logfile) {
-    // TODO: Append a timestamped message to the log file
+     FILE* file = fopen(logfile, "a");
+    if (file == NULL) {
+        perror("Unable to open log file");
+        return;
+    }
+    char timestamp[20];
+    getTimestamp(timestamp, sizeof(timestamp));
+
+    fprintf(file, "[%s] %s\n", timestamp, message);
+    fclose(file);
 }
 
 void displayLog(const char* logfile) {
-    // TODO: Read and display the contents of the log file
+    FILE* file = fopen(logfile, "r");
+    if (file == NULL) {
+        perror("Unable to open log file");
+        return;
+    }
+
+    char buffer[256];
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        printf("%s", buffer);
+    }
+
+    fclose(file);
 }
 
 
@@ -603,6 +629,15 @@ int main() {
     printf("grade: %.2f\n", empty_student_bin.grades[0]);
     printf("grade: %.2f\n", empty_student_bin.grades[1]);
     printf("grade: %.2f\n", empty_student_bin.grades[2]);
+
+    const char* logfile = "logfile.txt";
+
+    logMessage("This is a test log message.", logfile);
+    logMessage("Another log message.", logfile);
+
+    printf("Log contents:\n");
+    displayLog(logfile);
+
     
 
     return 0;
