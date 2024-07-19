@@ -34,5 +34,52 @@ I also added linker and create a **make file** so that i can debug my assembly p
  In this section i have added first five task of problem section part.<br>
  they all can be run via necessary commnds in terminal which i have already been put above.<br>
  
+### Tasks:
+1.my first task was to implement non-restoring division algorithm both in C and in RISC-V assembly.<br>
+I have implemned it via both ways.<br>
+**C file name:** <br>
+*non_restoring_division_algorithm.c* <br>
+**Assembly file name:**<br>
+*assembly_non_restoring_division_algorithm.s*<br>
+
+2.my 2nd task was to set and clear any bit in 32-bit number both in C and in RISC-V assembly.<br>
+I have implemned it via both ways.<br>
+**C file name:** <br>
+*setting_and_clearing_bit.c* <br>
+**Assembly file name:**<br>
+*assembly_setting_and_clearing_bit.s* <br>
+
+3.my 3rd task was to implement restoring division algorithm both in C and in RISC-V assembly.<br>
+I have implemned it via both ways.<br>
+**C file name:** <br>
+*restoring_division_algorithm.c* <br>
+**Assembly file name:**<br>
+*assembly_restoring_division_algorithm.s* <br>
+
+## module_05 (Lab Experiment Python)
+In this module i have implemented my previous tasks into python.<br>
+### Problems:
+1.Implement 32-bit Booth’s Multiplier in python.<br>
+**filename.** <br>
+**Note:** for clarification i have also added my c file here.<br>
+*python_booth_multiplier.py* <br>
+2.Implement 32-bit unsigned non-restoring division algorithm in python.<br>
+**filename.** <br>
+*non_restoring_division_algorithm.py* <br>
+## Tasks:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
