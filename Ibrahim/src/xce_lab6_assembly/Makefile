@@ -6,7 +6,7 @@ SPIKE = spike
 
 # List of programs with directories
 PROGS = Problems/Problem_1/problem_1 Problems/Problem_2/problem_2 Problems/Problem_3/problem_3 Problems/Problem_4/problem_4 Problems/Problem_5/problem_5
-TASKS = Tasks/task_1 Tasks/task_3
+TASKS = Tasks/task_1 Tasks/task_2 Tasks/task_3
 
 # Default target
 all: $(PROGS) $(TASKS)
@@ -49,6 +49,6 @@ endif
 clean:
 	rm -f Problems/Problem_1/*.o Problems/Problem_2/*.o Problems/Problem_3/*.o Problems/Problem_4/*.o Problems/Problem_5/*.o \
           Problems/Problem_1/problem_1 Problems/Problem_2/problem_2 Problems/Problem_3/problem_3 Problems/Problem_4/problem_4 Problems/Problem_5/problem_5 \
-          Tasks/*.o Tasks/task_1 Tasks/task_3
+          Tasks/*.o Tasks/task_1 Tasks/task_2 Tasks/task_3
 
 .PHONY: all run debug clean
