@@ -1,5 +1,5 @@
-Name : 11
+Name : 1
 ID : 1
-grades in sub 1 : 1.000
+grades in sub 1 : 11.000
 grades in sub 2 : 1.000
 grades in sub 3 : 1.000

@@ -59,6 +59,16 @@ int findMaxInMatrix(int rows, int cols, int (*matrix)[cols]) {
     return max_value;
 }
 
+//following function calculates the sum of each row of matrix
+void sumOfEachRow(int rows, int cols, int arr[rows][cols], int result[]) {
+    for(int i = 0; i < rows; i++) {
+        result[i] = 0;
+        for(int j = 0; j < cols; j++) {
+            result[i] += arr[i][j];
+        }
+    }
+}
+
 // Part 3: Function Pointers
 
 //following function takes array pointer and size of array and sort the array using bubble sort algorithm
@@ -135,17 +145,24 @@ void insertAtBeginning(struct Node** head, union Data data) {
 void deleteByValue(struct Node** head, union Data value) {
     struct Node* curr = *head;
     struct Node* prev = NULL;
+
     while (curr != NULL) {
-        // Check if the current node's data matches the value
-        if ((curr->data.i && value.i == curr->data.i) || (curr->data.f && value.f == curr->data.f) || (curr->data.c && value.c == curr->data.c)) {
-            prev = curr;
-            curr = curr->next;           
-            break;
+        //checking if the current node's data matches the value
+        if ((curr->data.i == value.i) || (curr->data.f == value.f) || (curr->data.c == value.c)) {
+            //if the node to be deleted is the head node
+            if (prev == NULL) {
+                *head = curr->next;
+            } else {
+                prev->next = curr->next;
+            }
+            free(curr);
+            return; 
         }
+        prev = curr;
+        curr = curr->next;
     }
-    prev->next = curr->next;
-    free(curr);
 }
+
 
 //following function prints the linked list
 void printList(struct Node* head) {
@@ -297,10 +314,27 @@ void readStudentFromBinaryFile(struct Student* s, const char* filename) {
 
 void logMessage(const char* message, const char* logfile) {
     // TODO: Append a timestamped message to the log file
+    FILE *line = fopen(logfile , "r");
+    if (line == NULL) {
+        printf("Could not open the log file");
+        return;
+    }
+
 }
 
 void displayLog(const char* logfile) {
-    // TODO: Read and display the contents of the log file
+    //open the log file for reading
+    FILE *file = fopen(logfile, "r");
+    if (file == NULL) {
+        printf("Could not open the log file\n");
+        return;
+    }
+    char buffer[256];  //buffer to hold each line
+    //read and display each line from the log file
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        printf("%s", buffer);
+    }
+    fclose(file);
 }
 
 
@@ -308,7 +342,7 @@ int main() {
     srand(time(NULL));
 
     // Part 1: Pointer Basics and Arithmetic
-    printf("Part 1: Pointer Basics and Arithmetic\n");
+    printf("\nPart 1: Pointer Basics and Arithmetic\n\n");
     
     //swaps the values using pointers
     int x = 10;
@@ -352,7 +386,7 @@ int main() {
     }
 
     // Part 2: Pointers and Arrays
-    printf("\n \nPart 2: Pointers and Arrays\n");
+    printf("\n \nPart 2: Pointers and Arrays\n\n");
 
     int rows = 3;
     int cols = 3;
@@ -368,8 +402,17 @@ int main() {
     //finding the maximum value in the matrix using pointers 
     printf("Max value in matrix is %d",findMaxInMatrix(rows, cols, matrix_ptr));
 
+    //calculating sum of each row of matrix
+    int sumOfRows[rows];
+
+    sumOfEachRow(rows, cols, matrix, sumOfRows);
+
+    for(int i = 0; i < rows; i++) {
+        printf("\nsum of row %d : %d", i, sumOfRows[i]);
+    }
+
     // Part 3: Function Pointers
-    printf("\n\nPart 3: Function Pointers\n");
+    printf("\n\nPart 3: Function Pointers\n\n");
 
     //sorting array with bubble sort
     int array[10] = {6,5,7,4,2,7,9,0,3,1};
@@ -396,7 +439,7 @@ int main() {
     int *a_array_ptr = a_array;
     int size_of_a_array = sizeof(a_array)/sizeof(a_array[0]);
     
-    //sorting array with bubble sort
+    //sorting array with selection sort
     selectionSort(a_array_ptr,size_of_a_array);
 
     //printing_sorted_array sorted with selection sort
@@ -405,7 +448,7 @@ int main() {
         printf("%d ",*(a_array_ptr + i));
     }
 
-    //selecting_sorting_algorithm
+    //selecting sorting using function pointer 
     int a_arr1[10] = {9,6,4,8,6,4,5,1,0,1};
     int *a_arr1_ptr = a_arr1;
     int size_of_a_arr1 = sizeof(a_arr1)/sizeof(a_arr1[0]);
@@ -426,7 +469,7 @@ int main() {
     printf("\nDivision using function ptr of %d and %d : %d",r,s,division(r,s));
 
     // Part 4: Advanced Challenge
-    printf("\n\nPart 4: Advanced Challenge\n");
+    printf("\n\nPart 4: Advanced Challenge\n\n");
     
     //linked list
     //making head node
@@ -453,12 +496,12 @@ int main() {
     insertAtBeginning(&head,n3);
     insertAtBeginning(&head,n4);
     printList(head);     
-    // deleteByValue(&head,n1);
-    // printList(head);
+    deleteByValue(&head,n2);
+    printList(head);
 
 
     //Part 5: Dynamic Memory Allocation
-    printf("\nPart 5: Dynamic Memory Allocation\n");
+    printf("\nPart 5: Dynamic Memory Allocation\n\n");
     
     int size;
     printf("Enter size of array : ");
@@ -506,7 +549,7 @@ int main() {
     freeMemory(pointer);
 
     // Part 6: Structures and Unions
-    printf("\n\nPart 6: Structures and Unions");
+    printf("\n\nPart 6: Structures and Unions\n");
 
     //making student structure
     struct Student student1;
@@ -564,23 +607,18 @@ int main() {
     printf("\nCharacter data type : %c",data_type.c);
 
     // Part 7: File I/O
-    printf("\nPart 7: File I/O\n \n");
+    printf("\n\nPart 7: File I/O\n");
 
     const char* filename = "student.txt";
     const char* binary_filename = "student_binary.bin";
-    
+
     //writing student data to file
     writeStudentToFile(&student1,filename);
 
     //reading student data from file and make student data
     struct Student student_from_file;
     readStudentFromFile(&student_from_file,filename);
-    printf("Name : %s\n",student_from_file.name);
-    printf("ID : %d\n",student_from_file.id);
-    printf("grades in sub 1 : %.2f\n",student_from_file.grades[0]);
-    printf("grades in sub 2 : %.2f\n",student_from_file.grades[1]);
-    printf("grades in sub 3 : %.2f\n",student_from_file.grades[2]);
-
+    printStudentInfo(&student_from_file);
     //writing student data to binary file
     writeStudentToBinaryFile(&student1,binary_filename);
 
@@ -591,7 +629,10 @@ int main() {
     //printing student info that is read by binary file
     printStudentInfo(&student_from_file_bin);
 
+    //display log file
+    const char* logfile = "logfile.log";
+    displayLog(logfile);
     //checkMemoryLeaks(8);
-
+    printf("\n");
     return 0;
 }
