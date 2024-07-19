@@ -67,8 +67,13 @@ In this module i have implemented my previous tasks into python.<br>
 **filename.** <br>
 *non_restoring_division_algorithm.py* <br>
 ## Tasks:
-
-
+1.In this task i have to make a cache simulator in python.<br>
+**filename.**<br>
+*cache_simulator.py*<br>
+**Running Commands.**<br>
+*python3 cache_simulator.py*<br>
+**Note:**<br>
+I have done all tasks of module-07 of python programming.<br>
 
 
 
