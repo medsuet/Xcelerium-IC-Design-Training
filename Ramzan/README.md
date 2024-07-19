@@ -56,7 +56,7 @@ I have implemned it via both ways.<br>
 **Assembly file name:**<br>
 *assembly_restoring_division_algorithm.s* <br>
 
-## module_05 (Lab Experiment Python)
+## module_07 (Lab Experiment Python)
 In this module i have implemented my previous tasks into python.<br>
 ### Problems:
 1.Implement 32-bit Booth’s Multiplier in python.<br>
