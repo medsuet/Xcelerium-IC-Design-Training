@@ -111,6 +111,7 @@ void selectionSort(int *arr, int size) {
     }
 }
 
+
 // Function pointer type for sorting functions
 typedef void (*SortFunction)(int*, int);
 
