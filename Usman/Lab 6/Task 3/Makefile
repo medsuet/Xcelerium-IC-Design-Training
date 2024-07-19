@@ -5,7 +5,7 @@
 AS = riscv64-unknown-elf-as
 LD = riscv64-unknown-elf-ld
 SPIKE = spike
-PROG = T2
+PROG = T3
 
 # Default target
 all: $(PROG)
