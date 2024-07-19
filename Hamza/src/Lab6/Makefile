@@ -4,7 +4,6 @@
 AS = riscv64-unknown-elf-as
 LD = riscv64-unknown-elf-ld
 SPIKE = spike
-PK = pk
 
 # Program name
 PROG ?= 
@@ -30,11 +29,11 @@ $(PROG): $(PROG).s
 
 # Rule to run with Spike
 run: $(PROG)
-	$(SPIKE) $(PK) $(PROG)
+	$(SPIKE) $(PROG)
 
 # Rule to debug with Spike
 debug: $(PROG)
-	$(SPIKE) -d $(PK) $(PROG)
+	$(SPIKE) -d --log-commits $(PROG)
 
 # Clean up
 clean:
