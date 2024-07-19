@@ -1,6 +1,5 @@
 .section .data
     .align 2
-
     dividend: .word 120 # 20 will be stored in dividend variable on stack
     divisor:  .word 6   # 3 will be stored in variable divisor
     quotient: .word 0  # 0 will be stored in variable quotient

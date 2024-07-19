@@ -206,15 +206,9 @@ This lab contains RISC-V assembly programs demonstrating basic operations such a
 
 ### Problem 1: Absolute Difference Calculation
 
-
 This program calculates the absolute difference between two predefined integers. 
 
-**Key Features:**
-- Loads two integers from memory.
-- Computes the difference between them.
-- Calculates the absolute value of the result.
-- Stores the final result in memory.
-
+**Assembly File:** `Problems/Problem_1/problem_1.s`
 
 ### Problem 2: Bit Count in a 32-bit Number
 
@@ -254,8 +248,8 @@ cd xce_lab6_assembly
 ```
 ```bash
 make all 
-
 ```
+
 ### Run a Specific Program
 
 To run a specific program, set the `PROG` variable: x could be 1, 2, 3, 4 and 5.
@@ -264,6 +258,9 @@ To run a specific program, set the `PROG` variable: x could be 1, 2, 3, 4 and 5.
 make run PROG=Problems/Problem_x/problem_x
 ```
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 238beb3 (Modified Makefile for lab6_assembly)
 To run a specific Task, set the `PROG` variable: x could be 1,2 and 3.
 ```bash
 make run PROG=Tasks/task_x
