@@ -1,6 +1,6 @@
 # Xcelerium IC Design Training
 
-This repository contains the exercises and labs for the Xcelerium IC Design Training. The directory structure is organized by lab assignments, each containing relevant source code and resources.
+This repository contains the solved exercises and labs for the Xcelerium IC Design Training. The directory structure is organized by lab assignments, each containing relevant source code and resources.
 
 ## Getting Started
 
