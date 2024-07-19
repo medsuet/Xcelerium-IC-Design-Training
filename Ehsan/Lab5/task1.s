@@ -1,7 +1,7 @@
 .global _start
 .section .text
 _start:
-    li t0, 66        #(Q) dividend
+    li t0, 67        #(Q) dividend
     li t1, 5         #(M) divisor
     li t2, 0         #(A) accumulator
     li t3, 64        #(N) no. of bits
