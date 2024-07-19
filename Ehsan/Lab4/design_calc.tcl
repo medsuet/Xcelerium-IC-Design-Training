@@ -34,8 +34,8 @@ set power_mw [calc_power $cap_pf $voltage $clock_freq_mhz]
 set max_freq_mhz [expr {1000 / ($prop_delay_ns + $setup_time_ns)}]
 set num_cycles [calc_clock_cycles $time_ns $clock_period_ns]
 
-puts "Updated clock frequency: $clock_freq_mhz MHz"
-puts "Updated clock period: $clock_period_ns ns"
-puts "Updated power consumption: $power_mw mW"
-puts "Updated maximum frequency: $max_freq_mhz MHz"
-puts "Updated number of clock cycles in $time_ns ns: $num_cycles"
+puts "updated clock frequency: $clock_freq_mhz MHz"
+puts "updated clock period: $clock_period_ns ns"
+puts "updated power consumption: $power_mw mW"
+puts "updated maximum frequency: $max_freq_mhz MHz"
+puts "updated number of clock cycles in $time_ns ns: $num_cycles"

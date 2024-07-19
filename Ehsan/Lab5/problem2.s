@@ -1,3 +1,4 @@
+#counting number of set bits in 32 bit number
 .global _start, _end, loop
 .section .text
 

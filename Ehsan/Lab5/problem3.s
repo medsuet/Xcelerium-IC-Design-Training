@@ -1,3 +1,4 @@
+#calculating factorial of a number
 .global _start
 .section .text
 

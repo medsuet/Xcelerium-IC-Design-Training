@@ -43,6 +43,7 @@ class CacheSimulator:
             print("miss")
 
     def reset(self):
+        #reseting cache by making valid = 0 and tag = None
         for i in range (self.cache_lines):
             self.cache[i][0] = 0
             self.cache[i][0] = None

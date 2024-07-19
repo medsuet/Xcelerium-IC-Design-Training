@@ -1,7 +1,7 @@
+#reversing array
 .data
 array: .word 1, 2, 3, 4, 5
 size: .word 5
-
 .text
 .global _start
 

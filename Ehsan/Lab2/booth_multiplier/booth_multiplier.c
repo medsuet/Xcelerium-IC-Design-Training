@@ -50,7 +50,7 @@ __int64_t boothMultiplier(int multiplier, int multiplicand) {
 void testBoothMultiplierWithFile(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
-        printf("Error in file opening\n");
+        //printf("Error in file opening\n");
         return;
     }
     __int64_t check;
@@ -63,10 +63,10 @@ void testBoothMultiplierWithFile(const char* filename) {
             //printf("%d %d %ld\n", multiplicand, multiplier, product);
             check = boothMultiplier(multiplicand,multiplier);  //checking multiplier
             if (check == product) {
-                printf("\nPassed");
+                //printf("\nPassed");
             }
             else {
-                printf("\nFailed");
+                //printf("\nFailed");
             }
         }
     }
@@ -80,18 +80,18 @@ void testBoothMultiplier() {
     __int64_t check;
     int multiplicand, multiplier;
     __int64_t product;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1000; i++) {
         multiplicand = (rand() << 1 | 1); 
         multiplier   = (rand() << 1 | 1);
         product = (int64_t)multiplier * (int64_t)multiplicand;
-        printf("%d X %d = %ld",multiplicand,multiplier,product);
+        //printf("%d X %d = %ld",multiplicand,multiplier,product);
 
         check = boothMultiplier(multiplicand,multiplier);  //checking multiplier
         if (check == product) {
-            printf("\nPassed");
+            printf("Passed\n");
         }
         else {
-            printf("\nFailed");
+            printf("Failed\n");
         }
     }
 }
@@ -99,13 +99,12 @@ void testBoothMultiplier() {
 
 
 int main() {
-    const char* filename = "32b_signed_test_inputs.txt";
-    //testBoothMultiplierWithFile(filename);
+    //testing from file
+    // const char* filename = "32b_signed_test_inputs.txt";
+    // testBoothMultiplierWithFile(filename);
+    
+    //testing using random
     testBoothMultiplier();
 
-    //int multiplicand =  0x7fffffff;
-    //int multiplier =  0x80000000;
-    //printf ("%d x %d = %ld\n",multiplicand,multiplier,boothMultiplier(multiplier, multiplicand));
-    //return 0;
 }
 

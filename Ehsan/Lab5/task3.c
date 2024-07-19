@@ -1,3 +1,5 @@
+//file description : this code perform non restoring division algorithm
+
 // Function to perform a left shift on A and Q
 void leftShift(unsigned int * A, unsigned int * Q) {
     unsigned long long  temp = ((unsigned long long )(*A) << 32) | *Q;

@@ -1,3 +1,4 @@
+#calculating absolute difference between two numbers
 .global _start
 .section .text
 

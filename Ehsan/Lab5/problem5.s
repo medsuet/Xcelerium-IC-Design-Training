@@ -1,3 +1,4 @@
+#insertiion sort
 .section .data
 array: .word 5, 3, 5, 7, 56, 4   # Define an array of 6 elements
 length: .word 6                  # Length of the array
