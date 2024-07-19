@@ -55,15 +55,28 @@ src/exp2/day2
 src/exp2/student.txt
 src/exp2/student1.dat
 src/exp2/finalTask
+src/exp2/maze
 src/exp2/logfile.txt
 # Ignore files in src/exp5
-src/exp5/example
-src/exp5/htif
-src/exp5/e1p1
-src/exp5/factorial
-src/exp5/reverseArray
-src/exp5/restoringDivision
-src/exp5/nonRestoringDivision
-src/exp5/nonRestoringDivision2
-src/exp5/restoringDivisionRiscV
+src/exp5/examples/example
+src/exp5/examples/htif
+src/exp5/problems/e1p1
+src/exp5/problems/e1p2
+src/exp5/problems/factorial
+src/exp5/problems/reverseArray
+src/exp5/problems/insertionSort
+src/exp5/tasks/restoringDivision
+src/exp5/tasks/nonRestoringDivision
+src/exp5/tasks/nonRestoringDivision2
+src/exp5/tasks/restoringDivisionRiscV
+src/exp5/tasks/setClearBit
+src/exp5/test
+src/exp5/insertionSort
+src/exp5/insertionSort.o
+
+src/exp3/lab5/advancedMakefile/function.d
+src/exp3/lab5/advancedMakefile/main.d
+src/exp3/lab5/advancedMakefile/myprogram
+src/exp3/lab5/basicMakefile/myprogram
+
 
