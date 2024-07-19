@@ -54,8 +54,9 @@ This project contains a series of exercises in C programming including structure
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Compilation](#compilation)
-3. [Execution](#execution)
-4. [Exercises](#exercises)
+3. [Running Executables](#running-executables)
+4. [Clean Up](#clean-up)
+5. [Exercises](#exercises)
    - [Part 1: Basic Operations](#part-1-basic-operations)
    - [Part 2: Structures](#part-2-structures)
    - [Part 3: Pointers and Functions](#part-3-pointers-and-functions)
@@ -70,21 +71,38 @@ This lab focuses on applying advanced concepts in C programming.
 ``` bash
 cd xce_lab2
 ```
-To compile the code, use the following command:
-```bash
-gcc -o lab2 lab2.c
-```
-To compile booth multiplier and memory management maze
-```bash
-gcc -o boothMultiplier boothMultiplier.c
-gcc -o memoryMaze memoryMaze.c
-```
 
-## Execution
+To compile all the C files and create executables, run:
+
 ```bash
-./lab2
-./boothMultiplier
-./memoryMaze
+make
+```
+This command will generate the following executables:
+- memoryMaze
+- lab2
+- boothMultiplier
+## Running Executables
+To run all the generated executables sequentially, use:
+```bash
+make run
+```
+To run a specific executable, use one of the following commands:
+### Run lab2:
+```bash
+make run-lab2
+```
+### Run memoryMaze:
+```bash
+make run-memoryMaze
+```
+### Run boothMultiplier:
+```bash
+make run-boothMultiplier
+```
+## Clean Up
+To clean up the directory by removing object files and executables, run:
+```bash
+make clean
 ```
 ## Exercises
 
