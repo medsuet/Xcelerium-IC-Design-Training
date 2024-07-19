@@ -36,12 +36,16 @@ cd xce_lab1
 ```
 1. **Compilation**
     ```sh
-    gcc lab1.c -o lab1
+    make all
     ```
 
 2. **Execution**
     ```sh
-    ./lab1
+    make run
+    ```
+3. **Clean Up**
+    ```sh
+    make clean
     ```
 # Lab 2 - Advanced C Programming Exercises
 
@@ -225,6 +229,53 @@ make debug PROG=Problems/Problem_x/problem_x
 ```
 ### Clean Up
 To clean up the generated files:
+```bash
+make clean
+```
+# LAB 7 - Python
+This lab contains three tasks:
+- problem1.py
+- problem2.py
+- cacheSimulator.py
+## Scripts Description
+### problem1.py
+This script performs multiplication using Booth's Multiplier algorithm.
+
+### problem2.py
+This script performs division using non-restoring division algorithm.
+
+### cacheSimulator.py
+
+This script simulates a direct-mapped cache. It models the behavior of a direct-mapped cache handles read and write operations, and tracks hits and misses.
+
+## Running the Scripts
+
+### Using the Makefile
+
+A `Makefile` is provided to simplify running the scripts. The `Makefile` includes targets to run each script individually or all of them together.
+
+Navigate to the directory containing python scripts
+```bash
+cd xce_lab7
+```
+- To run all scripts:
+```bash
+make all
+```
+- To run problem1.py:
+```bash
+make run_problem1
+```
+- To run problem2.py:
+```bash
+make run_problem2
+```
+- To run cacheSimulator.py:
+```bash
+make run_cache_simulator
+```
+
+## Clean Up
 ```bash
 make clean
 ```

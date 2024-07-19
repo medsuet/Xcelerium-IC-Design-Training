@@ -78,21 +78,14 @@ def run_test_case(dividend, divisor):
     else:
         print("Results do not match.\n")
 
-# def main():
-#     # Test cases
-#     run_test_case(122, 6)
-#     run_test_case(12, 9)
-#     run_test_case(443, 722)
-#     run_test_case(122, 222)
-#     run_test_case(10000, 2000)
 
 def main():
    
     # Implement multiple test cases
     for _ in range(10):
         # Random dividend and divisor
-        dividend = random.randint(0, 1000)
-        divisor = random.randint(1, 1000)  # Ensure divisor is not zero
+        dividend = random.randint(0, 10000)
+        divisor = random.randint(1, 10000)  # Ensure divisor is not zero
 
         # Call the test function
         run_test_case(dividend, divisor)
