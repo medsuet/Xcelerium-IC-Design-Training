@@ -71,6 +71,16 @@ void sumOfEachRow(int rows, int cols, int arr[rows][cols], int result[]) {
 
 // Part 3: Function Pointers
 
+//following function prints array
+void printArray(int *ptr, int size) {
+    printf("[ ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ",*(ptr + i));
+    }
+    printf("]");
+
+}
+
 //following function takes array pointer and size of array and sort the array using bubble sort algorithm
 void bubbleSort(int *arr, int size) {
     for (int i = 0; i<(size-1); i++) {
@@ -366,9 +376,7 @@ int main() {
     //printing_array using pointer
     int arr[10]={0,1,2,3,4,5,6,7,8,9};
     int *ptr_arr = arr;
-    for (int i=0; i<(sizeof(arr)/sizeof(arr[0])); i++) {
-        printf("%d ",*(ptr_arr + i));
-    }
+    printArray (ptr_arr,(sizeof(arr)/sizeof(arr[0])));
     printf("\n");
 
     //printing_sum_of_array
@@ -381,9 +389,7 @@ int main() {
     //reversing array using pointers
     reverseArray(ptr_arr,(sizeof(arr)/sizeof(arr[0])));
     //printing_reversed_array
-    for (int i=0; i<(sizeof(arr)/sizeof(arr[0])); i++) {
-	    printf("%d ",*(ptr_arr + i));
-    }
+    printArray(ptr_arr,(sizeof(arr)/sizeof(arr[0])));
 
     // Part 2: Pointers and Arrays
     printf("\n \nPart 2: Pointers and Arrays\n\n");
@@ -420,9 +426,7 @@ int main() {
     int size_of_array = sizeof(array)/sizeof(array[0]);
     //printing_unsorted_array
     printf("unsorted array : ");
-    for (int i=0; i<size_of_array; i++) {
-        printf("%d ",*(array_ptr + i));
-    }
+    printArray(ptr_arr,size_of_array);
     printf("\n");
 
     //sorting array with bubble sort
@@ -430,23 +434,23 @@ int main() {
 
     //printing sorted array sorted with bubble sort 
     printf("sorted array by bubble sort: ");
-    for (int i=0; i<size_of_array; i++) {
-        printf("%d ",*(array_ptr + i));
-    }
+    printArray(ptr_arr,size_of_array);
+    
 
     //sorting array with selection sort
     int a_array[10] = {9,6,4,8,6,4,5,1,0,1};
     int *a_array_ptr = a_array;
     int size_of_a_array = sizeof(a_array)/sizeof(a_array[0]);
-    
+
+    //printing unsorted array
+    printf("\nunsorted array: ");
+    printArray(a_array_ptr, size_of_a_array);
     //sorting array with selection sort
     selectionSort(a_array_ptr,size_of_a_array);
 
     //printing_sorted_array sorted with selection sort
     printf("\nsorted array by selection sort: ");
-    for (int i=0; i<size_of_a_array; i++) {
-        printf("%d ",*(a_array_ptr + i));
-    }
+    printArray(a_array_ptr, size_of_a_array);
 
     //selecting sorting using function pointer 
     int a_arr1[10] = {9,6,4,8,6,4,5,1,0,1};
@@ -456,9 +460,7 @@ int main() {
 
     //printing sorted array using selection sort with function pointers
     printf("\nsorted array by selection sort using function pointer: ");
-    for (int i=0; i<(size_of_a_arr1); i++) {
-        printf("%d ",*(a_arr1_ptr + i));
-    }
+    printArray(a_arr1_ptr,size_of_a_arr1);
 
     //simple calculator using function pointer
     int r = 20;
@@ -619,6 +621,7 @@ int main() {
     struct Student student_from_file;
     readStudentFromFile(&student_from_file,filename);
     printStudentInfo(&student_from_file);
+
     //writing student data to binary file
     writeStudentToBinaryFile(&student1,binary_filename);
 
@@ -630,9 +633,11 @@ int main() {
     printStudentInfo(&student_from_file_bin);
 
     //display log file
+    printf("\n\nlogfile\n");
     const char* logfile = "logfile.log";
     displayLog(logfile);
-    //checkMemoryLeaks(8);
     printf("\n");
+    //checkMemoryLeaks(8);
+
     return 0;
 }
