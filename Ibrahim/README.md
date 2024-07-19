@@ -3,6 +3,8 @@
 1. [Lab 1 - Basics of C language](#lab-1---basics-of-c-language)
 2. [Lab 2 - Advanced C Programming Exercises](#lab-2---advanced-c-programming-exercises)
 3. [Lab 3 - Shell Scripting & MakeFile](#lab-3---shell-scripting--makefile)
+4. [Lab6 RISC-V Assembly Exercises](#lab6-risc-v-assembly-exercises)
+5. [LAB 7 - Python](#lab-7---python)
 
 # Lab 1 - Basics of C language
 
@@ -191,7 +193,8 @@ This project demonstrates the use of a Makefile for compiling and managing a C p
    ```sh
    make debug
    ```
-  # Lab6 RISC-V Assembly Exercises
+
+# Lab6 RISC-V Assembly Exercises
 
 This lab contains RISC-V assembly programs demonstrating basic operations such as arithmetic calculations and bit manipulation. The programs are run on spike simulator.
 
