@@ -54,5 +54,4 @@ clean:
 
           Tasks/*.o Tasks/task_1 Tasks/task_2 Tasks/task_3
 
-
 .PHONY: all run debug clean
