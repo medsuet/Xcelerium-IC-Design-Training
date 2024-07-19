@@ -48,9 +48,9 @@ void restoring_division(uint32_t dividend, uint32_t divisor, uint32_t *quotient,
 
     // Remember to handle division by zero
     if(divisor == 0){
-        //printf("Math error!\n");
-        //printf("Any number can not divisible by Zero\n");
-        
+        printf("Math error!\n");
+        printf("Any number can not divisible by Zero\n");
+        return ;
     }
 
     //Start Algo of restoring_division
@@ -82,75 +82,18 @@ void restoring_division(uint32_t dividend, uint32_t divisor, uint32_t *quotient,
 
 }
 
-// TODO: Implement test cases
-void run_test_case(uint32_t dividend, uint32_t divisor) {
-    // TODO: Call restoring_division and verify the results
-    uint32_t quotient;
-    uint32_t remainder;
-    restoring_division(dividend, divisor, &quotient, &remainder);
 
-//    if(divisor == 0)
-  //      return;
-    
-    uint32_t test_qu = dividend/divisor;
-    uint32_t test_rm = dividend%divisor;
-
-    //checks
-    if((test_qu == quotient) && (test_rm == remainder)){
-        
-        //printf("Division of Dividend = %d and divisor = %d is Quotient = %d and Remainder = %d.\n", dividend, divisor, quotient, remainder);
-        //printf("test pass\n");
-        //test_pass++;
-    }
-    else{
-        //printf("\nfailed pass\n");
-        //printf(" Restore_Division of Dividend = %d and divisor = %d is Quotient = %d and Remainder = %d.\n", dividend, divisor, quotient, remainder);
-        //printf(" Build-in_Division of Dividend = %d and divisor = %d is Quotient = %d and Remainder = %d.\n", dividend, divisor, test_qu, test_rm);
-        
-    }
-    
-}
 
 int main() {
     // TODO: Implement multiple test cases
-    // Example:
-    srand(time(NULL));
-    int test_run;
-    int what_do = 0;
-    int test_pass=0;
-    uint32_t dd = 10 ;
-    uint32_t dr = 3 ;
+    uint32_t dividend = 15;
+    uint32_t divisor = 4;
+    uint32_t quotient;
+    uint32_t remainder;
 
-   
-   run_test_case(dd, dr);
-    //if(what_do == 3){
-    //    printf("Enter:1 (for test on your own inputs) Enter:2 (for test of random numbers) ");
-    //    scanf("%d", &what_do);
-    //}
-/*
-    if (what_do == 1){
-        printf("Enter Dividend:");
-        scanf("%d", &dd);
-        printf("Enter Divisor:");
-        scanf("%d", &dr);
-        run_test_case(dd, dr);
-    }
-    else if(what_do == 2){
-        printf("Enter the number you want to test: ");
-        scanf("%d", &test_run);
-        while (test_run){
-            dd = ((rand() % (U_L - L_L + 1)) + L_L);
-            dr = ((rand() % (U_L - L_L + 1)) + L_L);
-            run_test_case(dd, dr);
-            test_run--;
-            test_pass++;
-        }
-        printf("total test pass: %d\n", test_pass);
-    }
-    else{
-        run_test_case(dd, dr);
-    }
-*/
+    restoring_division(dividend, divisor, &quotient, &remainder);
+    
+
     
     return 0;
 }

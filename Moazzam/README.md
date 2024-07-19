@@ -13,3 +13,7 @@ Task Z: Memory Management Maze done <br>
 Complete <br>
 ## TCL
 Complete <br>
+## RISC-V Assembly
+Complete
+## Python
+Complete
