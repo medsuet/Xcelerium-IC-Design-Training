@@ -7,7 +7,9 @@ _start:
     li a1, 10 # Set maximum count  
 loop:  
      addi a0, a0, 1 # Increment counter  
-     blt a0, a1, loop  # Loop if counter < max 
+     blt a0, a1, loop  # Loop if counter < max
+
+     slli a0,a0,2 
   
     # Code to exit for Spike (DONT REMOVE IT) 
     li t0, 1 
