@@ -2,7 +2,8 @@ FIRSTTARGET=lab1_exe
 SECTARGET=lab2_exe
 THIRDTARGET=booth_exe
 FOURTHTARGET=maze_exe
-.PHONY: lab3 lab5
+TASK ?= main.py
+.PHONY: lab3 lab5 lab7
 $(FIRSTTARGET):lab1_x.c
 	gcc -o $@ $^
 $(SECTARGET):lab2_x.c
@@ -109,11 +110,9 @@ maze: $(FOURTHTARGET)
 	@echo "--------------------------------------"
 	@echo "Done MAZE!!"
 	@echo "--------------------------------------"
-
-
-
-
-	
+lab7:
+	cd lab7
+	python3 $(TASK)
 
 
 
