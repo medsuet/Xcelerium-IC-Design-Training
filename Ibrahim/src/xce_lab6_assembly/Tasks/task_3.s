@@ -1,6 +1,7 @@
 .global _start
 
 .section .data
+    .align 2
     dividend: .word 120 # dividend
     divisor: .word 6 
     remainder: .word 0

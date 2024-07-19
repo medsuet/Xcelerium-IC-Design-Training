@@ -181,26 +181,34 @@ This lab contains RISC-V assembly programs demonstrating basic operations such a
 
 ### Problem 1: Absolute Difference Calculation
 
-This program calculates the absolute difference between two predefined integers. 
-
-**Key Features:**
-- Loads two integers from memory.
-- Computes the difference between them.
-- Calculates the absolute value of the result.
-- Stores the final result in memory.
-
 **Assembly File:** `Problems/Problem_1/problem_1.s`
 
 ### Problem 2: Bit Count in a 32-bit Number
 
-This program counts the number of set bits (1s) in a 32-bit integer.
-
-**Key Features:**
-- Loads a 32-bit integer from memory.
-- Iterates through each bit to count the number of set bits.
-- Stores the count of set bits in memory.
-
 **Assembly File:** `Problems/Problem_2/problem_2.s`
+
+### Problem 3: Factorial of a number
+
+**Assembly File:** `Problems/Problem_3/problem_3.s`
+
+### Problem 4: Reverse an array
+
+**Assembly File:** `Problems/Problem_4/problem_4.s`
+### Problem 5: Sorting array using Insertion Sort
+
+**Assembly File:** `Problems/Problem_5/problem_5.s`
+
+### Task 1: restoring division algorithm
+
+**Assembly File:** `Tasks/task_1.s`
+
+### Task 2: setting and clearing a bit
+
+**Assembly File:** `Tasks/task_2.s`
+
+### Task 3: non-restoring division algorithm
+
+**Assembly File:** `Tasks/task_3.s`
 
 ## Build and Run
 
@@ -212,7 +220,7 @@ move to directory
 cd xce_lab6_assembly
 ```
 ```bash
-make
+make all 
 ```
 ### Run a Specific Program
 
@@ -221,11 +229,19 @@ To run a specific program, set the `PROG` variable: x could be 1, 2, 3, 4 and 5.
 ```bash
 make run PROG=Problems/Problem_x/problem_x
 ```
+To run a specific Task, set the `PROG` variable: x could be 1,2 and 3.
+```bash
+make run PROG=Tasks/task_x
+```
 ### Debug a Specific Program
-To debug a specific program, set the PROG variable and use the debug rule:
+To debug a specific program, set the `PROG` variable and use the debug rule:
 Replace x with 1, 2, 3, 4, and 5.
 ```bash
 make debug PROG=Problems/Problem_x/problem_x
+```
+To debug a specific task, set `PROG` variable, set x as 1,2 and 3. Use the debug rule:
+```bash
+make debug PROG=Tasks/task_x 
 ```
 ### Clean Up
 To clean up the generated files:
