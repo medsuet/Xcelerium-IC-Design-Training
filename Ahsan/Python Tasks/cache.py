@@ -18,7 +18,7 @@ class CacheSimulator:
         return index, tag
     
     def read(self, address: int) -> bool:
-        index, tag = self._get_index_and_tag(address)  # Get index and tag
+        index, tag = self._get_index_and_tag(address)  
         cache_line = self.cache[index]
         
         if cache_line.valid and cache_line.tag == tag:
@@ -31,7 +31,7 @@ class CacheSimulator:
             return False  # Cache miss
     
     def write(self, address: int):
-        index, tag = self._get_index_and_tag(address)  # Get index and tag
+        index, tag = self._get_index_and_tag(address)  
         cache_line = self.cache[index]
         
         if cache_line.valid and cache_line.tag == tag:

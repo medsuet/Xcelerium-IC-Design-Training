@@ -1,7 +1,7 @@
 .global _start
 .section .data
-number:      .dword 0x12345678  # Example 32-bit number stored in 64-bit space
-bit_pos:     .dword 5           # Bit position to be set/cleared (0-based index)
+number:      .dword 0x12345678  #
+bit_pos:     .dword 5           # Bit position to be set/cleared 
 action:      .dword 1           # Action (1 for set, 0 for clear)
 
 .section .text
@@ -27,13 +27,13 @@ _start:
 
 clear_bit:
     not t6, t6         # Invert the bit mask
-    and t1, t1, t6     # Clear the bit (AND operation with inverted mask)
+    and t1, t1, t6     # Clear the bit 
 
 done:
     # Store the result back into memory
     sd t1, 0(t0)
 
-    # Exit program (for Spike simulator)
+    # Exit program 
     li a0, 1
     la a1, tohost
     sd a0, 0(a1)
