@@ -322,16 +322,29 @@ void readStudentFromBinaryFile(struct Student* s, const char* filename) {
     fclose(file);
 }
 
-void logMessage(const char* message, const char* logfile) {
-    // TODO: Append a timestamped message to the log file
-    FILE *line = fopen(logfile , "r");
-    if (line == NULL) {
-        printf("Could not open the log file");
-        return;
-    }
 
+//following function get the current timestamp
+void getTimestamp(char* buffer, size_t bufferSize) {
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    strftime(buffer, bufferSize, "%Y-%m-%d %H:%M:%S", t);
 }
 
+//following function log a message with a timestamp
+void logMessage(const char* message, const char* logfile) {
+     FILE* file = fopen(logfile, "a");
+    if (file == NULL) {
+        perror("Unable to open log file");
+        return;
+    }
+    char timestamp[20];
+    getTimestamp(timestamp, sizeof(timestamp));
+
+    fprintf(file, "[%s] %s\n", timestamp, message);
+    fclose(file);
+}
+
+//following function display log file
 void displayLog(const char* logfile) {
     //open the log file for reading
     FILE *file = fopen(logfile, "r");
@@ -620,6 +633,7 @@ int main() {
     //reading student data from file and make student data
     struct Student student_from_file;
     readStudentFromFile(&student_from_file,filename);
+    printf("\nPrinting student info read from a file\n");
     printStudentInfo(&student_from_file);
 
     //writing student data to binary file
@@ -630,12 +644,18 @@ int main() {
     readStudentFromBinaryFile(&student_from_file_bin,binary_filename);
     
     //printing student info that is read by binary file
+    printf("\n\nPrinting student info read from a binary file\n");
     printStudentInfo(&student_from_file_bin);
 
-    //display log file
+    //log file
     printf("\n\nlogfile\n");
     const char* logfile = "logfile.log";
+
+    logMessage("first log message.", logfile);
+    logMessage("second log message.", logfile);
+
     displayLog(logfile);
+
     printf("\n");
     //checkMemoryLeaks(8);
 
