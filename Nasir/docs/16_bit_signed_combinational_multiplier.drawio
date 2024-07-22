@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-07-22T18:56:28.368Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0" etag="zQH5375MI3OumTfXBLK_" version="24.7.3" type="github">
+<mxfile host="app.diagrams.net" modified="2024-07-22T19:00:25.648Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0" etag="GYDcYF-WbUOYSIizniml" version="24.7.3" type="github">
   <diagram name="Page-1" id="oD3bbeozOGptEu1nKLs6">
-    <mxGraphModel dx="427" dy="247" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="594" dy="344" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -20,7 +20,7 @@
         <mxCell id="ogzNA6DxqtYgM_odpDpJ-4" value="Mux" style="shadow=0;dashed=0;align=center;html=1;strokeWidth=1;shape=mxgraph.electrical.abstract.mux2;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="680" y="200" width="80" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="ogzNA6DxqtYgM_odpDpJ-5" value="Adder" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="ogzNA6DxqtYgM_odpDpJ-5" value="&lt;div&gt;32_Bit&lt;/div&gt;Adder" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
           <mxGeometry x="560" y="245" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="ogzNA6DxqtYgM_odpDpJ-6" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
@@ -108,10 +108,10 @@
             <mxPoint x="670" y="229.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ogzNA6DxqtYgM_odpDpJ-20" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.65;entryDx=0;entryDy=3;entryPerimeter=0;" edge="1" parent="1" target="ogzNA6DxqtYgM_odpDpJ-4">
+        <mxCell id="ogzNA6DxqtYgM_odpDpJ-20" value="" style="endArrow=classic;html=1;rounded=0;exitX=1.008;exitY=0.452;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.027;entryY=0.675;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="ogzNA6DxqtYgM_odpDpJ-4" source="ogzNA6DxqtYgM_odpDpJ-5">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="640" y="280" as="sourcePoint" />
-            <mxPoint x="670" y="280" as="targetPoint" />
+            <mxPoint x="640" y="279" as="sourcePoint" />
+            <mxPoint x="680" y="281" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="ogzNA6DxqtYgM_odpDpJ-21" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;entryX=0.375;entryY=1;entryDx=10;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="ogzNA6DxqtYgM_odpDpJ-4">
@@ -180,6 +180,15 @@
         </mxCell>
         <mxCell id="ogzNA6DxqtYgM_odpDpJ-37" value="32" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="760" y="225" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ogzNA6DxqtYgM_odpDpJ-43" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="650" y="290" as="sourcePoint" />
+            <mxPoint x="670" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ogzNA6DxqtYgM_odpDpJ-44" value="32" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="630" y="250" width="50" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
