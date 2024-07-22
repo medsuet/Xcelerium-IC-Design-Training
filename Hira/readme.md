@@ -13,11 +13,16 @@ This repository contains resources and materials related to IC design training
 ### Assembly:
     Contains the implementation of codes using risc-v assembly.
       To run the files commands are as follows:
+
+
     ```bash
       riscv64-unknown-elf-as -o example.o example.s
       riscv64-unknown-elf-ld -T link.ld -o example example.o
 
+
       for debigging spike is used:
+
+      
       ```bash
       spike -d example
 
