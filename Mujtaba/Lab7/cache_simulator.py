@@ -12,26 +12,30 @@ class CacheSimulator:
         self.misses = 0
     
     def read(self, address: int) -> bool:
-        # finding index to which the tag is placed
-        block_index = (address // self.block_size) % self.num_blocks
-        if self.cache[block_index] == address // self.block_size:
+        # extracting or finding index to which the tag is placed
+        block_index = (address >> 3) & 0x7f
+        tag = (address >> 10) & 0x3f
+        if self.cache[block_index] == tag:  
             self.hits += 1
             print("hit")
             return True
         else:
             self.misses += 1
-            self.cache[block_index] = address // self.block_size
+            self.cache[block_index] = tag 
             print("miss")
             return False
     
     def write(self, address: int):
-        block_index = (address // self.block_size) % self.num_blocks
-        if self.cache[block_index] == address // self.block_size:
+        # extracting or finding index to which the tag is placed 
+        block_index = (address >> 3) & 0x7f
+        tag = (address >> 10) & 0x3f
+
+        if self.cache[block_index] == tag:  
             self.hits += 1
             print("hit")
         else:
             self.misses += 1
-            self.cache[block_index] = address // self.block_size
+            self.cache[block_index] = tag 
             print("miss")
     
     def get_stats(self):

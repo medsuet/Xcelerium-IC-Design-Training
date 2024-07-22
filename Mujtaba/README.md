@@ -13,10 +13,19 @@ This repository contains all the Excercises that is important for the IC Design 
 
 ## Lab 3: Shell Scripting and Makefiles
 
-- **Description:** Read the `README.md` file in `Lab3` folder which describes all the functions of the written task scripts. 
+- **Description:** Read the `README.md` file in `Lab3` folder which describes all the files of the written task scripts. 
 
 
 ## Lab 5: TCL Scripting
 
-- **Description:** Read the `README.md` file in `Lab5` folder which describes all the functions of the written task scripts. 
+- **Description:** Read the `README.md` file in `Lab5` folder which describes all the files of the written task scripts. 
+
+## Lab 6: Intro to RISC V Assembly Programming
+
+- **Description:** Read the `README.md` file in `Lab6` folder which describes all the files of the written task scripts. 
+
+## Lab 7: Python Programming
+
+- **Description:** Read the `README.md` file in `Lab7` folder which describes all the files of the written task scripts. 
+
 
