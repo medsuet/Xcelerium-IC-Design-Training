@@ -5,6 +5,7 @@ M = [0] * 32
 M_neg = [0] * 32
 q = 0
 
+
 def multiplicand(a):
     global M
     if a >= 0:
