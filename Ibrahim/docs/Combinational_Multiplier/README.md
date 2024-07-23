@@ -1,4 +1,3 @@
-
 # 16-bit Signed Combinational Logic Multiplier
 
 ## Table of Contents
@@ -39,13 +38,6 @@ This design implements a 16-bit combinational logic multiplier for signed number
 
 By employing this design, the 16-bit signed combinational logic multiplier efficiently manages sign extension and produces correct multiplication results, making it a robust solution for signed integer operations in digital systems.
 
-## Project Files
-
-- `signed_comb_multiplier.sv`: SystemVerilog module for the signed multiplier.
-- `signed_comb_multiplier_tb.sv`: SystemVerilog testbench for the multiplier.
-
-## Makefile
-The provided `Makefile` automates the process of compiling, simulating, and viewing the simulation results.
 
 ## Makefile Targets
 
@@ -60,11 +52,6 @@ Move to the directory containing the SystemVerilog files
 ```bash
 cd src/combinational_multiplier
 ```
-0. **to compile and simulate just write:**
-    ```bash
-    make all
-    ```
-
 1. **Compile the Design and Testbench**
 
    ```bash

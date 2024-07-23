@@ -77,3 +77,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Simulation Files
+*.vvp
+*.vcd
+
