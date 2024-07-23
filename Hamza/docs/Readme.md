@@ -1,1 +1,0 @@
-# Signed Combinational Multiplier
