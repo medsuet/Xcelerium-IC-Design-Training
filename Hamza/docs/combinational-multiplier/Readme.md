@@ -50,9 +50,15 @@ make
 
 This will:
 
-    Compile the Verilog files using iverilog.
-    Run the simulation with vvp.
-    Generate the waveform file (dump.vcd) for visualization.
+- **Compile the Verilog files using `iverilog`**:
+  - This step will generate an output file (e.g., `out`) from your Verilog source files.
+
+- **Run the simulation with `vvp`**:
+  - Execute the compiled file to perform the simulation.
+
+- **Generate the waveform file (`dump.vcd`) for visualization**:
+  - The simulation should produce a VCD file that can be used for viewing waveforms in GTKWave or similar tools.
+
 
 ### 2. View the Simulation Results
 
