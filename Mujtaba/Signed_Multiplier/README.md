@@ -18,5 +18,5 @@ To verify chip, you have to first download the compiler that compiles the system
 - **To visualize the vcd file** `gtkwave <file_name_with_extension_.vcd>`
 
 # Circuit Diagram
-![Combinational 16-bit Signed Multiplier](../Mujtaba/Signed_Multiplier/Signed%20Multiplier.drawio.png)
+![Combinational 16-bit Signed Multiplier](Signed%20Multiplier.drawio.png)
 
