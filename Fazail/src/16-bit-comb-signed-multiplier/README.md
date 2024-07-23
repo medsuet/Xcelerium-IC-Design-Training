@@ -28,9 +28,9 @@ To run the simulation:
 2. Navigate to the project directory.
 3. Run the following command:
    ```sh
-   make ```
+   make
 
 ### Waves GUI
 To run the waves in gui mode, you have to run the following command:
     ```sh
-    make viv_waves ```
+    make viv_waves
