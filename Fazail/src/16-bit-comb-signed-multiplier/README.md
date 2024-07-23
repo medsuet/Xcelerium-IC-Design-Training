@@ -8,7 +8,7 @@ This project implements a 16-bit combinational signed multiplier using SystemVer
 - [Dependencies](#dependencies)
 - [Usage](#usage)
   - [Running Simulation](#running-simulation)
-  - [Waves GUI](#Waves-GUI)
+  - [Waves GUI](#waves-gui)
 
 ## Introduction
 This project showcases a combinational logic design for multiplying two 16-bit signed integers. The design takes two signed 16-bit inputs and produces a signed 32-bit output.
@@ -29,8 +29,8 @@ To run the simulation:
 3. Run the following command:
    ```sh
    make
-
+   
 ### Waves GUI
 To run the waves in gui mode, you have to run the following command:
-    ```sh
-    make viv_waves
+  ```sh
+  make viv_waves
