@@ -55,3 +55,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+*work/
+*.cr.mti
+*.mpf
+*.bak
+transcript
+*.wlf
