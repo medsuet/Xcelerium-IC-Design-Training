@@ -28,4 +28,8 @@ This repository contains all the Excercises that is important for the IC Design 
 
 - **Description:** Read the `README.md` file in `Lab7` folder which describes all the files of the written task scripts. 
 
+## Implementation of 16-bit Signed Multiplier
+
+- **Description:** Read the `README.md` file in `Signed_Multiplier` folder which describes all the files of 16-bit multiplier. 
+
 
