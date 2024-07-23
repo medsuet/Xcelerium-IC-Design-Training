@@ -20,3 +20,5 @@ The intermediate steps from B7 to B14 follow the same procedures as outlined abo
 ### Design Optimization
 
 In the optimized design, we have reduced the number of full adders by complementing the result of the last bit of 'A' from above adder, thus reducing hardware complexity and improving performance. 
+
+### Example of Design  
