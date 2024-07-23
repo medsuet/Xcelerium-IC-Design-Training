@@ -52,15 +52,12 @@ endgenerate
 // WIDTH-1 (i.e 15)th full adder of each has the input of one full adder carry bit and one NAND gate.
 generate
     for (genvar i=1; i < WIDTH-2; i++) begin
-        //halfAdder halfAdder2 (.a(pp[2][0]), .b(sum[0][0]), .s(product[2]), .cout(carry[1][0]) );
         halfAdder halfAdder2 (.a(pp[i+1][0]), .b(sum[i-1][0]), .s(product[i+1]), .cout(carry[i][0]) );
         
         for (genvar k=1; k < (WIDTH-1); k++) begin
-            //fullAdder FullAdder (.a(pp[2][k]), .b(sum[0][k]), .cin(carry[1][k-1]), .s(sum[1][k-1]), .cout(carry[1][k]) );
             fullAdder FullAdder (.a(pp[i+1][k]), .b(sum[i-1][k]), .cin(carry[i][k-1]), .s(sum[i][k-1]), .cout(carry[i][k]) );
         end
         
-        //fullAdder FullAdder2 (.a(pp[2][WIDTH-1]), .b(carry[0][WIDTH-1]), .cin(carry[1][WIDTH-2]), .s(sum[1][WIDTH-2]), .cout(carry[1][WIDTH-1]) );
         fullAdder FullAdder2 (.a(pp[i+1][WIDTH-1]), .b(carry[i-1][WIDTH-1]), .cin(carry[i][WIDTH-2]), .s(sum[i][WIDTH-2]), .cout(carry[i][WIDTH-1]) );
     end
 endgenerate
@@ -71,19 +68,15 @@ endgenerate
 // 15th bit has the input of AND gate and previous full adder carry bit
 // 1 additional half adder is added in the last row contains the input of 1 and previous full adder carry bit
 generate
-    //halfAdder halfAdder (.a(pp[3][0]), .b(sum[1][0]), .s(product[3]), .cout(carry[2][0]) );
     halfAdder halfAdder (.a(pp[WIDTH-1][0]), .b(sum[WIDTH-3][0]), .s(product[WIDTH-1]), .cout(carry[WIDTH-2][0]) );
 
     for (genvar k=1; k < (WIDTH-1); k++) begin
-        //fullAdder FullAdder (.a(pp[3][k]), .b(sum[1][k]), .cin(carry[2][k-1]), .s(product[k+3]), .cout(carry[2][k]) );
         fullAdder FullAdder (.a(pp[WIDTH-1][k]), .b(sum[WIDTH-3][k]), .cin(carry[WIDTH-2][k-1]), .s(product[k+(WIDTH-1)]), .cout(carry[WIDTH-2][k]) );
     end
     
-    //fullAdder fullAdder (.a(pp[3][WIDTH-1]), .b(carry[1][WIDTH-1]), .cin(carry[2][WIDTH-2]), .s(product[2*WIDTH-2]), .cout(carry[2][WIDTH-1]) );
     fullAdder fullAdder (.a(pp[WIDTH-1][WIDTH-1]), .b(carry[WIDTH-3][WIDTH-1]), .cin(carry[WIDTH-2][WIDTH-2]), .s(product[2*WIDTH-2]), .cout(carry[WIDTH-2][WIDTH-1]) );
 endgenerate
 
-//assign product[2*WIDTH-1] = 1 ^ (carry[2][WIDTH-1]);
 assign product[2*WIDTH-1] = 1 ^ (carry[WIDTH-2][WIDTH-1]);
 
 endmodule
