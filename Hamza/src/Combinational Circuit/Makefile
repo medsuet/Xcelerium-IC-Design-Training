@@ -1,7 +1,12 @@
 # Makefile for Verilog simulation
 
+
+# File paths
+DESIGN_DIR = src
+TEST_DIR = test
+
 # File names
-VERILOG_FILES = Multiplier.sv Multiplier_tb.sv
+VERILOG_FILES = $(DESIGN_DIR)/Multiplier.sv $(TEST_DIR)/Multiplier_tb.sv
 TOP_MODULE = Multiplier_tb
 OUTPUT_FILE = out
 VCD_FILE = dump.vcd
