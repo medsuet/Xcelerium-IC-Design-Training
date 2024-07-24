@@ -11,6 +11,29 @@ Ensure you have the following installed on your system:
 - TCL (for running TCL scripts)
 - Spike ( for running Assembly files)
 
+### Directory Structure
+
+- **Combinational Multiplier**
+  - Contains design and test related to combinational multiplier.
+  
+- **Lab1 Basic C Programming**
+  - Contains tasks and lab exercises related to basic C programming.
+
+- **Lab2 Advance C Programming**
+  - Contains tasks and lab exercises related to advance C programming.
+
+- **Lab3 Shell Scripting and makefile**
+  - Contains tasks and lab exercises related to shell scripting and makefile.
+
+- **Lab4 Tcl Scripting**
+  - Contains tasks related to the use of tcl files.
+  
+- **Lab6 Assembly Task**
+  - Contains tasks and exercises related to assembly programming.
+  
+- **Lab7 Python Tasks**
+  - Contains tasks and exercises related to Python programming.
+
 ### Cloning the Repository
 
 To clone the repository, use the following command:
@@ -50,10 +73,12 @@ To run assembly files, navigate to the directory containing the assembly files a
 ```bash
 make PROG=<program_name> build
 ```
+
 ### Clean the Files
 ```bash
 make clean
 ```
+
 ## Running Python Files
 
 To run python files, navigate to the directory containing the python files and use the this command followed by the program name. For example: program names such as booth_multiplier.py, non_restoring_division.py, cache_simulator.py
