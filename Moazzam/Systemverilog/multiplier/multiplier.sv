@@ -36,7 +36,7 @@ module multiplier
     begin
         and_result[IB-1][OB-1:0]     = ~(A & { 16{B[IB-1]} }) << IB-1;
         and_result[IB-1][OB-1_:OB-2] =  {1'b0 , ~and_result[IB-1][OB-2]}; 
-        and_result[0][IB] = 1'b1;
+        //and_result[0][IB] = 1'b1;
         result[IB-1][0] = and_result[0][0]; //P0
     end
 
@@ -50,12 +50,14 @@ module multiplier
     genvar c;
     generate
         //for row B1
-        for(c=2; c<IB+1 ; c++)
+        for(c=2; c<IB ; c++)
         begin
             full_adder f1 (.a(and_result[0][c]), .b(and_result[1][c]), .cin(carry[1][c-1]) ,
                             .sum(result[1][c]), .cout(carry[1][c]) ) ;
         end
     endgenerate
+    full_adder f11 (.a(1'b1), .b(and_result[1][IB]), .cin(carry[1][IB-1]) ,
+                .sum(result[1][IB]), .cout(carry[1][IB]) ) ;
 
     genvar r,cl;
     generate
