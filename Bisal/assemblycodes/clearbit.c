@@ -10,11 +10,6 @@
 #include <stdio.h>
 
 void setOrClearBit(int *num, int bitPosition, int choice) {
-    if (bitPosition < 0 || bitPosition > 31) {
-        printf("Invalid bit position. It must be between 0 and 31.\n");
-        return;
-    }
-
     int mask = 1 << bitPosition;
 
     if (choice == 1) {
