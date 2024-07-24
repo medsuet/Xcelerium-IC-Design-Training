@@ -14,6 +14,32 @@ module tb_comb_16bit_mul;
 
 // Test cases    
     initial begin
+        // Range of signed 16bit -32768 ---> 32767
+
+        // Test MAX_Neg * Max_Neg
+        multiplicand = -16'd32768; multiplier = -16'd32768; // Expected output: input1 = fffb, input2 = 0003, Product = fffffff1
+        #10;
+
+        // Test MAX_Neg * Max_Pos
+        multiplicand = -16'd32768; multiplier = 16'd32767; // Expected output: input1 = 8000, input2 = 8000, Product = 40000000
+        #10;
+
+        // Test MAX_Pos * Max_Neg
+        multiplicand = 16'd32767; multiplier = -16'd32768; // Expected output: input1 = 7fff, input2 = 8000, Product = c0008000
+        #10;
+
+        // Test MAX_Pos * Max_Pos
+        multiplicand = 16'd32767; multiplier = 16'd32767; // Expected output: input1 = 7fff, input2 = 7fff, Product = 3fff0001
+        #10;
+
+        // Test MAX_Neg * zero
+        multiplicand = -16'd32768; multiplier = 16'd0; // Expected output: input1 = 8000, input2 = 0000, Product = 0000000001
+        #10;
+         
+        // Test MAX_Neg * 1
+        multiplicand = -16'd32768; multiplier = 16'd1; // Expected output: input1 = 8000, input2 = 0001, Product = ffff8000
+        #10; 
+
         // Test cases -5 * 3
         multiplicand = -16'd5; multiplier = 16'd3; // Expected output: input1 = fffb, input2 = 0003, Product = fffffff1
         #10;

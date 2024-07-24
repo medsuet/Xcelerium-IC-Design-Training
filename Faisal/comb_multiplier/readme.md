@@ -33,6 +33,11 @@ iverilog -g2012 -o sim comb_16bit_mul.sv tb_comb_16bit_mul.sv
 ```
 ./sim
 ```
+### Another method to run
+Another method to run clone the repository and find the directory then just write make 
+```
+make
+```
 ### View Results:
 The simulation will display the test cases along with their expected results.
 
