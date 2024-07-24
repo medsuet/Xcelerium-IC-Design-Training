@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-07-24T18:52:02.727Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="Y2p35p8C_AXyPvEFFJxG" version="24.7.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2024-07-24T18:53:32.869Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="zcIRbe7TBNQ2iJtrHkrp" version="24.7.1" type="github" pages="2">
   <diagram name="Multiplier_16x16" id="Bcz48vcSh-P0rASuCrQG">
     <mxGraphModel dx="3791" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
@@ -3287,7 +3287,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="XkhTRnzUmJrZvAlyW4w5" name="counter">
-    <mxGraphModel dx="822" dy="419" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
