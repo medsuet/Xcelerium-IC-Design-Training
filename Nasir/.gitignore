@@ -80,4 +80,6 @@ src/exp3/lab5/basicMakefile/myprogram
 
 src/comb_multiplier/mul
 
+.sv_cache/files/comb_16_bit_multiplier.sv
+
 

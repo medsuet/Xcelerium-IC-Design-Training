@@ -1,1 +1,0 @@
-/home/nasir/Xcelerium-IC-Design-Training/Nasir/src/comb_multiplier/comb_16_bit_multiplier.sv
