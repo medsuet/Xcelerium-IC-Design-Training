@@ -4,7 +4,7 @@ AS = riscv64-unknown-elf-as
 LD = riscv64-unknown-elf-ld
 SPIKE = spike
 
-# TARGETram name
+# TARGET name
 TARGET = assemblytasks
 
 # Default target
