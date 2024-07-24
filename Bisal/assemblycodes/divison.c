@@ -38,7 +38,6 @@ void twosComplement(int *M, int n) {
 
 // Function to shift A and Q to left 
 void shiftValue(int *A, int *Q, int n) {
-
     //let lsbQ value by default be 0 which can be replaced later 
     int lsbQ=0;
     int msbQ=((*Q >> n-1) & 1);
@@ -95,17 +94,6 @@ void division(int dividend, int divisor) {
 
         //store shifted value of A into a temporary A for restoring vaolue later 
         int tempA=A;
-        //take
-        /*
-        twosComplement(&negM,n);
-        printf("M after shift : "); 
-        printBits(&negM);
-
-        addBits(&A,&negM,n);
-        //print the value 
-        printf("A after A<-A-M : "); 
-        printBits(&A);
-        */
         A-=M;
         printf("A after A<-A-M : "); 
         printBits(&A);
@@ -162,24 +150,16 @@ void division(int dividend, int divisor) {
 
 int main() {
     int num1, num2;
-    /*
     int num1=(rand()%100)+1;
     int num2=(rand()%100+1);
     printf("Enter the first number: %d",num1);
     printf("Enter the first number: %d",num2);
-    */
-    printf("Enter the dividend: ");
-    scanf("%d", &num1);
-    printf("Enter the divisor: ");
-    scanf("%d", &num2);
-
     division(num1, num2);
-    /* if (originalQuotient == quotient){
+    if (originalQuotient == quotient){
         printf("PASSED..");
     }
     if (originalRemainder == remainder){
         printf("PASSED..");
     }
-    */
     return 0;
 }
