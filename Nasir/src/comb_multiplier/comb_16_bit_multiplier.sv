@@ -1,17 +1,17 @@
-module comb_16_bit_multiplier (
-    input logic signed [15:0] multiplicand, 
-    input logic signed [15:0] multiplier,
-    output logic signed [31:0] product
-);
+module comb_16_bit_multiplier #(parameter width = 16)
+(
+    input logic signed [width - 1:0] multiplicand, 
+    input logic signed [width - 1:0] multiplier,
+    output logic signed [(2 * width) - 1:0] product );
     // Partial products 
-    logic [15:0] partialProduct [15:0];
-    logic signed [15:0] unsignedMultiplicand, unsignedMultiplier;
+    logic [width - 1:0] partialProduct [width - 1:0];
+    logic signed [width - 1:0] unsignedMultiplicand, unsignedMultiplier;
 
     // Extract sign bits
     logic signBitMultiplicand;
-    assign signBitMultiplicand = multiplicand[15]; // extract sign bit of multiplicand
+    assign signBitMultiplicand = multiplicand[width - 1]; // extract sign bit of multiplicand
     logic signBitMultiplier;
-    assign signBitMultiplier = multiplier[15]; // extract sign bit of multiplier
+    assign signBitMultiplier = multiplier[width - 1]; // extract sign bit of multiplier
     // selection for taking twos complement of product if necessary
     logic selectonBit;
     assign selectonBit = signBitMultiplicand ^ signBitMultiplier; // taking xor of sign bits
@@ -34,7 +34,7 @@ module comb_16_bit_multiplier (
     end
 
     // Intermediate sums
-    logic [31:0] sum [15:0];
+    logic [(2 * width) - 1:0] sum [width - 1:0];
 
     // Generate partial products
     // there are 16 rows of partial sum so we using for loop
@@ -56,7 +56,7 @@ module comb_16_bit_multiplier (
 
     // Final product
     always_comb begin
-        product = sum[15];
+        product = sum[width - 1];
         if (selectonBit) begin
             product = ~product + 1;
         end
