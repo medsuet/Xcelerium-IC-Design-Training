@@ -18,7 +18,7 @@ initial begin
    A = $random % 65536;
    B = $random % 65536;
    exp = A*B;
-   #10;
+   #1;
    if (exp != P)begin
     $display("Failed");end
    else begin
