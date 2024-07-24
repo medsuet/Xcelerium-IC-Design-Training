@@ -6,7 +6,7 @@ module full_adder (
     output logic cout
 );
 always_comb
-begin    
+begin
     sum = a ^ b ^ cin;
     cout = (a & b) | (cin & (a ^ b));
 end
