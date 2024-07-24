@@ -156,7 +156,6 @@ module signed_comb_multiplier_tb;
                 multiplicand = ~multiplicand;
                 multiplier = multiplier;
             end else if (i < 15400) begin
-
                 // Case 3: Multiplicand positive, multiplier negative
                 multiplicand = multiplicand;
                 multiplier = ~multiplier;
@@ -183,7 +182,6 @@ module signed_comb_multiplier_tb;
             end else begin
                 $display("PASS");
                 pass_count = pass_count + 1;
-
             end
 
         end
