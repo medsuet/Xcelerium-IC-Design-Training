@@ -36,7 +36,7 @@ module comb_16bit_mul (
         end
     end
 
-
+   
     // Generate partial products
     generate
         for (genvar i = 0; i < 16; i = i + 1) begin : gen_partial_products
