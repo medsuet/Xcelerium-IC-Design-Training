@@ -27,6 +27,7 @@ The counter is designed using basic digital logic components. It includes:
 ### Diagram
 
 The diagram for the counter is as follows:
+
 ![Design Image](docs/counter.png)
 
 ## Usage
@@ -46,4 +47,5 @@ To run the waves in gui mode, you have to run the following command:
 ```
 ### Wave Sample
 The wave for the counter is as follows:
+
 ![Design Image](docs/counter_wave.png)
