@@ -128,7 +128,7 @@ generate
 
     // Assign bits from the sum array for upper part of the product
     for (y = 1; y < WIDTH_M; y++) begin
-        assign product[y+15] = sum[WIDTH_M-2][y];
+        assign product[y+(WIDTH_M-1)] = sum[WIDTH_M-2][y];
     end
     // Set the most significant bit of the product
     assign product[WIDTH_P-1] = sum[WIDTH_M-1][WIDTH_M-1];
