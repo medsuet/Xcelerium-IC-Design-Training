@@ -65,7 +65,6 @@ cd src/combinational_multiplier
     ```bash
     make all
     ```
-
 1. **Compile the Design and Testbench**
 
    ```bash
