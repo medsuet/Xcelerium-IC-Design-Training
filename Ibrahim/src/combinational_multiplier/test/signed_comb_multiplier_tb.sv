@@ -1,4 +1,4 @@
-// `timescale 1ns/1ps
+`timescale 1ns/1ps
 
 module signed_comb_multiplier_tb;
     // Testbench for the signed_multiplier module
@@ -16,6 +16,10 @@ module signed_comb_multiplier_tb;
     logic signed [31:0] signed_product;      // Signed version of product
     logic signed [31:0] expected_product;    // Expected product for comparison
 
+    // Counters for passes and fails
+    integer pass_count = 0;
+    integer fail_count = 0;
+
     // Instantiate the signed_multiplier module
     signed_comb_multiplier uut (
         .multiplicand(multiplicand),
@@ -27,9 +31,6 @@ module signed_comb_multiplier_tb;
     assign signed_multiplicand = $signed(multiplicand);
     assign signed_multiplier = $signed(multiplier);
     assign signed_product = $signed(product);
-
-    // Seed for the random number generator
-    integer seed;
 
     initial begin
         // Initialize inputs
@@ -52,8 +53,10 @@ module signed_comb_multiplier_tb;
         // Check the product
         if (signed_product != expected_product) begin
             $display("FAIL");
+            fail_count = fail_count + 1;
         end else begin
             $display("PASS");
+            pass_count = pass_count + 1;
         end 
 
         // Test case: Zero multiplier
@@ -69,8 +72,10 @@ module signed_comb_multiplier_tb;
         // Check the product
         if (signed_product != expected_product) begin
             $display("FAIL");
+            fail_count = fail_count + 1;
         end else begin
             $display("PASS");
+            pass_count = pass_count + 1;
         end 
 
 
@@ -87,8 +92,10 @@ module signed_comb_multiplier_tb;
         // Check the product
         if (signed_product != expected_product) begin
             $display("FAIL");
+            fail_count = fail_count + 1;
         end else begin
             $display("PASS");
+            pass_count = pass_count + 1;
         end 
 
 
@@ -105,8 +112,10 @@ module signed_comb_multiplier_tb;
         // Check the product
         if (signed_product != expected_product) begin
             $display("FAIL");
+            fail_count = fail_count + 1;
         end else begin
             $display("PASS");
+            pass_count = pass_count + 1;
         end 
 
         // Edge case: Largest negative numbers
@@ -122,15 +131,15 @@ module signed_comb_multiplier_tb;
         // Check the product
         if (signed_product != expected_product) begin
             $display("FAIL");
+            fail_count = fail_count + 1;
         end else begin
             $display("PASS");
+            pass_count = pass_count + 1;
         end 
 
 
         // Generate random test cases
-        for (int i = 0; i < 20; i++) begin
-            // // Update seed for each iteration to get different random values
-            // seed = seed + i;
+        for (int i = 0; i < 20000; i++) begin
 
             // Generate random values for multiplicand and multiplier
             // Mask to keep only positive values (0 to 32767)
@@ -138,15 +147,15 @@ module signed_comb_multiplier_tb;
             multiplier = ($random % 32768) & 16'h7FFF;
             
             // Randomly decide to make values positive or negative
-            if (i < 6) begin
+            if (i < 1122) begin
                 // Case 1: Both positive
                 multiplicand = multiplicand;
                 multiplier = multiplier;
-            end else if (i < 11) begin
+            end else if (i < 10442) begin
                 // Case 2: Multiplicand negative, multiplier positive
                 multiplicand = ~multiplicand;
                 multiplier = multiplier;
-            end else if (i < 16) begin
+            end else if (i < 15400) begin
                 // Case 3: Multiplicand positive, multiplier negative
                 multiplicand = multiplicand;
                 multiplier = ~multiplier;
@@ -169,11 +178,18 @@ module signed_comb_multiplier_tb;
             // Check the product
             if (signed_product != expected_product) begin
                 $display("FAIL");
+                fail_count = fail_count + 1;
             end else begin
                 $display("PASS");
+                pass_count = pass_count + 1;
             end
 
         end
+
+        // Display pass/fail summary
+        $display("Total Tests: %0d", pass_count + fail_count);
+        $display("Passes: %0d", pass_count);
+        $display("Fails: %0d", fail_count);
 
         // Stop the simulation after the test cases are run
         #10 $stop;
