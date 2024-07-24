@@ -60,6 +60,10 @@ Move to the directory containing the SystemVerilog files
 ```bash
 cd src/combinational_multiplier
 ```
+0. **to compile and simulate just write:**
+    ```bash
+    make all
+    ```
 1. **Compile the Design and Testbench**
 
    ```bash

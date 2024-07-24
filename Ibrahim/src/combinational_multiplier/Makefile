@@ -1,7 +1,7 @@
 # Makefile for SystemVerilog simulation in iverilog
 
 # File names
-VERILOG_FILES = signed_comb_multiplier.sv signed_comb_multiplier_tb.sv
+VERILOG_FILES = src/signed_comb_multiplier.sv test/signed_comb_multiplier_tb.sv
 TOP_MODULE = signed_comb_multiplier_tb
 OUTPUT_FILE = simulation.vvp
 VCD_FILE = waveform.vcd
