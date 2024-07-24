@@ -1,4 +1,3 @@
-
 # 16-bit Signed Combinational Logic Multiplier
 
 ## Table of Contents
@@ -43,6 +42,8 @@ By employing this design, the 16-bit signed combinational logic multiplier effic
 
 - `signed_comb_multiplier.sv`: SystemVerilog module for the signed multiplier.
 - `signed_comb_multiplier_tb.sv`: SystemVerilog testbench for the multiplier.
+## Makefile
+The provided `Makefile` automates the process of compiling, simulating, and viewing the simulation results.
 
 ## Makefile
 The provided `Makefile` automates the process of compiling, simulating, and viewing the simulation results.
