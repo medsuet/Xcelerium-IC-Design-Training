@@ -1,9 +1,15 @@
-SRC_SV:= src/counter.sv  			\
+SRC_SV:= src/counter.sv		\
 	 test/tb_counter.sv
+
+DEFINES_VER:= src/defines/verilator.svh
+DEFINES_VIV:= src/defines/vivado.svh
 
 COMP_OPTS_SV := --incr --relax
 
 TB_TOP := tb_counter
+MODULE := tb_counter
+
+WORK_DIR = work
 
 #==== Default target - running VIVADO simulation without drawing waveforms ====#
 .PHONY: vivado viv_elaborate viv_compile
@@ -50,7 +56,7 @@ else
 	@echo "run all" >> xsim_cfg.tcl
 	@echo "exit" >> xsim_cfg.tcl
 	#verilog -VIVADO  
-	xvlog -sv $(COMP_OPTS_SV) $(SRC_SV)
+	xvlog -sv $(COMP_OPTS_SV) $(SRC_SV) $(DEFINES_VIV)
 	touch $@
 endif
 
@@ -84,8 +90,63 @@ else
 	touch $@
 endif
 
+#----------------------#
+#----- VERILATOR ------#
+#----------------------#
+
+.PHONY: verilator ver_waves 
+
+ver_waves: verilator
+	@echo
+	@echo "### WAVES ###"
+	gtkwave waveform.vcd &
+
+verilator: ./obj_dir/V$(MODULE)
+	@echo
+	@echo "### SIMULATING ###"
+	@./obj_dir/V$(MODULE)
+
+./obj_dir/V$(MODULE): .stamp.verilate
+	@echo
+	@echo "### BUILDING SIM ###"
+	make -C obj_dir -f V$(MODULE).mk V$(MODULE)
+
+.stamp.verilate: ./src/*.sv ./test/$(TB_TOP).*
+	@echo
+	@echo "### VERILATING ###"
+	verilator --trace -cc $(SRC_SV) $(DEFINES_VER) 	\
+	  	  --top-module $(MODULE) 		\
+		  -Wno-DECLFILENAME 			\
+		  -Wno-WIDTH 				\
+		  -Wno-REDEFMACRO			\
+		  -Wno-INITIALDLY			\
+		  -Wno-STMTDLY				\
+		  --exe ./test/$(TB_TOP).cpp 		\
+		  --timing
+	@touch .stamp.verilate
+	
+#----------------------#
+#----- MODEL SIM ------#
+#----------------------#
+
+vsim: vsim_compile simulate
+
+# Create a working library and compile source files
+vsim_compile: $(wildcard *.sv)
+	@echo "Creating work library..."
+	vlib $(WORK_DIR)
+	@echo "Compiling source files..."
+	vlog -work $(WORK_DIR) $(SRC_SV)
+
+# Run the simulation and generate WLF file
+simulate: vsim_compile
+	@echo "Running simulation..."
+	vsim -L $(WORK_DIR) $(MODULE) -do "add wave -radix Unsigned sim:/$(MODULE)/UUT/*; run 1000"
+
 .PHONY : clean
 clean :
+	@echo "Cleaning up..."
+	rm -rf $(WORK_DIR) transcript vsim.wlf
 	rm -rf *.jou *.log *.pb *.wdb xsim.dir *.str
 	rm -rf .*.timestamp *.tcl *.vcd .*.verilate
 	rm -rf obj_dir .Xil

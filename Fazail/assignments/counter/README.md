@@ -34,16 +34,26 @@ The diagram for the counter is as follows:
 
 ### Running Simulation
 To run the simulation:
-1. Ensure that Vivado is installed and properly set up on your system.
+1. Ensure that Vivado, Verilator or Modelsim is installed and properly set up on your system.
 2. Navigate to the project directory.
 3. Run the following command:
    ```sh
    make
 
 ### Waves GUI
-To run the waves in gui mode, you have to run the following command:
+To run the waves in vivado gui mode, you have to run the following command:
    ```sh
    make viv_waves
+```
+OR
+To run the waves in verilator gui mode, you have to run the following command:
+   ```sh
+   make ver_waves
+```
+OR
+To run the waves in modelsim gui mode, you have to run the following command:
+   ```sh
+   make vsim
 ```
 ### Wave Sample
 The wave for the counter is as follows:

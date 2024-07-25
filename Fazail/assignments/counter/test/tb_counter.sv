@@ -1,8 +1,15 @@
 localparam WIDTH = 4;
 
-module tb_counter ;
-    
-    logic clk, n_rst;
+module tb_counter (
+    `ifdef VERILATOR
+        input logic clk
+    `endif
+);
+    `ifndef VERILATOR
+        logic clk;
+    `endif
+
+    logic n_rst;
     
     logic clr;
     logic [WIDTH-1:0]value;
@@ -17,12 +24,14 @@ module tb_counter ;
         .clr(clr),
         .mux_out(mux_out)
     );
-
-    initial begin
-        clk = 1;
-        forever #20  clk = ~clk;
-    end
-
+    
+    `ifndef VERILATOR
+        initial begin
+            clk = 1;
+            forever #20  clk = ~clk;
+        end
+    `endif
+    
     initial begin
         n_rst = 0;      // active low reset
 
