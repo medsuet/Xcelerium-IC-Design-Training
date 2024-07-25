@@ -18,8 +18,8 @@ To verify chip, you have to first download the compiler that compiles the system
 - **To visualize the vcd file** `gtkwave <file_name_with_extension_.vcd>`
 
 # Circuit Diagram
-![Circuit Diagram 4-bit Counter](Counter.drawio.svg)
+![Circuit Diagram 4-bit Counter](docs/Counter.drawio.svg)
 
 # Results as Waveform Format
-![Waveform](wavedrom.svg)
+![Waveform](docs/wavedrom.svg)
 

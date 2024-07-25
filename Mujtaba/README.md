@@ -32,4 +32,7 @@ This repository contains all the Excercises that is important for the IC Design 
 
 - **Description:** Read the `README.md` file in `Signed_Multiplier` folder which describes all the files of 16-bit multiplier. 
 
+## Implementation of 4-bit Counter
+
+- **Description:** Read the `README.md` file in `Sequential_Excercise` folder which contains files that implement 4-bit counter to practice the basic sequential circuit. 
 
