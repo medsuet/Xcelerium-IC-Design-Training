@@ -16,7 +16,8 @@
 
   Representation of architecture through clear block diagrams is shown below.
 ## Block Diagram
-The block diagram of the Uart Transmitter and Receiver is given below.
+The block diagram of the Counter is given below.
+
 ![Datapath](./docs/counter.png)
 
 # Getting Started
