@@ -5,13 +5,14 @@ AS = riscv64-unknown-elf-as
 LD = riscv64-unknown-elf-ld
 SPIKE = spike
 
+# Source directory
+SRC_DIR = src
 
 all: $(PROG)
 
-
-$(PROG): $(PROG).s
-	$(AS) -o $(PROG).o $(PROG).s
-	$(LD) -T linker.ld -o $(PROG) $(PROG).o
+$(PROG): $(SRC_DIR)/$(PROG).s
+	$(AS) -o $(SRC_DIR)/$(PROG).o $(SRC_DIR)/$(PROG).s
+	$(LD) -T $(SRC_DIR)/linker.ld -o $(PROG) $(SRC_DIR)/$(PROG).o
 
 # Rule to run with Spike
 run: $(PROG)
@@ -23,11 +24,9 @@ debug: $(PROG)
 
 # Clean up
 clean:
-	rm -f *.o $(PROG)
+	rm -f $(SRC_DIR)/*.o $(PROG)
 
 .PHONY: all run debug clean
-
-
 
 help:
 	@echo "Usage:"

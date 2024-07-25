@@ -18,6 +18,15 @@ This repository contains various tasks completed during the Xcelerium IC Design 
   
 - **Python Tasks**
   - Contains tasks and exercises related to Python programming.
+  
+ - **Combinational Multiplier**
+  - Contains combinational multiplier in system verilog.
+  
+ - **4 bit counter**
+  - Contains 4 bit counter that counts upto 13 in system verilog.
+
+ - **Shift reg pop quiz**
+  - Contains 3 bit shift reg in system verilog.
 
 ## How to Use
 

@@ -1,14 +1,23 @@
+# Variables
+PYTHON = python3
+SRC_DIR = src
 
+# Default target
+all: help
+
+# Run a specific Python script
 run:
-	python3 $(SCRIPT)
+	@$(PYTHON) $(SRC_DIR)/$(SCRIPT)
 
-
+# Clean up temporary files
 clean:
-	rm -f *.pyc __pycache__/*
+	@rm -f $(SRC_DIR)/*.pyc $(SRC_DIR)/__pycache__/*
 
-# Help target to provide user the method to use this file
+# Help target to provide user with usage information
 help:
 	@echo "Usage:"
-	@echo "  make run SCRIPT=<script_name.py>  - Run the specified Python script"
-	@echo "  make clean                       - Clean up temporary files"
+	@echo "  make run SCRIPT=<script_name.py>    - Run the specified Python script"
+	@echo "  make clean                         - Clean up temporary files"
+
+.PHONY: all run clean help
 
