@@ -20,15 +20,14 @@ module Add1
 );
 
     // Define states
-    parameter logic [1:0]LSB=0;         // First bit (LSB)
-    parameter logic [1:0]CARRY0=1;      // Rest of bits & carry: 0
-    parameter logic [1:0]CARRY1=2;      // Rest of bits & carry: 1
+    parameter logic CARRY0=0;      // Rest of bits & carry: 0
+    parameter logic CARRY1=1;      // Rest of bits & carry: 1
 
     // Store current state
-    logic [1:0]current_state, next_state;
+    logic current_state, next_state;
     always_ff @(posedge clk) begin
         if (reset)
-            current_state <= LSB;
+            current_state <= CARRY1;
         else
             current_state <= next_state; 
     end
@@ -36,20 +35,16 @@ module Add1
     // Next state logic
     always_comb begin
         case (current_state)
-            LSB: next_state = (input_bit) ? CARRY1:CARRY0;
             CARRY0: next_state = CARRY0;
             CARRY1: next_state = (input_bit) ? CARRY1:CARRY0;
-            default: next_state = 2'bz;
         endcase
     end
 
     // Output logic
     always_comb begin
         case (current_state)
-            LSB: output_bit = (input_bit) ? 0:1 ;
             CARRY0: output_bit = (input_bit) ? 1:0 ;
             CARRY1: output_bit = (input_bit) ? 0:1 ;
-            default: output_bit = 1'bz;
         endcase
     end
         

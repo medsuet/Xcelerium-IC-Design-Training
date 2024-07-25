@@ -35,9 +35,9 @@ module Counter_tb();
 
     // Task to reset the counter
     task reset_counter();
-        reset <= 1;
+        reset = 1;
         #7;
-        reset <= 0;
+        reset = 0;
     endtask
     
 endmodule

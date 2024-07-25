@@ -14,3 +14,11 @@
 /Lab3/installscripts/
 /Lab3/a.tar
 /Lab3/main
+/self/
+*/ModelSim/
+*/work/
+*/obj_dir/
+transcript
+*.sv.bak
+*.drawio
+*.json

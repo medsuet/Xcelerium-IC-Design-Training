@@ -11,7 +11,7 @@ The adder has been implemented as a state machine.
 
 The state remembers the carry: if current state is CARRY1, there is a carry of 1 leftover from previous bit that is to be added to current bit, while CARRY0 state means there is no carry (a carry of 0).
 
-At reset state, lsb of the input number arrives and is added to 1, and the bit is output. For other bits, the carry is added to them to get the output. Any carry generated determines the next state (CARRY0 or CARRY1).  If, at any time, there is 0 carry, the rest of input number can just be passed to output.
+At reset state of CARRY1, lsb of the input number arrives and is added to 1 (behaviour of state CARRY1), and the bit is output. For other bits, the carry is added to them to get the output. Any carry generated determines the next state (CARRY0 or CARRY1).  If, at any time, there is 0 carry, the rest of input number can just be passed to output.
 
 ### Test
 ModelSim is used as System Verilog simulator.

@@ -13,4 +13,4 @@ simulate : compile
 	@$(SIMULATOR) -c Add1_tb -quiet -do "run $(SIMTIME)" -do "exit"
 
 clean:
-	@rm -f -r work
+	@rm -f -r work transcript
