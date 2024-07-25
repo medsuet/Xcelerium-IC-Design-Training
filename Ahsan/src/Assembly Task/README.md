@@ -45,19 +45,19 @@ To assemble, link, and run the RISC-V assembly programs, you need to have the fo
 
 To assemble and link a specific RISC-V assembly program, use the `make all` command with the `PROG` variable set to the name of the program (without the `.s` extension). For example, to assemble and link `p_1.s`, use:
 
-```sh
-make all PROG=p_1
 
+```make all PROG=p_1
+```
 ### Run
 
-``make run PROG=p_1
-
+```make run PROG=p_1
+```
 ### Debug
 
 ```make debug PROG=p_1
-
+```
 ### clean
 
 ```make clean
-
+```
 

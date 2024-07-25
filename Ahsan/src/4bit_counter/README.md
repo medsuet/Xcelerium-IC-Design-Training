@@ -34,8 +34,9 @@ To compile and simulate the Verilog code, you need to have the following tools i
 To compile and simulate the 4-bit counter module, run the following command in the terminal:
 ```
 make
+```
 
-###cleanup
+### cleanup
 ```
 make clean
-
+```

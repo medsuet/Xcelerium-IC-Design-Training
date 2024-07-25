@@ -49,7 +49,9 @@ To compile and simulate the signed multiplier module, run the following command 
 
 ```sh
 make
-
+```
+#Cleanup
 for cleanup
-
+```
 make clean
+```

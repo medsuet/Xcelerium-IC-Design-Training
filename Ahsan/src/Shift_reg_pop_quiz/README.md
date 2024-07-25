@@ -33,8 +33,10 @@ To compile and simulate the Verilog code, you need to have the following tools i
 To compile and simulate the shift register module, run the following command in the terminal:
 ```
 make
+```
+### Clean up
 
 for cleanup
-
+```
 make clean
-
+```
