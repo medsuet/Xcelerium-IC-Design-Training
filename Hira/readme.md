@@ -12,6 +12,7 @@ This repository contains resources and materials related to IC design training
 
 ### Assembly:
   Contains the implementation of codes using risc-v assembly.To run the files commands are as follows:
+  
     ```bash
       riscv64-unknown-elf-as -o example.o example.s
       riscv64-unknown-elf-ld -T link.ld -o example example.o
@@ -29,6 +30,7 @@ This repository contains resources and materials related to IC design training
 
 ### Lab_2:
   Contains the implementation of codes in advanced(pointers) C Syntax.
+  
           ```bash 
               gcc example.c
 
@@ -48,7 +50,7 @@ This repository contains resources and materials related to IC design training
             python example.py
 
 ### TCL_Lab:
-    Contains the implementation of codes in basic tcl_sh Syntax.
+  Contains the implementation of codes in basic tcl_sh Syntax.
         ```bash 
             tclsh example.sh
 
