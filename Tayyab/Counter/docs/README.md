@@ -14,7 +14,7 @@ Resets when count == UBOUND-1, or at rising reset signal.
 
 ![image](Counter.svg)
 
-### Run tests
+### Simualtion
 By default ModelSim is used as System Verilog simulator.
 
 Simulation parameters:
@@ -31,9 +31,3 @@ Instantiates Counter, gives it a 10 ps clock and a reset signal after <RESETTIME
 Custom tests: (example)\
 `make simulate SIMTIME="10 ms" RESETTIME=25`\
 This runs counter for 10 ms and gines reset signal after 25 ps.
-
-
-
-
-
-

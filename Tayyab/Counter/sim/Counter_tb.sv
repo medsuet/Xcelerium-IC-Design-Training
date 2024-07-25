@@ -9,7 +9,7 @@ module Counter_tb();
 
     parameter UBOUND = 14;
     parameter NUMBITS = 4;
-    parameter RESETTIME = 0;
+    parameter RESETTIME = 25;
 
     logic clk, reset;
     logic [(NUMBITS-1):0]count;
@@ -36,7 +36,7 @@ module Counter_tb();
     // Task to reset the counter
     task reset_counter();
         reset <= 1;
-        #2;
+        #7;
         reset <= 0;
     endtask
     
