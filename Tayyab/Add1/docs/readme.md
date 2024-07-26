@@ -6,7 +6,7 @@ Adds 1 to the input number.\
 Input is given serially (bit by bit), and can be of any length. Reset before inputting a new number.
 
 ### Working
-![image](Add1.drawio.svg)
+![image](Add1.svg)
 
 ![image](state_table.png)
 
