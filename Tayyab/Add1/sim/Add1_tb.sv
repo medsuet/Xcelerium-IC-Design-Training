@@ -6,7 +6,7 @@ module Add1_tb();
     logic input_bit, output_bit;
     logic [(NUMBITS-1):0]input_number, output_number;
 
-    Add1 UUT(clk, reset, input_bit, output_bit);
+    Add1_4bit UUT(clk, reset, input_bit, output_bit);
 
     // Generate clock
     initial begin
@@ -16,13 +16,18 @@ module Add1_tb();
 
     // Write test commands here
     initial begin
+        // Reset Add1 module to start inputting new number
+        reset_sequence();
+
+        // Static tests
+        // test(9);
+
+        // Test all 4 bit numbers (0-15)
         all_num_tests();
     end
 
     // Tests Add1 module on argument input_number
     task test(logic [(NUMBITS-1):0]input_number);
-        reset_sequence();                               // Reset Add1 module to start inputting new number
-
         for (int i=0; i<=(NUMBITS-1); i++) begin        // Loop over all bits of the number, starting from LSB
             input_bit = input_number[i];                // Input each bit of input_number to Add1 module in turn
             @(posedge clk);                             // Output is available at next clock edge

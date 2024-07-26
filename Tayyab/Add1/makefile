@@ -6,7 +6,7 @@ SIMTIME = 1 ns			# Simulation running time
 
 compile : work/_lib.qdb
 
-work/_lib.qdb : sim/Add1_tb.sv src/Add1.sv
+work/_lib.qdb : sim/Add1_tb.sv src/Add1_4bit.sv
 	$(COMPILER) -nologo $?
 
 simulate : compile
