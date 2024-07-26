@@ -1,0 +1,20 @@
+VERILOG_FILES = src/shift_register.sv test/tb_shift_register.sv
+TOP_MODULE = tb
+OUTPUT_FILE = simulation.vvp
+VCD_FILE = waveform.vcd
+
+IVERILOG = iverilog
+VVP = vvp
+GTKWAVE = gtkwave
+
+all: compile simulate
+compile:
+	$(IVERILOG) -g2012 -o $(OUTPUT_FILE) $(VERILOG_FILES)
+simulate:
+	$(VVP) $(OUTPUT_FILE)
+view_simulation:
+	$(GTKWAVE) $(VCD_FILE)
+clean:
+	rm -f $(OUTPUT_FILE) $(VCD_FILE)
+
+.PHONY: all compile simulate view clean
