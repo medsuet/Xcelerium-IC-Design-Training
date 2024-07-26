@@ -1,65 +1,82 @@
-module binary_adder_tb;
-
-    // Declare testbench signals
+module tb_sequential_adder;
     logic clk;
     logic reset;
-    logic increment;
-    logic [3:0] counts;
+    logic [3:0] number;
+    logic [3:0] sum;
 
-    // Instantiate the binary_adder module
-    binary_adder uut (
+    // Instantiate the sequential_adder
+    sequential_adder uut (
         .clk(clk),
         .reset(reset),
-        .increment(increment),
-        .count(counts)
+        .number(number),
+        .sum(sum)
     );
 
     // Clock generation
-    always begin
-        #5 clk = ~clk; // 10 ns clock period
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
     end
 
-    // Test sequence
+    // Test procedure
     initial begin
+        number = 0; reset = 0;
+        $display("Time\tReset\tNumber\tControl_in");
+        $monitor("%0d\t%b\t%b\t%b", $time, reset, number, uut.input_LSB);
+
         // Initialize signals
-        clk = 0;
-        increment = 0;
-        reset = 0;
-
-        // Apply reset
+        @(posedge clk);
         reset = 1;
-        #10;
+        
+        @(posedge clk);
+        number = 4'b1010; // Example input
+        
+        @(posedge clk);
         reset = 0;
-        #10;
 
-        // Check result for initial value 6
-        increment = 1;
-        #10;
-        increment = 0;
-        #10;
-
-        #10;
-        counts = 4'b0111;
-
-        // Apply reset again
-        #10;
+        repeat(7) @(posedge clk);
+        
+        @(posedge clk);
         reset = 1;
-        #10;
+        
+        repeat(2)@(posedge clk);
+        number = 4'b1001; // Example input
+       
+        @(posedge clk);
         reset = 0;
-        #10;
+       
+        repeat(7) @(posedge clk);
 
+        @(posedge clk);
+        reset = 1;
+        
+        repeat(2)@(posedge clk);
+        number = 4'b1011; // Example input
+        
+        @(posedge clk);
+        reset = 0;
+       
+        repeat(7) @(posedge clk);
+        
+        @(posedge clk);
+        reset = 1;
+       
+        repeat(2)@(posedge clk);
+        number = 4'b1111; // Example input
+        
+        @(posedge clk);
+        reset = 0;
+        
+        repeat(7) @(posedge clk);
 
-        increment = 1;
-        #10;
-        increment = 0;
-        #10;
-
-        #10;
-        counts = 4'b1111;
-
-        // End simulation
-        #10;
+        // Finish simulation
         $finish;
+    end
+
+    initial begin
+        // Create VCD file
+        $dumpfile("tb_sequential_adder.vcd"); // Output file name
+        $dumpvars(0, tb_sequential_adder);    // Dump all signals in the testbench
     end
 
 endmodule

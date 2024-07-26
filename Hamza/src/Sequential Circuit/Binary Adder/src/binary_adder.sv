@@ -1,130 +1,90 @@
-module binary_adder(
-    input logic clk,           // Clock signal
-    input logic reset,         // Reset signal
-    input logic increment,     // Increment signal
-    output logic [3:0] count   // 4-bit counter output
+module sequential_adder (
+    input logic        clk,
+    input logic        reset,
+    input logic [3:0]  number,
+    output logic [3:0] sum
 );
-
-    // Define state parameters
-    parameter IDLE = 2'b00;
-    parameter CHECK_LSB = 2'b01;
-    parameter PROPAGATE_CARRY = 2'b10;
-    parameter WRAP_AROUND = 2'b11;
-
-    // Internal signals
+    logic [3:0] shift_reg;
+    logic       input_LSB;
+    logic       output_LSB;
+    
+    // State registers
     logic [1:0] state, next_state;
-    logic carry;
-    logic [3:0] next_count;
 
-    // State and count update
+    // Define state encodings
+    parameter IDLE       = 2'b00;
+    parameter CHECK_LSB      = 2'b01;
+    parameter LSB_0      = 2'b10;
+    parameter LSB_1 = 2'b11;
+
+    // Sequential logic for state transitions
     always_ff @(posedge clk or posedge reset) begin
         if (reset) begin
-            state <= IDLE;
-            count <= 4'b0000;
+            state <= #1 IDLE;
         end else begin
-            state <= next_state;
-            count <= next_count;
+            state <= #1 next_state;
         end
     end
 
-    // State transition logic
+    // Combinational logic for next state and output
     always_comb begin
         case (state)
             IDLE: begin
-                if (increment) begin
-                    next_state = CHECK_LSB;
-                end else begin
-                    next_state = IDLE;
-                end
+                next_state = CHECK_LSB;
             end
-
             CHECK_LSB: begin
-                if (count[0] == 1'b0) begin
-                    next_state = IDLE;
+                if (input_LSB) begin
+                    next_state  = LSB_1;  // Transition to S1   
+                    output_LSB = 1'b0;
                 end else begin
-                    next_state = PROPAGATE_CARRY;
+                    next_state  = LSB_0;  // Stay in S0
+                    output_LSB = 1'b1;
                 end
             end
-
-            PROPAGATE_CARRY: begin
-                if (carry) begin
-                    if (count == 4'b1111) begin
-                        next_state = WRAP_AROUND;
-                    end else begin
-                        next_state = PROPAGATE_CARRY;
-                    end
+            LSB_0: begin
+                if (input_LSB) begin
+                    next_state  = LSB_0;  // Transition to S1
+                    output_LSB = 1'b1;
                 end else begin
-                    next_state = IDLE;
+                    next_state  = LSB_0;
+                    output_LSB = 1'b0;  
+                end
+             end
+            LSB_1: begin
+                if (input_LSB) begin
+                    next_state  = LSB_1;  // Transition to S1
+                    output_LSB = 1'b0;
+                end else begin
+                    next_state  = LSB_0;  // Stay in S0
+                    output_LSB = 1'b1;
                 end
             end
-
-            WRAP_AROUND: begin
-                next_state = IDLE;
-            end
-
             default: begin
-                next_state = IDLE;
+                next_state  = IDLE;  // Default to S0 in case of unknown state
+                output_LSB = 1'b0;
             end
         endcase
     end
 
-    // Signal transition logic
-    always_comb begin
-        next_count = count;
-        carry = 1'b0;
+    always_ff @(posedge clk, posedge reset) begin
+        if(reset) begin
+            shift_reg  <= #1 number;
+            input_LSB <= #1 1'b0;
+        end
+        else begin
+            shift_reg  <= #1 {1'b0, shift_reg[3:1]};
+            input_LSB <= #1 shift_reg[0];
+        end
+    end
 
-        case (state)
-            IDLE: begin
-                // No changes needed in IDLE state for count
-            end
-
-            CHECK_LSB: begin
-                if (increment) begin
-                    if (count[0] == 1'b0) begin
-                        next_count[0] = 1'b1;
-                    end else begin
-                        next_count[0] = 1'b0;
-                        carry = 1'b1;
-                    end
-                end
-            end
-
-            PROPAGATE_CARRY: begin
-                if (carry) begin
-                    if (count[1] == 1'b0) begin
-                        next_count[1] = 1'b1;
-                        carry = 1'b0;
-                    end else begin
-                        next_count[1] = 1'b0;
-                        carry = 1'b1;
-                    end
-
-                    if (count[2] == 1'b0) begin
-                        next_count[2] = 1'b1;
-                        carry = 1'b0;
-                    end else begin
-                        next_count[2] = 1'b0;
-                        carry = 1'b1;
-                    end
-
-                    if (count[3] == 1'b0) begin
-                        next_count[3] = 1'b1;
-                        carry = 1'b0;
-                    end else begin
-                        next_count[3] = 1'b0;
-                        carry = 1'b1;
-                    end
-                end
-            end
-
-            WRAP_AROUND: begin
-                next_count = 4'b0000;  // Reset count to 0
-            end
-
-            default: begin
-                next_count = count;
-            end
-        endcase
+    // Update sum register with output_LSB
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            sum <= #1 4'b0000; 
+        end else begin
+            // Shift sum left and insert output_LSB bit at the LSB
+            sum <= #1 {sum[2:0], output_LSB};
+        end
     end
 
 endmodule
