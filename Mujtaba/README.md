@@ -36,3 +36,7 @@ This repository contains all the Excercises that is important for the IC Design 
 
 - **Description:** Read the `README.md` file in `Sequential_Excercise` folder which contains files that implement 4-bit counter to practice the basic sequential circuit. 
 
+## Implementation of Sequential Binary Adder
+
+- **Description:** Read the `README.md` file in `Sequential_Adder` folder which contains files that implement binary adder to practice the deeper concepts of the sequential circuit. 
+
