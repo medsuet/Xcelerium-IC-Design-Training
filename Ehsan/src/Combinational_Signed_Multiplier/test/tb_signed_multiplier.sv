@@ -15,17 +15,21 @@ module tb;
     
     //using random numbers to test multiplier
     initial begin
-        for (int i=0;i<test_cases;i++) begin
+        for (int i=0;i<test_cases+1;i++) begin
             multiplier = $random % 65536;   //ensure that number is in 16 bits
             multiplicand = $random % 65536; //ensure that number is in 16 bits
             expected_product = multiplicand * multiplier;
             #1;
-            if (product !== expected_product) begin
-                $display("mismatch");
-            end else begin
-                $display("match");
-            end
+            //if (product !== expected_product) begin
+            //    $display("test %0d: mismatch",i);
+            //end else begin
+            //    $display("test %0d: match",i);
+            //end
         end
+        $finish;
     end
-      
+    initial begin
+        $dumpfile("waveform.vcd");
+        $dumpvars(0,tb);
+    end
 endmodule

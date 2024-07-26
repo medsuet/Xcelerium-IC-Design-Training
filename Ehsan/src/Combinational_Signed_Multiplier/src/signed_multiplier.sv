@@ -1,13 +1,10 @@
-`include "full_adder.sv"
-`include "half_adder.sv"
-
 module signed_multiplier (
     input [15:0] multiplicand, multiplier,
     output [31:0] product
 );
 
-logic [14:0] [15:0]  sum ;  //sum out of adder modules
-logic [14:0] [15:0]  cout; //carry out of adder modules
+logic [15:0] sum  [14:0];  //sum out of adder modules
+logic [15:0] cout [14:0]; //carry out of adder modules
 logic last_carry;         //last full adder carry 
 logic [15:0]  pp [15:0];  //partial products
 
