@@ -32,6 +32,15 @@ Ensure you have the following tools installed:
     ```bash
     make view_counter
     ```
+`4bit_adder` Project
+- Compile and Simulate:
+    ```bash
+    make adder
+    ```
+- View Waveform:
+    ```bash
+    make view_adder
+    ```
 - **Clean Up**
      
     Remove generated files:
