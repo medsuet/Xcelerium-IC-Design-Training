@@ -8,7 +8,7 @@ logic signed [31:0] exp;
 int fd;
 int pass=0;
 int fail=0;
-int n=65535;
+int n=1000000-1;
 
 multiplier UUT (A, B, Product);
 
