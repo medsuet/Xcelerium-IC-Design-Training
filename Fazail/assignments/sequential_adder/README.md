@@ -15,6 +15,7 @@ This project implements a sequential 4-bit adder that adds 1 to a 4-bit binary n
 ### State Diagram
 
 The state diagram for the adder is as follows:
+
 ![Design Image](docs/adder.png)
 
 ## Usage
@@ -31,10 +32,11 @@ To run the simulation:
 To run the waves in modelsim gui mode, you have to run the following command:
    ```sh
    make vsim
-
+```
 ### Waveform sample
 
 The waveform of the design is as follows:
+
 ![Design Image](docs/wave.png)
 
 
