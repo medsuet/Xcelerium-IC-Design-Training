@@ -1,7 +1,7 @@
-# Counter (counts upto 13)
+# Combination Signed Multiplier
 
 ## Overview
-  This repository contains an implementation of 4 bit Counter that counts upto 13.
+  This repository contains an implementation of 16 bit signed multiplier but can be used for any size by changing the width of inputs and output in the header file.
 
 ## Languages Used
   * System Verilog
@@ -16,8 +16,14 @@
 
   Representation of architecture through clear block diagrams is shown below.
 ## Block Diagram
-The block diagram of the Uart Transmitter and Receiver is given below.
-![Datapath](./docs/counter.png)
+The block diagram of the  combinational signed multiplier is given below.
+![Datapath](./docs/Signed_Multiplier.drawio.png)
+
+## Signed Multiplication Algorithm
+  * Take the **compliment** of the every **partial product MSB** except the **last partial product**
+  * Take the **compliment** of **last partial product each bit except MSB**
+  * Add 1 at the **n+1** position and at **2n** position
+
 
 # Getting Started
 
@@ -29,7 +35,7 @@ Install [Vivado](https://github.com/ALI11-2000/Vivado-Installation) . Follow the
 
 ## Build Model and Run Simulation
 
-To build Counter, use the provided Makefile. Follow the steps below for simulation using  Vivado.
+To build Signed Combinational Multplier, use the provided Makefile. Follow the steps below for simulation using  Vivado.
 
 
 ### Simulation with Vivado
@@ -51,13 +57,13 @@ make viv_waves
 
 Running the `make viv_waves` command generates the terminal log output as shown below:
 
- ![Vivado](./docs/counter_output.png)
+ ![Vivado](./docs/signed_multiplier.png)
 
 # Waveform Drawn
 
 The expected waveform is shown below:
 ## Vivado
- ![Waveform](./docs/wavedrom.png)
+ ![Waveform](./docs/waveform.png)
 
  
 
