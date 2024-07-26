@@ -1,7 +1,7 @@
 localparam WIDTH = 4;
 
 module tb_add_1;
-logic in, a;
+logic in;
 logic clk, n_rst;
 logic out;
 
@@ -10,10 +10,9 @@ int i = 1;
 
 add_1 UUT (
     .in(in),
-    .a(a),
     .clk(clk),
     .reset(n_rst),
-    .value_out(out)
+    .out(out)
 );
     
 initial begin
@@ -30,15 +29,15 @@ initial begin
     // apply reset sequence
     reset_seq;
 
-    // inputs checking
-    value = 10;
-    apply_inputs(value[0], 1);      // add one to lsb
-    
-    repeat(3) begin
-        apply_inputs(value[i], 0);
-        i++;
+    // apply inputs
+    repeat(16)begin 
+        value = value + 1;
+        apply_inputs(value[0]);
+        apply_inputs(value[1]);
+        apply_inputs(value[2]);
+        apply_inputs(value[3]);
+        reset_seq;
     end
-    i = 0;
 
     repeat(1)@(posedge clk);
     $finish;
@@ -47,24 +46,23 @@ end
 // initialize the signals
 task init_signals;
     begin
-        in = 0; a = 0; value = 0;
+        in = 0; value = 0; n_rst = 1;
+        @(posedge clk);
     end
 endtask
 
 // reset sequence
 task reset_seq;
     begin
-        n_rst = 1;
-        @(posedge clk) n_rst = 0;
+        n_rst = 0;
         @(posedge clk) n_rst = 1; 
     end
 endtask
 
 // apply inputs
-task apply_inputs(input value_in, constant);
-    @(posedge clk);
+task apply_inputs(input value_in);
     in = value_in;
-    a = constant; 
+    @(posedge clk);
 endtask
 
 endmodule

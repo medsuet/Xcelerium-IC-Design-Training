@@ -1,45 +1,55 @@
-module add_1 (
+module add_1(
     input logic in,
-    input logic a,          // constant 1
 
-    input logic clk,
-    input logic reset,      // active low
-
-    output logic value_out
+    input logic clk, reset,
+    
+    output logic out
 );
 
-logic carry;
-logic c_state, n_state;
-logic [1:0] count;
-parameter S0=1'b0, S1=1'b1;
-
-//assign a = 1;
-//assign carry = 0;
-//assign count = 0;
+logic [2:0]c_state, n_state;
+parameter S0=3'h0, S1=3'b1, S2=3'h2, S3=3'h3;
+parameter S4=3'h4, S5=3'h5, S6=3'h6;
 
 always_ff @ (posedge clk or negedge reset) begin
     //reset is active high
     if (!reset) 
-    c_state <= #1 S0;
+    c_state <= S0;
     else
-    c_state <= #1 n_state;
+    c_state <= n_state;
 end
-
+    
 //next_state always block
 always_comb begin
   case (c_state)
     S0: begin   
-      if (a & in) n_state = S1;
-      else if (a & ~in) n_state = S1;
-      //else if () n_state = S0; 
+        if (in) n_state = S2;
+        else n_state = S1;
     end
-    S1: begin   
-      if (count == 3 & ~a) n_state = S0;
-      else if (~carry & ~in & (count != 3)) n_state = S1;
-      else if (carry & in & (count != 3)) n_state = S1;
-      else if (carry & ~in & (count != 3)) n_state = S1;
-      else if (~carry & in & (count != 3)) n_state = S1;
-      //else n_state = S1;
+
+    S1: begin
+        n_state = S3;
+    end
+
+    S2: begin
+        if(in) n_state = S4;
+        else n_state = S3;    
+    end
+
+    S3: begin
+        n_state = S5;
+    end
+
+    S4: begin
+        if (in) n_state = S6;
+        else n_state = S5;
+    end
+
+    S5: begin
+        n_state = S0;
+    end
+
+    S6: begin
+        n_state = S0;
     end
 
     default: n_state = S0;
@@ -48,47 +58,40 @@ end
 
 //output always block
 always_comb begin
-    value_out = 0;
-    carry = 0;
-    count = 0;
   case (c_state)
     S0: begin 
-        if (a & ~in) begin
-            value_out = 1;
-            carry = 0;
-            count = 0;
-        end
-        else if (a & in) begin
-            value_out = 0;
-            carry = 1;
-            count = 0;
-        end
+        if (in) out = 0;
+        else out = 1;
     end
 
     S1: begin 
-        if (carry & in & (count != 3)) begin
-            value_out = 0;
-            carry = 1;
-            count = count + 1;
-        end
+        out = in;
+    end
 
-        else if(~carry & ~in & (count != 3)) begin
-            value_out = 0;
-            carry = 0;
-            count = count + 1;
-        end
+    S2: begin 
+        if (in) out = 0;
+        else out = 1;
+    end
 
-        else if (carry & ~in & (count != 3)) begin
-            value_out = 1;
-            carry = 0;
-            count = count + 1;
-        end
+    S3: begin 
+        out = in;
+    end
 
-        else if (~carry & in & (count != 3)) begin
-            value_out = 1;
-            carry = 0;
-            count = count + 1;
-        end
+    S4: begin 
+        if (in) out = 0;
+        else out = 1;
+    end
+
+    S5: begin 
+        out = in;
+    end
+
+    S6: begin 
+        out = ~in;
+    end
+
+    default:begin 
+        out = 0;
     end
   endcase
 end
