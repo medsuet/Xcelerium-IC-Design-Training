@@ -3,7 +3,7 @@
 # Tools
 IVER = iverilog -g2012 -o
 VVP = vvp
-PROG = sequential_adder
+PROG = seq_adder_inverter_logic
 
 # Default target
 all: $(PROG)_tb.vvp
