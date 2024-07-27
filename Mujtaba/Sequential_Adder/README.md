@@ -13,7 +13,7 @@ We observe that to add 1 to binary number, we only detect the first 0 in 4-bit s
 ## Problem 1: Sequential Binary Adder
 
 - **File:** `seq_adder_inverter_logic.sv`
-- **Description:** Build the chip of binary sequential adder that adds 1 to every 4-bit binary number. The circuit is basically the state machine or FSM having the diagram shown below. The hand written waveform (shown in the below figure) is verified by the waveform produced by simulator `vvp` that is visualized using the `gtkwave` for the value input 3 and 7. 
+- **Description:** Build the chip of binary sequential adder that adds 1 to every 4-bit binary number. The circuit is basically the state machine or FSM having the diagram shown below. The hand written waveform (shown in the below figure) is verified by the waveform produced by simulator `vvp` that is visualized using the `gtkwave`. 
 
 - **File:** `seq_adder_inverter_logic_tb.sv`
 - **Description:** This file used to test the chip or verify its functionality.
