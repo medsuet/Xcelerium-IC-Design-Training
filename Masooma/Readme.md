@@ -166,4 +166,17 @@ To run task2:
 To run task3:
 
     make lab7 TASK=task3.py
+##Lab 8
+The folder named multiplier contains the .sv files. To compile a source files and testbench on verilator, write the following command in the Xcelerium-IC-Design-Training/Masooma/multiplier directory:
+
+    make
+To run testbench
+
+    make run
+To clean obj_dir and .vcd:
+
+    make clean
+
+
+
 
