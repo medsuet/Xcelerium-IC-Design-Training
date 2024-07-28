@@ -24,7 +24,7 @@ The design consists of the following modules:
 - `combinational_multiplier`: The main module that computes the product of two 16-bit signed integers.
 
 ### Block Diagram
-![16-bit Combinational Multiplier Design](./16bit_combinational_multiplier.drawio.png)
+![16-bit Combinational Multiplier Design](./design_diagram.png)
 
 
 The 16-bit combinational multiplier design shown above follows a structured approach to generate and sum the partial products. The design includes:
