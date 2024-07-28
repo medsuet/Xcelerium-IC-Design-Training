@@ -82,4 +82,4 @@ src/comb_multiplier/mul
 
 .sv_cache/files/comb_16_bit_multiplier.sv
 
-
+src/sequential_adder/adder
