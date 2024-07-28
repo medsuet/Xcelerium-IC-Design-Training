@@ -27,6 +27,15 @@
 *.dSYM/
 *.su
 
+# Ignore ModelSim/QuestaSim log files and work directories
+transcript
+*.log
+work/
+*.wlf
+modelsim.ini
+vsim.wlf
+
+
 # Simulation Files
 *.vvp
 *.vcd
