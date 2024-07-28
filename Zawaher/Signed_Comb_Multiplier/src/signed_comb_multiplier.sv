@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-`include "sig_mul.svh"
+`include "../define/sig_mul.svh"
 
 module signed_multiplier(
     input logic signed [width-1:0] multiplicand,
@@ -13,7 +13,9 @@ module signed_multiplier(
     logic [width-1:0][width-1:0] carry;
     logic [width-1:0][width-1:0] sum;
 
-// Generate Block for Partial Product
+// Generate Block for Partial Product from bit 0 to bit 14 of the multiplier
+// First 14 bits of each partial product should be the 'AND' of multiplier[i] and the multplicand[j]
+// Last 15 bit of each partial product should be the 'NAND' of multiplier[i] and the multiplicand[15] bit
     generate
         genvar i, j;
         for (i = 0; i < width; i++) begin
@@ -26,7 +28,11 @@ module signed_multiplier(
             end
         end
     endgenerate
-    
+
+// Generate Block for Partial Product coressponding to the signed bit  of the multiplier
+// First 14 bits of partial product should be the 'NAND' of multiplier[15] and the multplicand[j]
+// Last 15 bit of each partial product should be the 'AND' of multiplier[15] and the multiplicand[15] bit
+
     generate 
         genvar k;
         for (k = 0; k < width - 1; k++) begin
@@ -58,6 +64,8 @@ module signed_multiplier(
                         .c(carry[q][r])
                     );
                 end
+    // Checks if this is the first partial product row and the last bit calculation of that  partial product (we have to give one as input because of algorithm ,
+    // we have to add 1 at n+1 position             
                 else if (q == 1 && r == width-1) begin
                     full_adder FA(
                         .a(1'b1),
@@ -67,6 +75,7 @@ module signed_multiplier(
                         .carry(carry[q][r])
                     );
                 end
+    // Checks if the last bit calculation of each row of partial product . because we have to give carry  out of previous row last FA as an input to this FA             
                 else if (r == width-1) begin
                     full_adder FA(
                         .a(carry[q-1][r]),
@@ -89,7 +98,7 @@ module signed_multiplier(
         end
     endgenerate
 
-
+// Last half adder for the 31 bit of the product
 half_adder final_HA (
                         .a(1'b1),
                         .b(carry[width-1][width-1]),
