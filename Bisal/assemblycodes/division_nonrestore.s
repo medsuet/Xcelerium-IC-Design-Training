@@ -5,7 +5,6 @@
 #  Date:        7/15/2024
 #  ==================================================================================
 
-
 .data
 .align 2
 divisor: .word 0x0       # Divisor placeholder
@@ -15,17 +14,13 @@ quotient: .word 0x0      # Quotient placeholder
 .text
 .globl _start
 _start:
-    # Load dividend into x1 (for example, 100)
     li x1, 100
-    # Load divisor into x2 (for example, 4)
-    li x2, 4
-    
+    li x2, 4    
     # Initialize variables
     mv x3, x0  
     mv x4, x0   
     li t0, 32   
     li t1, 1    
-
 loop:
     slli x4, x4, 1
     srl x5, x1, 31     # Extract MSB of x1 (dividend)
