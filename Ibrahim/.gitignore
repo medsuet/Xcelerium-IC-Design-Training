@@ -14,7 +14,6 @@
 *.ilk
 *.map
 *.exp
->>>>>>> 2a12ef3 (Added src, docs and .gitignore)
 
 # Precompiled Headers
 *.gch
@@ -35,10 +34,6 @@
 *.so.*
 *.dylib
 
-# Executables
-*.exe
-*.out
->>>>>>> 2a12ef3 (Added src, docs and .gitignore)
 *.app
 *.i*86
 *.x86_64
