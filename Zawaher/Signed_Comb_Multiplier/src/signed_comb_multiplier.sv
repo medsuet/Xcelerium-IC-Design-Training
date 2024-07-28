@@ -46,7 +46,7 @@ module signed_multiplier(
         genvar p;
         for (p = 0; p < width; p++) begin
            assign sum[0][p] = partial_product[0][p];
-           assign carry[0][p] = 0;
+           assign carry[0][p] = 1'b0;
         end
     endgenerate
 
@@ -109,7 +109,7 @@ half_adder final_HA (
     always_comb begin
         product = 'h0; //Initialize the product to zero
         for (int m = 0; m < result_width-1; m++)begin
-            if ( m < (width) )begin
+            if ( m < (width-1) )begin
 
                 product |=  sum[m][0] << m ;
 
