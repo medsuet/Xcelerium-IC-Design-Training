@@ -68,7 +68,7 @@ module pop_quiz_tb;
 
     // Generate waveform Dump for visualization
     initial begin
-        $dumpfile("pop_quiz/test/pop_quiz.vcd");
+        $dumpfile("pop_quiz.vcd");
         $dumpvars(0, pop_quiz_tb);
     end
 
