@@ -18,7 +18,7 @@ module signed_multiplier(
 // Last 15 bit of each partial product should be the 'NAND' of multiplier[i] and the multiplicand[15] bit
     generate
         genvar i, j;
-        for (i = 0; i < width; i++) begin
+        for (i = 0; i < width-1; i++) begin
             for (j = 0; j < width; j++) begin
                 if (j < width - 1) begin
                    assign  partial_product[i][j] = (multiplier[i] & multiplicand[j]);
