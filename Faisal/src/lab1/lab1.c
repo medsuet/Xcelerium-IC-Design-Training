@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 
 // Part 0: Quick Revision Exercises
 
@@ -99,7 +100,9 @@ void guessingGame() {
 int isPrime(int number) {
     // TODO: Check if a number is prime
     if (number <= 1) return 0;
-    for (int i = 2; i <= number / 2; i++) {
+    if (number == 2) return 1; // 2 is a prime number
+    if (number % 2 == 0) return 0; // Even numbers greater than 2 are not prime
+    for (int i = 3; i <= sqrt(number); i += 2) {
         if (number % i == 0) return 0;
     }
     return 1;
