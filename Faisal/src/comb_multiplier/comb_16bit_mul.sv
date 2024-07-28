@@ -6,7 +6,7 @@ module comb_16bit_mul (
     
     logic [15:0] partialProduct [15:0]; // for partial products
     logic [31:0] sum [15:0]; // for intermediate sum
-    logic signed [15:0] unsignedInput1, unsignedInput2; // for storing after complement if taken
+    logic signed [15:0] updateInput1, updateInput2; // for storing after complement if taken
 
     // Extract sign bits
     logic signBit1;
@@ -22,17 +22,17 @@ module comb_16bit_mul (
     // if negtive numbers, then make unsigned numbers by taking 2's complement
     always_comb begin
         if (signBit1) begin
-            unsignedInput1 = ~input1 + 1; // make unsign number from signed number
+            updateInput1 = ~input1 + 1; // make unsign number from signed number
         end 
         else begin
-            unsignedInput1 = input1;
+            updateInput1 = input1;
         end
 
         if (signBit2) begin // make unsign number from signed number
-            unsignedInput2 = ~input2 + 1;
+            updateInput2 = ~input2 + 1;
         end 
         else begin
-            unsignedInput2 = input2;
+            updateInput2 = input2;
         end
     end
 
@@ -40,7 +40,7 @@ module comb_16bit_mul (
     // Generate partial products
     generate
         for (genvar i = 0; i < 16; i = i + 1) begin : gen_partial_products
-            assign partialProduct[i] = unsignedInput1 & {16{unsignedInput2[i]}};
+            assign partialProduct[i] = updateInput1 & {16{updateInput2[i]}};
         end
     endgenerate
 
