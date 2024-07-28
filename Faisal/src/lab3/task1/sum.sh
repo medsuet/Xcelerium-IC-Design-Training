@@ -9,7 +9,6 @@ fi
 # Read the arguments
 num1=$1
 num2=$2
-
 # Calculate the sum
 sum=$(($num1 + $num2))
 
