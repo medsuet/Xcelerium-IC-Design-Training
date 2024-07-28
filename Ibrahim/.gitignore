@@ -43,7 +43,6 @@
 *.dSYM/
 *.su
 
-
 # Ignore ModelSim/QuestaSim log files and work directories
 transcript
 *.log
@@ -51,11 +50,13 @@ work/
 *.wlf
 modelsim.ini
 vsim.wlf
+
 *.tmp
 *.out
 
 # Ignore compiled simulation files in the src/Sequential_Multiplier directory
 src/Sequential_Multiplier/tb_seq_multiplier
+
 
 # Simulation Files
 *.vvp
