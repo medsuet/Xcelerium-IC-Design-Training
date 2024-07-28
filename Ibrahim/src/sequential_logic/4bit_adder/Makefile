@@ -33,11 +33,6 @@ view: $(VCD_FILE)
 	@echo "Opening waveform in GTKWave..."
 	gtkwave $(VCD_FILE)
 
-# # Ensure the VCD file is up-to-date
-# $(VCD_FILE): simulate
-# 	@echo "Simulation complete. Moving VCD file to current directory..."
-# 	mv $(VCD_FILE) .
-
 # Clean the build directory
 clean:
 	@echo "Cleaning up..."

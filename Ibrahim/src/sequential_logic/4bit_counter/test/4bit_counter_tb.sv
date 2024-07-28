@@ -57,7 +57,7 @@ module counter_tb;
 
     // Generate waveform dump for visualization
     initial begin
-        $dumpfile("4bit_counter/test/counter.vcd");
+        $dumpfile("counter.vcd");
         $dumpvars(0, counter_tb);
     end
 
