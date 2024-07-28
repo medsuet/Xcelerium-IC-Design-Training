@@ -42,8 +42,8 @@ module signed_comb_multiplier_tb(
     end
 
     task apply_inputs();
-    multiplicand = 3;
-    multiplier = 7;
+    multiplicand = $random;
+    multiplier = $random;
     
     `ifdef Verilator
         // Wait for two clock cycles in Verilator (10 time units)
