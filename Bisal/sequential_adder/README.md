@@ -18,14 +18,27 @@ The sequential adder operates based on the following state machine diagram:
 - **S1**: State where the adder outputs 0 for input 0.
 - **S2**: State where the adder outputs 1 for input 1 and 0 for input 0.
 
-### Truth Table
-The truth table for the sequential adder based on the FSM design:
+## Waveform Analysis
 
-| Present State | Input 1 | Input 0 | Next State | Output |
-|---------------|---------|---------|------------|--------|
-| S0            | S1      | S1      | 0          | 1      |
-| S1            | S1      | S2      | 0          | 1      |
-| S2            | S2      | S2      | 1          | 0      |
+The following waveform demonstrates how the sequential adder processes a 4-bit input with an active high reset:
+
+![Waveform Example](Screenshot 2024-07-28 142652.png)
+
+**Explanation:**
+- The waveform illustrates the behavior of the sequential adder for the input sequence `0011` with an active high reset. The 'A' signal represents the input bits being fed into the adder, while the 'result' signal shows the output bits.
+
+  - For the input bit `0`, the state machine transitions from state `S0` to `S1`, producing an output of `1`.
+  - For the input bit `0`, the state machine remains in state `S1`, continuing to output `0`.
+  - For the input bit `1`, the state machine transitions to state `S2`, outputting `1`.
+  - For the input bit `1`, the state machine remains in state `S2`, outputting `0`.
+
+This pattern illustrates how the state machine processes each bit of the input in sequence, according to the defined state transitions and outputs.
+
+## Questa Sim Results
+
+The simulation results obtained from Questa Sim are shown below, validating the design and functionality of the sequential adder:
+
+![Questa Sim Results](Screenshot 2024-07-28 143214.png)
 
 ## How to Run the Testbench
 
@@ -34,12 +47,3 @@ To run the testbench and simulate the sequential adder:
 1. Compile the design and testbench files using your preferred SystemVerilog simulator.
 2. Run the simulation and observe the output for different input sequences.
 3. Verify the output against the expected results as per the state machine design and truth table.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgements
-
-Special thanks to all the contributors and supporters of this project.
-
