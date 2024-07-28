@@ -22,7 +22,7 @@ The sequential adder operates based on the following state machine diagram:
 
 The following waveform demonstrates how the sequential adder processes a 4-bit input with an active high reset:
 
-![Waveform Example](Screenshot 2024-07-28 142652.png)
+![Waveform Example](waveform_example.png)
 
 **Explanation:**
 - The waveform illustrates the behavior of the sequential adder for the input sequence `0011` with an active high reset. The 'A' signal represents the input bits being fed into the adder, while the 'result' signal shows the output bits.
@@ -38,7 +38,7 @@ This pattern illustrates how the state machine processes each bit of the input i
 
 The simulation results obtained from Questa Sim are shown below, validating the design and functionality of the sequential adder:
 
-![Questa Sim Results](Screenshot 2024-07-28 143214.png)
+![Questa Sim Results](expected_result.png)
 
 ## How to Run the Testbench
 
