@@ -1,8 +1,15 @@
 `timescale 1ns / 1ps
 
-`include "sig_mul.svh"
+`include "../define/sig_mul.svh"
 
-module signed_multiplier_tb;
+module signed_comb_multiplier_tb(
+    
+    // Clock signal (for Verilator simulation)
+    `ifdef Verilator
+       input logic clk 
+    `endif
+
+);
 
 
     // Inputs to the signed multiplier
@@ -12,8 +19,10 @@ module signed_multiplier_tb;
     // Output from the signed multiplier
     logic signed [result_width-1:0] result;
 
+   
+        
     // Instantiate the signed multiplier
-    signed_multiplier #(width, result_width) DUT (
+    signed_multiplier DUT (
         .multiplicand(multiplicand),
         .multiplier(multiplier),
         .result(result)
@@ -33,14 +42,22 @@ module signed_multiplier_tb;
     end
 
     task apply_inputs();
-
-    multiplicand = $random;
-    multiplier = $random;
-    #10;
-        
+    multiplicand = 3;
+    multiplier = 7;
+    
+    `ifdef Verilator
+        // Wait for two clock cycles in Verilator (10 time units)
+        repeat(5)@(posedge clk);
+        `else
+        // Delay for 10 time units in Vivado or other simulators
+        #5;
+    `endif
+    
     endtask 
 
     task self_check();
+
+       
         logic signed [result_width-1:0] expected_result;
         begin
             expected_result = multiplicand * multiplier;
