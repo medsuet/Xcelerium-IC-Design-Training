@@ -27,10 +27,12 @@ The following waveform demonstrates how the sequential adder processes a 4-bit i
 **Explanation:**
 - The waveform illustrates the behavior of the sequential adder for the input sequence `0011` with an active high reset. The 'A' signal represents the input bits being fed into the adder, while the 'result' signal shows the output bits.
 
-  - For the input bit `0`, the state machine transitions from state `S0` to `S1`, producing an output of `1`.
-  - For the input bit `0`, the state machine remains in state `S1`, continuing to output `0`.
-  - For the input bit `1`, the state machine transitions to state `S2`, outputting `1`.
-  - For the input bit `1`, the state machine remains in state `S2`, outputting `0`.
+  - For the input bit `0`, the state machine transitions from state `S0` to `S2`, producing an output of `1`.
+  - For the input bit `0`, the state machine remains in state `S2`, continuing to output `0`.
+  - For the input bit `0`, the state machine remains in state `S2`, outputting `0`.
+  - For the input bit `0`, the state machine remains in state `S2`, outputting `0`.
+
+- As the input is feeded in form of LSB to MSB bits so expected result is 0001 as shown in above waveform.
 
 This pattern illustrates how the state machine processes each bit of the input in sequence, according to the defined state transitions and outputs.
 
@@ -38,7 +40,7 @@ This pattern illustrates how the state machine processes each bit of the input i
 
 The simulation results obtained from Questa Sim are shown below, validating the design and functionality of the sequential adder:
 
-![Questa Sim Results](expected_result.png)
+![Questa Sim Results](expected_output.png)
 
 ## How to Run the Testbench
 
