@@ -60,3 +60,6 @@ dkms.conf
 # Ignore text files
 *.txt
 
+#ignore verilog object files
+*.vpp
+*.vcd
