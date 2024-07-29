@@ -10,7 +10,7 @@ ADDER_OUTPUT_FILE = out.vvp
 all: adder
 
 #Compile and simulate 4bit_adder
-counter: compile_adder simulate_adder
+adder: compile_adder simulate_adder
 
 compile_adder:
 	$(IVERILOG) -g2012 -o $(ADDER_OUTPUT_FILE) $(ADDER_VERILOG_FILES)

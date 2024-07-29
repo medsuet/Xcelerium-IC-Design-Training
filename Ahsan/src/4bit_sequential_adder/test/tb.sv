@@ -1,61 +1,61 @@
-module tb_serial_adder;
-    logic clk;
-    logic reset;
-    logic start;
-    logic [3:0] A;
-    logic [3:0] B;
-    logic [3:0] sum;
-    logic done;
 
-    
-    serial_adder uut (
+module tb_Sequential4BitAdder;
+    reg clk;
+    reg reset;
+    reg in;
+    wire out;
+
+    Sequential4BitAdder uut (
         .clk(clk),
         .reset(reset),
-        .start(start),
-        .A(A),
-        .B(B),
-        .sum(sum),
-        .done(done)
+        .in(in),
+        .out(out)
     );
 
     // Clock generation
-    always #5 clk = ~clk; 
-
-    // Test sequence
-    initial begin
-        $dumpfile("tb_serial_adder.vcd");
-        $dumpvars(0, tb_serial_adder);
-
-        // Initialize signals
-        clk = 0;
-        reset = 1;
-        start = 0;
-        A = 4'b0001; // Adding 1 to each value of B
-        B = 4'b0000;
-
-        // Release reset
-        @(posedge clk) reset = 0;
-
-        // Test each value of B from 0 to 15
-        for (int i = 0; i < 16; i++) begin
-            B = i;
-            start = 1;
-            @(posedge clk) start = 0; // Start the addition
-            // Wait for the done signal
-            wait (done == 1);
-            @(posedge clk);
-            $display("B = %d, Sum = %d", B, sum);
-
-            // Check the result
-            if (sum !== (B + 1)) begin
-                $display("Test failed for B = %d: expected %d, got %d", B, B + 1, sum);
-            end
-
-            // Wait a bit before the next test
-            repeat(2)@(posedge clk);
-        end
-
-        $display("All tests passed.");
-        $finish;
+    initial 
+    begin
+        clk = 1;
+        forever #5 clk = ~clk; 
     end
+
+    initial 
+    begin
+        $dumpfile("tb.vcd");
+        $dumpvars(0);
+    end
+
+    // Task to apply test vectors
+    task apply_test_vector;
+        input [3:0] test_vector; // 4-bit input vector
+        integer i;
+        for (i = 0; i < 4; i = i + 1) begin
+                in = test_vector[i];
+                @(posedge clk);
+        end
+        
+    endtask
+
+    initial begin
+        reset = 1;
+        in = 0;
+        @(posedge clk);
+        reset = 0;
+
+        // Apply test vector: adding 1 to 4-bit numbers
+        apply_test_vector(4'b0000);
+        apply_test_vector(4'b1000);
+        apply_test_vector(4'b0100);
+        apply_test_vector(4'b1100);
+        apply_test_vector(4'b0010);
+        apply_test_vector(4'b1010);
+        apply_test_vector(4'b0110);
+        apply_test_vector(4'b1110);
+        apply_test_vector(4'b0001);
+        apply_test_vector(4'b1001);
+        apply_test_vector(4'b0101);
+        apply_test_vector(4'b1101);
+        apply_test_vector(4'b0011);        
+        $finish;
+    end     
 endmodule

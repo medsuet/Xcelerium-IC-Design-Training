@@ -1,79 +1,120 @@
-module serial_adder (
-    input logic clk,
-    input logic reset,
-    input logic start,
-    input logic [3:0] A,
-    input logic [3:0] B,
-    output logic [3:0] sum,
-    output logic done
+module Sequential4BitAdder(
+    input wire clk,
+    input wire reset,
+    input wire  in,
+    output reg out
 );
+    // State encoding
+    parameter S0 = 3'h0, S1 = 3'h1, S2 = 3'h2,S3 = 3'h3, S4 = 3'h4, S5 = 3'h5, S6 = 3'h6,S7 = 3'h7;
+    
+    reg [2:0] state, next_state;
 
-    // State parameters
-    parameter S0 = 3'b000;
-    parameter S1 = 3'b001;
-    parameter S2 = 3'b010;
-    parameter S3 = 3'b011;
-    parameter S4 = 3'b100;
-
-    logic [2:0] current_state, next_state;
-    logic carry, carry_next;
-    logic [3:0] shift_register;
-
-    // State register
-    always_ff @(posedge clk or posedge reset) begin
-        if (reset) begin
-            current_state <= S0;
-            carry <= 0;
-            shift_register <= 0;
-            done <= 0;
-        end else begin
-            current_state <= next_state;
-            carry <= carry_next;
-           
+    always @(posedge clk or posedge reset) 
+    begin
+        if (reset) 
+        begin
+            state <= S7;
+        end 
+        else 
+        begin
+            state <= next_state;
         end
     end
-
-    // Next state logic and output logic
-    always@(*) begin
-        next_state = current_state;
-        carry_next = carry;
-        done = 0;
-
-        case (current_state)
+    
+    
+    always @(*) 
+    begin
+        case (state)
+            S7:begin
+                next_state = S0;
+            end
             S0: begin
-                if (start) begin
-                    next_state = S1;
-                    shift_register = 0;
-                    carry_next = 0;
+                if(in ==0)
+                begin 
+                    out = 1'b1;
+                    next_state   = S1;
+                end
+                
+                else begin
+                    out = 1'b0;
+                    next_state   = S2;
                 end
             end
             S1: begin
-                {carry_next, shift_register[0]} = B[0] + A[0];
-                next_state = S2;
-            end
+                if(in==0)
+                begin
+                  out = 1'b0;
+                  next_state =S3;
+                end 
+                else
+                begin
+                  out = 1'b1;
+                  next_state =S3;  
+                end
+               end
             S2: begin
-                {carry_next, shift_register[1]} = B[1] + carry;
-                next_state = S3;
-            end
+                if(in==0)
+                begin
+                  out = 1'b1;
+                  next_state =S3;
+                end 
+                else
+                begin
+                  out = 1'b0;
+                  next_state =S4;  
+                end
+               end
             S3: begin
-                {carry_next, shift_register[2]} = B[2] + carry;
-                next_state = S4;
-            end
+                if(in==0)
+                begin
+                  out = 1'b0;
+                  next_state =S5;
+                end 
+                else
+                begin
+                  out = 1'b1;
+                  next_state =S5;  
+                end
+               end
             S4: begin
-                {carry_next, shift_register[3]} = B[3] + carry;
-                next_state = S0;
-                done = 1;
+                if(in==0)
+                begin
+                  out = 1'b1;
+                  next_state =S5;
+                end 
+                else
+                begin
+                  out = 1'b0;
+                  next_state =S6;  
+                end
+               end
+            S5: begin
+                if(in==0)
+                begin
+                  out = 1'b0;
+                  next_state =S0;
+                end 
+                else
+                begin
+                  out = 1'b1;
+                  next_state =S0;  
+                end
+               end
+            S6: begin
+                if(in==0)
+                begin
+                  out = 1'b1;
+                  next_state =S0;
+                end 
+                else
+                begin
+                  out = 1'b0;
+                  next_state =S0;  
+                end
+               end
+            default: begin
+                next_state = S7;
             end
-            default: next_state = S0;
         endcase
     end
-
-    always @* begin
-        if (done)
-            sum = shift_register;
-        else
-            sum = 4'b0;
-    end
-
-
 endmodule
