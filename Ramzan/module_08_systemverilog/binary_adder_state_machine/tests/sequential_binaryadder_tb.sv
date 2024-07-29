@@ -33,7 +33,7 @@ module sequential_binaryadder_tb();
                 NUMBER <= #1 num[i];
                 @(posedge CLK);
             end
-            repeat(3)@(posedge CLK);       // Wait for three clock cycles after applying the number
+            //repeat(3)@(posedge CLK);       // Wait for three clock cycles after applying the number
         end
     endtask
 
