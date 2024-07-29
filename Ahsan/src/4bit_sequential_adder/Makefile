@@ -20,7 +20,7 @@ simulate_adder:
 
 #Clean up generated files
 clean:
-	rm -f $(ADDER_OUTPUT_FILE) tb_serial_adder.vcd
+	rm -f $(ADDER_OUTPUT_FILE) tb.vcd
 
 .PHONY: all counter compile_counter simulate_counter clean
 

@@ -55,7 +55,8 @@ module tb_Sequential4BitAdder;
         apply_test_vector(4'b1001);
         apply_test_vector(4'b0101);
         apply_test_vector(4'b1101);
-        apply_test_vector(4'b0011);        
+        apply_test_vector(4'b0011); 
+        apply_test_vector(4'b1111);       
         $finish;
     end     
 endmodule
