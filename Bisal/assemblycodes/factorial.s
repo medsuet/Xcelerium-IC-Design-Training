@@ -35,5 +35,3 @@ done:
 .align 3
 tohost: .dword 0
 fromhost: .dword 0
-
-
