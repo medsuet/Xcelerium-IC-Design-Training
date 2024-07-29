@@ -142,3 +142,6 @@ run
 # ** Note: $stop    : /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv(45)
 #    Time: 360 ps  Iteration: 1  Instance: /sequential_binaryadder_tb
 # Break in Module sequential_binaryadder_tb at /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv line 45
+quit -sim
+# End time: 17:04:21 on Jul 28,2024, Elapsed time: 1:40:19
+# Errors: 0, Warnings: 1
