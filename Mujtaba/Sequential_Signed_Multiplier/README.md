@@ -2,7 +2,7 @@
 
 This folder contains the files of system verilog implementation of 16-bit Sequential Signed Multiplier and its test bench aimed to learn the hardware implementation of the Multiplier.
 
-## Problem 1: 4-bit Counter Implementation
+## Problem 1: 16-bit Sequential Signed Multiplier Implementation
 
 - **File:** `sequential_multiplier.sv`
 - **Description:** Build the chip of 16-bit Signed Multiplier that multiplies two numbers in hardware in 16 clock cycles and 1 cycle for placing the result in the `result` regiter. The default circuit implemented for 16-bit multiplier having the hardware with top level module shown in the figure below. The state diagram on which the controller is operated, also shown below under `State Diagram` section. 
