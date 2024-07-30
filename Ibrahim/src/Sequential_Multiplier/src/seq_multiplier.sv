@@ -1,22 +1,23 @@
-`include "Datapath.sv"
-`include "Controller.sv"
+`include "src/Datapath.sv"
+`include "src/Controller.sv"
 
 module seq_multiplier (
-    input logic clk,
-    input logic rst_n,
-    input logic start,
-    input logic [15:0] multiplier,
-    input logic [15:0] multiplicand,
+    input logic clk,                  // Clock signal
+    input logic rst_n,                // Active-low reset signal
+    input logic start,                // Start signal
+    input logic [15:0] multiplier,    // Multiplier input
+    input logic [15:0] multiplicand,  // Multiplicand input
 
-    output logic [31:0] product,
-    output logic ready
+    output logic [31:0] product,      // Product output
+    output logic ready                // Ready signal indicating the end of multiplication
 );
 
-logic [15:0]accumulator;
-logic count_done, Q0, Q_1, en_multr, clear;
-logic en_mltd, en_count, en_ac, selQ, selQ_1, selA, en_out;
-logic [1:0]alu_op;
+// Internal signals
+logic count_done, Q0, Q_1, en_multr, clear; 
+logic en_mltd, en_count, en_ac, selQ, selQ_1, selA, en_out;  // Control signals
+logic [1:0] alu_op;  // ALU operation code
 
+// Controller instance to handle state transitions and control signals
 Controller C1(
     .clk(clk),
     .rst_n(rst_n),
@@ -38,13 +39,13 @@ Controller C1(
     .clear(clear)
 );
 
+// Datapath instance to handle the multiplication operations and data flow
 Datapath D1(
     .clk(clk),
     .rst_n(rst_n),
     .start(start),
     .multiplicand(multiplicand),
     .multiplier(multiplier),
-    .accumulator(accumulator),
     .en_multr(en_multr),
     .en_mltd(en_mltd),
     .en_count(en_count),
@@ -61,5 +62,5 @@ Datapath D1(
     .Q_1(Q_1),        
     .product(product)
 );
-    
+
 endmodule
