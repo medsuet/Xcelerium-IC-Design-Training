@@ -79,6 +79,7 @@ The provided Makefile automates the process of compiling, running, and cleaning 
     make
     ```
    This will compile and run the simulation using iverilog, then you can view the waveform using:
+
     ```bash
     make view
     ```

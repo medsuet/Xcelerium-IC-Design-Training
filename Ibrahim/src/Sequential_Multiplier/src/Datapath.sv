@@ -140,5 +140,4 @@ assign shifted_combined = {combined[WIDTH_P-1], combined[WIDTH_P-1:1]};
 // Output product logic
 assign product = (en_out) ? {WIDTH_P{1'b0}} : shifted_combined;
 
-
 endmodule
