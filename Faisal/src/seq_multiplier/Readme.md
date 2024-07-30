@@ -20,7 +20,7 @@ Here is a simple representation of the datapath and controller diagram:
 
 ## State Transition Diagram
 Here is a simple representation of the state transition diagram:
-![alt text](docs/controller(2).png)
+![alt text](docs/controller.png)
 
 
 ## How to use
