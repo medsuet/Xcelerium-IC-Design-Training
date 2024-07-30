@@ -1,3 +1,10 @@
+/*
+    Name: datapath.sv
+    Author: Muhammad Tayyab
+    Date: 30-7-2024
+    Description: Datapath for SequentialSignedMultiplier.sv
+*/
+
 module datapath #(parameter NUMBITS)
 (
     input logic clk, reset,
@@ -33,7 +40,7 @@ module datapath #(parameter NUMBITS)
             numB_reg <= (numB_mux_sel) ? (numB_sign_extended) : (numB_reg << 1);
     end
     
-    // Store product = accumulation of shifted numB
+    // Store product
     always_ff @(posedge clk, negedge reset) 
     begin
         if (!reset)
@@ -43,7 +50,6 @@ module datapath #(parameter NUMBITS)
     end
 
     assign finish = ( numA_reg === 16'b0 );
-
     assign numA_lsb = numA_reg[0];
     
 endmodule

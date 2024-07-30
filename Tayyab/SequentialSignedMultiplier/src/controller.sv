@@ -1,3 +1,10 @@
+/*
+    Name: controller.sv
+    Author: Muhammad Tayyab
+    Date: 30-7-2024
+    Description: Controller for SequentialSignedMultiplier.sv
+*/
+
 module controller #(parameter NUMBITS)
 (
  input logic clk, reset, start,

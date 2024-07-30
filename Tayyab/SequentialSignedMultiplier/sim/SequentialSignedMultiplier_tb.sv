@@ -1,5 +1,12 @@
+/*
+    Name: SequentialSignedMultiplier.sv
+    Author: Muhammad Tayyab
+    Date: 30-7-2024
+    Description: Testbench for SequentialSignedMultiplier.sv
+*/
+
 module SequentialSignedMultiplier_tb();
-    parameter NUMTESTS = 1e3;
+    parameter NUMTESTS = 1e4;
     parameter NUMBITS = 16;
 
     logic clk, reset, start;
@@ -44,16 +51,15 @@ module SequentialSignedMultiplier_tb();
 
         forever begin
             @(negedge ready);
-            ref_result = $signed(int'($signed(numA)) * int'($signed(numB)));
-            
+            ref_result = $signed(int'($signed(numA)) * int'($signed(numB)));   
 
             @(posedge ready);
 
-            if (ref_result != test_result) begin
+            if (ref_result !== test_result) begin
                 $display("\n\nTest failed.\n");
                 $display("%d, %d", numA, numB);
-                $display("\n\nTest_result = %x", test_result);
-                $display("Correct_result = %x\n\n", ref_result);
+                $display("\n\nTest_result = h'%x", test_result);
+                $display("Correct_result = h'%x\n\n", ref_result);
                 $finish();
             end
         end
@@ -61,7 +67,7 @@ module SequentialSignedMultiplier_tb();
 
     task reset_sequence();
         reset = 1;
-        #2 reset = 0;
+        #3 reset = 0;
         #14 reset = 1;
     endtask
 
