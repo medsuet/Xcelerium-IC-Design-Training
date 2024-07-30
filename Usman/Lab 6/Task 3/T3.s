@@ -10,10 +10,14 @@ remainder: .word 0
 .global _start
 
 _start:
-    lw x1, A
-    lw x2, Q
-    lw x4, M
-    lw x6, N
+    la x10, A
+    lw x1, 0(x10)  #x1 = A
+    la x11, Q
+    lw x2, 0(x11)   #x2 = q
+    la x12, M
+    lw x4, 0(x12) x4 = M
+    la x13, N
+    lw x6, 0(x13) #x5 = N
 
 while:
     beqz x6, done       # If N == 0, jump to done

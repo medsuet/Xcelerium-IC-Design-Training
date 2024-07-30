@@ -4,7 +4,7 @@ class CacheSimulator:
     def __init__(self, cache_size: int, block_size: int):
         self.cache_size = cache_size
         self.block_size = block_size
-        self.num_lines = cache_size // block_size
+        self.num_lines = (int)(cache_size // (block_size/8))
         self.cache = [[0, 0, 0] for _ in range(self.num_lines)]
         self.hit = 0
         self.miss = 0
@@ -12,7 +12,7 @@ class CacheSimulator:
         self.index_bits = int(math.log2(self.num_lines))
 
     def read(self, address: int) -> bool:
-        index = (address >> self.offset_bits) & (self.num_lines - 1)
+        index = (address >> self.offset_bits) % (1<< self.index_bits)
         tag = address >> (self.offset_bits + self.index_bits)
         
         valid = self.cache[index][0]
