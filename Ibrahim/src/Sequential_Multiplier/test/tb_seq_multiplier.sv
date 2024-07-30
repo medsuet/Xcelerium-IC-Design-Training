@@ -44,6 +44,7 @@ module tb_seq_multiplier;
         rst_n = 0;
         // @(negedge rst_n);
         #10
+        rst_n = 1;
         // @(posedge rst_n);
         @(posedge clk);
         // Test case 1: 3 * -2
