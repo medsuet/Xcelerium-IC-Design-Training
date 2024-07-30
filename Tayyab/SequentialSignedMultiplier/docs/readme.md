@@ -74,3 +74,6 @@ Controller:
 
 #### Gate count
 ![image](images/gate_count.png)
+
+The sequential signed multiplier uses 1227 gates.\
+In contrast, the combinational signed multiplier used 979 gates.

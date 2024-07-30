@@ -1,5 +1,5 @@
 /*
-    Name: Add1.sv
+    Name: Add1_4bit.sv
     Author: Muhammad Tayyab
     Date: 25-4-2024
     Description: Adds 1 to the input number. Input is 4 bit wide and given serially (bit by bit).             
@@ -26,6 +26,7 @@ module Add1_4bit
 
     // Store current state
     type_add1_states_e current_state, next_state;
+    
     always_ff @(posedge clk) begin
         if (reset)
             current_state <= B0;
@@ -52,7 +53,7 @@ module Add1_4bit
         case (current_state)
             B1C0, B2C0, B3C0: output_bit = input_bit;
             B0, B1C1, B2C1, B3C1: output_bit = ~input_bit;
-            default: output_bit = 3'bz;
+            default: output_bit = 1'bz; 
         endcase
     end
         

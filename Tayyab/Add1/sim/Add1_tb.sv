@@ -24,6 +24,7 @@ module Add1_tb();
 
         // Test all 4 bit numbers (0-15)
         all_num_tests();
+        $stop();
     end
 
     // Tests Add1 module on argument input_number
