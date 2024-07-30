@@ -5,26 +5,37 @@ module Sequential_Multiplier_TB();
     logic reset,start;
     logic bit_val;
     logic [31:0]result;
-    int i=0;
+    int c=0;
     logic [15:0]VALUE1;
     logic [15:0]VALUE2;
 Sequential_Multiplier DUT(.clk(clk),.reset(reset),.start(start),.input1(VALUE1),.input2_bit(bit_val),.Product(result));
-//Sequential_Multiplier(clk,reset,start,input1,input2_bit,Product);
     always #(CLK_PERIOD/2) clk = ~clk;
     initial begin
         reset = 0;
         #1;
         reset = 1;
         #1
-        VALUE1=-10;
-        VALUE2=5;
-        start = 1;
-        for(i=0;i<16;i++)begin
+        for (int j=0;j<100;j++)begin
+            VALUE1=$random()%30;
+            VALUE2=$random()%30;
+            start = 1;
+            for(int i=0;i<16;i++)begin
+                @(posedge clk);
+                bit_val=VALUE2[i];
+            end
+            start = 0;
             @(posedge clk);
-            bit_val=VALUE2[i];
+            #1;
+            if ($signed(result)!=$signed(VALUE1)*$signed(VALUE2))begin
+                $display("The product of %d and %d is not %d but %d",$signed(VALUE1),$signed(VALUE2),$signed(result),$signed(VALUE1)*$signed(VALUE2));
+                c=c+1;
+            end
+            #10;
         end
-        start=0;
-        #100
+        if (c==0)begin
+            $display("No wrong answer");
+        end
+        #5000
         $finish;
     end
 endmodule
