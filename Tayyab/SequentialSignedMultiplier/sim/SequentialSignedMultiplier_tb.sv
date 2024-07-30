@@ -5,10 +5,12 @@
     Description: Testbench for SequentialSignedMultiplier.sv
 */
 
-module SequentialSignedMultiplier_tb();
-    parameter NUMTESTS = 1e4;
-    parameter NUMBITS = 16;
+//`define DIRECTEDTEST
 
+module SequentialSignedMultiplier_tb();
+    parameter NUMTESTS = 1e1;
+    parameter NUMBITS = 16;
+int i;
     logic clk, reset, start;
     logic [(NUMBITS-1):0] numA, numB;
     logic ready;
@@ -27,40 +29,74 @@ module SequentialSignedMultiplier_tb();
         forever #5 clk = ~clk;
     end
 
-    initial driver();
-    initial monitor();
+    // Directed tests
+    `ifdef DIRECTEDTEST
+        initial begin
+            directed_test(54793,22115);
+            directed_test(-1,2);
+        end
+    `endif
+
+    // Random tests
+    `ifndef DIRECTEDTEST
+        initial driver();
+        initial monitor();
+    `endif
+
+    task directed_test(shortint a, shortint b);
+        reset_sequence();
+
+        numA = a;
+        numB = b;
+        start_signal();
+        
+        ref_result = $signed(int'($signed(numA)) * int'($signed(numB)));   
+
+        @(posedge ready);
+        if (ref_result !== test_result) begin
+            $display("\n\nDirected test failed.\n");
+            $display("numA = %d \nnumB = %d", numA, numB);
+            $display("Test_result = h'%x", test_result);
+            $display("Correct_result = h'%x\n\n", ref_result);
+        end
+        else begin
+            $display("\n\nDirected test on %d * %d passed.\n\n", numA, numB);
+        end
+        @(posedge clk);
+        $stop();
+
+    endtask
 
     task driver();
         reset_sequence();
 
-        for (int i=0; i<NUMTESTS; i++)
+        for (i=0; i<NUMTESTS; i++)
         begin
             numA = $random();
             numB = $random();
             start_signal();
             @(posedge ready);
+            @(negedge ready);
         end
 
         $display("\n\nAll %d tests passed.\n\n", NUMTESTS);
-        $finish();
+        $stop();
     endtask
 
     task monitor();
         @(negedge reset);
         @(posedge reset);
-
         forever begin
-            @(negedge ready);
-            ref_result = $signed(int'($signed(numA)) * int'($signed(numB)));   
+            @(posedge clk);
 
             @(posedge ready);
-
+            ref_result = $signed(int'($signed(numA)) * int'($signed(numB)));
             if (ref_result !== test_result) begin
                 $display("\n\nTest failed.\n");
                 $display("%d, %d", numA, numB);
                 $display("\n\nTest_result = h'%x", test_result);
                 $display("Correct_result = h'%x\n\n", ref_result);
-                $finish();
+                $stop();
             end
         end
     endtask

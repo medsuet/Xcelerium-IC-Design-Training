@@ -15,7 +15,7 @@ module controller #(parameter NUMBITS)
 );
 
 // Define states
-typedef enum logic [1:0] { Idle, InputData, Calculate } type_states_e;
+typedef enum logic [1:0] { Idle, InputData, Calculate, Ready } type_states_e;
 
 type_states_e current_state, next_state;
 
@@ -33,7 +33,8 @@ begin
     case (current_state)
         Idle: next_state = (start) ? InputData : Idle;
         InputData: next_state = Calculate;
-        Calculate: next_state = (finish) ? Idle : Calculate;
+        Calculate: next_state = (finish) ? Ready : Calculate;
+        Ready: next_state = Idle;
         default: next_state = Idle;
     endcase
 end
@@ -50,7 +51,7 @@ begin
                 numB_mux_sel=1'bx;
                 product_wr=1'b0;
                 product_clear=1'b0;
-                ready=finish;
+                ready=1'b0;
             end
         InputData: 
               begin
@@ -72,7 +73,7 @@ begin
                 product_clear=1'b0;
                 ready=1'b0;
               end
-        default:
+        Ready: 
             begin
                 numA_wr=1'bx;
                 numB_wr=1'bx;
@@ -80,9 +81,8 @@ begin
                 numB_mux_sel=1'bx;
                 product_wr=1'b0;
                 product_clear=1'b0;
-                ready=1'b0;
+                ready=1'b1;
             end
-
     endcase
 end
 

@@ -2,8 +2,8 @@
 
 Language: SystemVerilog
 
-Multiplies two 16 bit signed numbers sequentially in 32 clock cycles.\
-(32 cycles is maximum; result can be available in less cycles).\
+Multiplies two 16 bit signed numbers sequentially in 35 clock cycles.\
+(35 cycles is maximum; result can be available in less cycles).\
 Sets ready signal when result is available.
 ```
 Paramater: NUMBITS  : width (number of bits) of multiplier and multiplicand.
