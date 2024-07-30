@@ -73,7 +73,7 @@ module Seq_Mul_top_tb;
         start = 0;
         @(posedge clk);
         rst = 1;
-        for(int i=0;i<2000;i++)begin 
+        for(int i=0;i<20000;i++)begin 
             drive_inputs($random % 65536,$random % 65536); 
             monitor_outputs();
             @(posedge clk);
