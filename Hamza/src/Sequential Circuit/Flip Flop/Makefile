@@ -8,9 +8,9 @@ VSIM_FLAGS = -R
 SIM_BINARY = sim_bin
 
 SIM_SRC_VSIM = src/flip_flop_chain.sv \
-					test/flip_flop_chian_tb.sv
+					test/flip_flop_chain_tb.sv
 
-TB_TOP = flip_flop_chian_tb
+TB_TOP = tb_flip_flop_chain
 
 # Default target
 .PHONY: all
