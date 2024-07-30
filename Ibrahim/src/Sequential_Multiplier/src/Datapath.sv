@@ -1,6 +1,7 @@
 `include "src/ALU.sv"
 `include "src/Register.sv"
 `include "src/Mux.sv"
+
 module Datapath #(
     parameter WIDTH_M = 16,
     parameter WIDTH_P = 32
@@ -138,5 +139,6 @@ assign shifted_combined = {combined[WIDTH_P-1], combined[WIDTH_P-1:1]};
 
 // Output product logic
 assign product = (en_out) ? {WIDTH_P{1'b0}} : shifted_combined;
+
 
 endmodule
