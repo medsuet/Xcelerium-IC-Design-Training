@@ -21,9 +21,9 @@ module sequential_adder(
     // Sequential logic for state transition and register updates
     always_ff @(posedge clk or posedge reset) begin
         if (reset) begin
-            state <= IDLE;  
+            state <= #1 IDLE;  
         end else begin
-            state <= next_state;
+            state <= #1 next_state;
         end
     end
 
