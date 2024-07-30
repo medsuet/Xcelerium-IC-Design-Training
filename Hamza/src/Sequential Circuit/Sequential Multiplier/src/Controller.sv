@@ -53,7 +53,7 @@ always @(*)
                     QR_sel = 1'b1;
                     next_state = Process;
                     case (in)
-                    2'b01 : data_sel = 2'b01 ;
+                    2'b01 : data_sel = 2'b01;
                     2'b10 : data_sel = 2'b10;
                     2'b00 : data_sel = 2'b00;
                     2'b11 : data_sel = 2'b11;

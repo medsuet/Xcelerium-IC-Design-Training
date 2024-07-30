@@ -7,7 +7,7 @@ module Multiplier_tb;
     logic rst;
     logic start;
 
-    //refernce model output
+    // Reference model output
     logic signed [31:0] exp;
 
     // Outputs
@@ -34,7 +34,7 @@ module Multiplier_tb;
     // Dump file for waveform
     initial begin
         $dumpfile("tb.vcd");
-        $dumpvars(0, Mul_top_tb);
+        $dumpvars(0, Multiplier_tb);
     end
 
     // Task for driving inputs
@@ -53,18 +53,15 @@ module Multiplier_tb;
         begin
             wait (ready == 1);
             exp = Multiplicand * Multiplier;
-            if(exp != Product)begin
-                $display("Fail");
-                $display("A = %0d, B = %0d, P = %0d,E= %0d", Multiplicand, Multiplier, Product,exp);
-            end
-            else
-            begin
-                $display("pass");
+            if (exp != Product) begin
+                $display("Fail: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
+            end else begin
+                $display("Pass: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
             end
         end
     endtask
 
-    // Stimulus process
+    // Directed test cases using fork-join for edge cases
     initial begin
         // Initialize Inputs
         Multiplicand = 0;
@@ -73,17 +70,37 @@ module Multiplier_tb;
         start = 0;
         @(posedge clk);
         rst = 1;
-        for(int i=0;i<20000;i++)begin 
-            //Non Random testing
-            drive_inputs(0+i,10+i); 
-            monitor_outputs();
-            @(posedge clk);
-            //Random Testing
-            drive_inputs($random % 65536,$random % 65536); 
-            monitor_outputs();
-            @(posedge clk);
 
-        end
+        // Fork-join for parallel test execution
+        fork
+            begin
+                drive_inputs(0, 12345);   
+                monitor_outputs();
+
+                drive_inputs(12345, 0);   
+                monitor_outputs();
+
+                drive_inputs(1, 12345); 
+                monitor_outputs();
+            end
+            begin
+                // Random testing loop
+                for (int i = 0; i < 20000; i++) begin
+                    logic signed [15:0] randMultiplicand, randMultiplier;
+                    
+                    // Generate random numbers
+                    randMultiplicand = $random % 65536; 
+                    randMultiplier = $random % 65536;  
+
+                    // Drive random inputs and check output
+                    drive_inputs(randMultiplicand, randMultiplier);
+                    monitor_outputs();
+
+                    @(posedge clk); // Synchronize with the clock
+                end
+            end
+        join
+
         $finish;
     end
 endmodule

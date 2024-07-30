@@ -44,7 +44,7 @@ ifeq ($(TOOL),vsim)
 else ifeq ($(TOOL),iverilog)
 	$(IVERILOG) -g2012 -o $(OUTPUT_FILE) $(SIM_SRC)
 	$(VVP) $(OUTPUT_FILE)
-	gtkwave waveform.vcd
+	gtkwave tb.vcd
 
 else
 	@echo "Invalid TOOL specified. Please use 'vsim' or 'iverilog'."
@@ -57,4 +57,4 @@ endif
 .PHONY: clean
 clean:
 	@echo "Cleaning up..."
-	rm -f $(OUTPUT_FILE) waveform.vcd
+	rm -f $(OUTPUT_FILE) tb.vcd

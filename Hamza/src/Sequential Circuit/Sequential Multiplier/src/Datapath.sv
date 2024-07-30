@@ -7,73 +7,68 @@ module Datapath(
     output logic count_comp
 );
 
-// Internal registers and wires
-logic [31:0] shifted_out, combined;
+// intermediate signals
+logic [31:0] shifted_out, combined_out;
 logic [15:0] M, A, Q, Q_in, A_in, data_out;
 logic [4:0] count;
 logic Q1, Q1_in;
 
-
-// Sequential logic for M (Multiplicand)
-always_ff @(posedge clk or negedge rst) begin
-    if (!rst || clear) begin
-        M <= 16'b0;
-    end else begin
-        M <= Multiplicand;
+//Register for Multiplicand
+always_ff @( posedge clk or negedge rst) begin
+    if (!rst || clear)
+    begin
+        M <= 0;
+    end
+    else 
+    begin
+        M <= Multiplicand;  
     end    
 end
 
-// Sequential logic for A (Accumulator)
-always_ff @(posedge clk or negedge rst) begin
-    if (!rst || clear) begin
-        A <= 16'b0;
-    end else begin
+// Register for Multiplier
+always_ff @( posedge clk or negedge rst) begin
+    if (!rst || clear)
+    begin
+        Q <= 0;
+    end
+    else 
+    begin
+        Q <= Q_in;  
+    end    
+end
+
+// Register for Q1
+always_ff @( posedge clk or negedge rst) begin
+    if (!rst || clear)
+    begin
+        Q1 <= 0;
+    end
+    else 
+    begin
+        Q1 <= Q1_in;  
+    end    
+end
+
+// Register for Accumulator and Count
+always_ff @( posedge clk or negedge rst) begin
+    if (!rst || clear)
+    begin
+        A <= 0;
+        count<= 0;
+    end
+    else 
+    begin
         A <= A_in;
+        count<= count + 1;    
     end    
 end
 
-// Sequential logic for Q (Multiplier)
-always_ff @(posedge clk or negedge rst) begin
-    if (!rst || clear) begin
-        Q <= 16'b0;
-    end else begin
-        Q <= Q_in;
-    end    
-end
-
-// Sequential logic for Q1 (Bit flag)
-always_ff @(posedge clk or negedge rst) begin
-    if (!rst || clear) begin
-        Q1 <= 1'b0;
-    end else begin
-        Q1 <= Q1_in;
-    end    
-end
-
-// Sequential logic for count
-always_ff @(posedge clk or negedge rst) begin
-    if (!rst || clear) begin
-        count <= 5'b0;
-    end else begin
-        count <= count + 1;
-    end
-end
-
-// Sequential logic for counter
-always_ff @(posedge clk or negedge rst) begin
-    if (!rst || clear) begin
-        count <= 5'b0;
-    end else begin
-        count <= count + 1;
-    end
-end
 
 // Combinational logic for Multiplier and Accumulator
 always_comb begin
     Q_in = QR_sel ? shifted_out[15:0] : Multiplier;
     A_in = QR_sel ? shifted_out[31:16] : 16'b0;
 end
-
 
 // Combinational logic for in
 always_comb begin
@@ -91,17 +86,16 @@ end
 
 // Combinational logic for concatenating, qin and shifted
 always_comb begin
-    combined = {data_out, Q};
-    Q1_in = combined[0];
-    shifted_out = {combined[31], combined[31:1]};
+    combined_out = {data_out, Q};
+    Q1_in = combined_out[0];
+    shifted_out = {combined_out[31], combined_out[31:1]};
 end
 
-// Combinational logic for count_comp
-always_comb begin
-    count_comp = (count == 16);
-end
 
-// Assign Product to shifted
+// Output signal for counting
+assign count_comp = ( count == 16 ) ? 1:0;
+
 assign Product = shifted_out;
+
 
 endmodule
