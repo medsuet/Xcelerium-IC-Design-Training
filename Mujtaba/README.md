@@ -40,3 +40,6 @@ This repository contains all the Excercises that is important for the IC Design 
 
 - **Description:** Read the `README.md` file in `Sequential_Adder` folder which contains files that implement binary adder to practice the deeper concepts of the sequential circuit. 
 
+## Implementation of Sequential Binary Multiplication
+
+- **Description:** Read the `README.md` file in `Sequential_Signed_Multiplier` folder which contains files that implement sequential binary multiplier to practice the deeper concepts of the sequential circuit. 
