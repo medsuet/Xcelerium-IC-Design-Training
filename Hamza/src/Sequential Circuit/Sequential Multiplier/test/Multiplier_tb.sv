@@ -77,13 +77,18 @@ module Multiplier_tb;
                 drive_inputs(0, 12345);   
                 monitor_outputs();
 
-                drive_inputs(12345, 0);   
+                @(posedge clk);
+
+                drive_inputs(12345, -1); 
                 monitor_outputs();
 
-                drive_inputs(1, 12345); 
+                @(posedge clk);
+                
+                drive_inputs(-1, 1); 
                 monitor_outputs();
-            end
-            begin
+
+                @(posedge clk);
+
                 // Random testing loop
                 for (int i = 0; i < 20000; i++) begin
                     logic signed [15:0] randMultiplicand, randMultiplier;
