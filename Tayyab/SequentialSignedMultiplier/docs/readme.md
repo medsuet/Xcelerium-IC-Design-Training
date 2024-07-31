@@ -15,10 +15,9 @@ Inputs: clk             : clock signal
         valid_scr       : valid signal from source signaling availability of inputs (num_a, num_b)
         ready_dst       : ready signal from detination signaling that output (porduct) has been processed
 
-Outputs: ready           : set to 1 when result (product) is available
-        product         : <2*NUMBITS> wide result of num_a * num_b
-        valid_dst       : valid signal to destination signaling availability of output (product)
-        ready_scr       : ready signal to source signaling that inputs (num_a, num_b) has been processed
+Outputs: product         : <2*NUMBITS> wide result of num_a * num_b
+         valid_dst       : valid signal to destination signaling  availability of output (product)
+         ready_scr       : ready signal to source signaling that inputs (num_a, num_b) has been processed
 
 Supports valid/ready interface.
 ```
@@ -82,7 +81,5 @@ Controller:
 
 
 #### Gate count
-![image](images/gate_count.png)
-
-The sequential signed multiplier uses 1227 gates.\
+The sequential signed multiplier uses 416 gates.\
 In contrast, the combinational signed multiplier used 979 gates.
