@@ -22,8 +22,7 @@ Compiles the modules source files and testbench.\
 PHONY target for make work/_lib.qdb
 
 `make simulate`\
-Simulates modules.\
-Generates vcd file: wavefrom.vcd\
+Simulates modules. Generates vcd file: wavefrom.vcd\
 Runs compile target if required.\
 PHONY target for make waveform.vcd.\
 See simulation options.
@@ -40,7 +39,7 @@ Running time of simulation. Requires a larger value for longer tests.
 If simulation exits without any message, try increasing SIMTIME.
 
 `SIGNAL` (default 00111010)\
-Binary sequence that is given as input signal to the state machines to dtect its positive edges.
+Binary sequence that is given as input signal to the state machines to detect its transitions from 0 to 1 (positve edges).
 
 ### Waveform
 ![image](wave.png)
