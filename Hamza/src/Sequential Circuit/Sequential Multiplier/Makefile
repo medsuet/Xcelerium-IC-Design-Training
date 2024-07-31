@@ -2,7 +2,6 @@
 
 # Define VSIM variables
 VSIM = vsim
-VSIM_FLAGS = -R
 
 # Define simulation variables
 SIM_BINARY = sim_bin
@@ -39,7 +38,7 @@ ifdef TOOL
 ifeq ($(TOOL),vsim)
 	@echo "Running VSIM simulation..."
 	vlog $(SIM_SRC)
-	$(VSIM) $(VSIM_FLAGS) $(TB_TOP)
+	$(VSIM) $(TB_TOP)
 
 else ifeq ($(TOOL),iverilog)
 	$(IVERILOG) -g2012 -o $(OUTPUT_FILE) $(SIM_SRC)
