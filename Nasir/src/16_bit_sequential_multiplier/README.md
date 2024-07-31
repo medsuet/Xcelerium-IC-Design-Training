@@ -53,12 +53,12 @@ The `seq_multiplier` module integrates the `Datapath` and `Controller` modules. 
 ## State Transition Graph
 The `Controller` module operates based on a state machine. The state transition graph outlines the possible states and transitions based on the control signals and conditions.
 
-![State Transition Graph](./docs/Controller.png)
+![State Transition Graph](./docs/Controller.drawio.png)
 
 ## Datapath Block Diagram
 The `Datapath` block diagram illustrates the flow of data and control signals within the `Datapath` module. It shows the interactions between the registers, multiplexers, and arithmetic units.
 
-![Datapath Block Diagram](./docs/datapath_16_bit_sequential_multiplier.png)
+![Datapath Block Diagram](./docs/datapath_16_bit_sequential_multiplier.drawio(1).png)
 
 ## Usage
 
