@@ -20,9 +20,7 @@ logic en_mltd, en_count, en_ac, selQ, selQ_1, selA, en_out;  // Control signals
 logic [1:0] alu_op;  // ALU operation code
 
 // Controller instance to handle state transitions and control signals
-Controller #(
-    .WIDTH(WIDTH)
-) C1(
+Controller C1(
     .clk(clk),
     .rst_n(rst_n),
     .start(start),     

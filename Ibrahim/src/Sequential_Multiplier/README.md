@@ -14,52 +14,59 @@ This project implements a sequential multiplier using SystemVerilog. The design 
 - **seq_multiplier.sv**: Top-level module that instantiates the controller and datapath.
 - **tb_seq_multiplier.sv**: Testbench for verifying the functionality of the sequential multiplier.
 
+
+### Prerequisites
+
+Ensure you have the following tools installed on your system:
+
+- [Icarus Verilog](http://iverilog.org/) or [ModelSim](https://www.mentor.com/products/fpga/modelsim/)
+
 ## Using the Makefile
 
 The provided Makefile automates the process of compiling, running, and cleaning up the simulation files using Icarus Verilog. Below is a description of the available targets in the Makefile and how to use them.
 
 ### Makefile Targets
 
-- **all**: The default target that compiles and runs the simulation.
-- **compile**: Compiles the SystemVerilog source files into an executable.
-- **run**: Runs the compiled simulation.
-- **view**: Opens the generated waveform file (`multiplier.vcd`) in GTKWave for viewing.
-- **clean**: Removes the compiled executable and waveform file to clean up the directory.
-- **help**: Displays help information about the available targets and their usage.
+- **make or make all**: Compile and run the simulation using the default simulator (Icarus Verilog).
+- **make sim=vsim**: Compile and run the simulation using ModelSim.
+- **make compile**: Compile the SystemVerilog source files without running the simulation.
+- **make run**: Run the simulation using the compiled files.
+- **make view**: View the waveform in GTKWave.
+- **make clean**: Remove the compiled executable, waveform file, and work library.
+- **make help**: Displays help information about the available targets and their usage.
 
-### How to Use the Makefile
+#### Running Simulations
 
-1. **Compile and Run the Simulation**
-    ```bash
-    make
-    ```
+1. **Compile and Run the Simulation:**
+
+   By default, the Makefile is configured to use Icarus Verilog. Run the following command to compile and run the simulation:
+
+   ```bash
+   make
+   ```
    This command will compile the SystemVerilog source files and run the simulation, generating a waveform file (`multiplier.vcd`).
+   
+   To use ModelSim instead, specify the sim variable:
 
-2. **Compile the Source Files**
     ```bash
-    make compile
+    make sim=vsim
     ```
-   This command will compile the SystemVerilog source files into an executable.
-
-3. **Run the Simulation**
-    ```bash
-    make run
-    ```
-   This command will run the compiled simulation.
-
-4. **View the Waveform**
+2. **View the Waveform**
+    
+    To view the waveform, first ensure the simulation has been run and the waveform file (multiplier.vcd) has been generated. Then run:
     ```bash
     make view
     ```
    This command will open the waveform file (`multiplier.vcd`) in GTKWave for viewing.
 
-5. **Clean Up**
+3. **Clean Up**
+    
+    To remove the compiled files and waveform, as well as the work library, use:
     ```bash
     make clean
     ```
-   This command will remove the compiled executable and waveform file, cleaning up the directory.
-
-6. **Display Help Information**
+   
+4. **Display Help Information**
     ```bash
     make help
     ```
@@ -71,7 +78,7 @@ The provided Makefile automates the process of compiling, running, and cleaning 
     ```bash
     make
     ```
-   This will compile and run the simulation, then you can view the waveform using:
+   This will compile and run the simulation using iverilog, then you can view the waveform using:
     ```bash
     make view
     ```

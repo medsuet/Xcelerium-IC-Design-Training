@@ -1,4 +1,6 @@
-module tb_seq_multiplier #(parameter WIDTH = 16);
+module tb_seq_multiplier;
+    // Parameter definition with default value
+    parameter WIDTH = 16;
 
     // Inputs
     logic signed [WIDTH-1:0] Multiplicand;
@@ -19,7 +21,7 @@ module tb_seq_multiplier #(parameter WIDTH = 16);
     int fail_count = 0;
 
     // Instantiate the Unit Under Test (UUT)
-    seq_multiplier #(WIDTH) uut (
+    seq_multiplier #(.WIDTH(WIDTH)) uut (
         .multiplicand(Multiplicand),
         .multiplier(Multiplier),
         .clk(clk),
