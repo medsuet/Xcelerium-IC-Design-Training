@@ -1,7 +1,6 @@
 `include "src/ALU.sv"
 `include "src/Register.sv"
 `include "src/Mux.sv"
-
 module Datapath #(
     parameter WIDTH_M = 16,
     parameter WIDTH_P = 32
