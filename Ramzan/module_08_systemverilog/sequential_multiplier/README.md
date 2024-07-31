@@ -8,7 +8,7 @@
 4.Total 16 Clock Cycles required for valid output .<br>
 5.The testbenches will randomly test for a number of inputs and also for directed test cases.<br>
 
-### Usage: Automated for Multisim
+### Usage: Automated for Modelsim
 
 To execute the code and view the waveform on Multisim, simply use the following command:
 ```
