@@ -1,3 +1,4 @@
+
 module Seq_Mul_top(Multiplicand,Multiplier,clk,rst,start,ready,Product);
 input logic [15:0] Multiplicand,Multiplier;
 input logic clk,rst,start;

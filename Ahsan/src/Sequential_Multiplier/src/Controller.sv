@@ -42,8 +42,13 @@ always @(*)
                     clear   = 1'b1;
                     ready   = 1'b1;
                 mux_sel_Mul = 1'bx;
-              mux_sel_Shift = 2'bx;
                     n_state = S0;
+                     case (Qo_Q1)
+                    2'b01 : mux_sel_Shift = 2'b01 ;
+                    2'b10 : mux_sel_Shift = 2'b10;
+                    2'b00 : mux_sel_Shift = 2'b00;
+                    2'b11 : mux_sel_Shift = 2'b11;
+                    endcase
                 end
                 else begin
                     clear   = 1'b0;

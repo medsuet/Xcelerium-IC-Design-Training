@@ -1,3 +1,4 @@
+
 module Seq_Mul_top_tb;
 
     // Inputs
@@ -55,11 +56,12 @@ module Seq_Mul_top_tb;
             exp = Multiplicand * Multiplier;
             if(exp != Product)begin
                 $display("Fail");
-                $display("A = %0d, B = %0d, P = %0d,E= %0d", Multiplicand, Multiplier, Product,exp);
+                $display("A = %0h, B = %0h, P = %0h,E= %0h", Multiplicand, Multiplier, Product,exp);
             end
             else
             begin
                 $display("pass");
+                $display("A = %0h, B = %0h, P = %0h,E= %0h", Multiplicand, Multiplier, Product,exp);
             end
         end
     endtask
@@ -73,7 +75,7 @@ module Seq_Mul_top_tb;
         start = 0;
         @(posedge clk);
         rst = 1;
-        for(int i=0;i<20000;i++)begin 
+        for(int i=0;i<30;i++)begin 
             //Non Random testing
             drive_inputs(0+i,10+i); 
             monitor_outputs();

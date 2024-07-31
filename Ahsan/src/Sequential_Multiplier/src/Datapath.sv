@@ -45,7 +45,7 @@ always@( posedge clk or negedge rst) begin
         A <= A_in;
         Q <= Q_in;
         Q1<= Q1_in;
-   counter<= counter + 1;    
+   counter<= counter + 1; 
     end    
 end
 
@@ -71,7 +71,9 @@ assign shifted = {combined[31],combined[31:1]};
 //output signal for counting
 assign count_comp = ( counter == 16 ) ? 1:0;
 
-assign Product = shifted;
+
+  assign  Product = shifted;
+
 
 
 endmodule
