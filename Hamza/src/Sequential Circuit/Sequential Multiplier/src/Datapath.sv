@@ -49,17 +49,27 @@ always_ff @( posedge clk or negedge rst) begin
     end    
 end
 
-// Register for Accumulator and Count
+// Register for Count
 always_ff @( posedge clk or negedge rst) begin
     if (!rst || clear)
     begin
-        A <= 0;
         count<= 0;
     end
     else 
     begin
-        A <= A_in;
         count<= count + 1;    
+    end    
+end
+
+// Register for Accumulator
+always_ff @( posedge clk or negedge rst) begin
+    if (!rst || clear)
+    begin
+        A <= 0;
+    end
+    else 
+    begin
+        A <= A_in;   
     end    
 end
 
@@ -99,3 +109,4 @@ assign Product = shifted_out;
 
 
 endmodule
+
