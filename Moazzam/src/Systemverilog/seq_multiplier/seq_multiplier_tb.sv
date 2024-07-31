@@ -1,51 +1,3 @@
-/*module seq_multiplier_tb();
-logic  [15:0] A;
-logic  [15:0] B;
-logic  START;
-logic  RST, CLK;
-logic [31:0] PRODUCT;
-logic READYO;
-
-seq_multiplier UUT
-(
-    .A(A),
-    .B(B),
-    .START(START),
-    .RST(RST),
-    .CLK(CLK),
-    .PRODUCT(PRODUCT),
-    .READYO(READYO)
-);
-
-initial
-begin
-    CLK = 0;
-    forever #10 CLK = ~CLK;
-end
-
-initial
-begin
-    RST <= 0; START <= 0;
-    repeat(2) @(posedge CLK );
-
-    dir_test(0,0);
-    dir_test(1,7);
-    dir_test(-5,3);
-    dir_test(-5,-16);
-    dir_test(122,-3);
-    dir_test(32767,32767);
-    $stop;
-end
-
-task dir_test(input logic [15:0] a11,b11);
-   RST <= 1; START <= 1; A <= a11; B <= b11;
-   @(posedge CLK)
-   START <= 0;
-   repeat(22) @(posedge CLK);
-endtask
-
-endmodule
-*/
 module seq_multiplier_tb;
 
 // Inputs
@@ -62,7 +14,7 @@ logic READYO;
 logic signed [31:0] PRODUCT;
 
 //number of tests
-int n = 1000;
+int n = 10000;
 int pass = 0;
 int fail = 0;
 

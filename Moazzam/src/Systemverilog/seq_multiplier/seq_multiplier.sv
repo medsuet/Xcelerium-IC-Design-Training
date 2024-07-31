@@ -68,6 +68,7 @@ begin
     
 end
 
+// Counter-ff
 always_ff @(posedge CLK or negedge RST) 
 begin
     if      (!RST || !count_en) count <= '0;
@@ -75,13 +76,16 @@ begin
     else                        count <= count;      
 end
 
+// combinational component
 always_comb
 begin
 
     if(shift_en) b_c_out = b_c >> count;
     else         b_c_out = b_c;
-    b_val = b_c_out[0];                //output of reg B
+    //LSB of output of shifted B
+    b_val = b_c_out[0]; 
     
+    //m1_sel is 1 if the lsb of B is 1
     m1_out = m1_sel ? { {16{a_c[15]}}  , a_c} : 32'h0 ;
 
     m2_out = m2_sel ? (((~m1_out)+1) << count) : (m1_out << count) ;
