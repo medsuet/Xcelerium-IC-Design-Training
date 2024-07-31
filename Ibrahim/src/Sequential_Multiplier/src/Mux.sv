@@ -1,8 +1,10 @@
-module Mux (
-    input logic [15:0]  in0,  // Input 0
-    input logic [15:0]  in1,  // Input 1
-    input logic         sel,  // Select signal
-    output logic [15:0] out   // Output
+module Mux #(
+    parameter WIDTH = 16    // Width of the inputs and output
+) (
+    input logic [WIDTH-1:0]  in0,  // Input 0
+    input logic [WIDTH-1:0]  in1,  // Input 1
+    input logic              sel,  // Select signal
+    output logic [WIDTH-1:0] out   // Output
 );
 
     always_comb begin

@@ -1,7 +1,6 @@
 `include "src/ALU.sv"
 `include "src/Register.sv"
 `include "src/Mux.sv"
-
 module Datapath #(
     parameter WIDTH_M = 16,
     parameter WIDTH_P = 32
@@ -34,7 +33,9 @@ logic [WIDTH_P-1:0] shifted_combined, combined;
 logic mux_out3, Q_next, Q1_in;
 
 // Register for multiplicand
-Register Multiplicand_reg(
+Register #(
+    .WIDTH(WIDTH_M)
+) Multiplicand_reg(
     .clk(clk),
     .rst_n(rst_n),
     .clear(clear),
@@ -44,7 +45,9 @@ Register Multiplicand_reg(
 );
 
 // Mux to select between multiplier and shifted combined value
-Mux mux_multiplier(
+Mux #(
+    .WIDTH(WIDTH_M)
+) mux_multiplier(
     .in0(multiplier),
     .in1(shifted_combined[WIDTH_M-1:0]),
     .sel(selQ),
@@ -52,7 +55,9 @@ Mux mux_multiplier(
 );
 
 // Register for multiplier
-Register Multiplier_reg(
+Register #(
+    .WIDTH(WIDTH_M)
+) Multiplier_reg(
     .clk(clk),
     .rst_n(rst_n),
     .clear(clear),
@@ -62,15 +67,19 @@ Register Multiplier_reg(
 );
 
 // Mux to select between 0 and shifted combined high bits
-Mux mux_accumulator(
-    .in0(16'b0),
+Mux #(
+    .WIDTH(WIDTH_M)
+) mux_accumulator(
+    .in0({WIDTH_M{1'b0}}),  // Zero
     .in1(shifted_combined[WIDTH_P-1:WIDTH_M]),
     .sel(selA),
     .out(mux_out1)
 );
 
 // Register for accumulator
-Register Accumulator_reg(
+Register #(
+    .WIDTH(WIDTH_M)
+) Accumulator_reg(
     .clk(clk),
     .rst_n(rst_n),
     .clear(clear),
@@ -84,11 +93,11 @@ assign Q0 = multiplier_out[0];
 // Flip-Flop for Q_1
 always_ff @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
-        Q_next <= 1'b0;
+        Q_next <= #1 1'b0;
     end else if(clear) begin
-        Q_next <= 1'b0;
+        Q_next <= #1 1'b0;
     end else if(en_multr) begin
-        Q_next <= Q1_in;
+        Q_next <= #1 Q1_in;
     end
 end
 
@@ -97,19 +106,21 @@ assign Q_1 = Q_next;
 // Counter
 always_ff @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
-        count <= 1'b0;
+        count <= #1 'b0;
     end else if(clear) begin
-        count <= 1'b0;
+        count <= #1 1'b0;
     end else if(en_count) begin
-        count <= count + 1;
+        count <= #1 count + 1;
     end 
 end
 
 // Signal indicating count is done
-assign count_done = (count == 16) ? 1'b1 : 1'b0;
+assign count_done = (count == 16) ?  1'b1 :  1'b0;
 
 // ALU to perform operations based on alu_op
-ALU ALU(
+ALU #(
+    .WIDTH(WIDTH_M)
+) ALU(
     .alu_op(alu_op),
     .multiplicand_out(multiplicand_out),
     .accumulator_out(accumulator_out),
@@ -126,6 +137,6 @@ assign combined = {ALU_out, multiplier_out};
 assign shifted_combined = {combined[WIDTH_P-1], combined[WIDTH_P-1:1]};
 
 // Output product logic
-assign product = (en_out) ? 32'b0 : shifted_combined;
+assign product = (en_out) ? {WIDTH_P{1'b0}} : shifted_combined;
 
 endmodule

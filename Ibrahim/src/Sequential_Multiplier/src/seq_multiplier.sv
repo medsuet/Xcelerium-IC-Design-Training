@@ -1,15 +1,17 @@
 `include "src/Datapath.sv"
 `include "src/Controller.sv"
 
-module seq_multiplier (
-    input logic clk,                  // Clock signal
-    input logic rst_n,                // Active-low reset signal
-    input logic start,                // Start signal
-    input logic [15:0] multiplier,    // Multiplier input
-    input logic [15:0] multiplicand,  // Multiplicand input
+module seq_multiplier #(
+    parameter WIDTH = 16
+) (
+    input logic                  clk,           // Clock signal
+    input logic                  rst_n,         // Active-low reset signal
+    input logic                  start,         // Start signal
+    input logic [WIDTH-1:0]      multiplier,    // Multiplier input
+    input logic [WIDTH-1:0]      multiplicand,  // Multiplicand input
 
-    output logic [31:0] product,      // Product output
-    output logic ready                // Ready signal indicating the end of multiplication
+    output logic [(2*WIDTH)-1:0] product,       // Product output
+    output logic                 ready          // Ready signal indicating the end of multiplication
 );
 
 // Internal signals
@@ -18,7 +20,9 @@ logic en_mltd, en_count, en_ac, selQ, selQ_1, selA, en_out;  // Control signals
 logic [1:0] alu_op;  // ALU operation code
 
 // Controller instance to handle state transitions and control signals
-Controller C1(
+Controller #(
+    .WIDTH(WIDTH)
+) C1(
     .clk(clk),
     .rst_n(rst_n),
     .start(start),     
@@ -40,7 +44,10 @@ Controller C1(
 );
 
 // Datapath instance to handle the multiplication operations and data flow
-Datapath D1(
+Datapath #(
+    .WIDTH_M(WIDTH),
+    .WIDTH_P(2 * WIDTH)
+) D1(
     .clk(clk),
     .rst_n(rst_n),
     .start(start),

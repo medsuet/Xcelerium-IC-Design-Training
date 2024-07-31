@@ -71,18 +71,46 @@ always_comb begin
         end
         RUN: begin
             if (count_done) begin
+                if (Q0 & !Q_1) begin
                 next_state = IDLE;   // Transition to IDLE state
-                en_ac      = 1'b0;   // Disable accumulator
-                en_mltd    = 1'b0;   // Disable multiplicand
-                en_multr   = 1'b0;   // Disable multiplier
-                en_count   = 1'b0;   // Disable counter
-                en_out     = 1'b0;   // Disable output
-                alu_op     = 2'bxx;  // Undefined ALU operation
-                selQ       = 1'bx;   // Undefined Q select
-                selA       = 1'bx;   // Undefined A select
-                selQ_1     = 1'bx;   // Undefined Q_1 select
+                en_ac      = 1'b1;   // Enable accumulator
+                en_mltd    = 1'b1;   // Enable multiplicand
+                en_multr   = 1'b1;   // Enable multiplier
+                en_count   = 1'b1;   // Enable counter
+                en_out     = 1'b0;   // Enable output
+                alu_op     = 2'b01;  // ALU operation
+                selQ       = 1'b1;   // Q select
+                selA       = 1'b1;   // A select
+                selQ_1     = 1'b1;   // Q_1 select
                 clear      = 1'b1;   // Clear signal active
                 ready      = 1'b1;   // Ready signal active
+                end else if(!Q0 & Q_1) begin
+                    next_state = IDLE;   // Transition to IDLE state
+                    en_ac      = 1'b1;   // Enable accumulator
+                    en_mltd    = 1'b1;   // Enable multiplicand
+                    en_multr   = 1'b1;   // Enable multiplier
+                    en_count   = 1'b1;   // Enable counter
+                    en_out     = 1'b0;   // Enable output
+                    alu_op     = 2'b10;  // ALU operation
+                    selQ       = 1'b1;   // Q select
+                    selA       = 1'b1;   // A select
+                    selQ_1     = 1'b1;   // Q_1 select
+                    clear      = 1'b1;   // Clear signal active
+                    ready      = 1'b1;   // Ready signal active
+                end else begin
+                    next_state = IDLE;   // Transition to IDLE state
+                    en_ac      = 1'b0;   // Disable accumulator
+                    en_mltd    = 1'b0;   // Disable multiplicand
+                    en_multr   = 1'b0;   // Disable multiplier
+                    en_count   = 1'b0;   // Disable counter
+                    en_out     = 1'b0;   // Disable output
+                    alu_op     = 2'bxx;  // Undefined ALU operation
+                    selQ       = 1'bx;   // Undefined Q select
+                    selA       = 1'bx;   // Undefined A select
+                    selQ_1     = 1'bx;   // Undefined Q_1 select
+                    clear      = 1'b1;   // Clear signal active
+                    ready      = 1'b1;   // Ready signal active
+                end
             end else if((Q0 & Q_1) | (!Q0 & !Q_1)) begin
                 next_state = RUN;    // Remain in RUN state
                 en_ac      = 1'b1;   // Enable accumulator
