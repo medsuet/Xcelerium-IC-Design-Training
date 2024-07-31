@@ -2,11 +2,11 @@
 
 ## Introduction
 
-16x16 bit sequential signed multiplier.
-A and B are inputs, PRODUCT is output.
-Mealy state machine conist up on only two stages S0 and S1.
-Total 16 Clock Cycles required for valid output .
-The testbenches will randomly test for a number of inputs and also supports directed test tasks.
+1.16x16 bit sequential signed multiplier. <br>
+2.A and B are inputs, PRODUCT is output.<br>
+3.Mealy state machine conist up on only two stages S0 and S1.<br>
+4.Total 16 Clock Cycles required for valid output .<br>
+5.The testbenches will randomly test for a number of inputs and also for directed test cases.<br>
 
 ### Usage: Automated for Multisim
 
@@ -49,12 +49,13 @@ make clean
 
 
 ### Gate Count Comparision
-**Combinational_Multiplier:**
-In case of 16x16 combinational multiplier there were 376 full adders and 11 half adders. 
-==> Total Gate Count = (376*5) + (11*2) = **1902 gates**
-**Sequential_Multiplier:**
-In this case 4-bit ripple carry adder consist up 4 full adders,so that 1 full adder consist up 5 gates.
-==> 4-bit ripple carry adder = 4 * 5 = 20
-==> 32-bit ripple carry adder = 32 * 5 = 160
-==> Total Gate Count = 160 + 20 + 161 + 12 + 23 = **376 gates**
+**Combinational_Multiplier:** <br>
+In case of 16x16 combinational multiplier there were 376 full adders and 11 half adders. <br>
+==> Total Gate Count = (376*5) + (11*2) = **1902 gates** <br>
+**Sequential_Multiplier:** <br>
+In this case 4-bit ripple carry adder consist up 4 full adders,so that 1 full adder consist <br>
+up 5 gates.<br>
+==> 4-bit ripple carry adder = 4 * 5 = 20<br>
+==> 32-bit ripple carry adder = 32 * 5 = 160<br>
+==> Total Gate Count = 160 + 20 + 161 + 12 + 23 = **376 gates**<br>
 
