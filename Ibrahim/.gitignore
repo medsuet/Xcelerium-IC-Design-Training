@@ -50,6 +50,8 @@ work/
 *.wlf
 modelsim.ini
 vsim.wlf
+*.tmp
+*.out
 
 *.tmp
 *.out
