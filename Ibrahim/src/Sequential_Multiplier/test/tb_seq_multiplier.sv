@@ -57,8 +57,11 @@ module tb_seq_multiplier;
     // Task for monitoring outputs
     task monitor_outputs;
         begin
-            repeat(16) @(posedge clk); // Adjust the delay as needed for your design
+            repeat(15) @(posedge clk);
+            // wait(ready == 1);
+            // #5
             exp = Multiplicand * Multiplier;
+            @(posedge clk);
             if(exp != Product) begin
                 fail_count++;
                 $display("FAIL: time = %0t, A = %0d, B = %0d, P = %0d, E = %0d", $time, Multiplicand, Multiplier, Product, exp);
