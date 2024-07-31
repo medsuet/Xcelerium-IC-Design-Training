@@ -5,23 +5,22 @@
     Description: Testbench for SequentialSignedMultiplier.sv
 */
 
-//`define DIRECTEDTEST
-
 module SequentialSignedMultiplier_tb();
     parameter NUMTESTS = 1e1;
     parameter NUMBITS = 16;
-int i;
-    logic clk, reset, start;
-    logic [(NUMBITS-1):0] numA, numB;
-    logic ready;
+
+    logic clk, reset;
+    logic [(NUMBITS-1):0] num_a, num_b, monitor_num_a, monitor_num_b;
     logic [((2*NUMBITS)-1):0] test_result, ref_result;
+    logic valid_src, valid_dst, ready_src, ready_dst;
 
     SequentialSignedMultiplier #(NUMBITS) ssm
     (
-        clk, reset, start,
-        numA, numB,
-        ready,
-        test_result
+        clk, reset,
+        num_a, num_b,
+        test_result,
+        valid_src, ready_dst,
+        valid_dst, ready_src
     );
 
     initial begin
@@ -30,75 +29,89 @@ int i;
     end
 
     // Directed tests
-    `ifdef DIRECTEDTEST
-        initial begin
-            directed_test(54793,22115);
-            directed_test(-1,2);
-        end
-    `endif
-
-    // Random tests
-    `ifndef DIRECTEDTEST
-        initial driver();
-        initial monitor();
-    `endif
-
-    task directed_test(shortint a, shortint b);
+    initial begin
+        init_sequence();
         reset_sequence();
 
-        numA = a;
-        numB = b;
-        start_signal();
+        $display("\n\nDirected tests:");
         
-        ref_result = $signed(int'($signed(numA)) * int'($signed(numB)));   
+        directed_test(-2,1);
+        directed_test(0,0);
+        directed_test(3,2);
+        directed_test(2,-3);
+        directed_test(-1,-1);
+        directed_test(16'h7FFF,16'h7FFF);
 
-        @(posedge ready);
-        if (ref_result !== test_result) begin
-            $display("\n\nDirected test failed.\n");
-            $display("numA = %d \nnumB = %d", numA, numB);
-            $display("Test_result = h'%x", test_result);
-            $display("Correct_result = h'%x\n\n", ref_result);
-        end
-        else begin
-            $display("\n\nDirected test on %d * %d passed.\n\n", numA, numB);
-        end
+        $display("All directed tests passed\n");
+
+        // Random tests
+        $display("Random tests:");
+        driver();
+        $display("All %d random tests passed.\n\n", NUMTESTS);
+
+        $finish();
+    end
+
+    // Monitor
+    initial begin
+        monitor();
+    end
+
+    task directed_test(shortint a, shortint b, int d1=0, int d2=0, int d3=0, int d4=0);
+        num_a = a;
+        num_b = b;
+
         @(posedge clk);
-        $stop();
-
+        valid_src_1(d1);
+        valid_src_0(d2);
+        @(valid_dst);
+        ready_dst_1(d3);  
+        ready_dst_0(d4);
     endtask
 
     task driver();
-        reset_sequence();
-
-        for (i=0; i<NUMTESTS; i++)
+        for (int i=0; i<NUMTESTS; i++)
         begin
-            numA = $random();
-            numB = $random();
-            start_signal();
-            @(posedge ready);
-            @(negedge ready);
+            num_a = $random();
+            num_b = $random();
+            
+            valid_src_1($random() % 3);
+            valid_src_0($random() % 3);
+            @(valid_dst);
+            ready_dst_1($random() % 3);
+            ready_dst_0($random() % 3);
         end
-
-        $display("\n\nAll %d tests passed.\n\n", NUMTESTS);
-        $stop();
     endtask
 
     task monitor();
         @(negedge reset);
         @(posedge reset);
         forever begin
-            @(posedge clk);
+            @(posedge valid_src);
+            monitor_num_a = num_a;
+            monitor_num_b = num_b;
 
-            @(posedge ready);
-            ref_result = $signed(int'($signed(numA)) * int'($signed(numB)));
+            ref_result = $signed(int'($signed(monitor_num_a)) * int'($signed(monitor_num_b)));
+            
+            @(posedge valid_dst);
+            
+            // $display("\nTest_result = h'%x", test_result);
+            // $display("Correct_result = h'%x\n\n", ref_result);
+
             if (ref_result !== test_result) begin
                 $display("\n\nTest failed.\n");
-                $display("%d, %d", numA, numB);
-                $display("\n\nTest_result = h'%x", test_result);
+                $display("%x, %x", monitor_num_a, monitor_num_b);
+                $display("\nTest_result = h'%x", test_result);
                 $display("Correct_result = h'%x\n\n", ref_result);
                 $stop();
             end
         end
+    endtask
+
+    task init_sequence();
+        valid_src=0;
+        ready_dst=0;
+        reset=1;
     endtask
 
     task reset_sequence();
@@ -107,10 +120,28 @@ int i;
         #14 reset = 1;
     endtask
 
-    task start_signal();
-        start = 1;
+    task valid_src_1(int delay=1);
+        repeat(delay) @(posedge clk);
+        valid_src = 1;
         @(posedge clk);
-        start = 0;
-    endtask 
+    endtask
+
+    task ready_dst_1(int delay=1);
+        repeat(delay) @(posedge clk);
+        ready_dst = 1;
+        @(posedge clk);
+    endtask
+
+    task valid_src_0(int delay=1);
+        repeat(delay) @(posedge clk);
+        valid_src = 0;
+        @(posedge clk);
+    endtask
+
+    task ready_dst_0(int delay=1);
+        repeat(delay) @(posedge clk);
+        ready_dst = 0;
+        @(posedge clk);
+    endtask
 
 endmodule

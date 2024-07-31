@@ -7,22 +7,24 @@
 
 module controller #(parameter NUMBITS)
 (
- input logic clk, reset, start,
- output logic ready,
+ input logic clk, reset,
  
- output logic numA_wr, numB_wr, numA_mux_sel, numB_mux_sel, product_wr, product_clear,
- input logic numA_lsb, finish
+ input logic valid_src, ready_dst, 
+ output logic valid_dst, ready_src,
+ 
+ output logic num_a_wr, num_b_wr, num_a_mux_sel, num_b_mux_sel, product_wr, product_clear,
+ input logic num_a_lsb, finish
 );
 
 // Define states
-typedef enum logic [1:0] { Idle, InputData, Calculate, Ready } type_states_e;
+typedef enum logic [1:0] { IDLE, INPUTDATA, CALCULATE, READY } type_states_e;
 
 type_states_e current_state, next_state;
 
 // Store current state
 always_ff @(posedge clk, negedge reset) begin
     if (!reset)
-        current_state <= Idle;
+        current_state <= IDLE;
     else
         current_state <= next_state;
 end
@@ -31,57 +33,57 @@ end
 always_comb 
 begin
     case (current_state)
-        Idle: next_state = (start) ? InputData : Idle;
-        InputData: next_state = Calculate;
-        Calculate: next_state = (finish) ? Ready : Calculate;
-        Ready: next_state = Idle;
-        default: next_state = Idle;
+        IDLE: next_state = (valid_src) ? INPUTDATA : IDLE;
+        INPUTDATA: next_state = CALCULATE;
+        CALCULATE: next_state = (finish) ? READY : CALCULATE;
+        READY: next_state = (ready_dst) ? IDLE : READY;
+        default: next_state = IDLE;
     endcase
 end
 
 // Output logic
 always_comb 
 begin
+    // Static values
+    num_a_wr=1'b1;
+    num_b_wr=1'b1;
+
     case (current_state)
-        Idle: 
+        IDLE: 
             begin
-                numA_wr=1'bx;
-                numB_wr=1'bx;
-                numA_mux_sel=1'bx;
-                numB_mux_sel=1'bx;
+                num_a_mux_sel=1'bx;
+                num_b_mux_sel=1'bx;
                 product_wr=1'b0;
                 product_clear=1'b0;
-                ready=1'b0;
+                valid_dst=1'b0;
+                ready_src=1'b1;
             end
-        InputData: 
+        INPUTDATA: 
               begin
-                numA_wr=1'b1;
-                numB_wr=1'b1;
-                numA_mux_sel=1'b1;
-                numB_mux_sel=1'b1;
+                num_a_mux_sel=1'b1;
+                num_b_mux_sel=1'b1;
                 product_wr=1'b1;
                 product_clear=1'b1;
-                ready=1'b0;
+                valid_dst=1'b0;
+                ready_src=1'b0;
               end
-        Calculate: 
+        CALCULATE: 
               begin
-                numA_wr=1'b1;
-                numB_wr=1'b1;
-                numA_mux_sel=1'b0;
-                numB_mux_sel=1'b0;
-                product_wr=numA_lsb;
+                num_a_mux_sel=1'b0;
+                num_b_mux_sel=1'b0;
+                product_wr=num_a_lsb;
                 product_clear=1'b0;
-                ready=1'b0;
+                valid_dst=1'b0;
+                ready_src=1'b0;
               end
-        Ready: 
+        READY: 
             begin
-                numA_wr=1'bx;
-                numB_wr=1'bx;
-                numA_mux_sel=1'bx;
-                numB_mux_sel=1'bx;
+                num_a_mux_sel=1'bx;
+                num_b_mux_sel=1'bx;
                 product_wr=1'b0;
                 product_clear=1'b0;
-                ready=1'b1;
+                valid_dst=1'b1;
+                ready_src=1'b0;
             end
     endcase
 end

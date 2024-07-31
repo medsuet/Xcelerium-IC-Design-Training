@@ -8,36 +8,35 @@
 module datapath #(parameter NUMBITS)
 (
     input logic clk, reset,
-    input logic [(NUMBITS-1):0] numA, numB,
+    input logic [(NUMBITS-1):0] num_a, num_b,
     output logic [((2*NUMBITS)-1):0] product,
     
-    input logic numA_wr, numB_wr, numA_mux_sel, numB_mux_sel, product_wr, product_clear,
-    output logic numA_lsb, finish
+    input logic num_a_wr, num_b_wr, num_a_mux_sel, num_b_mux_sel, product_wr, product_clear,
+    output logic num_a_lsb, finish
 );
 
-    logic [((2*NUMBITS)-1):0] numA_reg, numB_reg, numB_sign_extended, numA_sign_extended;
-    logic [(NUMBITS-1):0] bits_count;
+    logic [((2*NUMBITS)-1):0] num_a_reg, num_b_reg, num_b_sign_extended, num_a_sign_extended;
 
-    // Sign extend numA, numB
-    assign numA_sign_extended = (numA[NUMBITS-1]) ? {16'hffff, numA} : {16'b0, numA};
-    assign numB_sign_extended = (numB[NUMBITS-1]) ? {16'hffff, numB} : {16'b0, numB};
+    // Sign extend num_a, num_b
+    assign num_a_sign_extended = { {NUMBITS {num_a[NUMBITS-1]}}, num_a };
+    assign num_b_sign_extended = { {NUMBITS {num_b[NUMBITS-1]}}, num_b };
 
-    // Store and shift right numA
+    // Store and shift right num_a
     always_ff @(posedge clk, negedge reset) 
     begin
         if (!reset)
-            numA_reg <= 0;
-        else if (numA_wr)
-            numA_reg <= (numA_mux_sel) ? (numA_sign_extended) : (numA_reg >> 1);
+            num_a_reg <= 0;
+        else if (num_a_wr)
+            num_a_reg <= (num_a_mux_sel) ? (num_a_sign_extended) : (num_a_reg >> 1);
     end
 
-    // Store aand shift left numB
+    // Store and shift left num_b
     always_ff @(posedge clk, negedge reset) 
     begin
         if (!reset)
-            numB_reg <= 0;
-        else if (numB_wr)
-            numB_reg <= (numB_mux_sel) ? (numB_sign_extended) : (numB_reg << 1);
+            num_b_reg <= 0;
+        else if (num_b_wr)
+            num_b_reg <= (num_b_mux_sel) ? (num_b_sign_extended) : (num_b_reg << 1);
     end
     
     // Store product
@@ -46,10 +45,10 @@ module datapath #(parameter NUMBITS)
         if (!reset)
             product <= 0;
         else if (product_wr)
-            product <= (product_clear) ? (0) : (product + numB_reg);
+            product <= (product_clear) ? (0) : (product + num_b_reg);
     end
 
-    assign finish = ( numA_reg === 16'b0 );
-    assign numA_lsb = numA_reg[0];
+    assign finish = ( num_a_reg === 0 );
+    assign num_a_lsb = num_a_reg[0];
     
 endmodule
