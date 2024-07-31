@@ -58,7 +58,7 @@ The `Controller` module operates based on a state machine. The state transition 
 ## Datapath Block Diagram
 The `Datapath` block diagram illustrates the flow of data and control signals within the `Datapath` module. It shows the interactions between the registers, multiplexers, and arithmetic units.
 
-![Datapath Block Diagram](./docs/datapath_16_bit_sequential_multiplier.drawio(1).png)
+![Datapath Block Diagram](./docs/datapath_16_bit_sequential_multiplier.png)
 
 ## Usage
 
