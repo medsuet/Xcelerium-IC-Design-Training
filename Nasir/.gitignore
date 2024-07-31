@@ -81,5 +81,11 @@ src/exp3/lab5/basicMakefile/myprogram
 src/comb_multiplier/mul
 
 .sv_cache/files/comb_16_bit_multiplier.sv
-
+docs/.Identifier
 src/sequential_adder/adder
+src/4_bit_counter/counter
+src/4_bit_counter/docs/wavedrom (1).png:Zone.Identifier
+# ignore dump files .vcd
+*.vcd
+# ignore executable
+src/16_bit_sequential_multiplier/src/signed_multiplier
