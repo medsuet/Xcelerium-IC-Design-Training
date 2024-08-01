@@ -77,6 +77,12 @@ always_comb
                     ready   = 1'b1;
                     selectMultiplier = 1'b1;
                     selectAccumulator = 2'b00;
+                    case (operation) // check Qn and Qn+1 bit
+                    2'b01 : selectAccumulator = 2'b01; // A+M
+                    2'b10 : selectAccumulator = 2'b10; // A-M
+                    2'b00 : selectAccumulator = 2'b00; // A
+                    2'b11 : selectAccumulator = 2'b11; // A
+                    endcase
                 end
                 else 
                 begin
