@@ -51,10 +51,6 @@ module Control_Unit(
                     next_state = CALC;
                 end
             end
-           /* DONE:begin
-                ready = 1;
-                next_state = START;
-            end*/
         endcase
     end
 
