@@ -1,5 +1,0 @@
-Name : ew
-ID : 1
-grades in sub 1 : 21.000
-grades in sub 2 : 21.000
-grades in sub 3 : 21.000

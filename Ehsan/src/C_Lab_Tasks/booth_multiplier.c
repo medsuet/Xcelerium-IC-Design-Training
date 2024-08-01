@@ -57,19 +57,19 @@ void testBoothMultiplierWithFile(const char* filename) {
     int multiplicand, multiplier;
     __int64_t product;
     for (int i = 0; i < 1000; i++) {
-    //while (file != NULL) { 
         if (file != NULL) {
             fscanf(file, "%d %d %ld", &multiplicand, &multiplier, &product); //taking values from input file 
             //printf("%d %d %ld\n", multiplicand, multiplier, product);
             check = boothMultiplier(multiplicand,multiplier);  //checking multiplier
             if (check == product) {
-                //printf("\nPassed");
+                printf("\nPassed");
             }
             else {
-                //printf("\nFailed");
+                printf("\nFailed");
             }
         }
     }
+    printf("\n");
     fclose(file);
 }
 
@@ -99,9 +99,9 @@ void testBoothMultiplier() {
 
 
 int main() {
-    //testing from file
-    // const char* filename = "32b_signed_test_inputs.txt";
-    // testBoothMultiplierWithFile(filename);
+    //testing from file for manually check inputs
+    //const char* filename = "32b_signed_test_inputs.txt";
+    //testBoothMultiplierWithFile(filename);
     
     //testing using random
     testBoothMultiplier();
