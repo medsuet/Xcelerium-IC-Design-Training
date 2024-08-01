@@ -28,6 +28,11 @@ This repository contains various tasks completed during the Xcelerium IC Design 
  - **Shift reg pop quiz**
   - Contains 3 bit shift reg in system verilog.
 
+ - **Sequential 4 bit adder**
+  - Contains 4 bit seq adder in system verilog.
+  
+ - **16x16 Sequential Booth's Multiplier**
+  - Contains Sequential Booth's Multiplier in system verilog.
 ## How to Use
 
 Navigate to the required directory and follow the given instructions
