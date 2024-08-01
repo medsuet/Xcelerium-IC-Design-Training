@@ -62,12 +62,10 @@ module tb_sequential_multiplier;
             dest_ready = 1;
             @(posedge clk);
             dest_ready = 0;
-            // repeat(15) @(posedge clk);
             wait(dest_valid == 1);
-            // #5
             // exp = Multiplicand * Multiplier;
             repeat(6) @(posedge clk);
-            dest_ready = 0;
+            dest_ready = 1;
             repeat(4)@(posedge clk);
             dest_ready = 0;
             // if(exp != Product) begin
@@ -101,11 +99,11 @@ module tb_sequential_multiplier;
         
         reset_sequence();
 
-        // Test case: Multiplication with 0
         drive_inputs(2, 4);
         monitor_outputs();
         drive_inputs(999, 222);
         monitor_outputs();
+        // Test case: Multiplication with 0
         // // 32767 x 0
         // drive_inputs({WIDTH-1{1'b1}}, 0);
         // monitor_outputs();

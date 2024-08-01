@@ -30,7 +30,7 @@ module Datapath #(
 logic [4:0] count;                                  // 5-bit counter
 logic [WIDTH_M-1:0] multiplicand_out, multiplier_out, accumulator_out, mux_out0, mux_out1, ALU_out;
 logic [WIDTH_P-1:0] shifted_combined, combined;
-logic mux_out3, Q_next, Q1_in;
+logic Q_next, Q1_in;
 
 // Register for multiplicand
 Register #(
