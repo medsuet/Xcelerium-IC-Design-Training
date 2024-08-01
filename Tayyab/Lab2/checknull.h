@@ -7,6 +7,6 @@
 */
 
 // Macro to check if a pointer is NULL
-#define CHECKNULL(ptr) if(ptr==NULL) return 1
+#define CHECKNULL(ptr) if(ptr==NULL)return(1)
 // Macro to check if a pointer is NULL for functions returning void
-#define CHECKNULLv(ptr) if(ptr==NULL) return
+#define CHECKNULLv(ptr) if(ptr==NULL)return

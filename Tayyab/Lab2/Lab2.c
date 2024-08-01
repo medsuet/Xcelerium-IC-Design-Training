@@ -104,15 +104,35 @@ void sumRows(int *sum, int rows, int cols, int (*matrix)[cols]) {
 void bubbleSort(int *arr, int size) {
     // TODO: Implement bubble sort
     CHECKNULLv(arr);
-    short noMoreSwaps = 0;
+
+    // Flag that is set to 1 when there are no elements swapped in a loop iteration.
+    // No elements swapped implies that the array is fully sorted.
+    char noMoreSwaps = 0;
+    
+    // Loop while
     while (noMoreSwaps == 0) {
+
+        // Set noMoreSwaps flag to 1 at start of each loop.
+        // If the value of 1 is retained at the end of the loop,
+        // there has been no swapping in that iteration
         noMoreSwaps=1;
+
+        // Iterate over the array (except 0th element)
+        // Variable 'size' is length of array that is not yet sorted
         for (int i=1; i<size; i++) {
+
+            // If any element is smaller than its previous element, swap them
             if (arr[i-1]>arr[i]) {
+
+                // Call the swap() function from Part 1: Pointer Basics and Arithmetic (see top of this file).
+                // This function swaps the contents of memory locations (arr+i-1) and (arr+i)
                 swap(arr+i-1, arr+i);
+
+                // Set noMoreSwaps flag to 0, as a swapping has been made
                 noMoreSwaps=0;
             }
         }
+        // Each outer (while) loop sorts one element at the end, so reduce the size of array that needs to be sorted.
         size--;
     }
     
