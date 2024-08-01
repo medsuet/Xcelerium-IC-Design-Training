@@ -7,7 +7,6 @@ module Datapath #(
 ) (
     input logic                clk,               // Clock signal
     input logic                rst_n,             // Active-low reset signal
-    // input logic                start,             // Start signal
     input logic [WIDTH_M-1:0]  multiplier,        // Multiplier input
     input logic [WIDTH_M-1:0]  multiplicand,      // Multiplicand input
     input logic                en_multr,          // Enable signal for multiplier register
@@ -19,6 +18,7 @@ module Datapath #(
     input logic                selA,              // Mux select for accumulator input
     input logic                selQ_1,            // Select signal for Q_1
     input logic                en_out,            // Enable output signal
+    input logic                en_final,          // Enable to assign product to when destination handshake is complete
     input logic                clear,             // Clear signal
 
     output logic               count_done,        // Signal indicating count is done
@@ -29,7 +29,7 @@ module Datapath #(
 
 logic [4:0] count;                                  // 5-bit counter
 logic [WIDTH_M-1:0] multiplicand_out, multiplier_out, accumulator_out, mux_out0, mux_out1, ALU_out;
-logic [WIDTH_P-1:0] shifted_combined, combined;
+logic [WIDTH_P-1:0] shifted_combined, combined, product_given;
 logic Q_next, Q1_in;
 
 // Register for multiplicand
@@ -108,7 +108,7 @@ always_ff @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
         count <= #1 'b0;
     end else if(clear) begin
-        count <= #1 1'b0;
+        count <= #1 'b0;
     end else if(en_count) begin
         count <= #1 count + 1;
     end 
@@ -136,15 +136,17 @@ assign combined = {ALU_out, multiplier_out};
 // Shifting logic
 assign shifted_combined = {combined[WIDTH_P-1], combined[WIDTH_P-1:1]};
 
-// Output product logic
-// assign product = (en_out) ? {WIDTH_P{1'b0}} : shifted_combined;
+// Store the product calculated in this register 
 always_ff @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
-        product <= 0;
+        product_given <= 0;
     end else if(en_out) begin
-        product <= shifted_combined;
+        product_given <= shifted_combined;
     end
 end
+
+// Output this product when destination handshake is complete
+assign product = (!en_final) ? {WIDTH_P{1'b0}} : product_given;
 
 
 endmodule

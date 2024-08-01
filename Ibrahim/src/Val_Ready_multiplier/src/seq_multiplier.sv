@@ -42,6 +42,7 @@ Controller C1(
     .selA(selA), 
     .selQ_1(selQ_1), 
     .en_out(en_out),
+    .en_final(en_final),
     .clear(clear)
 );
 
@@ -52,7 +53,6 @@ Datapath #(
 ) D1(
     .clk(clk),
     .rst_n(rst_n),
-    // .start(start),
     .multiplicand(multiplicand),
     .multiplier(multiplier),
     .en_multr(en_multr),
@@ -64,6 +64,7 @@ Datapath #(
     .selA(selA),
     .selQ_1(selQ_1),
     .en_out(en_out),
+    .en_final(en_final),
     .clear(clear),
 
     .count_done(count_done), 

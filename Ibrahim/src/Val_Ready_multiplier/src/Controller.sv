@@ -1,14 +1,14 @@
 module Controller (
     input logic       clk,          // Clock signal
     input logic       rst_n,        // Active-low reset signal
-    input logic       src_valid,        // Start signal
-    input logic       dest_ready,
+    input logic       src_valid,    // Source ready
+    input logic       dest_ready,   // Destination ready signal
     input logic       count_done,   // Count complete signal
     input logic       Q0,           // Input Q0
-    input logic       Q_1,           // Input Q1
+    input logic       Q_1,          // Input Q1
 
-    output logic      src_ready,        // Ready signal indicating completion
-    output logic      dest_valid,
+    output logic      src_ready,    // source ready indicating multiplier is ready to acccept new value
+    output logic      dest_valid,   // Destination valid signal
     output logic      en_multr,     // Enable multiplier
     output logic      en_mltd,      // Enable multiplicand
     output logic      en_count,     // Enable counter
@@ -17,7 +17,8 @@ module Controller (
     output logic      selQ,         // Select Q
     output logic      selA,         // Select A
     output logic      selQ_1,       // Select Q_1
-    output logic      en_out,       // Enable output
+    output logic      en_out,       // Enable to store the product until destination handshake is complete
+    output logic      en_final,     // The product will be provided when destination handshake is complete
     output logic      clear         // Clear signal
 );
 
@@ -25,18 +26,17 @@ module Controller (
 typedef enum logic[1:0]{
     IDLE = 2'b00,  // Idle state
     RUN  = 2'b01,  // Run state
-    WAIT = 2'b10,
-    DONE = 2'b11
+    WAIT = 2'b10,  // Wait state
+    DONE = 2'b11   // Done state
 } state_t;
 
-state_t current_state, next_state;
+state_t current_state, next_state;  // Current and next state variables
 
 // Sequential logic for state transition
 always_ff @(posedge clk or negedge rst_n) begin
-    if (!rst_n)  begin
-        current_state <= IDLE; // Reset to IDLE state
-    end
-    else begin
+    if (!rst_n) begin
+        current_state <= IDLE; // Reset to IDLE state on reset
+    end else begin
         current_state <= next_state; // Transition to next state
     end
 end
@@ -45,170 +45,128 @@ end
 always_comb begin
     case (current_state)
         IDLE: begin
-            if (!src_valid) begin
-                next_state     = IDLE;   // Remain in IDLE state
-                en_ac          = 1'b0;   // Disable accumulator
-                en_mltd        = 1'b0;   // Disable multiplicand
-                en_multr       = 1'b0;   // Disable multiplier
-                en_count       = 1'b0;   // Disable counter
-                en_out         = 1'b0;   // Enable output
-                alu_op         = 2'b00;  // Undefined ALU operation
-                selQ           = 1'b0;   // Undefined Q select
-                selA           = 1'b0;   // Undefined A select
-                selQ_1         = 1'b0;   // Undefined Q_1 select
-                clear          = 1'b0;   // Undefined clear
-                src_ready      = 1'b1;   
-                dest_valid     = 1'b0;
+            // Default outputs for IDLE state
+            en_ac      = 1'b0;
+            en_mltd    = 1'b0;
+            en_multr   = 1'b0;
+            en_count   = 1'b0;
+            en_out     = 1'b0;
+            en_final   = 1'b0;
+            alu_op     = 2'b00;
+            selQ       = 1'b0;
+            selA       = 1'b0;
+            selQ_1     = 1'b0;
+            clear      = 1'b0;
+            src_ready  = 1'b1;
+            dest_valid = 1'b0;
+
+            // Transition to RUN state if src_valid is high
+            if (src_valid) begin
+                next_state = RUN;
+                en_ac      = 1'b1;
+                en_mltd    = 1'b1;
+                en_multr   = 1'b1;
+                en_count   = 1'b1;
+                en_out     = 1'b0;
             end else begin
-                next_state = RUN;    // Move to RUN state
-                en_ac      = 1'b1;   // Enable accumulator
-                en_mltd    = 1'b1;   // Enable multiplicand
-                en_multr   = 1'b1;   // Enable multiplier
-                en_count   = 1'b1;   // Enable counter
-                en_out     = 1'b0;   // Enable output
-                alu_op     = 2'b00;  // ALU operation: no operation
-                selQ       = 1'b0;   // Select Q
-                selA       = 1'b0;   // Select A
-                selQ_1     = 1'b0;   // Select Q_1
-                clear      = 1'b0;   // No clear
-                src_ready      = 1'b1;   
-                dest_valid     = 1'b0;
+                next_state = IDLE;
             end
         end
+
         RUN: begin
+            // Default outputs for RUN state
+            en_ac      = 1'b1;
+            en_mltd    = 1'b1;
+            en_multr   = 1'b1;
+            en_count   = 1'b1;
+            en_out     = 1'b0;
+            en_final   = 1'b0;
+            alu_op     = 2'b00;
+            selQ       = 1'b1;
+            selA       = 1'b1;
+            selQ_1     = 1'b1;
+            clear      = 1'b0;
+            src_ready  = 1'b0;
+            dest_valid = 1'b0;
+
+            // Transition based on count_done and Q0, Q_1 values
             if (count_done) begin
                 if (Q0 & !Q_1) begin
-                next_state = WAIT;   // Transition to WAIT state
-                en_ac      = 1'b1;   // Enable accumulator
-                en_mltd    = 1'b1;   // Enable multiplicand
-                en_multr   = 1'b1;   // Enable multiplier
-                en_count   = 1'b0;   // Enable counter
-                en_out     = 1'b1;   // Enable output
-                alu_op     = 2'b01;  // ALU operation
-                selQ       = 1'b1;   // Q select
-                selA       = 1'b1;   // A select
-                selQ_1     = 1'b1;   // Q_1 select
-                clear      = 1'b1;   // Clear signal active
-                src_ready      = 1'b0;   
-                dest_valid     = 1'b1;
-                end else if(!Q0 & Q_1) begin
-                    next_state = WAIT;   // Transition to WAIT state
-                    en_ac      = 1'b1;   // Enable accumulator
-                    en_mltd    = 1'b1;   // Enable multiplicand
-                    en_multr   = 1'b1;   // Enable multiplier
-                    en_count   = 1'b0;   // Enable counter
-                    en_out     = 1'b1;   // Enable output
-                    alu_op     = 2'b10;  // ALU operation
-                    selQ       = 1'b1;   // Q select
-                    selA       = 1'b1;   // A select
-                    selQ_1     = 1'b1;   // Q_1 select
-                    clear      = 1'b1;   // Clear signal active
-                    src_ready  = 1'b0;   
+                    next_state = WAIT;
+                    alu_op     = 2'b01;  // Subtract operation
+                    en_count   = 1'b0;
+                    en_out     = 1'b1;
+                    clear      = 1'b1;
+                    dest_valid = 1'b1;
+                end else if (!Q0 & Q_1) begin
+                    next_state = WAIT;
+                    alu_op     = 2'b10;  // Add operation
+                    en_count   = 1'b0;
+                    en_out     = 1'b1;
+                    clear      = 1'b1;
                     dest_valid = 1'b1;
                 end else begin
-                    next_state = WAIT;   // Transition to WAIT state
-                    en_ac      = 1'b0;   // Disable accumulator
-                    en_mltd    = 1'b0;   // Disable multiplicand
-                    en_multr   = 1'b0;   // Disable multiplier
-                    en_count   = 1'b0;   // Disable counter
-                    en_out     = 1'b1;   
-                    alu_op     = 2'b00;  // Undefined ALU operation
-                    selQ       = 1'b1;   // Undefined Q select
-                    selA       = 1'b1;   // Undefined A select
-                    selQ_1     = 1'b1;   // Undefined Q_1 select
-                    clear      = 1'b1;   // Clear signal active
-                    src_ready      = 1'b0;   
-                dest_valid     = 1'b1;
+                    next_state = WAIT;
+                    alu_op     = 2'b00;  // No operation
+                    en_count   = 1'b0;
+                    en_out     = 1'b1;
+                    clear      = 1'b1;
+                    dest_valid = 1'b1;
                 end
-            end else if((Q0 & Q_1) | (!Q0 & !Q_1)) begin
-                next_state = RUN;    // Remain in RUN state
-                en_ac      = 1'b1;   // Enable accumulator
-                en_mltd    = 1'b1;   // Enable multiplicand
-                en_multr   = 1'b1;   // Enable multiplier
-                en_count   = 1'b1;   // Enable counter
-                en_out     = 1'b0;   
-                alu_op     = 2'b00;  // ALU operation: no operation
-                selQ       = 1'b1;   // Select Q
-                selA       = 1'b1;   // Select A
-                selQ_1     = 1'b1;   // Select Q_1
-                clear      = 1'b0;   // No clear
-                src_ready  = 1'b0;   
-                dest_valid = 1'b0;
-            end else if(Q0 & !Q_1) begin
-                next_state = RUN;    // Remain in RUN state
-                en_ac      = 1'b1;   // Enable accumulator
-                en_mltd    = 1'b1;   // Enable multiplicand
-                en_multr   = 1'b1;   // Enable multiplier
-                en_count   = 1'b1;   // Enable counter
-                en_out     = 1'b0;   
-                alu_op     = 2'b01;  // ALU operation: subtract
-                selQ       = 1'b1;   // Select Q
-                selA       = 1'b1;   // Select A
-                selQ_1     = 1'b1;   // Select Q_1
-                clear      = 1'b0;   // No clear
-                src_ready      = 1'b0;   
-                dest_valid     = 1'b0;
+            end else if ((Q0 & Q_1) | (!Q0 & !Q_1)) begin
+                next_state = RUN;
+            end else if (Q0 & !Q_1) begin
+                next_state = RUN;
+                alu_op = 2'b01;  // Subtract operation
             end else begin
-                next_state = RUN;    // Remain in RUN state
-                en_ac      = 1'b1;   // Enable accumulator
-                en_mltd    = 1'b1;   // Enable multiplicand
-                en_multr   = 1'b1;   // Enable multiplier
-                en_count   = 1'b1;   // Enable counter
-                en_out     = 1'b0;   
-                alu_op     = 2'b10;  // ALU operation: 
-                selQ       = 1'b1;   // Select Q
-                selA       = 1'b1;   // Select A
-                selQ_1     = 1'b1;   // Select Q_1
-                clear      = 1'b0;   // No clear
-                src_ready      = 1'b0;   
-                dest_valid     = 1'b0;
+                next_state = RUN;
+                alu_op = 2'b10;  // Add operation
             end
         end
+
         WAIT: begin
-            if(!dest_ready) begin
-                next_state = WAIT;    // Remain in RUN state
-                en_ac      = 1'b1;   // Enable accumulator
-                en_mltd    = 1'b1;   // Enable multiplicand
-                en_multr   = 1'b1;   // Enable multiplier
-                en_count   = 1'b0;   // Enable counter
-                en_out     = 1'b0;   
-                alu_op     = 2'b10;  // ALU operation: 
-                selQ       = 1'b1;   // Select Q
-                selA       = 1'b1;   // Select A
-                selQ_1     = 1'b1;   // Select Q_1
-                clear      = 1'b1;   
-                src_ready      = 1'b0;   
-                dest_valid     = 1'b1;
+            // Default outputs for WAIT state
+            en_ac      = 1'b1;
+            en_mltd    = 1'b1;
+            en_multr   = 1'b1;
+            en_count   = 1'b0;
+            en_out     = 1'b0;
+            en_final   = 1'b0;
+            alu_op     = 2'b10;
+            selQ       = 1'b1;
+            selA       = 1'b1;
+            selQ_1     = 1'b1;
+            clear      = 1'b1;
+            src_ready  = 1'b0;
+            dest_valid = 1'b1;
+
+            // Transition to DONE state if dest_ready is high
+            if (dest_ready) begin
+                next_state = DONE;
+                en_final   = 1'b1;
             end else begin
-                next_state = DONE;    // Remain in RUN state
-                en_ac      = 1'b1;   // Enable accumulator
-                en_mltd    = 1'b1;   // Enable multiplicand
-                en_multr   = 1'b1;   // Enable multiplier
-                en_count   = 1'b0;   // Enable counter
-                en_out     = 1'b0;   
-                alu_op     = 2'b10;  // ALU operation: 
-                selQ       = 1'b1;   // Select Q
-                selA       = 1'b1;   // Select A
-                selQ_1     = 1'b1;   // Select Q_1
-                clear      = 1'b1;   
-                src_ready  = 1'b0;   
-                dest_valid = 1'b1;
+                next_state = WAIT;
             end
         end
+
         DONE: begin
-            next_state = IDLE;    // Remain in RUN state
-            en_ac      = 1'b1;   // Enable accumulator
-            en_mltd    = 1'b1;   // Enable multiplicand
-            en_multr   = 1'b1;   // Enable multiplier
-            en_count   = 1'b0;   // Enable counter
-            en_out     = 1'b0;   
-            alu_op     = 2'b10;  // ALU operation: 
-            selQ       = 1'b1;   // Select Q
-            selA       = 1'b1;   // Select A
-            selQ_1     = 1'b1;   // Select Q_1
-            clear      = 1'b1;   
-            src_ready      = 1'b0;   
-            dest_valid     = 1'b0;
+            // Default outputs for DONE state
+            en_ac      = 1'b1;
+            en_mltd    = 1'b1;
+            en_multr   = 1'b1;
+            en_count   = 1'b0;
+            en_out     = 1'b0;
+            en_final   = 1'b0;
+            alu_op     = 2'b10;
+            selQ       = 1'b1;
+            selA       = 1'b1;
+            selQ_1     = 1'b1;
+            clear      = 1'b1;
+            src_ready  = 1'b0;
+            dest_valid = 1'b0;
+
+            // Transition back to IDLE state
+            next_state = IDLE;
         end
 
         default: begin

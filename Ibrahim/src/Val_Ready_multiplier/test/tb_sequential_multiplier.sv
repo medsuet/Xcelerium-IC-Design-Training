@@ -3,22 +3,23 @@ module tb_sequential_multiplier;
     parameter WIDTH = 16;
 
     // Inputs
-    logic signed [WIDTH-1:0] Multiplicand;
-    logic signed [WIDTH-1:0] Multiplier;
-    logic clk;
-    logic rst;
-    logic src_valid;
-    logic dest_ready;
+    logic signed [WIDTH-1:0] Multiplicand; // Input for multiplicand
+    logic signed [WIDTH-1:0] Multiplier;   // Input for multiplier
+    logic clk;                             // Clock signal
+    logic rst;                             // Reset signal
+    logic src_valid;                       // Source valid signal
+    logic dest_ready;                      // Destination ready signal
 
-    // Reference model output
-    // logic signed [(2*WIDTH)-1:0] exp;
+    // Expected product for verification
+    logic signed [(2*WIDTH)-1:0] expected_product;
 
     // Outputs
-    logic signed [(2*WIDTH)-1:0] Product;
-    logic src_ready, dest_valid;
-    // Counters for pass and fail
-    // int pass_count = 0;
-    // int fail_count = 0;
+    logic signed [(2*WIDTH)-1:0] Product;  // Output product
+    logic src_ready, dest_valid;           // Handshake signals
+
+    // Pass and fail counters
+    integer pass_count = 0;
+    integer fail_count = 0;
 
     // Instantiate the Unit Under Test (UUT)
     seq_multiplier #(.WIDTH(WIDTH)) uut (
@@ -48,106 +49,134 @@ module tb_sequential_multiplier;
     // Task for driving inputs
     task drive_inputs(input logic signed [WIDTH-1:0] in1, input logic signed [WIDTH-1:0] in2);
         begin
-            Multiplicand = in1;
-            Multiplier = in2;
-            src_valid = 1;
+            Multiplicand = in1;            // Assign input to multiplicand
+            Multiplier = in2;              // Assign input to multiplier
+            src_valid = 1;                 // Assert src_valid signal
             @(posedge clk);
-            src_valid = 0;
+            while (!src_ready) @(posedge clk); // Wait for src_ready signal
+            $display("\nHandshake 1 complete: Multiplicand = %0d, Multiplier = %0d", Multiplicand, Multiplier);
+            src_valid = 0;                 // Deassert src_valid signal
         end
     endtask
 
     // Task for monitoring outputs
     task monitor_outputs;
         begin
-            dest_ready = 1;
+            wait(dest_valid == 1);         // Wait for dest_valid signal
+            $display("Handshake 2 NOT Initiated");
+            repeat(5)@(posedge clk);       // Random delay before asserting dest_ready
+            dest_ready = 1;                // Assert dest_ready signal
+            expected_product = Multiplicand * Multiplier; // Calculate expected product
+            $display("'dest_ready' is 1, Handshake 2 Initiated: Waiting for product");
             @(posedge clk);
-            dest_ready = 0;
-            wait(dest_valid == 1);
-            // exp = Multiplicand * Multiplier;
-            repeat(6) @(posedge clk);
-            dest_ready = 1;
-            repeat(4)@(posedge clk);
-            dest_ready = 0;
-            // if(exp != Product) begin
-            //     fail_count++;
-            //     $display("FAIL: time = %0t, A = %0d, B = %0d, P = %0d, E = %0d", $time, Multiplicand, Multiplier, Product, exp);
-            // end else begin
-            //     pass_count++;
-            //     $display("PASS: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
-            // end
-
+            if (expected_product == Product) begin
+                pass_count += 1;
+                $display("PASS: time = %0t, Multiplicand = %0d, Multiplier = %0d, Product = %0d, Expected = %0d", $time, Multiplicand, Multiplier, Product, expected_product);
+            end else begin
+                fail_count += 1;
+                $display("FAIL: time = %0t, Multiplicand = %0d, Multiplier = %0d, Product = %0d, Expected = %0d", $time, Multiplicand, Multiplier, Product, expected_product);
+            end
+            dest_ready = 0;                // Deassert dest_ready signal
+            @(posedge clk);
         end
     endtask
 
     // Task for reset sequence
     task reset_sequence();
         begin
-            rst = 0;
             @(posedge clk);
-            rst = 1;
+            rst = 0;                       // Assert reset signal
+            repeat(1000) @(posedge clk);
+            rst = 1;                       // Deassert reset signal
+        end
+    endtask
+
+    // Task to initialize the signals
+    task init_sequence();
+        begin
+            // Initialize Inputs
+            Multiplicand = 0;              // Initialize multiplicand to 0
+            Multiplier = 0;                // Initialize multiplier to 0
+            src_valid = 0;                 // Initialize src_valid to 0
+            dest_ready = 0;                // Initialize dest_ready to 0
+            rst = 1;                       // Initialize rst to 1
+        end
+    endtask
+
+    // Task for generating random delay
+    // Random delay between tests will ensure that even if src_ready is 1, if src_valid is not 1 handshake won't occur
+    task random_delay();
+        begin
+            repeat(($random % 10)) @(posedge clk);
         end
     endtask
 
     // Stimulus process
     initial begin
         // Initialize Inputs
-        Multiplicand = 0;
-        Multiplier = 0;
-        src_valid = 0;
-        dest_ready = 0;
-        rst = 1;
+        init_sequence();
         
         reset_sequence();
 
+        // Test with various inputs and random delays
         drive_inputs(2, 4);
         monitor_outputs();
+        // Random delay between tests will ensure that even if src_ready is 1, if src_valid is not 1 handshake won't occur
+        random_delay();
         drive_inputs(999, 222);
         monitor_outputs();
+
         // Test case: Multiplication with 0
-        // // 32767 x 0
-        // drive_inputs({WIDTH-1{1'b1}}, 0);
-        // monitor_outputs();
-        // // -32768 x 0
-        // drive_inputs({1'b1, {WIDTH-1{1'b0}}}, 0);
-        // monitor_outputs();
+        drive_inputs({WIDTH-1{1'b1}}, 0);
+        monitor_outputs();
+        random_delay();
+        drive_inputs({1'b1, {WIDTH-1{1'b0}}}, 0);
+        monitor_outputs();
+        random_delay();
 
-        // // Test case: Multiplication with 1
-        // drive_inputs(1, 1);
-        // monitor_outputs();
-        // drive_inputs({WIDTH-1{1'b1}}, 1);
-        // monitor_outputs();
-        // drive_inputs(1, {WIDTH-1{1'b1}});
-        // monitor_outputs();
+        // Test case: Multiplication with 1
+        drive_inputs(1, 1);
+        monitor_outputs();
+        random_delay();
+        drive_inputs({WIDTH-1{1'b1}}, 1);
+        monitor_outputs();
+        random_delay();
+        drive_inputs(1, {WIDTH-1{1'b1}});
+        monitor_outputs();
+        random_delay();
 
-        // // Test case: Multiplication with negative numbers
-        // drive_inputs(-1, -1);
-        // monitor_outputs();
-        // drive_inputs({WIDTH-1{1'b1}}, -1);
-        // monitor_outputs();
-        // drive_inputs(-1, {WIDTH-1{1'b1}});
-        // monitor_outputs();
+        // Test case: Multiplication with negative numbers
+        drive_inputs(-1, -1);
+        monitor_outputs();
+        random_delay();
+        drive_inputs({WIDTH-1{1'b1}}, -1);
+        monitor_outputs();
+        random_delay();
+        drive_inputs(-1, {WIDTH-1{1'b1}});
+        monitor_outputs();
+        random_delay();
 
-        // // Max positive numbers
-        // drive_inputs({WIDTH-1{1'b1}}, {WIDTH-1{1'b1}});
-        // monitor_outputs();
+        // Max positive numbers
+        drive_inputs({WIDTH-1{1'b1}}, {WIDTH-1{1'b1}});
+        monitor_outputs();
+        random_delay();
 
-        // // Max positive and max negative numbers
-        // drive_inputs({WIDTH-1{1'b1}}, {1'b1, {WIDTH-1{1'b0}}});
-        // monitor_outputs();
+        // Max positive and max negative numbers
+        drive_inputs({WIDTH-1{1'b1}}, {1'b1, {WIDTH-1{1'b0}}});
+        monitor_outputs();
+        random_delay();
 
-        // // Test case: Random Testing
-        // for(int i = 0; i < 50000; i++) begin 
-        //     // Non-random testing
-        //     drive_inputs(0 + i, 10 + i); 
-        //     monitor_outputs();
-        //     // Random testing
-        //     drive_inputs($random, $random); 
-        //     monitor_outputs();
-        // end
+        // Random Testing with delays
+        for(int i = 0; i < 50000; i++) begin
+            // Drive random inputs to the multiplier
+            drive_inputs($random, $random); 
+            monitor_outputs();
+            random_delay(); // Random delay between tests
+        end
 
-        // // Print the number of passes and fails
-        // $display("Number of PASSES: %0d", pass_count);
-        // $display("Number of FAILS: %0d", fail_count);
+        // Display final results
+        $display("\nTotal PASS count: %0d", pass_count);
+        $display("Total FAIL count: %0d\n", fail_count);
 
         $finish;
     end
