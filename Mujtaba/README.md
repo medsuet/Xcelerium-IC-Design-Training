@@ -43,3 +43,7 @@ This repository contains all the Excercises that is important for the IC Design 
 ## Implementation of Sequential Binary Multiplication
 
 - **Description:** Read the `README.md` file in `Sequential_Signed_Multiplier` folder which contains files that implement sequential binary multiplier to practice the deeper concepts of the sequential circuit. 
+
+## Implementation of Sequential Binary Multiplication with Ready/Valid Protocol
+
+- **Description:** Read the `README.md` file in `Multiplier_w_RV_Protocol` folder which contains files that implement sequential binary multiplier with Ready/Valid Protocol aims to ensures the good communication with multiplier. 
