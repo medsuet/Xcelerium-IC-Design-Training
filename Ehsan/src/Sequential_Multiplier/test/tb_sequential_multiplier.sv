@@ -3,7 +3,7 @@ module tb;
     logic signed [15:0] multiplicand, multiplier;
     logic signed [31:0] product,exp_product;
     int Passed, Failed;      //no. of test pass and fail
-    int test_cases = 1000;   //no. of test cases
+    int test_cases = 10000;   //no. of test cases
     sequential_multiplier uut (
         .clk(clk),
         .rst(rst),

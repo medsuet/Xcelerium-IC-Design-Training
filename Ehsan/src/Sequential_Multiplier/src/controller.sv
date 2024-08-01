@@ -18,7 +18,6 @@ module controller (
         case (c_state)
             idle: begin
                 mux2_sel = 0;
-
                 if (start_bit == 0) begin
                     clear_bit = 1;
                     ready_bit = 0;
@@ -42,20 +41,6 @@ module controller (
                     ready_bit = 1;
                     clear_bit = 1;
                     n_state = idle;
-
-                    if (Q0_bit == 1'b0 && Q_1_bit == 1'b0) begin
-                        mux1_sel = 1'b0;
-                        alu_ctrl = 1'b0;
-                    end else if (Q0_bit == 1'b1 && Q_1_bit == 1'b1) begin
-                        mux1_sel = 1'b0;
-                        alu_ctrl = 1'b0;
-                    end else if (Q0_bit == 1'b1 && Q_1_bit == 1'b0) begin
-                        mux1_sel = 1'b1;
-                        alu_ctrl = 1'b1;
-                    end else if (Q0_bit == 1'b0 && Q_1_bit == 1'b1) begin
-                        mux1_sel = 1'b1;
-                        alu_ctrl = 1'b0;
-                    end
                 end
 
                 else if (counter_signal == 0) begin
