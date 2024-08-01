@@ -1,4 +1,4 @@
-# Sequential Signed Multiplier 
+# Sequential Signed Multiplier Project
 
 ## Objective
 
