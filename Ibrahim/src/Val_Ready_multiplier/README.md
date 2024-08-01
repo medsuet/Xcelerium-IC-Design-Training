@@ -63,7 +63,7 @@ The valid-ready handshake protocol is used for communication between the testben
   - `src_valid`: Indicates that the source has valid data.
   - `src_ready`: Indicates that the destination is ready to accept data.
 
-- **Destination to Source:**
+- **Destination to Next Destination:**
   - `dest_valid`: Indicates that the destination has valid data.
   - `dest_ready`: Indicates that the next destination is ready to accept data.
 
