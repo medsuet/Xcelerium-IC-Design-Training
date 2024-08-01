@@ -42,13 +42,14 @@ make clean
 ### READY before VALID handshake
 In the Simulation photo, **Hand-Shake 1** is shown this interface in which ready in already high and valid go high after some cycle and hand-shake after the clock cycle when both signal is high. 
 
-### VALID before READY handshake
-In the Simulation photo, **Hand-Shake-2** is shown this interface in which valid in already high and ready 
-go high after some cycle and hand-shake after the clock cycle when both signal is high. 
-
 ### VALID with READY handshake
 In the Simulation photo, **Hand-Shake-2** is shown this interface in which valid and ready 
 go high at same cycle and hand-shake at that clock cycle when both signal is high. 
+
+### VALID before READY handshake
+In the Simulation photo, **Hand-Shake 3** is shown this interface in which valid in already high and ready 
+go high after some cycle and hand-shake after the clock cycle when both signal is high. 
+
 
 ### Simulation photo
 
