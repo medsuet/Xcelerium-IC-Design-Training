@@ -1,5 +1,0 @@
-Name: ahsan
-id: 123
-grade1: 123.00
-grade2: 123.00
-grade3: 133.00
