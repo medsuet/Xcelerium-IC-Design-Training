@@ -28,12 +28,12 @@ logic [(WIDTH/2)+1:0] count_value, value;
 
 always_ff @( posedge clk or negedge n_rst ) begin : Register_a
     if (!n_rst)
-        in_a <= #1 0;
+        in_a <= 0;
     else begin
         if (en_in)
-            in_a <= #1 multiplier;
+            in_a <= multiplier;
         else 
-            in_a <= #1 in_a;
+            in_a <= in_a;
     end    
 end
 
@@ -57,11 +57,11 @@ assign mux_lb = (count_lb) ? (~mux_a + 1) : mux_a;
 // 5-bit counter
 always_ff @( posedge clk or negedge n_rst ) begin : counter
     if (!n_rst) 
-        count_value <= #1 '0;
+        count_value <= '0;
     else begin
-        if (count_en) count_value <= #1 value;
-        else if (clr) count_value <= #1 '0;
-        else count_value <= #1 '0;
+        if (count_en) count_value <= value;
+        else if (clr) count_value <= '0;
+        else count_value <= '0;
     end
 end
 
@@ -77,9 +77,9 @@ assign shft_a = mux_lb << count_value;
 
 // Product Register
 always_ff @( posedge clk or negedge n_rst ) begin : partial_product
-    if (!n_rst) pp <= #1 '0;
-    else if (clr) pp <= #1 '0;
-    else pp <= #1 add_pp;
+    if (!n_rst) pp <= '0;
+    else if (clr) pp <= '0;
+    else pp <= add_pp;
 end
 
 // adder
@@ -114,21 +114,21 @@ always_ff @(posedge clk or negedge n_rst) begin
             in_b <= in;
         end
         else begin
-            in_b[0] <= #1 in_b[1];
-            in_b[1] <= #1 in_b[2];
-            in_b[2] <= #1 in_b[3];
-            in_b[3] <= #1 in_b[4];
-            in_b[4] <= #1 in_b[5];
-            in_b[5] <= #1 in_b[6];
-            in_b[6] <= #1 in_b[7];
-            in_b[7] <= #1 in_b[8];
-            in_b[8] <= #1 in_b[9];
-            in_b[9] <= #1 in_b[10];
-            in_b[10] <= #1 in_b[11];
-            in_b[11] <= #1 in_b[12];
-            in_b[12] <= #1 in_b[13];
-            in_b[13] <= #1 in_b[14];
-            in_b[14] <= #1 in_b[15];   
+            in_b[0] <= in_b[1];
+            in_b[1] <= in_b[2];
+            in_b[2] <= in_b[3];
+            in_b[3] <= in_b[4];
+            in_b[4] <= in_b[5];
+            in_b[5] <= in_b[6];
+            in_b[6] <= in_b[7];
+            in_b[7] <= in_b[8];
+            in_b[8] <= in_b[9];
+            in_b[9] <= in_b[10];
+            in_b[10] <= in_b[11];
+            in_b[11] <= in_b[12];
+            in_b[12] <= in_b[13];
+            in_b[13] <= in_b[14];
+            in_b[14] <= in_b[15];   
         end
     end
 end
