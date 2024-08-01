@@ -24,7 +24,7 @@ make clean
 ## Design Details
 
 ### Top Level Diagram
-![Top Level](docs/TopLevel.png)
+![TopLevel](docs/TopLevel.png)
 
 ### Ready Valid HandShake Mechanism
 ![HandShake Mechansim](docs/HandShake Mechansim.png)
