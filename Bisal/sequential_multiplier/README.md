@@ -74,7 +74,7 @@ The Data Path module performs the multiplication operation by accumulating parti
 The Data Path uses registers to store the multiplicand, multiplier, and intermediate results. It shifts the multiplicand and accumulates the partial products in each clock cycle.
 
 <p align="center">
-  <img src="docs/images/datapath.png" alt="Data Path Diagram />
+  <img src="docs/images/datapath.png" alt="Data Path Diagram" />
 </p>
 
 
@@ -113,11 +113,27 @@ Run the project using commands given below:
     make clean
   
   
-### Example Waveform
+### Expected Waveform
 
-For the example inputs `A = 1` and `B = 1`, the waveform will show the progression through the states, the accumulation of partial products, and the final product output. The `ready` signal will be asserted when the product is available.
+For the example inputs in waveform below the inputs are `A = 1` and `B = 1` in hex format, the waveform shows the final product being displayed after 16 cycles for the progression through the states, the accumulation of partial products, output. The `ready` signal will be asserted when the product is available.
 
 ![Example Waveform](docs/images/waveformexample.png)
+
+## Gate Count Comparison
+
+### 16-Bit Combinational vs Sequential Multiplier
+
+In the design of digital multipliers, the gate count is a critical factor in determining the complexity and resource usage of the implementation. For a 16-bit multiplier, the combinational approach typically requires more gates compared to the sequential approach due to its need for a complete combinatorial logic circuit that processes all bits simultaneously.
+
+- **Combinational Multiplier:** The 16-bit combinational multiplier generally requires approximately 256 gates. This higher gate count arises from the need to implement all the necessary logic for parallel bitwise operations and summation, leading to a more complex and gate-intensive design.
+
+- **Sequential Multiplier:** In contrast, the sequential multiplier, which processes bits sequentially rather than in parallel, utilizes roughly 200 gates. The reduction in gate count is due to the sequential processing nature, where the design can leverage registers and control logic to manage intermediate results and reduce the overall gate requirements.
+
+This comparison highlights the trade-off between parallelism and gate efficiency in multiplier design. While the combinational multiplier offers faster computation by handling all bits simultaneously, the sequential multiplier can be more gate-efficient, potentially offering advantages in resource-constrained environments.
+
+
+
+
 
 
 
