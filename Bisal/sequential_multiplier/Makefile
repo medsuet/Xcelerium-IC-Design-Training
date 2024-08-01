@@ -1,6 +1,7 @@
 # Define variables
 TOP_MODULE = tb_Top_Module
-SRC_FILES = datapath.sv control.sv top.sv tb_Top_Module.sv
+SRC_DIR = src
+SRC_FILES = $(SRC_DIR)/datapath.sv $(SRC_DIR)/control.sv $(SRC_DIR)/top.sv $(SRC_DIR)/tb_Top_Module.sv
 WORK_DIR = work
 
 # Default target
@@ -24,3 +25,4 @@ clean:
 	rm -rf $(WORK_DIR) transcript vsim.wlf
 
 .PHONY: all compile simulate clean
+
