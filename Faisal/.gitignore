@@ -12,6 +12,8 @@ lab2/student.txt
 lab2/student.bin
 lab2/student.dat
 lab2/logfile.txt
+src/seq_adder_4bit/src/seq_adder_4bit
+src/seq_adder_4bit/src/seq_adder_4bit.vcd
 
 # Libraries
 *.lib
