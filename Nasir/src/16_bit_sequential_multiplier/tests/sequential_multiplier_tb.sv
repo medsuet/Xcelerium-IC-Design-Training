@@ -6,7 +6,9 @@ module sequential_multiplier_tb;
     logic clk;
     logic reset;
     logic start;
-
+    logic [31:0] count_tests;
+    logic [31:0] failed;
+    logic [31:0] passed;
     // Reference model output
     logic signed [31:0] expected;
 
@@ -72,10 +74,14 @@ module sequential_multiplier_tb;
         begin
             wait (ready == 1);
             expected = multiplicand * multiplier;
+            #5;
+            count_tests++;
             if (expected != product) begin
-                $display("Fail: A = %0d, B = %0d, product = %0d, Expected = %0d", multiplicand, multiplier, product, expected);
+                failed++;
+                $display("Test %0d failed: M = %0d, Q = %0d, product = %0d, Expected = %0d", count_tests ,multiplicand, multiplier, product, expected);
             end else begin
-                $display("Pass: A = %0d, B = %0d, product = %0d, Expected = %0d", multiplicand, multiplier, product, expected);
+                passed++;
+                $display("Test %0d passed: M = %0d, Q = %0d, product = %0d, Expected = %0d", count_tests,multiplicand, multiplier, product, expected);
             end
         end
     endtask
@@ -84,6 +90,9 @@ module sequential_multiplier_tb;
     initial begin
         init_sequence();
         reset_sequence();
+        count_tests = 32'b0;
+        failed = 32'b0;
+        passed = 32'b0;
         // Fork-join for parallel test execution
         fork
             begin
@@ -124,11 +133,13 @@ module sequential_multiplier_tb;
 
                     // Drive random inputs and check output
                     driver(rand_multiplicand, rand_multiplier);
-                    monitor();
-
+                    monitor();  
                     @(posedge clk); // Synchronize with the clock
                 end
+            $display("%0d Tests failed", failed);
+            $display("%0d Tests passed", passed); 
             end
+
         join
 
         $finish;
