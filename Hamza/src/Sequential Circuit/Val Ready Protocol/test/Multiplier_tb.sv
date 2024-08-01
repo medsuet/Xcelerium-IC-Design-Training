@@ -53,21 +53,25 @@ module Multiplier_tb;
         end
     endtask
 
+
+
     // Task for monitoring outputs
     task monitor_outputs;
         begin
             dest_ready = 1;
             @(posedge clk);
             dest_ready = 0;
-            // repeat(15) @(posedge clk);
-            wait(dest_valid == 1);
-            // #5
-            // exp = Multiplicand * Multiplier;
+            wait(dest_valid); 
+            exp = Multiplicand * Multiplier;
+            if (exp != Product) begin
+                $display("Fail: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
+            end else begin
+                $display("Pass: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
+            end
             repeat(6) @(posedge clk);
             dest_ready = 1;
             repeat(4)@(posedge clk);
             dest_ready = 0;
-
         end
     endtask
 
@@ -86,16 +90,42 @@ module Multiplier_tb;
         Multiplicand = 0;
         Multiplier = 0;
         src_valid = 0;
+        exp = 0;
         dest_ready = 0;
         rst = 1;
         
         reset_sequence();
 
-        // Test case: Multiplication with 0
-        drive_inputs(2, 4);
+        // Directive Tests
+        drive_inputs(1, 22115);
         monitor_outputs();
+
         drive_inputs(999, 222);
         monitor_outputs();
+        drive_inputs(1, 222);
+        monitor_outputs();
+
+        drive_inputs(0, 12345);   
+        monitor_outputs();
+
+        drive_inputs(12345, -1); 
+        monitor_outputs();
+        
+        drive_inputs(-1, 1); 
+        monitor_outputs();
+
+        // Random testing loop
+        for (int i = 0; i < 20000; i++) begin
+                    
+            // Generate random numbers
+            Multiplicand = $random % 65536; 
+            Multiplier = $random % 65536;  
+
+            // Drive random inputs and check output
+            drive_inputs(Multiplicand, Multiplier);
+            monitor_outputs();
+
+        end
 
         $finish;
     end

@@ -33,8 +33,8 @@ always @(*)
             START : begin
                 if (!src_valid)begin
                     clear   = 1'b1;
-                    QR_sel = 1'bx;
-                    data_sel = 2'bx;
+                    QR_sel = 1'b0;
+                    data_sel = 2'b0;
                     src_ready = 1'b1;
                     dest_valid = 1'b0;
                     next_state = START;
@@ -42,7 +42,7 @@ always @(*)
                 else begin
                     clear   = 1'b0;
                     QR_sel = 1'b0;
-                    data_sel = 2'bx;
+                    data_sel = 2'b0;
                     src_ready = 1'b1;
                     dest_valid = 1'b0;
                     next_state = PROCESS;
@@ -51,8 +51,8 @@ always @(*)
             PROCESS : begin
                 if ( count_comp == 1'b1)begin
                     clear   = 1'b1;
-                    QR_sel = 1'bx;
-                    data_sel = 2'bx;
+                    QR_sel = 1'b0;
+                    data_sel = 2'b0;
                     src_ready = 1'b0;
                     dest_valid = 1'b1;
                     next_state = WAIT;
