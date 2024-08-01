@@ -1,9 +1,64 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0" version="24.7.6">
   <diagram name="Page-1" id="xIYD9722voRiS3qMDO6H">
-    <mxGraphModel>
+    <mxGraphModel dx="978" dy="551" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-1" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Valid Ready Interface:&lt;/h1&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="10" y="160" width="270" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-7" value="&lt;font style=&quot;font-size: 28px;&quot;&gt;Design&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 28px;&quot;&gt;Seq_multiplier&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="322" width="210" height="278" as="geometry" />
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-8" value="&lt;span style=&quot;font-size: 28px;&quot;&gt;Test Bench&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="321" width="210" height="278" as="geometry" />
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-9" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;exitX=0.989;exitY=0.138;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.137;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="zhti-xoGkkzIzvK8cg3s-8" target="zhti-xoGkkzIzvK8cg3s-7">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="310" y="360" as="sourcePoint" />
+            <mxPoint x="390" y="360" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-11" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;exitX=0.989;exitY=0.138;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.137;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="500" y="421" as="sourcePoint" />
+            <mxPoint x="278" y="420" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-12" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;exitX=0.989;exitY=0.138;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.137;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="500" y="481" as="sourcePoint" />
+            <mxPoint x="278" y="480" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-13" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;exitX=0.989;exitY=0.138;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.137;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="280" y="550" as="sourcePoint" />
+            <mxPoint x="502" y="551" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-14" value="&lt;font style=&quot;font-size: 25px;&quot;&gt;Source&lt;/font&gt;&lt;div style=&quot;font-size: 25px;&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="126" y="620" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-15" value="&lt;div style=&quot;font-size: 25px;&quot;&gt;Destination&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="534.5" y="600" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-16" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;src_valid&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="322" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-18" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;src_ready&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="384" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-20" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;dest_valid&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="444" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zhti-xoGkkzIzvK8cg3s-21" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;dest_ready&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="510" width="110" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
