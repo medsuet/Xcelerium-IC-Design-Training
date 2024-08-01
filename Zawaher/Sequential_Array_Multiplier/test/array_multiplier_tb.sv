@@ -1,8 +1,16 @@
 `include "../define/array_mul.svh"
 
-module array_multiplier_tb ();
-
-    reg clk, reset;
+module array_multiplier_tb (
+        
+        `ifdef Verilator 
+            input logic clk
+        `endif     
+        
+);
+    `ifndef Verilator
+        reg clk; 
+    `endif
+    reg reset;
     reg signed [width-1:0] multiplier, multiplicand;
     reg start;
     wire signed [result_width-1:0] product;
@@ -16,11 +24,13 @@ module array_multiplier_tb ();
         .ready(ready)
     );
 
+    `ifndef Verilator
     // Clock Generator
     initial begin
         clk = 0;
         forever #5 clk = ~clk;
     end
+    `endif 
 
     initial begin
         // Applying Reset
@@ -60,7 +70,7 @@ module array_multiplier_tb ();
         wait(ready);
         
         // Check if the product matches the expected value
-        if (product == multiplier * multiplicand) begin
+        if ($signed (product) == $signed (multiplier) * $signed (multiplicand)) begin
             $display("================= Test Passed ================");
             $display( " Multiplier: %0d | Multiplicand: %0d | Product: %0d",
                   multiplier, multiplicand, product);
@@ -70,7 +80,7 @@ module array_multiplier_tb ();
         else begin
             $display("================== Test Failed ================");
             $display( " Multiplier: %0d | Multiplicand: %0d ",multiplier, multiplicand); 
-            $display(" Expected %0d, got %0d", multiplier * multiplicand, product);
+            $display(" Expected %0d, got %0d", $signed(multiplier * multiplicand), product);
         end
 
         // Ensure ready goes low before the next operation
