@@ -1,4 +1,3 @@
-
 `include "../define/array_mul.svh"
 
 module array_multiplier_datapath (
@@ -18,9 +17,9 @@ logic [width-1:0] sixteen_bit_muxout;
 logic [result_width-1:0] pipo_out;
 logic [result_width-1:0] sign_extented, twos_compliment, thirtytwo_bit_muxout, shifted_out;
 logic [3:0] counter_value; // Assuming 4-bit counter
-logic [result_width-1:0] carry, sum;
+logic [result_width-1:0] carry_pp, sum_pp,pipo_mux_out,zero_muxout;
 
-piso #(.width(width))PISO (
+piso #(.width(width)) PISO (
     .clk(clk),
     .reset(reset),
     .multiplier(multiplier),
@@ -29,13 +28,13 @@ piso #(.width(width))PISO (
 );
 
 mux #(.width(width)) Sixteen_bit_Mux (
-    .a(0),
+    .a(16'b0),
     .b(multiplicand),
     .sel(piso_out),
     .out(sixteen_bit_muxout)
 );
 
-// 32 bit sign extension
+// 32-bit sign extension
 always_comb begin
     sign_extented = {{(result_width - width){sixteen_bit_muxout[width-1]}}, sixteen_bit_muxout};
 end
@@ -52,68 +51,74 @@ mux #(.width(result_width)) thirtytwo_bit_Mux (
     .out(thirtytwo_bit_muxout)
 );
 
+mux #(.width(result_width)) zero_out_Mux (
+    .a(thirtytwo_bit_muxout),
+    .b(32'b0),
+    .sel(get_output),
+    .out(zero_muxout)
+);
+
+
+
 // Left shifting
 always_comb begin 
-    shifted_out = thirtytwo_bit_muxout << counter_value;
+    shifted_out = zero_muxout << counter_value;
 end
 
 // 32-bit Carry Adder
 generate
     genvar i;
-    for (i = 0; i < result_width; i++) begin : gen_adders
+    for (i = 0; i < result_width; i++) begin 
         if (i == 0) begin
             full_adder FA(
                 .a(shifted_out[i]),
-                .b(pipo_out[i]),
+                .b(pipo_mux_out[i]),
                 .cin(1'b0),
-                .sum(sum[i]),
-                .carry(carry[i])
+                .sum(sum_pp[i]),
+                .carry(carry_pp[i])
             );
         end else begin
             full_adder FA(
                 .a(shifted_out[i]),
-                .b(pipo_out[i]),
-                .cin(carry[i-1]),
-                .sum(sum[i]),
-                .carry(carry[i])
+                .b(pipo_mux_out[i]),
+                .cin(carry_pp[i-1]),
+                .sum(sum_pp[i]),
+                .carry(carry_pp[i])
             );
         end
     end
 endgenerate
 
-
-
-
 pipo #(.width(result_width)) PIPO (
     .clk(clk),
     .reset(reset),
     .counted_15(counted_15),
-    .in(sum),
+    .in(sum_pp),
     .get_output(get_output),
     .out(pipo_out)
 );
 
-//Shows the product when get_output signal becomes one
+
+
+
+mux #(.width(result_width)) PIPO_Mux (
+    .a(pipo_out),
+    .b(32'b0),
+    .sel(get_output),
+    .out(pipo_mux_out)
+);
+
+// Show the product when get_output signal becomes one
 always_comb begin 
-    if (get_output == 1)begin
+    if (get_output == 1) begin
         product = pipo_out;
         
-    end
-    else begin
+        
+    end else begin
         product = 'h0;
-    end
+       end
 end
 
-// Zero sum and carry when get_output is high
-always_ff @(posedge clk or negedge reset) begin
-    if (!reset) begin
-        sum <= 'h0;
-        carry <= 'h0;
-    end else if (get_output) begin
-        sum <= 'h0;
-        carry <= 'h0;
-    end
-end
 
 
 counter counter_instance (
