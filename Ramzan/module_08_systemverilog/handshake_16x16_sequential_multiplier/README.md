@@ -27,7 +27,7 @@ make clean
 ![TopLevel](docs/TopLevel.png)
 
 ### Ready Valid HandShake Mechanism
-![Datapath](docs/HandShake Mechansim.png)
+![Datapath](docs/HandShake\ Mechansim.png)
 
 ### Datapath
 ![Datapath](docs/Datapath.png)
@@ -36,7 +36,7 @@ make clean
 ![Datapath](docs/Controller.png)
 
 ### Simulation Waveform
-![Datapath](docs/Simulation Waveform.png)
+![Datapath](docs/Simulation\ Waveform.png)
 
 ### Gate Count
 
