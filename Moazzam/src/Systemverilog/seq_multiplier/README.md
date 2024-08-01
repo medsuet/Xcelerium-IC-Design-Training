@@ -42,13 +42,13 @@ make clean
 
 ### Top Level Diagram
 
-![Top Level](i_o.png)
+![Top Level](doc/i_o.png)
 
 ### Datapath
-![Datapath](data-path.png)
+![Datapath](doc/data-path.png)
 
 ### Controller
-![Datapath](controller.png)
+![Datapath](doc/controller.png)
 
 ## Gate Count
 Total number of gates used in combinational logic

@@ -52,19 +52,19 @@ go high at same cycle and hand-shake at that clock cycle when both signal is hig
 
 ### Simulation photo
 
-![Simulation](hand_shake_simulation.png)
+![Simulation](doc/hand_shake_simulation.png)
 
 ## Design Details
 
 ### Top Level Diagram
 
-![Top Level](i_o.png)
+![Top Level](doc/i_o.png)
 
 ### Datapath
-![Datapath](data-path.png)
+![Datapath](doc/data-path.png)
 
 ### Controller
-![Datapath](controller.png)
+![Datapath](doc/controller.png)
 
 ## Gate Count
 Total number of gates used in combinational logic
