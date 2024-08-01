@@ -1,0 +1,65 @@
+run
+# in = x, out = 0
+# in = 1, out = 1
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 1, out = 0
+# in = 1, out = 0
+# in = 0, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 1, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 0, out = 0
+# in = 0, out = 0
+
+restart
+run
+# in = x, out = 0
+# in = 0, out = 0
+# in = 0, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 1, out = 0
+# in = 0, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 1, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 0, out = 0
+# in = 0, out = 0
+
+restart
+run
+# in = x, out = 0
+# in = 0, out = 0
+# in = 0, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 1, out = 0
+# in = 0, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 1, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 0, out = 0
+
+restart
+run
+# in = x, out = 0
+# in = 0, out = 0
+# in = 0, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 1, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 1, out = 0
+# in = 1, out = 0
+# in = 0, out = 0
+# in = 1, out = 1
+# in = 1, out = 0
+# End time: 09:49:19 on Jul 27,2024

@@ -1,0 +1,61 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/usman-pc/Documents/MOdel Sim/Lab9 (counter)
+vcounter
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1721903947
+!i10b 1
+!s100 >h>_L;=?OJYz6LYXe2;3^3
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+I4OU1g6k3ac@6g;MViVoLd1
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+w1721891656
+8/home/usman-pc/Documents/MOdel Sim/Lab9 (counter)/counter.sv
+F/home/usman-pc/Documents/MOdel Sim/Lab9 (counter)/counter.sv
+!i122 0
+L0 1 17
+Z5 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z6 !s108 1721903947.000000
+!s107 /home/usman-pc/Documents/MOdel Sim/Lab9 (counter)/counter.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/usman-pc/Documents/MOdel Sim/Lab9 (counter)/counter.sv|
+!i113 1
+Z7 o-work work -sv
+Z8 tCvgOpt 0
+vcouter_tb
+R1
+R2
+!i10b 1
+!s100 XVIGM[KJE_ljmCzEHT4H<1
+R3
+IO5zTZZn4o?0@`HPR29C?23
+R4
+S1
+R0
+w1721891220
+8/home/usman-pc/Documents/MOdel Sim/Lab9 (counter)/counter_tb.sv
+F/home/usman-pc/Documents/MOdel Sim/Lab9 (counter)/counter_tb.sv
+!i122 1
+L0 1 23
+R5
+r1
+!s85 0
+31
+R6
+!s107 /home/usman-pc/Documents/MOdel Sim/Lab9 (counter)/counter_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|/home/usman-pc/Documents/MOdel Sim/Lab9 (counter)/counter_tb.sv|
+!i113 1
+R7
+R8
