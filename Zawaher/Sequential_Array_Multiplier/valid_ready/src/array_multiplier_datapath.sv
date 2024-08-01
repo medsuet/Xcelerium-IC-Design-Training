@@ -5,6 +5,7 @@ module array_multiplier_datapath (
     input logic reset,
     input logic start_tx,
     input logic counted_15,
+    input logic dst_ready,
     input logic [width-1:0] multiplier,
     input logic [width-1:0] multiplicand,
     output logic counted,
@@ -17,7 +18,7 @@ logic [width-1:0] sixteen_bit_muxout;
 logic [result_width-1:0] pipo_out;
 logic [result_width-1:0] sign_extented, twos_compliment, thirtytwo_bit_muxout, shifted_out;
 logic [3:0] counter_value; // Assuming 4-bit counter
-logic [result_width-1:0] carry_pp, sum_pp,pipo_mux_out,zero_muxout;
+logic [result_width-1:0] carry_pp, sum_pp,pipo_mux_out,zero_muxout,product_pp;
 
 piso #(.width(width)) PISO (
     .clk(clk),
@@ -93,9 +94,10 @@ pipo #(.width(result_width)) PIPO (
     .clk(clk),
     .reset(reset),
     .counted_15(counted_15),
+    .dst_ready(dst_ready),
     .in(sum_pp),
     .get_output(get_output),
-    .out(pipo_out)
+    .out(pipo_out),.product_pp(product_pp)
 );
 
 
@@ -108,9 +110,9 @@ mux #(.width(result_width)) PIPO_Mux (
     .out(pipo_mux_out)
 );
 
-// Show the product when get_output signal becomes one
+/*/ Show the product when get_output signal becomes one
 always_comb begin 
-    if (get_output == 1) begin
+    if (get_output) begin
         product = pipo_out;
         
         
@@ -119,7 +121,16 @@ always_comb begin
        end
 end
 
+*/
 
+always_comb begin
+    if (dst_ready)begin
+        product = 0;
+    end
+    else begin
+        product = product_pp;
+    end
+end
 
 counter counter_instance (
     .clk(clk),
@@ -138,10 +149,11 @@ module pipo #(
     parameter width = 32 // Default width, can be set during instantiation
 )(
     input logic     clk,reset,
-    input logic     counted_15,
+    input logic     counted_15, 
+    input logic     dst_ready,    
     input logic     [width-1:0]in,
     output logic    get_output,
-    output logic    [width-1:0]out 
+    output logic    [width-1:0]out,product_pp 
 );
 
 always_ff @( posedge clk or negedge reset ) begin 
@@ -149,10 +161,12 @@ always_ff @( posedge clk or negedge reset ) begin
     if (!reset)begin
         get_output <= 'h0;
         out <= 'h0;
+        product_pp <= 'h0;
     end
     else begin
-        if (counted_15)begin
+        if (counted_15 )begin
             get_output <= 1'b1;
+            product_pp <= in;
             out <= in;
         end
 

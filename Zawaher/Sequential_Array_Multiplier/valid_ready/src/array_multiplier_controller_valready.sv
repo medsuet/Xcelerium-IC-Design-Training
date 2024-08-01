@@ -1,4 +1,4 @@
-module array_multiplier_controller (
+module array_multiplier_controller_valready (
 
     input logic     clk,reset,
     input logic     valid_src,counted,get_output,dst_ready,
@@ -38,7 +38,7 @@ module array_multiplier_controller (
             if (get_output) n_state = S3;
             else n_state = S2;
            end 
-
+            
            S3 : begin
             if (dst_ready) n_state = S0;
             else n_state = S3;
@@ -90,9 +90,9 @@ module array_multiplier_controller (
            end
            end
 
-
+    
            S2 : begin
-            if (get_output) begin
+            if (get_output | (get_output && dst_ready)) begin  // if get output and the dst_ready comes at the same time
                 start_tx = 1'b0;
                 counted_15 = 1'b0;
                 dst_valid = 1'b1;
@@ -107,7 +107,7 @@ module array_multiplier_controller (
 
            end
            end
-
+            
             S3 : begin
             if (dst_ready) begin
                 start_tx = 1'b0;

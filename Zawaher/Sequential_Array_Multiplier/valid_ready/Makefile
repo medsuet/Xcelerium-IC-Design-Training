@@ -1,6 +1,6 @@
 SOURCES_SV:= define/array_mul.svh \
 			 src/array_multiplier_datapath.sv \
-			 src/array_multiplier_controller.sv \
+			 src/array_multiplier_controller_valready.sv \
 			 src/array_multiplier.sv \
 			 test/array_multiplier_tb.sv
 
