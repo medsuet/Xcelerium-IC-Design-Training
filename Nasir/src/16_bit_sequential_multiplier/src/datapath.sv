@@ -1,8 +1,9 @@
 module datapath(
     input logic signed [15:0] multiplicand,multiplier,
-    input logic clk,reset,enable,count16,
+    input logic clk,reset,enable,
     input logic [1:0] selectAccumulator,
     input logic selectMultiplier,
+    output logic count16,
     output logic [1:0] operation,
     output logic [31:0] product
 ); 
