@@ -3,12 +3,16 @@
 .global _start
 .section .text
 _start:
+
 #init the number whose factorial will be found
 addi t0,zero,7
+
 #init the result of fact
 addi t1,zero,1
+
 #init the number of iteration of for loop
 addi t2,zero,1
+
 #logic
 factorial:
 bgt t2,t0,done
@@ -17,6 +21,7 @@ addi t2,t2,1
 
 j factorial
 done:
+
 # Code to exit for Spike (DONT REMOVE IT)
 li t0, 1
 la t1, tohost

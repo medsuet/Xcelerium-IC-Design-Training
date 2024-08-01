@@ -3,8 +3,10 @@
 _start:
 #giving the value for number
 addi t0,zero,256
+
 #initiazlizing the count to be zero
 addi t1,zero,0
+
 #logic for countung bits
 count_bits:
 beq t0,zero,done
