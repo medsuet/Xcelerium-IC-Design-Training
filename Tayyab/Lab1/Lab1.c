@@ -46,12 +46,15 @@ void simpleCalculator() {
 void printFibonacci(int n) {
     // Print Fibonacci sequence up to n terms
     int Tk=1, prevTk=1, nextTk;
-    printf("1, 1");
+
     for (int i=1; i<=n; i++) {
+        // Print fibonacci number
+        printf("%d\n",prevTk);
+
+        // Calculate next number
         nextTk = Tk + prevTk;
         prevTk = Tk;
         Tk = nextTk;
-        printf(", %d",Tk);
     }
     printf("\n");
 }
