@@ -40,6 +40,7 @@ module controller (
                     mux2_sel = 1;
                     ready_bit = 1;
                     clear_bit = 1;
+                    counter_en = 0;
                     n_state = idle;
                 end
 
@@ -51,10 +52,8 @@ module controller (
                     n_state = multiplication;
                     if (Q0_bit == 1'b0 && Q_1_bit == 1'b0) begin
                         mux1_sel = 1'b0;
-                        alu_ctrl = 1'b0;
                     end else if (Q0_bit == 1'b1 && Q_1_bit == 1'b1) begin
                         mux1_sel = 1'b0;
-                        alu_ctrl = 1'b0;
                     end else if (Q0_bit == 1'b1 && Q_1_bit == 1'b0) begin
                         mux1_sel = 1'b1;
                         alu_ctrl = 1'b1;
