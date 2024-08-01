@@ -24,7 +24,7 @@ The Top Module integrates the Control Unit and Data Path, coordinating the overa
 - `P`: 32-bit product of the multiplication.
 - `ready`: Indicates when the multiplication is complete.
 
-![Control Unit State Diagram](images/topmodule.png)
+![Top-Level Module Diagram](docs/images/topleveldiagram.png)
 
 
 ### Control Unit
@@ -49,7 +49,7 @@ The Control Unit operates in a finite state machine with the following states:
 1. **START**: Waits for the start signal. On receiving the start signal, it transitions to the CALC state.
 2. **CALC**: Performs the multiplication by iterating through the bits of the multiplicand. The state transitions back to START after completion.
 
-![Control Unit State Diagram](images/statediagram.png)
+![Control Unit State Diagram](docs/images/statediagram.png)
 
 ### Data Path
 
@@ -70,7 +70,7 @@ The Data Path module performs the multiplication operation by accumulating parti
 
 The Data Path uses registers to store the multiplicand, multiplier, and intermediate results. It shifts the multiplicand and accumulates the partial products in each clock cycle.
 
-![Data Path Diagram](images/datapath.png)
+![Data Path Diagram](docs/images/datapath.png)
 
 #### Testbench
 
@@ -111,7 +111,7 @@ Run the project using commands given below:
 
 For the example inputs `A = 1` and `B = 1`, the waveform will show the progression through the states, the accumulation of partial products, and the final product output. The `ready` signal will be asserted when the product is available.
 
-![Example Waveform](images/example_waveform.png)
+![Example Waveform](images/docs/images/waveformexample.png)
 
 
 
