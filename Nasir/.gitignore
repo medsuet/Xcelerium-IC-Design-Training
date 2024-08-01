@@ -88,4 +88,6 @@ src/4_bit_counter/docs/wavedrom (1).png:Zone.Identifier
 # ignore dump files .vcd
 *.vcd
 # ignore executable
-src/16_bit_sequential_multiplier/src/signed_multiplier
+src/16_bit_sequential_multiplier/signed_multiplier
+src/valid_ready_interface_seq_multiplier/signed_multiplier
+src/valid_ready_interface_seq_multiplier/valid_ready_signed_multiplier
