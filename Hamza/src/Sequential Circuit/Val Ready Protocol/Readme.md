@@ -6,7 +6,7 @@ The Sequential Multiplier is a hardware implementation of Booth's multiplication
 
 ## Diagrams
 
-![Val Ready Protocol Diagram](docs/Protocol-STG.png)  
+![Val Ready Protocol Diagram](docs/Protocol-STG.PNG)  
 *Figure 1: Protocol Diagram*
 
 ## Directory Structure
