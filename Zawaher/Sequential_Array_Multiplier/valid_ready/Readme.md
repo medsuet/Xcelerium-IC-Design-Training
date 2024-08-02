@@ -86,6 +86,9 @@ Running the `make vivado` command generates the terminal log output as shown bel
  ![Vivado](./docs/array_viv.png)
 
 # Output Waveform 
+The waveform is shown below:
+## Vivado
+ ![Vivado](./docs/vivado_waves.png)
 
 The waveform is shown below:
 ## GTKWAVE
