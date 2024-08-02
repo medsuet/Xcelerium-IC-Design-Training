@@ -1,6 +1,6 @@
 module controller (
-    input logic input_valid,
-    input logic output_ready,
+    input logic src_valid,
+    input logic dest_ready,
     input logic clk,
     input logic reset,
     input logic [3:0] SCval,
@@ -11,8 +11,8 @@ module controller (
     output logic muxsel,
     output logic psEn,
     output logic resEn,
-    output logic output_valid,
-    output logic input_ready
+    output logic dest_valid,
+    output logic src_ready
 );
 
     typedef enum logic [1:0] {
@@ -40,14 +40,14 @@ module controller (
         psEn = 0;
         restore_reg = 0;
         resEn = 0;
-        input_ready = 0;
-        output_valid = 0;
+        src_ready = 0;
+        dest_valid = 0;
 
         case (current_state)
              S0: begin
-                 input_ready = 1;
+                 src_ready = 1;
 
-                 if (input_valid) begin
+                 if (src_valid) begin
                      mupdEn = 1;
                      muprEn = 1;
                      next_state = S1;
@@ -78,7 +78,7 @@ module controller (
              end
 
              S2: begin
-                 output_valid = 1;
+                 dest_valid = 1;
                  mupdEn = 0;
                  muprEn = 0;
                  SCEn = 0;
@@ -86,7 +86,7 @@ module controller (
                  psEn = 0;
                  resEn = 1;
                  restore_reg = 1;
-                 if (output_ready) begin
+                 if (dest_ready) begin
                      next_state = S0;
                  end else begin
                      next_state = S2; 

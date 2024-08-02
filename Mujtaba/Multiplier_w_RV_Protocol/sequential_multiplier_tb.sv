@@ -7,19 +7,19 @@ module sequential_multiplier_tb();
     logic signed [31:0] Product;
     logic [31:0] expected_product;
     logic [18:0] count_pass;
-    logic input_valid, input_ready;
-    logic output_valid, output_ready;
+    logic src_valid, src_ready;
+    logic dest_valid, dest_ready;
 
     sequential_multiplier dut (
         .clk(clk),
         .reset(reset),
-        .input_valid(input_valid),
-        .output_ready(output_ready),
+        .src_valid(src_valid),
+        .dest_ready(dest_ready),
         .Multiplicand(Multiplicand),
         .Multiplier(Multiplier),
         .Product(Product),
-        .output_valid(output_valid),
-        .input_ready(input_ready)
+        .dest_valid(dest_valid),
+        .src_ready(src_ready)
     );
 
     initial begin
@@ -33,19 +33,19 @@ module sequential_multiplier_tb();
         count_pass = 0;
         expected_product = 0;
         reset = 1;
-        #1 reset = 0;
-        #1 reset = 1;
-         test_directives(2, 3);
+        #100 reset = 0;
+        #100 reset = 1;
+         directed_test(2, 3);
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
-        test_directives(0, 3);
+        directed_test(0, 3);
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
-        test_directives(-2, 3);
+        directed_test(-2, 3);
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
-        test_directives(-2, 0);
+        directed_test(-2, 0);
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
-        test_directives(8, 9);
+        directed_test(8, 9);
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
-        test_directives(1, 32767);
+        directed_test(1, 32767);
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
         fork
             driver();
@@ -55,26 +55,17 @@ module sequential_multiplier_tb();
         $finish;
     end
 
-    task test_directives(input logic [15:0] a, input logic [15:0] b);
+    task directed_test(input logic [15:0] a, input logic [15:0] b);
         Multiplicand = a;
         Multiplier = b;
-        input_valid = 1;
+        src_valid = 1;
         @(posedge clk);
-        input_valid = 0;
+        src_valid = 0;
+        while (!dest_valid) @(posedge clk);
+        dest_ready = 1;
         @(posedge clk);
-        input_valid = 1;
-        @(posedge clk);
-        input_valid = 0;
-        wait (output_valid); 
-        output_ready = 1;
-        @(posedge clk);
-        output_ready = 0;
-        @(posedge clk);
-        output_ready = 1;
-        @(posedge clk);
-        output_ready = 0;
-        @(posedge clk);
-        endtask 
+        dest_ready = 0;
+     endtask 
 
 
     task driver;
@@ -82,19 +73,15 @@ module sequential_multiplier_tb();
         for (int i=0; i<200000; i++) begin
             a = $random;
             b = $random;
-            test_directives(a, b);
+            directed_test(a, b);
         end
     endtask
         
     task monitor;
         for (int i=0; i<200000; i++) begin
-            @(negedge input_valid);
-            wait(output_ready && output_valid);
             expected_product = Multiplicand * Multiplier;
-
-            repeat(2) @(posedge clk);
             // Check the result
-            if (Product !== expected_product) begin
+            if (Product != expected_product) begin
                 $display("Error: Expected product %d, but got %d", expected_product, Product);
             end else begin
                 count_pass++;
