@@ -37,6 +37,7 @@ module control_unit (
             begin
                 if (start) begin
                     next_state = LOAD;
+                    
                     end else begin
                     load = 0;
                     calc = 0;
@@ -63,9 +64,11 @@ module control_unit (
             end
             LOAD:                                       //new added state
             begin
-                if (in_valid)  
+                //$display(in_valid);
+                if (in_valid) 
                 begin 
                     load=1;
+
                     next_state = CALC;
                 end
                 else begin
@@ -82,6 +85,7 @@ module control_unit (
                 if (done) begin
                     next_state = IDLE;
                     load = 0;
+                    processing=0;
                     calc=0;
                 end else begin
                     next_state = CALC;
