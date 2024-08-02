@@ -26,8 +26,7 @@ module Controller (
 typedef enum logic[1:0]{
     IDLE = 2'b00,  // Idle state
     RUN  = 2'b01,  // Run state
-    WAIT = 2'b10,  // Wait state
-    DONE = 2'b11   // Done state
+    WAIT = 2'b10  // Wait state
 } state_t;
 
 state_t current_state, next_state;  // Current and next state variables
@@ -90,7 +89,7 @@ always_comb begin
             dest_valid = 1'b0;
 
             // Transition based on count_done and Q0, Q_1 values
-            if (count_done) begin
+            if (count_done && !dest_valid) begin
                 if (Q0 & !Q_1) begin
                     next_state = WAIT;
                     alu_op     = 2'b01;  // Subtract operation
@@ -112,7 +111,33 @@ always_comb begin
                     en_out     = 1'b1;
                     clear      = 1'b1;
                     dest_valid = 1'b1;
-                end
+                end 
+            end else if (count_done && dest_valid) begin
+                    if (Q0 & !Q_1) begin
+                        next_state = IDLE;
+                        alu_op     = 2'b01;  // Subtract operation
+                        en_count   = 1'b0;
+                        en_out     = 1'b1;
+                        en_final   = 1'b1;
+                        clear      = 1'b1;
+                        dest_valid = 1'b1;
+                    end else if (!Q0 & Q_1) begin
+                        next_state = IDLE;
+                        alu_op     = 2'b10;  // Add operation
+                        en_count   = 1'b0;
+                        en_out     = 1'b1;
+                        en_final   = 1'b1;
+                        clear      = 1'b1;
+                        dest_valid = 1'b1;
+                    end else begin
+                        next_state = IDLE;
+                        alu_op     = 2'b00;  // No operation
+                        en_count   = 1'b0;
+                        en_out     = 1'b1;
+                        en_final   = 1'b1;
+                        clear      = 1'b1;
+                        dest_valid = 1'b1;
+                    end
             end else if ((Q0 & Q_1) | (!Q0 & !Q_1)) begin
                 next_state = RUN;
             end else if (Q0 & !Q_1) begin
@@ -142,33 +167,13 @@ always_comb begin
 
             // Transition to DONE state if dest_ready is high
             if (dest_ready) begin
-                next_state = DONE;
+                next_state = IDLE;
                 en_final   = 1'b1;
             end else begin
                 next_state = WAIT;
             end
         end
-
-        DONE: begin
-            // Default outputs for DONE state
-            en_ac      = 1'b1;
-            en_mltd    = 1'b1;
-            en_multr   = 1'b1;
-            en_count   = 1'b0;
-            en_out     = 1'b0;
-            en_final   = 1'b0;
-            alu_op     = 2'b10;
-            selQ       = 1'b1;
-            selA       = 1'b1;
-            selQ_1     = 1'b1;
-            clear      = 1'b1;
-            src_ready  = 1'b0;
-            dest_valid = 1'b0;
-
-            // Transition back to IDLE state
-            next_state = IDLE;
-        end
-
+        
         default: begin
             next_state = IDLE; // Default to IDLE on undefined state
         end

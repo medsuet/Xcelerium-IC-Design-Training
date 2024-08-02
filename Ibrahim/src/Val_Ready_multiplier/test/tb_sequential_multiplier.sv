@@ -52,23 +52,25 @@ module tb_sequential_multiplier;
             Multiplicand = in1;            // Assign input to multiplicand
             Multiplier = in2;              // Assign input to multiplier
             src_valid = 1;                 // Assert src_valid signal
+
             @(posedge clk);
             while (!src_ready) @(posedge clk); // Wait for src_ready signal
             $display("\nHandshake 1 complete: Multiplicand = %0d, Multiplier = %0d", Multiplicand, Multiplier);
-            src_valid = 0;                 // Deassert src_valid signal
+            src_valid = 0;                       // Deassert src_valid signal
+
+            while (!dest_valid) @(posedge clk);  // Wait for dest_valid signal
+            dest_ready = 1;                      // Assert dest_ready signal
+            
+            @(posedge clk);
+            dest_ready = 0;                      // Deassert dest_ready signal
         end
     endtask
 
     // Task for monitoring outputs
     task monitor_outputs;
         begin
-            wait(dest_valid == 1);         // Wait for dest_valid signal
-            $display("Handshake 2 NOT Initiated");
-            repeat(5)@(posedge clk);       // Random delay before asserting dest_ready
-            dest_ready = 1;                // Assert dest_ready signal
             expected_product = Multiplicand * Multiplier; // Calculate expected product
             $display("'dest_ready' is 1, Handshake 2 Initiated: Waiting for product");
-            @(posedge clk);
             if (expected_product == Product) begin
                 pass_count += 1;
                 $display("PASS: time = %0t, Multiplicand = %0d, Multiplier = %0d, Product = %0d, Expected = %0d", $time, Multiplicand, Multiplier, Product, expected_product);
@@ -76,8 +78,6 @@ module tb_sequential_multiplier;
                 fail_count += 1;
                 $display("FAIL: time = %0t, Multiplicand = %0d, Multiplier = %0d, Product = %0d, Expected = %0d", $time, Multiplicand, Multiplier, Product, expected_product);
             end
-            dest_ready = 0;                // Deassert dest_ready signal
-            @(posedge clk);
         end
     endtask
 
@@ -86,7 +86,7 @@ module tb_sequential_multiplier;
         begin
             @(posedge clk);
             rst = 0;                       // Assert reset signal
-            repeat(1000) @(posedge clk);
+            repeat(200) @(posedge clk);
             rst = 1;                       // Deassert reset signal
         end
     endtask
@@ -125,6 +125,7 @@ module tb_sequential_multiplier;
         random_delay();
         drive_inputs(999, 222);
         monitor_outputs();
+        random_delay();
 
         // Test case: Multiplication with 0
         drive_inputs({WIDTH-1{1'b1}}, 0);
@@ -165,9 +166,12 @@ module tb_sequential_multiplier;
         drive_inputs({WIDTH-1{1'b1}}, {1'b1, {WIDTH-1{1'b0}}});
         monitor_outputs();
         random_delay();
+        drive_inputs({1'b1, {WIDTH-1{1'b0}}}, {WIDTH-1{1'b1}});
+        monitor_outputs();
+        random_delay();
 
         // Random Testing with delays
-        for(int i = 0; i < 50000; i++) begin
+        for(int i = 0; i < 100000; i++) begin
             // Drive random inputs to the multiplier
             drive_inputs($random, $random); 
             monitor_outputs();
