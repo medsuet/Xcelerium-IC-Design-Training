@@ -36,8 +36,28 @@ module Sequential_Multiplier_TB();
             valid_src=~valid_src;
             ready_dst=0;
             if (valid_src==0)begin
-//                $display("x");
+                repeat(1)#20;
+                valid_src=1;
+//              $display("x");
+//                repeat(1)@(posedge clk);
+                for(int i=0;i<16;i++)begin
+                    @(posedge clk);
+                    bit_val=VALUE2[i];
+                end
                 @(posedge clk);
+                @(posedge clk);
+                @(posedge clk);
+                monitor;
+//                $display("The product of %d and %d is not %d but %d",$signed(VALUE1),$signed(VALUE2),$signed(result),$signed(VALUE1)*$signed(VALUE2));
+                if ($signed(result)!=$signed(VALUE1)*$signed(VALUE2))begin
+                    $display("The product of %d and %d is not %d but %d",$signed(VALUE1),$signed(VALUE2),$signed(result),$signed(VALUE1)*$signed(VALUE2));
+                    c=c+1;
+                end
+                start = 0;
+                ready_dst=1;
+                @(posedge clk);
+                #1;
+                #10;
             end
             else begin
 //                $display("y");
