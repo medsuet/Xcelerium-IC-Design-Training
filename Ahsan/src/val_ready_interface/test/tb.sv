@@ -86,7 +86,7 @@ module Seq_Mul_top_tb;
         src_val = 0;
         @(posedge clk);
         rst = 1;
-        for(int i=0;i<2;i++)begin 
+        for(int i=0;i<200;i++)begin 
             //Non Random testing
             drive_inputs(0+i,10+i); 
             monitor_outputs();
