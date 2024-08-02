@@ -74,7 +74,7 @@ always @(*)
                 if ( dest_ready == 1'b1)begin
                     clear   = 1'b1;
                     pro_en  = 1'b0;
-                    dest_val= 1'b0;
+                   // dest_val= 1'b0;
                  mux_sel_Mul = 1'b0;
                     n_state = S0;
              case (Qo_Q1)
@@ -86,7 +86,7 @@ always @(*)
                 end
                 else begin
                     clear   = 1'b1;
-                    dest_val= 1'b1;
+                  //  dest_val= 1'b1;
                     pro_en  = 1'b0;
                 mux_sel_Mul = 1'b0;
                     n_state = S2;
@@ -97,6 +97,7 @@ always @(*)
                     2'b11 : mux_sel_Shift = 2'b11;
                     endcase
                 end
+                dest_val = 1;
                 
             end 
             default:

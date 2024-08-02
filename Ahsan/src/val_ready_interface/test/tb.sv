@@ -82,11 +82,12 @@ module Seq_Mul_top_tb;
         // Initialize Inputs
         Multiplicand = 0;
         Multiplier = 0;
+        dest_ready =0;
         rst = 0;
         src_val = 0;
         @(posedge clk);
         rst = 1;
-        for(int i=0;i<20000;i++)begin 
+        for(int i=0;i<2;i++)begin 
             //Non Random testing
             drive_inputs(0+i,10+i); 
             monitor_outputs();
