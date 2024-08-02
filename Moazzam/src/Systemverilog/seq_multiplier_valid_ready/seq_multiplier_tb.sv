@@ -3,14 +3,14 @@ module seq_multiplier_tb;
 // Inputs
 logic clk;
 logic rst;
-logic valid_in;
-logic ready_in;
+logic valid_src;
+logic ready_src;
 logic signed [15:0] multiplier;
 logic signed [15:0] multiplicant;
 
 // Outputs
-logic valid_out;
-logic ready_out;
+logic valid_des;
+logic ready_des;
 logic signed [31:0] product;
 
 //refernce model output
@@ -26,12 +26,12 @@ seq_multiplier uut (
     .rst(rst),    
     .multiplier(multiplier),
     .multiplicant(multiplicant),
-    .valid_in(valid_in),
-    .ready_in(ready_in),
+    .valid_src(valid_src),
+    .ready_src(ready_src),
 
     .product(product),
-    .valid_out(valid_out),
-    .ready_out(ready_out)
+    .valid_des(valid_des),
+    .ready_des(ready_des)
 );
 
 // Clock generation
@@ -47,7 +47,7 @@ initial begin
     multiplier <= 0;
     multiplicant <= 0;
     rst <= 0;
-    valid_in <= 0; ready_out <= 0;
+    valid_src <= 0; ready_des <= 0;
     @(posedge clk);
     rst <= 1;
     repeat(4) @(posedge clk);
@@ -75,14 +75,14 @@ end
 
 //Direct test
 task dir_test(input logic [15:0] a_in,b_in);
-    rst <= 1; valid_in <= 1; multiplier <= a_in; multiplicant <= b_in;
-    @(negedge ready_in);
-    valid_in <= 0;
-    @(posedge valid_out);
+    rst <= 1; valid_src <= 1; multiplier <= a_in; multiplicant <= b_in;
+    @(negedge ready_src);
+    valid_src <= 0;
+    @(posedge valid_des);
     repeat(2) @(posedge clk);
-    if(ready_out == 0)   ready_out <= 1;
+    if(ready_des == 0)   ready_des <= 1;
     @(posedge clk);
-    ready_out <= 0;
+    ready_des <= 0;
     @(posedge clk);
 
 endtask
@@ -90,35 +90,35 @@ endtask
 //Direct test
 task dir_test_2(input logic [15:0] a_in,b_in);
     repeat(3) @(posedge clk);
-    rst <= 1; valid_in <= 1; multiplier <= a_in; multiplicant <= b_in;
-    @(negedge ready_in);
-    valid_in <= 0;
+    rst <= 1; valid_src <= 1; multiplier <= a_in; multiplicant <= b_in;
+    @(negedge ready_src);
+    valid_src <= 0;
     repeat(3) @(posedge clk);
-    valid_in <= 1;  multiplier <= b_in; multiplicant <= a_in;
-    @(posedge valid_out);
+    valid_src <= 1;  multiplier <= b_in; multiplicant <= a_in;
+    @(posedge valid_des);
     repeat(2) @(posedge clk);
-    if(ready_out == 0)   ready_out <= 1;
+    if(ready_des == 0)   ready_des <= 1;
     @(posedge clk);
-    ready_out <= 0;
-    @(negedge ready_in);
-    valid_in <= 0;
-    @(posedge valid_out);
-    if(ready_out == 0)   ready_out <= 1;
+    ready_des <= 0;
+    @(negedge ready_src);
+    valid_src <= 0;
+    @(posedge valid_des);
+    if(ready_des == 0)   ready_des <= 1;
     @(posedge clk);
-    ready_out <= 0;
+    ready_des <= 0;
 
 endtask
 
 task dir_test_3(input logic [15:0] a_in,b_in);
-    rst <= 1; valid_in <= 1; multiplier <= a_in; multiplicant <= b_in;
-    @(negedge ready_in);
-    valid_in <= 0;
+    rst <= 1; valid_src <= 1; multiplier <= a_in; multiplicant <= b_in;
+    @(negedge ready_src);
+    valid_src <= 0;
     repeat(2) @(posedge clk);
-    ready_out <= 1;
-    @(posedge valid_out);
-    if(ready_out == 0)   ready_out <= 1;
+    ready_des <= 1;
+    @(posedge valid_des);
+    if(ready_des == 0)   ready_des <= 1;
     @(posedge clk);
-    ready_out <= 0;
+    ready_des <= 0;
     @(posedge clk);
 
 endtask
@@ -128,16 +128,16 @@ task drive_inputs(input logic signed [15:0] in1, input logic signed [15:0] in2);
     begin
         multiplier <= in1;
         multiplicant <= in2;
-        valid_in <= 1;
+        valid_src <= 1;
         @(posedge clk);
-        valid_in <= 0;
+        valid_src <= 0;
     end
 endtask
 
 // Task for monitoring outputs
 task monitor_outputs;
     begin
-        @(posedge valid_out);
+        @(posedge valid_des);
         @(posedge clk);
         exp = multiplier * multiplicant;
         if(exp != product)begin

@@ -3,12 +3,12 @@ module seq_multiplier
     input logic  rst, clk,
     input logic  [15:0] multiplier,
     input logic  [15:0] multiplicant,
-    input logic  valid_in,
-    output logic ready_in,
+    input logic  valid_src,
+    output logic ready_src,
 
     output logic [31:0] product,
-    output logic valid_out,
-    input logic ready_out
+    output logic valid_des,
+    input logic ready_des
 );
 
 
@@ -35,21 +35,21 @@ seq_multiplier_con CONTROLLER
 (
     .clk(clk),
     .rst(rst),
-    .valid_in(valid_in),
+    .valid_src(valid_src),
     .count_sh(count_sh),
     .last_bit(last_bit),
     .stop(stop),
     .b_val(b_val),
-    .ready_in(ready_in),
+    .ready_src(ready_src),
 
     .load_en(load_en),
     .shift_en(shift_en),
     .count_en(count_en),
     .m1_sel(m1_sel),
     .m2_sel(m2_sel),
-    .valid_out(valid_out),
+    .valid_des(valid_des),
     .pp_clear(pp_clear),
-    .ready_out(ready_out)
+    .ready_des(ready_des)
 );
 
 //reg of multiplier and multiplicant, 
@@ -107,11 +107,11 @@ end
 always_ff @(posedge clk or negedge rst) 
 begin
     if (!rst || pp_clear ) pp_out <= '0;
-    else if (valid_out)    pp_out <= pp_out;  
+    else if (valid_des)    pp_out <= pp_out;  
     else                   pp_out <= pp_in;    
 end
 
 always_comb
-    product = valid_out ? pp_out : '0 ;
+    product = valid_des ? pp_out : '0 ;
 
 endmodule
