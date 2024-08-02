@@ -72,7 +72,7 @@ assign shifted = {combined[31],combined[31:1]};
 assign count_comp = ( counter == 16 ) ? 1:0;
 
 
-always_comb begin
+always@(*) begin
     if (!rst)
         Product = 0;
     else if (!pro_en)

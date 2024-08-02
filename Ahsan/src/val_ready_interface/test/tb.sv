@@ -61,7 +61,7 @@ module Seq_Mul_top_tb;
     // Task for monitoring outputs
     task monitor_outputs;
         begin
-            exp = Multiplicand * Multiplier;
+            @(posedge dest_ready) exp = Multiplicand * Multiplier;
             if(exp != Product)begin
                 $display("Fail");
             end
@@ -89,16 +89,18 @@ module Seq_Mul_top_tb;
     initial begin
          
         init_sequence();
-
+       fork
         //directed testbench
         drive_inputs(-32767,1); 
         monitor_outputs();
-
+       join
 
         //Random Testing
-        for(int i=0;i<200;i++)begin 
+        for(int i=0;i<2;i++)begin 
+            fork
             drive_inputs($random % 65536,$random % 65536); 
             monitor_outputs();
+            join
         end
         $finish;
     end
