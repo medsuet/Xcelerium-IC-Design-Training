@@ -1,0 +1,5 @@
+Student ID: 15
+Name: Hira
+grade1 : 20.00
+grade1 : 2.00
+grade1 : 45.00
