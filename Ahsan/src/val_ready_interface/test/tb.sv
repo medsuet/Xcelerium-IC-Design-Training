@@ -56,6 +56,9 @@ module Seq_Mul_top_tb;
     // Task for monitoring outputs
     task monitor_outputs;
         begin
+            src_val = 1;
+            @(posedge clk);
+            src_val = 0;
             wait (dest_val == 1);
             exp = Multiplicand * Multiplier;
             @(posedge clk);

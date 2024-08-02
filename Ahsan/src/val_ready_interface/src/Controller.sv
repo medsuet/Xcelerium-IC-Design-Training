@@ -24,7 +24,6 @@ always @(*)
             S0 : begin
                 if (!src_val)begin
                     clear   = 1'b1;
-                src_ready   = 1'b1;
                 mux_sel_Mul = 1'b0;
               mux_sel_Shift = 2'bx;
                     n_state = S0;
@@ -38,8 +37,8 @@ always @(*)
               mux_sel_Shift = 2'bx;
                     n_state = S1;
                     pro_en  = 1'b1;
-                src_ready   = 1'b0;
-                end   
+                end
+                src_ready = 1'b1;   
             end
             S1 : begin
                 if ( count_comp == 1'b1)begin
@@ -68,6 +67,7 @@ always @(*)
                     2'b11 : mux_sel_Shift = 2'b11;
                     endcase
                 end
+                src_ready = 0;
                 
             end   
             S2 : begin
@@ -98,7 +98,11 @@ always @(*)
                     endcase
                 end
                 
-            end   
+            end 
+            default:
+            begin
+                n_state = S0;
+            end  
         endcase
     end
 
