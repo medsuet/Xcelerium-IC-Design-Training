@@ -61,7 +61,7 @@ module array_multiplier_controller_valready (
                 start_tx = 1'b1;
                 counted_15 = 1'b0;
                 dst_valid = 1'b0;
-                src_ready = 1'b0; 
+                src_ready = 1'b1; 
 
            end
            else begin
@@ -112,8 +112,8 @@ module array_multiplier_controller_valready (
             if (dst_ready) begin
                 start_tx = 1'b0;
                 counted_15 = 1'b0;
-                dst_valid = 1'b0;
-                src_ready = 1'b1; 
+                dst_valid = 1'b1;
+                src_ready = 1'b0; 
  
            end
            else begin
