@@ -27,21 +27,23 @@ always @(*)
             S0 : begin
                 if(rst) 
                 begin
-                    if (!src_val)begin
-                        clear   = 1'b1;
-                    mux_sel_Mul = 1'b0;
-                mux_sel_Shift = 2'bx;
-                        n_state = S0;
-                    dest_val    = 1'b0;
-                    pro_en     = 1'b0;
+                    if (!src_val)
+                    begin
+                        clear         = 1'b1;
+                        mux_sel_Mul   = 1'b0;
+                        mux_sel_Shift = 2'bx;
+                        n_state       = S0;
+                        dest_val      = 1'b0;
+                        pro_en        = 1'b0;
                     end
-                    else begin
-                        clear   = 1'b0;
-                    dest_val    = 1'b0;
-                    mux_sel_Mul = 1'b0;
-                mux_sel_Shift = 2'bx;
-                        n_state = S1;
-                        pro_en  = 1'b1;
+                    else 
+                    begin
+                        clear         = 1'b0;
+                        dest_val      = 1'b0;
+                        mux_sel_Mul   = 1'b0;
+                        mux_sel_Shift = 2'bx;
+                        n_state       = S1;
+                        pro_en        = 1'b1;
                     end
                     src_ready = 1'b1;   
                 end
@@ -51,33 +53,70 @@ always @(*)
             S1 : begin
                 if(rst)
                 begin
-                    if ( count_comp == 1'b1)begin
-                        clear   = 1'b1;
-                        pro_en  = 1'b1;
-                        dest_val= 1'b1;
-                    mux_sel_Mul = 1'b0;
-                        n_state = S2;
-                        case (Qo_Q1)
-                        2'b01 : mux_sel_Shift = 2'b01 ;
-                        2'b10 : mux_sel_Shift = 2'b10;
-                        2'b00 : mux_sel_Shift = 2'b00;
-                        2'b11 : mux_sel_Shift = 2'b11;
-                        endcase
+                    if (dest_ready ==1'b0)
+                    begin
+                        if ( count_comp == 1'b1)
+                        begin
+                            clear       = 1'b1;
+                            pro_en      = 1'b1;
+                            dest_val    = 1'b1;
+                            mux_sel_Mul = 1'b0;
+                            n_state     = S2;
+                            case (Qo_Q1)
+                            2'b01 : mux_sel_Shift = 2'b01 ;
+                            2'b10 : mux_sel_Shift = 2'b10;
+                            2'b00 : mux_sel_Shift = 2'b00;
+                            2'b11 : mux_sel_Shift = 2'b11;
+                            endcase
+                        end
+                        else 
+                        begin
+                            clear       = 1'b0;
+                            dest_val    = 1'b0;
+                            pro_en      = 1'b1;
+                            mux_sel_Mul = 1'b1;
+                            n_state     = S1;
+                            case (Qo_Q1)
+                            2'b01 : mux_sel_Shift = 2'b01 ;
+                            2'b10 : mux_sel_Shift = 2'b10;
+                            2'b00 : mux_sel_Shift = 2'b00;
+                            2'b11 : mux_sel_Shift = 2'b11;
+                            endcase
+                        end
+                        src_ready = 0;
                     end
-                    else begin
-                        clear   = 1'b0;
-                        dest_val= 1'b0;
-                        pro_en  = 1'b1;
-                    mux_sel_Mul = 1'b1;
-                        n_state = S1;
-                        case (Qo_Q1)
-                        2'b01 : mux_sel_Shift = 2'b01 ;
-                        2'b10 : mux_sel_Shift = 2'b10;
-                        2'b00 : mux_sel_Shift = 2'b00;
-                        2'b11 : mux_sel_Shift = 2'b11;
-                        endcase
+                    else
+                    begin
+                        if (count_comp == 1'b1)
+                        begin
+                            clear       = 1'b1;
+                            pro_en      = 1'b1;
+                            dest_val    = 1'b1;
+                            mux_sel_Mul = 1'b0;
+                            n_state     = S0;
+                            case (Qo_Q1)
+                            2'b01 : mux_sel_Shift = 2'b01 ;
+                            2'b10 : mux_sel_Shift = 2'b10;
+                            2'b00 : mux_sel_Shift = 2'b00;
+                            2'b11 : mux_sel_Shift = 2'b11;
+                            endcase
+                        end
+                        else 
+                        begin
+                            clear       = 1'b0;
+                            dest_val    = 1'b0;
+                            pro_en      = 1'b1;
+                            mux_sel_Mul = 1'b1;
+                            n_state     = S1;
+                            case (Qo_Q1)
+                            2'b01 : mux_sel_Shift = 2'b01 ;
+                            2'b10 : mux_sel_Shift = 2'b10;
+                            2'b00 : mux_sel_Shift = 2'b00;
+                            2'b11 : mux_sel_Shift = 2'b11;
+                            endcase
+                        end
+                        src_ready = 0;
                     end
-                    src_ready = 0;
                 end
                 else
                     n_state = S3;   
@@ -85,10 +124,10 @@ always @(*)
             S2 : begin
                 if(rst)
                 begin
-                    if ( dest_ready == 1'b1)begin
+                    if ( dest_ready == 1'b1)
+                    begin
                         clear   = 1'b1;
                         pro_en  = 1'b0;
-                    // dest_val= 1'b0;
                     mux_sel_Mul = 1'b0;
                         n_state = S0;
                 case (Qo_Q1)
@@ -100,7 +139,6 @@ always @(*)
                     end
                     else begin
                         clear   = 1'b1;
-                    //  dest_val= 1'b1;
                         pro_en  = 1'b0;
                     mux_sel_Mul = 1'b0;
                         n_state = S2;
@@ -111,15 +149,11 @@ always @(*)
                         2'b11 : mux_sel_Shift = 2'b11;
                         endcase
                     end
-                    dest_val = 1;
-                    
+                    dest_val = 1;   
                 end
                 else
                    n_state = S3;
             end 
         endcase
     end
-
-
-
 endmodule
