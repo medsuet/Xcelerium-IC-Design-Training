@@ -50,21 +50,19 @@ module Seq_Mul_top_tb;
             src_val = 1;
             @(posedge clk);
             src_val = 0;
+            wait (dest_val == 1);
+            @(posedge clk);
+            dest_ready = 1;
+            @(posedge clk);
+            dest_ready = 0;
         end
     endtask
 
     // Task for monitoring outputs
     task monitor_outputs;
         begin
-            src_val = 1;
-            @(posedge clk);
-            src_val = 0;
-            wait (dest_val == 1);
             exp = Multiplicand * Multiplier;
-            @(posedge clk);
-            dest_ready = 1;
-            @(posedge clk);
-            dest_ready = 0;
+            wait (dest_val == 1);
             if(exp != Product)begin
                 $display("Fail");
         //      $display("A = %0h, B = %0h, P = %0h,E= %0h", Multiplicand, Multiplier, Product,exp);
@@ -83,6 +81,7 @@ module Seq_Mul_top_tb;
         Multiplicand = 0;
         Multiplier = 0;
         dest_ready =0;
+        exp =0;
         rst = 0;
         src_val = 0;
         @(posedge clk);
