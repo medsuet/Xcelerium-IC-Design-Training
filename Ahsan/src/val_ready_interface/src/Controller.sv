@@ -4,14 +4,14 @@ input logic [1:0] Qo_Q1;
 output logic dest_val,src_ready,mux_sel_Mul,clear,pro_en;
 output logic [1:0] mux_sel_Shift;
 
-parameter S0 = 2'b00, S1 = 2'b01, S2 = 2'b10,S3 = 2'b11;
+parameter S0 = 2'b00, S1 = 2'b01, S2 = 2'b10;
 logic [1:0] state,n_state;
 
 always @(posedge clk or negedge rst) 
     begin
         if (!rst) 
         begin
-            state <= S3;
+            state <= S0;
         end 
         else 
         begin
@@ -21,13 +21,8 @@ always @(posedge clk or negedge rst)
 always @(*) 
     begin
         case (state) 
-            S3 : begin
-                n_state = S0;
-            end
             S0 : begin
-                if(rst) 
-                begin
-                    if (!src_val)
+                if (!src_val)
                     begin
                         clear         = 1'b1;
                         mux_sel_Mul   = 1'b0;
@@ -46,13 +41,8 @@ always @(*)
                         pro_en        = 1'b1;
                     end
                     src_ready = 1'b1;   
-                end
-                else
-                    n_state = S3;
             end
             S1 : begin
-                if(rst)
-                begin
                     if (dest_ready ==1'b0)
                     begin
                         if ( count_comp == 1'b1)
@@ -116,14 +106,9 @@ always @(*)
                             endcase
                         end
                         src_ready = 0;
-                    end
-                end
-                else
-                    n_state = S3;   
+                    end  
             end   
             S2 : begin
-                if(rst)
-                begin
                     if ( dest_ready == 1'b1)
                     begin
                         clear   = 1'b1;
@@ -150,9 +135,6 @@ always @(*)
                         endcase
                     end
                     dest_val = 1;   
-                end
-                else
-                   n_state = S3;
             end 
         endcase
     end

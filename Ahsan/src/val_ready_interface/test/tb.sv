@@ -50,7 +50,7 @@ module Seq_Mul_top_tb;
             src_val = 1;
             @(posedge clk);
             src_val = 0;
-            wait (dest_val == 1);
+           while (!dest_val) @(posedge clk);
             @(posedge clk);
             dest_ready = 1;
             @(posedge clk);
@@ -62,22 +62,18 @@ module Seq_Mul_top_tb;
     task monitor_outputs;
         begin
             exp = Multiplicand * Multiplier;
-            wait (dest_val == 1);
             if(exp != Product)begin
                 $display("Fail");
-        //      $display("A = %0h, B = %0h, P = %0h,E= %0h", Multiplicand, Multiplier, Product,exp);
             end
             else
             begin
                 $display("pass");
-        //     $display("A = %0h, B = %0h, P = %0h,E= %0h", Multiplicand, Multiplier, Product,exp);
             end
         end
     endtask
 
-    // Stimulus process
-    initial begin
-        // Initialize Inputs
+    task init_sequence;
+        begin
         Multiplicand = 0;
         Multiplier = 0;
         dest_ready =0;
@@ -85,17 +81,24 @@ module Seq_Mul_top_tb;
         rst = 0;
         src_val = 0;
         @(posedge clk);
-        rst = 1;
+        rst = 1;  
+        end
+    endtask
+
+
+    initial begin
+         
+        init_sequence();
+
+        //directed testbench
+        drive_inputs(-32767,1); 
+        monitor_outputs();
+
+
+        //Random Testing
         for(int i=0;i<200;i++)begin 
-            //Non Random testing
-            drive_inputs(0+i,10+i); 
-            monitor_outputs();
-            @(posedge clk);
-            //Random Testing
             drive_inputs($random % 65536,$random % 65536); 
             monitor_outputs();
-            @(posedge clk);
-
         end
         $finish;
     end
