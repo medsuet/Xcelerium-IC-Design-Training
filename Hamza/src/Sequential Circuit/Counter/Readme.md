@@ -8,6 +8,12 @@ The `counter` module is a SystemVerilog design implementing a 4-bit counter with
 
 For a visual representation of the `counter` module’s behavior, refer to the waveform diagrams located in the `docs` folder. These diagrams illustrate the signal transitions and the internal workings of the module during simulation.
 
+## Diagrams
+
+![Val Ready Protocol Diagram](docs/Waveform.png)  
+*Figure 1: Waveform Diagram*
+
+
 ### Waveform Files
 
 - **Location:** `docs/`

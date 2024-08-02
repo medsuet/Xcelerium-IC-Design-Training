@@ -4,6 +4,12 @@
 
 The `sequential_adder` module is a SystemVerilog implementation of a simple sequential adder. This module sequentially adds 1 to a 4-bit input number by checking each bit, processing carries if necessary, and providing the result through an output signal.
 
+## Diagrams
+
+![Val Ready Protocol Diagram](docs/STG.drawio.png)  
+*Figure 1: STG Diagram*
+
+
 ## Module Details
 
 - **Module Name:** `sequential_adder`

@@ -8,6 +8,12 @@ The `flip_flop_chain` module is a SystemVerilog design that implements a chain o
 
 For a visual representation of the `flip_flop_chain` module’s behavior, refer to the waveform diagrams located in the `docs` folder. These diagrams illustrate the signal transitions and the internal workings of the flip-flop chain during simulation.
 
+## Diagrams
+
+![Val Ready Protocol Diagram](docs/Waveform.png)  
+*Figure 1: Waveform Diagram*
+
+
 ### Waveform Files
 
 - **Location:** `docs/`

@@ -58,19 +58,18 @@ module Multiplier_tb;
     // Task for monitoring outputs
     task monitor_outputs;
         begin
+            
             dest_ready = 1;
-            @(posedge clk);
-            dest_ready = 0;
-            wait(dest_valid); 
+            
+            while (!dest_valid) @(posedge clk);
+
             exp = Multiplicand * Multiplier;
             if (exp != Product) begin
                 $display("Fail: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
             end else begin
                 $display("Pass: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
             end
-            repeat(6) @(posedge clk);
-            dest_ready = 1;
-            repeat(4)@(posedge clk);
+            
             dest_ready = 0;
         end
     endtask
@@ -79,7 +78,7 @@ module Multiplier_tb;
     task reset_sequence;
         begin
             rst = 0;
-            @(posedge clk);
+            repeat(10) @(posedge clk);
             rst = 1;
         end
     endtask
@@ -96,36 +95,42 @@ module Multiplier_tb;
         
         reset_sequence();
 
-        // Directive Tests
-        drive_inputs(1, 22115);
-        monitor_outputs();
-
-        drive_inputs(999, 222);
-        monitor_outputs();
-        drive_inputs(1, 222);
-        monitor_outputs();
-
-        drive_inputs(0, 12345);   
-        monitor_outputs();
-
-        drive_inputs(12345, -1); 
-        monitor_outputs();
-        
-        drive_inputs(-1, 1); 
-        monitor_outputs();
-
-        // Random testing loop
-        for (int i = 0; i < 20000; i++) begin
-                    
-            // Generate random numbers
-            Multiplicand = $random % 65536; 
-            Multiplier = $random % 65536;  
-
-            // Drive random inputs and check output
-            drive_inputs(Multiplicand, Multiplier);
+        fork
+            begin
+            // Directed Tests
+            drive_inputs(1, 22115);
             monitor_outputs();
 
-        end
+            drive_inputs(999, 222);
+            monitor_outputs();
+
+            drive_inputs(1, 222);
+            monitor_outputs();
+
+            drive_inputs(0, 12345);
+            monitor_outputs();
+
+            drive_inputs(12345, -1);
+            monitor_outputs();
+
+            drive_inputs(-1, 1);
+            monitor_outputs();
+
+            // Random testing loop
+            for (int i = 0; i < 20000; i++) begin
+
+                // Generate random numbers
+                Multiplicand = $random % 65536; 
+                Multiplier = $random % 65536;  
+
+                // Drive random inputs and check output
+                drive_inputs(Multiplicand, Multiplier);
+                monitor_outputs();
+
+            end
+            end
+        join
+
 
         $finish;
     end

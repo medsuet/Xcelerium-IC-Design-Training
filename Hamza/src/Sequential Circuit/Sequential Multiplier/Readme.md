@@ -4,6 +4,12 @@
 
 The Sequential Multiplier is a hardware implementation of Booth's multiplication algorithm, which is an efficient way to perform binary multiplication. This project includes Verilog source files for the Booth Multiplier, testbenches, and documentation.
 
+## Diagrams
+
+![Val Ready Protocol Diagram](docs/Datapath-And-Controller.png)  
+*Figure 1: Protocol Diagram*
+
+
 ## Directory Structure
 
 - `docs/`: Contains documentation related to the Booth Multiplier project.

@@ -61,15 +61,23 @@ module Multiplier_tb;
         end
     endtask
 
+    // Task for reset sequence
+    task reset_sequence;
+        begin
+            rst = 0;
+            repeat(10) @(posedge clk);
+            rst = 1;
+        end
+    endtask
+
     // Directed test cases using fork-join for edge cases
     initial begin
         // Initialize Inputs
         Multiplicand = 0;
         Multiplier = 0;
-        rst = 0;
         start = 0;
-        @(posedge clk);
-        rst = 1;
+        
+        reset_sequence();
 
         // Fork-join for parallel test execution
         fork

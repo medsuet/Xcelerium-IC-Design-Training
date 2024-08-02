@@ -10,8 +10,7 @@ module Controller(
 typedef enum logic[1:0]{
     START = 2'b00,  
     PROCESS  = 2'b01,  
-    WAIT = 2'b10,
-    DONE = 2'b11
+    WAIT = 2'b10
 } state_t;
 
 state_t state, next_state;
@@ -55,13 +54,18 @@ always @(*)
                     data_sel = 2'b0;
                     src_ready = 1'b0;
                     dest_valid = 1'b1;
-                    next_state = WAIT;
                     case (in)
                         2'b01 : data_sel = 2'b01;
                         2'b10 : data_sel = 2'b10;
                         2'b00 : data_sel = 2'b00;
                         2'b11 : data_sel = 2'b11;
                     endcase
+                    if (dest_ready) begin
+                        next_state = START;
+                    end
+                    else begin
+                        next_state = WAIT;
+                    end
                 end
                 else begin
                     clear   = 1'b0;
@@ -87,7 +91,7 @@ always @(*)
                     dest_valid = 1'b1;
                 end
                 else begin
-                    next_state = DONE;
+                    next_state = START;
                     clear   = 1'b1;
                     QR_sel = 1'b0;
                     data_sel = 2'b0;
@@ -95,13 +99,8 @@ always @(*)
                     dest_valid = 1'b1; 
                 end
             end
-            DONE: begin
-                    next_state = START;
-                    clear   = 1'b1;
-                    QR_sel = 1'b0;
-                    data_sel = 2'b0;
-                    src_ready = 1'b0;
-                    dest_valid = 1'b0;
+            default: begin
+                next_state = START;
             end
         endcase
     end
