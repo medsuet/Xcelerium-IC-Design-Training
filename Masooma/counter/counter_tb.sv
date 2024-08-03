@@ -13,11 +13,13 @@ counter UUT(
 );
 always #5 clk = ~clk;
 initial begin
+    $dumpfile("counter.vcd");
+    $dumpvars(0,counter_tb);
     reset=0;
 #10;
     reset=1;
 repeat (40) @(posedge clk);
-$stop;
+$finish;
 end
 endmodule
 

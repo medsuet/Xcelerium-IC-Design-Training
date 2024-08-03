@@ -15,6 +15,8 @@ module tb_adder;
     always #5 clk = ~clk; 
 
     initial begin
+        $dumpfile("adder.vcd");
+        $dumpvars(0,adder_tb);
         reset = 0;
         repeat (10) @(posedge clk);
         reset = 1;
@@ -28,6 +30,6 @@ module tb_adder;
         @(posedge clk); b = 1;
         @(posedge clk); b = 1;
         repeat(10)@(posedge clk);
-        $stop;
+        $finish;
     end
 endmodule
