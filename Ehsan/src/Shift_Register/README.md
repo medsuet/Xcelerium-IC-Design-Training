@@ -1,12 +1,18 @@
+# Shift register
 
-## Installation
+## Diagram
+![diagram](./docs/shift_register.png)
 
+## wave
+![diagram](./docs/wave.png)
+
+# Installation
 Install iverilog and gtkwave
 ```bash
 make install
 ```
 
-## Run simulation
+# Run simulation
 To compile design
 ```bash
 make compile

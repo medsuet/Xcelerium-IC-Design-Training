@@ -1,4 +1,4 @@
-## Valid Ready interface sequential multiplier
+# Valid Ready interface sequential multiplier
 
 ## State machine
 ![state_machine](./docs/state_machine.jpg)
@@ -9,14 +9,14 @@
 ## Pinout diagram
 ![state_machine](./docs/pinout_diagram.jpg)
 
-## Installation
+# Installation
 
 Install iverilog and gtkwave
 ```bash
 make install
 ```
 
-## Run simulation
+# Run simulation
 To compile design
 ```bash
 make compile

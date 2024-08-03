@@ -1,21 +1,20 @@
+# Posedge detector
 
-## Posedge detector
-
-# State machine
+## State machine
 ![state_machine](./docs/state_machine.png)
 
-# Wave
+## Wave
 ![state_machine](./docs/wave.png)
 
 
-## Installation
+# Installation
 
 Install iverilog and gtkwave
 ```bash
 make install
 ```
 
-## Run simulation
+# Run simulation
 To compile design
 ```bash
 make compile
