@@ -1,7 +1,6 @@
 
-## Signed multiplier
-![multiplier](/docs/signed_multiplier.jpg) 
-
+## 16bit x 16bit Combinational signed multiplier
+![multiplier](./docs/signed_multiplier.jpg) 
 
 ## Installation
 

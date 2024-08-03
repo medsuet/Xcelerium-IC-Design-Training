@@ -1,5 +1,5 @@
 
-## State machine
+## 4bit Adder state machine
 ![state_machine](./docs/adder_state_machine.jpg)
 
 

@@ -1,3 +1,13 @@
+## Valid Ready interface sequential multiplier
+
+## State machine
+![state_machine](./docs/state_machine.jpg)
+
+## Data path and controller
+![state_machine](./docs/data_path_and_controller.jpg)
+
+## Pinout diagram
+![state_machine](./docs/pinout_diagram.jpg)
 
 ## Installation
 
