@@ -1,7 +1,7 @@
 
 # 4bit Adder 
 
-##state machine
+## state machine
 ![state_machine](./docs/adder_state_machine.jpg)
 
 # Installation
