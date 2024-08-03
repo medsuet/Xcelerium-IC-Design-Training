@@ -32,6 +32,21 @@ The Top Module integrates the Control Unit and Data Path, coordinating the multi
   <img src="docs/images/top_module.png" alt="Top-Level Module Diagram" />
 </p>
 
+### AXI Interface
+
+The AXI interface facilitates communication between the Top Module and external components. It follows the VAL-READY protocol to synchronize data transfers:
+
+- **src_valid**: Indicates that the source data (A and B) is valid and ready to be processed.
+- **src_ready**: Indicates that the source is ready to accept new input data.
+- **dst_ready**: Indicates that the destination is ready to receive the computed product.
+- **dst_valid**: Indicates that the product is available and valid for reading.
+
+#### AXI Interface Diagram
+
+<p align="center">
+  <img src="docs/images/AXI_interface.png" alt="AXI Interface Diagram" />
+</p>
+
 ### Control Unit
 
 The Control Unit handles the state transitions between different stages of the multiplication process, including initialization, calculation, and completion.
@@ -83,21 +98,6 @@ The Data Path uses registers to store the multiplicand, multiplier, and intermed
 
 <p align="center">
   <img src="docs/images/datapath.png" alt="Data Path Diagram" />
-</p>
-
-### AXI Interface
-
-The AXI interface facilitates communication between the Top Module and external components. It follows the VAL-READY protocol to synchronize data transfers:
-
-- **src_valid**: Indicates that the source data (A and B) is valid and ready to be processed.
-- **src_ready**: Indicates that the source is ready to accept new input data.
-- **dst_ready**: Indicates that the destination is ready to receive the computed product.
-- **dst_valid**: Indicates that the product is available and valid for reading.
-
-#### AXI Interface Diagram
-
-<p align="center">
-  <img src="docs/images/AXI_interface.png" alt="AXI Interface Diagram" />
 </p>
 
 #### Testbench
