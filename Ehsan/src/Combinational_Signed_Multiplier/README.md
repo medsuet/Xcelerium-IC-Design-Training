@@ -1,4 +1,8 @@
 
+## Signed multiplier
+![multiplier](/docs/signed_multiplier.jpg) 
+
+
 ## Installation
 
 Install iverilog and gtkwave

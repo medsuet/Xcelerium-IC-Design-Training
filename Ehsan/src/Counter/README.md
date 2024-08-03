@@ -1,6 +1,12 @@
 
-## Installation
+## Data path
+![data_path](/docs/counter.png) 
 
+## Wave
+![wave](/docs/wave.png)
+
+
+## Installation
 Install iverilog and gtkwave
 ```bash
 make install

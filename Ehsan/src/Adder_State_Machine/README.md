@@ -1,6 +1,6 @@
 
 ## State machine
-(./docs/adder_state_machine.jpg)
+![state_machine](./docs/adder_state_machine.jpg)
 
 
 ## Installation
