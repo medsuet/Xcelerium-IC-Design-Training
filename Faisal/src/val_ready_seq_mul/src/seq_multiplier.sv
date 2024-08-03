@@ -10,12 +10,12 @@ logic clear; // 1 bit for clearing
 logic count_comp; // check the counter reach its limit 16 or not
 logic [1:0] in;       // 2 bits for Qn and Qn+1 (00-->notthing,01--->add,10--->sub,11--->nothing)
 logic [1:0] data_sel; // 4x1_mux for data selection 
-logic en_pro;
 
-Datapath datapath_ins(.Multiplicand(Multiplicand),
+
+Datapath datapath_ins(
+            .Multiplicand(Multiplicand),
             .Multiplier(Multiplier),
             .clk(clk),
-            .en_pro(en_pro),
             .rst(rst),
             .Product(Product),
             .in(in),
@@ -30,7 +30,6 @@ Controller controller_ins(.clk(clk),
                 .src_valid(src_valid),
                 .dest_valid(dest_valid),
                 .src_ready(src_ready),
-                .en_pro(en_pro),
                 .clear(clear),
                 .count_comp(count_comp),
                 .in(in),

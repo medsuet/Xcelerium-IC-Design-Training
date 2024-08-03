@@ -1,165 +1,164 @@
-module sequential_multiplier_tb;
+module tb_seq_multiplier;
 
-    // Inputs
-    logic signed [15:0] multiplicand;
-    logic signed [15:0] multiplier;
+// parameter define
+parameter CYCLE = 10; 
+parameter WIDTH = 16; // width of multiplicand and multiplier 
+parameter MAXNUM = 65536; // max number of 16 bit
+parameter NUMTESTS = 500; // number of random tests
+
+
+    // Inputs define
+    logic signed [WIDTH-1:0] Multiplicand;
+    logic signed [WIDTH-1:0] Multiplier;
     logic clk;
-    logic reset;
-    logic src_valid;
-    logic dest_ready;
+    logic rst;
+
     logic src_ready;
     logic dest_valid;
+    logic src_valid;
+    logic dest_ready;
 
+  // for check how many tests are passed 
     logic [31:0] count_tests;
     logic [31:0] failed;
     logic [31:0] passed;
+
     // Reference model output
-    logic signed [31:0] expected;
+    logic signed [(2*WIDTH)-1:0] expected;
 
     // Outputs
-    logic signed [31:0] product;
+    logic signed [(2*WIDTH)-1:0] Product;
 
-    // Instantiation
-   seq_multiplier uut (
-        .Multiplicand(multiplicand),
-        .Multiplier(multiplier),
+
+    // Instantiate the Unit Under Test (UUT)
+    seq_multiplier uut (
+        .Multiplicand(Multiplicand),
+        .Multiplier(Multiplier),
         .clk(clk),
-        .rst(reset),
+        .rst(rst),
         .src_valid(src_valid),
         .dest_ready(dest_ready),
-        .src_ready(src_ready),
         .dest_valid(dest_valid),
-        .Product(product)
+        .src_ready(src_ready),
+        .Product(Product)
     );
 
-    // Clock generation
+   // Clock generation
     initial begin
-        clk = #1 1;
-        forever #5 clk = ~clk; // 10 ns period clock
+        clk = 1;
+        forever #(CYCLE/2) clk = ~clk; // 10 ns period clock
     end
-
 
     // Dump file for waveform
     initial begin
         $dumpfile("seq_multiplier.vcd");
-        $dumpvars(0, sequential_multiplier_tb);
+        $dumpvars(0, tb_seq_multiplier);
     end
 
-    task init_sequence; 
+    // Task for initialization
+    task init_sequence;
         begin
-            // Initialize Inputs
-            multiplicand = #1 0;
-            multiplier =#1 0;
-            src_valid =#1 0;
-            dest_ready =#1 0;
-        end
-    endtask
+            Multiplicand = 0;
+            Multiplier = 0;
+            src_valid = 0;
+            expected = 0;
+            count_tests = 0;
+            passed = 0;
+            failed = 0;
+            dest_ready = 0;
+            rst = 1;
+            end     
+    endtask 
 
-    task reset_sequence; 
+    // Task for reset sequence
+    task reset_sequence;
         begin
-            // first reset apply acychronus reset
-            reset = #1 0;
-            // start = #1 0;
-            // @(posedge clk);
-            #10 reset = #1 1;
+            rst = 0;
+            repeat(10) @(posedge clk);
+            rst = 1;
         end
     endtask
 
     // Task for driver
-    task driver(input logic signed [15:0] input1, input logic signed [15:0] input2);
+    task drive_inputs(input logic signed [WIDTH-1:0] input1, input logic signed [WIDTH-1:0] input2);
         begin
-            multiplicand = input1;
-            multiplier = input2;
-            // // start = 1;
-            // @(posedge clk);
-            // start = 0;
+            Multiplicand = input1;
+            Multiplier = input2;
+            src_valid = 1;
+            @(posedge clk);
+            src_valid = 0;
         end
     endtask
 
     // Task for monitor
-    task monitor;
-        begin
-            wait (dest_valid == 1);
-            repeat(1)@(posedge clk);
-            dest_ready = #1 1'b1;
-            @(posedge clk);
-            dest_ready = 1'b0;
-            expected = #1 multiplicand * multiplier;
-            @(posedge clk);
-            count_tests++;
-            if (expected != product) begin
-                failed++;
-                $display("Test %0d failed: M = %0d, Q = %0d, product = %0d, Expected = %0d", count_tests ,multiplicand, multiplier, product, expected);
-            end else begin
-                passed++;
-                $display("Test %0d passed: M = %0d, Q = %0d, product = %0d, Expected = %0d", count_tests,multiplicand, multiplier, product, expected);
+    task monitor_outputs;
+        begin            
+            dest_ready = 1;
+            
+            while (!dest_valid) @(posedge clk);
+            count_tests ++;
+            expected = Multiplicand * Multiplier;
+            
+            if (expected != Product) 
+            begin
+                failed ++;
+                $display("Test:%0d Fail: A = %0d, B = %0d, P = %0d, E = %0d",count_tests, Multiplicand, Multiplier, Product, expected);
+            end 
+            else 
+            begin
+                passed ++;
+                $display("Test:%0d Pass: A = %0d, B = %0d, P = %0d, E = %0d",count_tests, Multiplicand, Multiplier, Product, expected);
             end
+            
+            dest_ready = 0;
         end
     endtask
 
-    // Directed test cases using fork-join for edge cases
+    // Stimulus process
     initial begin
+        // Initialize Inputs signals
         init_sequence();
+        
+        // reset apply
         reset_sequence();
-        #10 src_valid = #1 1'b1;
-        count_tests = #1 32'b0;
-        failed =#1 32'b0;
-        passed =#1 32'b0;
-        // Fork-join for parallel test execution
+
         fork
             begin
-                // directed tests
-                driver(12345,-1);   
-                monitor();
+            // Directed Tests
+            drive_inputs(1, 22115);
+            monitor_outputs();
 
-                @(posedge clk);
-                src_valid = #1 1'b1;
+            drive_inputs(999, 222);
+            monitor_outputs();
 
-                driver(12345, 0);   
-                monitor();
+            drive_inputs(1, 222);
+            monitor_outputs();
 
-                @(posedge clk);
-                src_valid = #1 1'b1;
+            drive_inputs(0, 12345);
+            monitor_outputs();
 
-                driver(0, 0);   
-                monitor();
+            drive_inputs(12345, -1);
+            monitor_outputs();
 
-                @(posedge clk);
-                src_valid = #1 1'b1;
+            drive_inputs(-1, 1);
+            monitor_outputs();
 
-                driver(12345, -1); 
-                monitor();
+            // Random testing 
+            for (int i = 0; i < NUMTESTS; i++) begin
 
-                @(posedge clk);
-                src_valid = #1 1'b1;
-                
-                driver(-1, 1); 
-                monitor();
+                // Generate random numbers
+                Multiplicand = $random % MAXNUM; 
+                Multiplier = $random % MAXNUM;  
 
-                @(posedge clk);
-                src_valid = #1 1'b1;
-                
-                // Random testing loop
-                for (int i = 0; i < 200; i++) begin
-                    logic signed [15:0] rand_multiplicand, rand_multiplier;
-                    
-                    // Generate random numbers
-                    rand_multiplicand =#1 $random % 65536; 
-                    rand_multiplier =#1 $random % 65536;  
-                    // @(posedge clk);
-
-                    // Drive random inputs and check output
-                    driver(rand_multiplicand, rand_multiplier);
-                    monitor();  
-                    @(posedge clk); // Synchronize with the clock
-                    src_valid = #1 1'b1;
-                end
-            $display("%0d Tests failed", failed);
-            $display("%0d Tests passed", passed); 
+                // Drive random inputs and check output
+                drive_inputs(Multiplicand, Multiplier);
+                monitor_outputs();
             end
-
+            $display("%0d Tests failed", failed);
+            $display("%0d Tests passed", passed);
+            end     
         join
-
         $finish;
     end
+
 endmodule

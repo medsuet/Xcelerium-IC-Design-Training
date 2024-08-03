@@ -1,6 +1,6 @@
 module Datapath(
     input  logic [15:0] Multiplicand, Multiplier,
-    input  logic clk, rst, QR_sel, clear,en_pro,
+    input  logic clk, rst, QR_sel, clear,
     input  logic [1:0] data_sel, // 4x1_mux for data selection 
     output logic [31:0] Product,
     output logic [1:0] in, // 2 bits for Qn and Qn+1 (00-->notthing,01--->add,10--->sub,11--->nothing)
@@ -95,15 +95,15 @@ end
 
 // Output signal for counting
 assign count_comp = ( count == 16 ) ? 1:0; // check count complete to 16 or not
-// assign Product = shifted_out; // store the shifted value of 32 bit in product
-always_ff @( posedge clk or negedge rst ) begin : blockName
-    if (!rst) begin
-        Product <=#1 0;
-    end
-    else if(en_pro) begin
-        Product <= #1 shifted_out;
-    end
-end
+assign Product = shifted_out; // store the shifted value of 32 bit in product
+// always_ff @( posedge clk or negedge rst ) begin : blockName
+//     if (!rst) begin
+//         Product <=#1 0;
+//     end
+//     else if(en_pro) begin
+//         Product <= #1 shifted_out;
+//     end
+// end
 
 
 endmodule
