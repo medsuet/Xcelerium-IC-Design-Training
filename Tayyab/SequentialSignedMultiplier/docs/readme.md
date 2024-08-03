@@ -13,7 +13,7 @@ Inputs: clk             : clock signal
         num_a, num_b    : <NUMBITS> wide multiplier and multiplicand.
                         Must be stable for 1 clock cycle after start signal.
         valid_scr       : valid signal from source signaling availability of inputs (num_a, num_b)
-        ready_dst       : ready signal from detination signaling that output (porduct) has been processed
+        ready_dst       : ready signal from detination signaling that output (product) has been processed
 
 Outputs: product         : <2*NUMBITS> wide result of num_a * num_b
          valid_dst       : valid signal to destination signaling  availability of output (product)

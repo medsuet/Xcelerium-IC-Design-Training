@@ -26,7 +26,7 @@ transcript : compile
 	@$(SIMULATOR) $(VSIM_FLAGS) $(basename $(TB)) $(VSIM_RUN_FLAGS) -g NUMTESTS=$(NUMTESTS)
 
 waveform.vcd : compile
-	@$(SIMULATOR) $(VSIM_FLAGS) $(basename $(TB)) $(VSIM_WAVE_FLAGS) $(VSIM_RUN_FLAGS) $(VSIM_PARAMS) -g NUMTESTS=0
+	@$(SIMULATOR) $(VSIM_FLAGS) $(basename $(TB)) $(VSIM_WAVE_FLAGS) $(VSIM_RUN_FLAGS) $(VSIM_PARAMS) -g NUMTESTS=1
 
 clean:
 	@rm -f -r work transcript
