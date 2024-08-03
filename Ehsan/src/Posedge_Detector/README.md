@@ -1,4 +1,13 @@
 
+## Posedge detector
+
+# State machine
+![state_machine](./docs/state_machine.png)
+
+# Wave
+![state_machine](./docs/wave.png)
+
+
 ## Installation
 
 Install iverilog and gtkwave

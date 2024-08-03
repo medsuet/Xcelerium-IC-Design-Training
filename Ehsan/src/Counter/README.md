@@ -1,9 +1,9 @@
 
 ## Data path
-![data_path](/docs/counter.png) 
+![data_path](./docs/counter.png) 
 
 ## Wave
-![wave](/docs/wave.png)
+![wave](./docs/wave.png)
 
 
 ## Installation
