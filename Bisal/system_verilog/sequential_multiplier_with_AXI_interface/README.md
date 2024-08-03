@@ -179,9 +179,10 @@ Run the project using commands given below:
   
 ### Expected Waveform
 
+![Example Waveform](docs/images/waveformexample.png)
+
 The example waveform illustrates the data flow for a 16-bit signed sequential multiplier with a valid/ready interface. Initially, the reset (rst) signal is asserted then deasserted after one clock cycle, allowing the system to operate. The source valid (src_valid) signal indicates when input data is valid. When src_ready is high, the system reads input data values, as shown by the 16-bit input signals (input1 and input2). The product calculation begins and the output is available once dst_valid and dst_ready is asserted.If dst_ready is zero dst_valid stays asserted as shown in waveform.The product is shown in the 32-bit product signal.After one execution the src_ready is set high waiting for src_valid to be high to take new inputs.
 
-![Example Waveform](docs/images/waveformexample.png)
 
 
 
