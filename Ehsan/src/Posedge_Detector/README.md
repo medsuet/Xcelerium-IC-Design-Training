@@ -1,10 +1,9 @@
 
 ## Installation
 
-Install iverilog
+Install iverilog and gtkwave
 ```bash
-sudo apt install iverilog
-sudo apt install gtkwave
+make install
 ```
 
 ## Run simulation

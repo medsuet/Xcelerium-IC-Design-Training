@@ -8,6 +8,11 @@ VVP = vvp
 GTKWAVE = gtkwave
 
 all: compile simulate
+
+install:
+	sudo apt install $(IVERILOG)
+	sudo apt install $(GTKWAVE)
+
 compile:
 	$(IVERILOG) -o $(OUTPUT_FILE) -g2012 $(VERILOG_FILES)
 simulate:
