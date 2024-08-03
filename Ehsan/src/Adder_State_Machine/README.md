@@ -1,6 +1,8 @@
 
-## Installation
+![state machine](./docs/adder_state_machine.jpg)
 
+
+## Installation
 Install iverilog and gtkwave
 ```bash
 make install
