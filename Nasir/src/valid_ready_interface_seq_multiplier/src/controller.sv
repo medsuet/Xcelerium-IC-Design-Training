@@ -1,8 +1,8 @@
 module controller(
     input logic clk,reset,count16,
     input logic [1:0] operation, // qn qn+1
-    input logic src_valid, dest_ready, // valid_ready input signals
-    output logic dest_valid, src_ready, // valid-ready output signals
+    input logic src_valid, src_ready, // valid_ready input signals
+    output logic dest_valid, dest_ready, // valid-ready output signals
     output logic selectMultiplier,enable,enable_product,
     output logic [1:0] selectAccumulator
 );
@@ -44,10 +44,13 @@ always_comb
             end
             PROCESS : begin
                 // check if we reached our limit then enable and ready the bit
-                if ( count16 == 1'b1) // here we reached our limit 16
+                if ( count16 == 1'b1 & !src_ready) // here we reached our limit 16
                 begin
 
                     nextState = WAIT;
+                end
+                else if (count16 == 1'b1 & src_ready) begin
+                    nextState = DONE;
                 end
                 else 
                 begin
@@ -56,7 +59,7 @@ always_comb
                 end   
             end
             WAIT: begin
-                if (!dest_ready) begin
+                if (!src_ready) begin
                     nextState = WAIT;
                 end
                 else begin
@@ -77,7 +80,7 @@ always_comb
                 if (!src_valid)
                 begin
                     enable   = 1'b0;
-                    src_ready = 1'b1;
+                    dest_ready = 1'b1;
                     dest_valid = 1'b0;
                     enable_product = 1'b0;
                     selectMultiplier = 1'b0;
@@ -85,7 +88,7 @@ always_comb
                 end
                 else begin
                     enable   = 1'b1;
-                    src_ready = 1'b1;
+                    dest_ready = 1'b1;
                     dest_valid = 1'b0;
                     enable_product = 1'b0;
                     selectMultiplier = 1'b0;
@@ -97,7 +100,7 @@ always_comb
                 if ( count16 == 1'b1) // here we reached our limit 16
                 begin
                     enable   = 1'b0;
-                    src_ready = 1'b0;
+                    dest_ready = 1'b0;
                     dest_valid = 1'b1;
                     enable_product = 1'b1;
                     selectMultiplier = 1'b1;
@@ -112,7 +115,7 @@ always_comb
                 else 
                 begin
                     enable   = 1'b1;
-                    src_ready = 1'b0;
+                    dest_ready = 1'b0;
                     dest_valid = 1'b0;
                     enable_product = 1'b0;
                     selectMultiplier = 1'b1;
@@ -126,9 +129,9 @@ always_comb
                 
             end 
             WAIT: begin
-                if (!dest_ready) begin
+                if (!src_ready) begin
                     enable   = 1'b0;
-                    src_ready = 1'b0;
+                    dest_ready = 1'b0;
                     dest_valid = 1'b1;
                     enable_product = 1'b0;
                     selectMultiplier = 1'b1;
@@ -141,7 +144,7 @@ always_comb
                 end
                 else begin
                     enable   = 1'b0;
-                    src_ready = 1'b0;
+                    dest_ready = 1'b0;
                     dest_valid = 1'b1;
                     enable_product = 1'b0;
                     selectMultiplier = 1'b1;
@@ -155,7 +158,7 @@ always_comb
             end 
             DONE: begin
                 enable   = 1'b0;
-                src_ready = 1'b0;
+                dest_ready = 1'b0;
                 dest_valid = 1'b0;
                 enable_product = 1'b0;
                 selectMultiplier = 1'b1;

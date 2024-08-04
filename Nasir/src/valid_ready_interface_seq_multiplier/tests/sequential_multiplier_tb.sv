@@ -26,8 +26,8 @@ module sequential_multiplier_tb;
         .clk(clk),
         .reset(reset),
         .src_valid(src_valid),
-        .dest_ready(dest_ready),
         .src_ready(src_ready),
+        .dest_ready(dest_ready),
         .dest_valid(dest_valid),
         .product(product)
     );
@@ -51,7 +51,7 @@ module sequential_multiplier_tb;
             multiplicand = 0;
             multiplier = 0;
             src_valid = 0;
-            dest_ready = 0;
+            src_ready = 0;
         end
     endtask
 
@@ -70,20 +70,32 @@ module sequential_multiplier_tb;
         begin
             multiplicand = input1;
             multiplier = input2;
+            src_valid = 1'b1;
+            check_dest_ready();
             // // start = 1;
             // @(posedge clk);
             // start = 0;
         end
     endtask
 
+    // Define a task to check the condition and exit the loop
+    task check_dest_ready;
+        begin
+            while (!dest_ready) begin
+                @(posedge clk);
+            end
+        end
+    endtask
+
     // Task for monitoring outputs
     task monitor;
         begin
-            wait (dest_valid == 1);
+            // wait (dest_valid == 1);
+            check_dest_valid();
             repeat(5)@(posedge clk);
-            dest_ready = 1'b1;
+            src_ready = 1'b1;
             @(posedge clk)
-            dest_ready = 1'b0;
+            src_ready = 1'b0;
             expected = multiplicand * multiplier;
             #10;
             count_tests++;
@@ -97,11 +109,19 @@ module sequential_multiplier_tb;
         end
     endtask
 
+    task check_dest_valid;
+        begin
+            while(!dest_valid) begin
+                @(posedge clk);
+            end
+        end
+    endtask
+
     // Directed test cases using fork-join for edge cases
     initial begin
         init_sequence();
         reset_sequence();
-        #10 src_valid = 1'b1;
+        // #10 src_valid = 1'b1;
         count_tests = 32'b0;
         failed = 32'b0;
         passed = 32'b0;

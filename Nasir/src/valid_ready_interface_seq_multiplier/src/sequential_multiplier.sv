@@ -1,7 +1,7 @@
 module sequential_multiplier (
     input logic signed [15:0] multiplicand,multiplier,
-    input logic clk,reset,src_valid, dest_ready,
-    output logic dest_valid,src_ready,
+    input logic clk,reset,src_valid, src_ready,
+    output logic dest_valid,dest_ready,
     output logic [31:0] product
 );
 
