@@ -60,3 +60,4 @@ dkms.conf
 *vsim.wlf
 *work/
 *.vscode/
+*obj_dir/
