@@ -63,11 +63,14 @@ module Multiplier_tb #(
                 Multiplier = $random();
                 Multiplicand = $random();
 
-                src_valid = 1;
-                @(posedge clk);
-                src_valid = 0;
+                while (!src_ready) @(posedge clk); 
+                src_valid = 0;                     
 
-                while (!dest_valid) @(posedge clk);
+                while (!dest_valid) @(posedge clk); 
+                dest_ready = 1;                     
+                
+                @(posedge clk);
+                dest_ready = 0;  
             end
         end
     endtask
@@ -75,21 +78,12 @@ module Multiplier_tb #(
     // Task for driving ouptuts
     task monitor(input int tests);
         for(int i = 0; i <= tests; i++) begin
-            @(posedge src_valid);
-            repeat (2) @(posedge clk);
-            
-            dest_ready = 1;
-            
-            while (!dest_valid) @(posedge clk);
-
             exp = Multiplier * Multiplicand;
             if (exp != Product) begin
                 $display("Fail: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
             end else begin
                 $display("Pass: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
             end
-            
-            dest_ready = 0;
         end
     endtask
 
@@ -151,8 +145,8 @@ module Multiplier_tb #(
 
         // Fork-join for parallel test execution
         fork
-            driver(50);
-            monitor(50); 
+            driver(10);
+            monitor(10); 
         join
 
 

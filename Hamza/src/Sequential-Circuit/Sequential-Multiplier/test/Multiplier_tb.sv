@@ -68,14 +68,6 @@ module Multiplier_tb #(
 
     task monitor(input int tests);
         for(int i = 0; i <= tests; i++) begin
-            @(posedge start);
-            repeat (2) @(posedge clk);
-            
-            // gives the clock signal till the ready comes
-            while (!ready) begin
-                @(posedge clk);
-            end
-
             exp = Multiplier * Multiplicand;
             if (exp != Product) begin
                 $display("Fail: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);

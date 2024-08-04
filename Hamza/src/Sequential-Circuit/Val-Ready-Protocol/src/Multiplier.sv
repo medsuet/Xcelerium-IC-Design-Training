@@ -1,9 +1,9 @@
 module Multiplier #(
     parameter WIDTH = 16  // Default width parameter for inputs and outputs
 )(
-    input logic signed [WIDTH-1:0] Multiplicand, Multiplier, // Operands
+    input logic [WIDTH-1:0] Multiplicand, Multiplier, // Operands
     input logic clk, rst, src_valid, dest_ready,
-    output logic signed [(2*WIDTH)-1:0] Product, // Output product based on width
+    output logic [(2*WIDTH)-1:0] Product, // Output product based on width
     output logic dest_valid,   
     output logic src_ready
 );
