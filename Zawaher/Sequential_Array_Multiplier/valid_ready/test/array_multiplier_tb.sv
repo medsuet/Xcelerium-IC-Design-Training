@@ -29,12 +29,13 @@ module array_multiplier_tb (
         forever #5 clk = ~clk;
     end
     `endif
-
+    `ifndef Verilator
     initial begin
     // Open a VCD file to write the simulation results
     $dumpfile("waveform.vcd");
     $dumpvars(0, array_multiplier_tb); // Dump all variables in the array_multiplier_tb module
     end
+    `endif 
 
     initial begin
         // Applying Reset
