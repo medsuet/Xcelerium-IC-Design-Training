@@ -94,7 +94,6 @@ pipo #(.width(result_width)) PIPO (
     .clk(clk),
     .reset(reset),
     .counted_15(counted_15),
-    .dst_ready(dst_ready),
     .in(sum_pp),
     .get_output(get_output),
     .out(pipo_out),.product_pp(product_pp)
@@ -124,11 +123,11 @@ end
 */
 
 always_comb begin
-    if (dst_ready)begin
-        product = 0;
+    if (get_output |  dst_ready)begin
+        product = product_pp;
     end
     else begin
-        product = product_pp;
+        product = 0;
     end
 end
 
@@ -149,8 +148,7 @@ module pipo #(
     parameter width = 32 // Default width, can be set during instantiation
 )(
     input logic     clk,reset,
-    input logic     counted_15, 
-    input logic     dst_ready,    
+    input logic     counted_15,     
     input logic     [width-1:0]in,
     output logic    get_output,
     output logic    [width-1:0]out,product_pp 

@@ -31,24 +31,27 @@ module array_multiplier_tb (
     `endif
 
     initial begin
+    // Open a VCD file to write the simulation results
+    $dumpfile("waveform.vcd");
+    $dumpvars(0, array_multiplier_tb); // Dump all variables in the array_multiplier_tb module
+    end
+
+    initial begin
         // Applying Reset
         reset_sequence();
 
-        // Run 10 random test cases
+        // Run directed test cases
+        directed_tests();
+
+        // Run random test cases
         repeat(10) begin
-            // Enabling driver circuit for the inputs
             driver();
-
-            // Applying the dst_ready signal
-           // apply_dst_ready();
-
-            // Enabling monitor circuit for checking the output
             monitor();
-           repeat(3) @(posedge  clk);
-            // Applying the dst_ready signal
+            repeat(3) @(posedge clk);
             apply_dst_ready();
         end
-        $stop; // Stop the simulation after 10 tests
+
+        $finish; // Ensure the simulation ends properly
     end
 
     task reset_sequence();
@@ -67,7 +70,7 @@ module array_multiplier_tb (
         @(posedge clk);
         valid_src = 1'b1;
         @(posedge clk);
-        valid_src = 1'b0; // Deassert valid_src after one clock cycle
+        valid_src = 1'b0;
     endtask
 
     task monitor();
@@ -86,7 +89,8 @@ module array_multiplier_tb (
             $display("Expected %0d, got %0d", $signed(multiplier * multiplicand), product);
         end
         
-        
+        // Ensure dst_valid goes low before the next operation
+        //@(negedge dst_valid);
     endtask
 
     task apply_inputs();
@@ -99,7 +103,58 @@ module array_multiplier_tb (
         @(posedge clk);
         dst_ready = 1'b1;
         @(posedge clk);
-        dst_ready = 1'b0; // Optionally deassert dst_ready to see different responses
+        dst_ready = 1'b0;
+    endtask
+    
+    task directed_tests();
+        // Test 1: valid_dst before dst_ready
+        $display("Running Test 1: dst_valid before dst_ready");
+        apply_inputs();
+        @(posedge clk);
+        valid_src = 1'b1;
+        @(posedge clk);
+        valid_src = 1'b0;
+        @(posedge clk);
+        monitor();
+        apply_dst_ready();
+
+        // Test 2: dst_ready before valid_src
+        $display("Running Test 2: dst_ready before valid_src");
+        apply_inputs();
+        @(posedge clk);
+        valid_src = 1'b1;
+        @(posedge clk);
+        valid_src = 1'b0;
+        dst_ready = 1'b1;
+        monitor();
+        repeat(2) @(posedge clk);
+        dst_ready = 1'b0;
+
+        // Test 3: valid_src and dst_ready at the same time
+        $display("Running Test 3: dst_valid and dst_ready at the same time");
+        apply_inputs();
+        @(posedge clk);
+        valid_src = 1'b1;
+        @(posedge clk);
+        valid_src = 1'b0;
+        @(posedge clk);
+        // Wait for the dst_valid signal to be asserted
+        wait(dst_valid);
+        dst_ready = 1'b1;
+        @(posedge clk);
+        dst_ready = 1'b0;
+        
+        // Check if the product matches the expected value
+        if ($signed(product) == $signed(multiplier) * $signed(multiplicand)) begin
+            $display("================= Test Passed ================");
+            $display("Multiplier: %0d | Multiplicand: %0d | Product: %0d",
+                      multiplier, multiplicand, product);
+        end
+        else begin
+            $display("================== Test Failed ================");
+            $display("Multiplier: %0d | Multiplicand: %0d ", multiplier, multiplicand);
+            $display("Expected %0d, got %0d", $signed(multiplier * multiplicand), product);
+        end
     endtask
     
 endmodule

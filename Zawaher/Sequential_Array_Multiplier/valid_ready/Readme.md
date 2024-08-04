@@ -70,6 +70,19 @@ The waves on vivado will be created that can be viewed by running
 ```markdown
 make viv_waves
 ``` 
+### Simulation with Iverilog
+For simulation on iverilog run the following command:
+
+```markdown
+make iverilog
+```
+
+The waves on gtkwave will be created that can be viewed by running
+
+```markdown
+make iverun
+make iver_waves
+``` 
 
 # Successful Implementation
 

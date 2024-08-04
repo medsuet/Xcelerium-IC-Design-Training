@@ -35,7 +35,11 @@ module array_multiplier_controller_valready (
            end 
 
            S2 : begin
-            if (get_output) n_state = S3;
+            if (dst_ready) begin 
+                if (get_output) n_state = S0;
+                else n_state = S2;
+            end
+            else if (get_output) n_state = S3;
             else n_state = S2;
            end 
             
@@ -92,13 +96,20 @@ module array_multiplier_controller_valready (
 
     
            S2 : begin
-            if (get_output | (get_output && dst_ready)) begin  // if get output and the dst_ready comes at the same time
+            if  (dst_ready) begin               // if get output and the dst_ready comes at the same time or only get_output comes
+                if (get_output)begin
+                    start_tx = 1'b0;
+                    counted_15 = 1'b0;
+                    dst_valid = 1'b1;
+                    src_ready = 1'b0;
+                end     
+           end
+           else if (get_output)begin
                 start_tx = 1'b0;
                 counted_15 = 1'b0;
                 dst_valid = 1'b1;
-                src_ready = 1'b0; 
- 
-           end
+                src_ready = 1'b0;
+           end    
            else begin
                 start_tx = 1'b0;
                 counted_15 = 1'b1;

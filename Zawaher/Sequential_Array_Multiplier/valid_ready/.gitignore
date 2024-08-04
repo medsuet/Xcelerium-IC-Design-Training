@@ -18,4 +18,5 @@ bash_scripts
 xsim.dir
 *.str
 *.vcd
+*.vvp
 obj_dir
