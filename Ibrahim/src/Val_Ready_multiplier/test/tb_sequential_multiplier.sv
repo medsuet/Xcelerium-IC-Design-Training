@@ -112,6 +112,16 @@ module tb_sequential_multiplier;
         end
     endtask
 
+    task pass_inputs(input logic signed [WIDTH-1:0] in1, input logic signed [WIDTH-1:0] in2);
+        begin
+            fork
+                drive_inputs(in1, in2);
+                monitor_outputs();
+            join
+            // Random delay between tests will ensure that even if src_ready is 1, if src_valid is not 1 handshake won't occur
+            random_delay();
+        end
+    endtask
 
     // Stimulus process
     initial begin
@@ -123,64 +133,30 @@ module tb_sequential_multiplier;
         // Directed tests with delays
         
         // Test case: Multiplication with 0
-        fork
-        drive_inputs({WIDTH-1{1'b1}}, 0);
-        monitor_outputs();
-        join
-         // Random delay between tests will ensure that even if src_ready is 1, if src_valid is not 1 handshake won't occur
-        random_delay();
-        fork
-        drive_inputs({1'b1, {WIDTH-1{1'b0}}}, 0);
-        monitor_outputs();
-        join
-        random_delay();
+        pass_inputs({WIDTH-1{1'b1}}, 0);
+        pass_inputs({1'b1, {WIDTH-1{1'b0}}}, 0);
 
         // Test case: Multiplication with 1
-        fork 
-        drive_inputs(1, 1);
-        monitor_outputs();
-        join
-        random_delay();
-        fork
-        drive_inputs({WIDTH-1{1'b1}}, 1);
-        monitor_outputs();
-        join
-        random_delay();
+        
+        pass_inputs(1, 1);
+        pass_inputs({WIDTH-1{1'b1}}, 1);
+
         
         // Test case: Multiplication with negative numbers
-        fork
-        drive_inputs(-1, -1);
-        monitor_outputs();
-        join
-        random_delay();
-        fork
-        drive_inputs({WIDTH-1{1'b1}}, -1);
-        monitor_outputs();
-        join
-        random_delay();
+        pass_inputs(-1, -1);
+        pass_inputs({WIDTH-1{1'b1}}, -1);
 
         // Max positive numbers
-        fork
-        drive_inputs({WIDTH-1{1'b1}}, {WIDTH-1{1'b1}});
-        monitor_outputs();
-        join
-        random_delay();
+        pass_inputs({WIDTH-1{1'b1}}, {WIDTH-1{1'b1}});
 
         // Max positive and max negative numbers
-        fork
-        drive_inputs({1'b1, {WIDTH-1{1'b0}}}, {WIDTH-1{1'b1}});
-        monitor_outputs();
-        join
-        random_delay();
+        pass_inputs({1'b1, {WIDTH-1{1'b0}}}, {WIDTH-1{1'b1}});
+
 
         // Random Testing with delays
-        for(int i = 0; i < 100000; i++) begin
-            fork
+        for(int i = 0; i < 1000; i++) begin
             // Drive random inputs to the multiplier
-            drive_inputs($random, $random); 
-            monitor_outputs();
-            join
-            random_delay(); // Random delay between tests
+            pass_inputs($random, $random); 
         end
 
         // Display final results

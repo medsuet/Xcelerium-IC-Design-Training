@@ -59,9 +59,6 @@ vsim.wlf
 # Ignore compiled simulation files in the src/Sequential_Multiplier directory
 src/Sequential_Multiplier/tb_seq_multiplier
 
-#identifier files
-*.Zone.Identifier
-
 # Simulation Files
 *.vvp
 *.vcd

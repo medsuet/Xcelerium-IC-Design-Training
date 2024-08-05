@@ -55,3 +55,6 @@ help:
 
 # Phony targets
 .PHONY: all iverilog vsim view clean help
+
+
+# include $(shell cocotb-config --makefiles)/Makefile.sim
