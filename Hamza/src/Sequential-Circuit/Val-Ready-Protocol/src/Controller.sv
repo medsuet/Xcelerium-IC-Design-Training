@@ -2,7 +2,7 @@ module Controller(
     input logic clk,rst,count_comp,
     input logic [1:0] in,
     input logic src_valid, dest_ready,
-    output logic QR_sel,clear, src_ready, dest_valid,
+    output logic QR_sel,clear, src_ready, dest_valid, en_p,
     output logic [1:0] data_sel
 );
 
@@ -36,6 +36,7 @@ always @(*)
                     data_sel = 2'b0;
                     src_ready = 1'b1;
                     dest_valid = 1'b0;
+                    en_p = 1'b0;
                     next_state = START;
                 end
                 else begin
@@ -44,16 +45,18 @@ always @(*)
                     data_sel = 2'b0;
                     src_ready = 1'b1;
                     dest_valid = 1'b0;
+                    en_p = 1'b1;
                     next_state = PROCESS;
                 end   
             end
             PROCESS : begin
-                if ( count_comp == 1'b1)begin
+                if (count_comp == 1'b1)begin
                     clear   = 1'b1;
                     QR_sel = 1'b0;
                     data_sel = 2'b0;
                     src_ready = 1'b0;
                     dest_valid = 1'b1;
+                    en_p = 1'b1;
                     case (in)
                         2'b01 : data_sel = 2'b01;
                         2'b10 : data_sel = 2'b10;
@@ -71,6 +74,7 @@ always @(*)
                     clear   = 1'b0;
                     QR_sel = 1'b1;
                     src_ready = 1'b0;
+                    en_p = 1'b1;
                     dest_valid = 1'b0;
                     next_state = PROCESS;
                     case (in)
@@ -89,6 +93,7 @@ always @(*)
                     data_sel = 2'b0;
                     src_ready = 1'b0;
                     dest_valid = 1'b1;
+                    en_p = 1'b0;
                 end
                 else begin
                     next_state = START;
@@ -97,6 +102,7 @@ always @(*)
                     data_sel = 2'b0;
                     src_ready = 1'b0;
                     dest_valid = 1'b1; 
+                    en_p = 1'b0;
                 end
             end
             default: begin

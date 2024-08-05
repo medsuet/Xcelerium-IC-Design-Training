@@ -8,7 +8,7 @@ module Multiplier #(
     output logic src_ready
 );
 
-logic QR_sel, clear, count_comp;
+logic QR_sel, clear, count_comp, en_p;
 logic [1:0] in;
 logic [1:0] data_sel;
 
@@ -23,6 +23,7 @@ Datapath DP (
     .QR_sel(QR_sel),
     .data_sel(data_sel),
     .clear(clear),
+    .en_p(en_p),
     .count_comp(count_comp)
 );
 
@@ -37,7 +38,8 @@ Controller CTRL (
     .src_ready(src_ready),
     .dest_valid(dest_valid),
     .src_valid(src_valid),
-    .dest_ready(dest_ready),  
+    .dest_ready(dest_ready), 
+    .en_p(en_p), 
     .data_sel(data_sel)
 );
 

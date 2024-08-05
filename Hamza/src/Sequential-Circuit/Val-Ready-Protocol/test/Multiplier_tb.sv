@@ -1,4 +1,5 @@
 /* verilator lint_off NULLPORT */
+/* verilator lint_off UNOPTFLAT */
 
 module Multiplier_tb #(
     parameter WIDTH = 16  // Parameter for width of input and output signals
@@ -57,59 +58,34 @@ module Multiplier_tb #(
     end
 
     // Task for driving inputs
-    task driver (input int tests);
+    task driver (input logic signed [15:0] input_1, input logic signed [15:0] input_2);
         begin
-            for (int j = 0;j <= tests ; j++) begin
-                Multiplier = $random();
-                Multiplicand = $random();
+            Multiplier = input_1;
+            Multiplicand = input_2;
 
-                while (!src_ready) @(posedge clk); 
-                src_valid = 0;                     
+            src_valid = 1;
+            @(posedge clk);
+            src_valid = 0;
 
-                while (!dest_valid) @(posedge clk); 
-                dest_ready = 1;                     
-                
-                @(posedge clk);
-                dest_ready = 0;  
-            end
+            while (!dest_valid) @(posedge clk);
+                              
+            @(posedge clk);
+            dest_ready = 1;
+            @(posedge clk);
+            dest_ready = 0;
         end
     endtask
 
     // Task for driving ouptuts
-    task monitor(input int tests);
-        for(int i = 0; i <= tests; i++) begin
-            exp = Multiplier * Multiplicand;
+    task monitor;
+        begin
+            @(posedge dest_ready) exp = Multiplicand * Multiplier;
             if (exp != Product) begin
                 $display("Fail: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
             end else begin
                 $display("Pass: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
             end
         end
-    endtask
-
-    // Task for direct tests
-    task direct_test(input signed [WIDTH-1:0] in_a, in_b);
-    
-        Multiplier =  in_a; Multiplicand = in_b;
-
-        src_valid = 1;
-        @(posedge clk);
-        src_valid = 0;
-
-        dest_ready = 1;
-
-        // gives the clock signal till the ready comes
-        while (!dest_valid) @(posedge clk);
-
-        exp = in_a * in_b;
-        if (exp != Product) begin
-            $display("Fail: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
-        end else begin
-            $display("Pass: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
-        end
-
-        dest_ready = 0;
-        
     endtask
 
     // Task for reset sequence
@@ -129,25 +105,32 @@ module Multiplier_tb #(
         src_valid = 0;
         exp = 0;
         dest_ready = 0;
-        rst = 1;
         
         reset_sequence();
 
-        /* ---> Direct Test <--- */
-        direct_test (10, 1);
-        direct_test (10, -1);
-        direct_test (-10, 1);
-        direct_test (-10, -1);
-        direct_test (0, 0);
-        direct_test (0, -1);
-        direct_test (-1, 0);
-        direct_test (-100, -1001);
+        //directed testbench
+        fork
+            driver(10,1); 
+            monitor();
+        join
+        
+        fork
+            driver(0,1000); 
+            monitor();
+        join
+        
+        fork
+            driver(-1,1000); 
+            monitor();
+        join
 
         // Fork-join for parallel test execution
-        fork
-            driver(10);
-            monitor(10); 
-        join
+        for (int i=0; i<200 ;i++ ) begin
+            fork
+                driver($random ,$random);
+                monitor(); 
+            join
+        end
 
 
         $finish;
@@ -156,3 +139,4 @@ module Multiplier_tb #(
 endmodule
 
 /* verilator lint_on NULLPORT */
+/* verilator lint_on UNOPTFLAT */

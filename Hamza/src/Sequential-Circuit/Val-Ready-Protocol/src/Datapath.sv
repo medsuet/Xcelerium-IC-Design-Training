@@ -3,7 +3,7 @@ module Datapath #(
     parameter WIDTH_C = 5
 )(
     input  logic [WIDTH-1:0] Multiplicand, Multiplier,
-    input  logic clk, rst, QR_sel, clear,
+    input  logic clk, rst, QR_sel, clear, en_p,
     input  logic [1:0] data_sel,
     output logic [1:0] in,
     output logic count_comp,
@@ -108,7 +108,17 @@ end
 // Output signal for counting
 assign count_comp = ( count == 16 ) ? 1:0;
 
-assign Product = shifted_out;
+// assign Product = shifted_out;
+
+
+always@(*) begin
+    if (!rst)
+        Product = 0;
+    else if (!en_p)
+        Product = Product;
+    else
+        Product = shifted_out;   
+end
 
 
 endmodule
