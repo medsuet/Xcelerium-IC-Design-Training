@@ -60,7 +60,7 @@ vsim.wlf
 src/Sequential_Multiplier/tb_seq_multiplier
 
 #identifier files
-*.Identifier
+*.Zone.Identifier
 
 # Simulation Files
 *.vvp
