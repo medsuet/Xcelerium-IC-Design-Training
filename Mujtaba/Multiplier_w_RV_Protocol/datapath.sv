@@ -7,7 +7,6 @@ module datapath #(parameter WIDTH = 16) (
     input logic psEn,
     input logic muxsel,
     input logic restore_reg,
-    input logic resEn,
     input logic clk,
     input logic reset,
     output logic [3:0] SCval,
@@ -21,7 +20,6 @@ module datapath #(parameter WIDTH = 16) (
     logic [2*WIDTH-1:0] mux1out;
     logic [2*WIDTH-1:0] mux2out;
     logic [2*WIDTH-1:0] mux2shOut;
-    logic [2*WIDTH-1:0] psOut;
     logic [2*WIDTH-1:0] rcaOut;
     
     Register MultiplicanReg(.in(Multiplicand), .clk(clk), .en(mupdEn), .reset(reset), .out(mupdout));
@@ -30,13 +28,10 @@ module datapath #(parameter WIDTH = 16) (
     signExtend SignE1(.in(mupdout), .out(signExOut));
     mux2x1 m1(.sel0(32'h0), .sel1(signExOut), .sel(muxsel1), .out(mux1out));
     mux2x1 m2(.sel0(mux1out), .sel1((~mux1out)+1), .sel(muxsel), .out(mux2out));
-    PartialSum ps1(.in(rcaOut), .clk(clk), .reset(reset), .en(psEn), .restore_reg(restore_reg), .out(psOut));
+    PartialSum ps1(.in(rcaOut), .clk(clk), .reset(reset), .en(psEn), .restore_reg(restore_reg), .out(Product));
     LeftShift lls1(.in(mux2out), .sha(SCval), .out(mux2shOut));
-//     RippleCarryAdder rca1(.a(mux2shOut), .b(psOut), .cin(1'b0), .sum(rcaOut));
-    Adder #(32) a1(.a(mux2shOut), .b(psOut), .out(rcaOut));
+    Adder #(32) a1(.a(mux2shOut), .b(Product), .out(rcaOut));
     Sequence_Counter Sc1(.clk(clk), .reset(reset), .en(SCEn), .out(SCval));
-//     RippleCarryAdder #(4) rca2(.a(SCval), .b(4'b1), .cin(1'b0), .sum(count));
-    Register #(32) result(.in(psOut), .clk(clk), .en(resEn), .reset(reset), .out(Product));
 
 endmodule
 
@@ -94,8 +89,6 @@ module PartialSum (
     end
 
 endmodule
-
-
 
 module mux2x1 #(parameter WIDTH = 32) (
     input logic [WIDTH-1:0] sel0,
@@ -174,42 +167,6 @@ endmodule
 
 endmodule
  
-module full_adder (
-  input logic a,
-  input logic b,
-  input logic cin,
-  output logic sum,
-  output logic cout
-);
-  assign sum = a ^ b ^ cin;
-  assign cout = (a & b) | (a & cin) | (b & cin);
-endmodule
-
-module RippleCarryAdder #(parameter WIDTH = 32) (
-  input logic [WIDTH-1:0] a,
-  input logic [WIDTH-1:0] b,
-  input logic cin,
-  output logic [WIDTH-1:0] sum
-);
-  logic [WIDTH:0] carry;
-
-  // Instantiate 32 full adders
-  genvar i;
-  generate
-    for (i = 0; i < WIDTH; i++) begin : adder_instance
-      full_adder fa_inst (
-        .a(a[i]),
-        .b(b[i]),
-        .cin(carry[i]),
-        .sum(sum[i]),
-        .cout(carry[i+1])
-      );
-    end
-  endgenerate
-
-//   assign cout = carry[31];
-endmodule
-
 module LeftShift (
     input logic [31:0] in,
     input logic [3:0] sha,

@@ -28,14 +28,15 @@ module sequential_multiplier_tb();
     end
 
     initial begin
+        // file for simulation and dump all variable in the design
 //         $dumpfile("sequential_multiplier_tb.vcd");
 //         $dumpvars(0, sequential_multiplier_tb);
         count_pass = 0;
         expected_product = 0;
-        reset = 1;
-        #100 reset = 0;
-        #100 reset = 1;
-         directed_test(2, 3);
+        // reset task
+        rst(100);
+        // directed test for verification
+        directed_test(2, 3);
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
         directed_test(0, 3);
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
@@ -47,13 +48,22 @@ module sequential_multiplier_tb();
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
         directed_test(1, 32767);
         $display("Multiplicand: %d Multiplier: %d Product: %d", Multiplicand, Multiplier, Product);
+        // random tests
         fork
             driver();
             monitor();
         join
+        // display the number of test verified
         $display("Pass Test: %d", count_pass);
         $finish;
     end
+
+    task rst(input logic [7:0] a);
+        reset = 1;
+        #a reset = 0;
+        #a reset = 1;
+    endtask
+         
 
     task directed_test(input logic [15:0] a, input logic [15:0] b);
         Multiplicand = a;
@@ -78,8 +88,12 @@ module sequential_multiplier_tb();
     endtask
         
     task monitor;
+        // reverse the logic of driver
         for (int i=0; i<200000; i++) begin
+            @(negedge src_valid);
+            while (!dest_valid && !dest_ready) @(posedge  clk);
             expected_product = Multiplicand * Multiplier;
+            @(negedge dest_ready);
             // Check the result
             if (Product != expected_product) begin
                 $display("Error: Expected product %d, but got %d", expected_product, Product);

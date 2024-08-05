@@ -10,7 +10,6 @@ module controller (
     output logic restore_reg,
     output logic muxsel,
     output logic psEn,
-    output logic resEn,
     output logic dest_valid,
     output logic src_ready
 );
@@ -39,7 +38,6 @@ module controller (
         muxsel = 0;
         psEn = 0;
         restore_reg = 0;
-        resEn = 0;
         src_ready = 0;
         dest_valid = 0;
 
@@ -63,6 +61,7 @@ module controller (
                      SCEn = 1;
                      muxsel = 0;
                      psEn = 1;
+                     dest_valid = 0;
                      next_state = S1;
                  end else begin
                      if (SCval == 4'hF) begin
@@ -71,8 +70,12 @@ module controller (
                          SCEn = 1;
                          muxsel = 1;
                          psEn = 1;
-                         resEn = 0;
-                         next_state = S2;
+                         dest_valid = 1;
+                         if (dest_ready) begin
+                            next_state = S0;
+                        end else begin
+                            next_state = S2;
+                        end
                      end
                  end
              end
@@ -84,7 +87,6 @@ module controller (
                  SCEn = 0;
                  muxsel = 1'bx;
                  psEn = 0;
-                 resEn = 1;
                  restore_reg = 1;
                  if (dest_ready) begin
                      next_state = S0;
