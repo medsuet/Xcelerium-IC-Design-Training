@@ -6,15 +6,15 @@ It's a 16-bit signed multiplier with Ready-val interface that multiplies two 16-
 ## Datapath and Controller
 
 Datapath contains two shift registers for shifting multiplier and accumulator. It also contains one counter for counting 16 iterations and a flipflop for storing multiplicand. It also contains four mux for selecting right signal at output in accordance to control signal.
-q------------------------------>Multiplier
-m------------------------------>Multiplicand
-p------------------------------>Product
-clk------------------------------>clock
-rst------------------------------>Asynchronous active low reset
-src_valid------------------------------>Indicator for getting valid inputs
-src_ready------------------------------>Indicator for idle state
-dest_valid------------------------------>Indicator for completion of multiplication
-dest_ready------------------------------>Indicator for getting output
+q------------------------------>Multiplier <br />
+m------------------------------>Multiplicand <br />
+p------------------------------>Product <br />
+clk------------------------------>clock <br />
+rst------------------------------>Asynchronous active low reset <br />
+src_valid------------------------------>Indicator for getting valid inputs <br />
+src_ready------------------------------>Indicator for idle state <br />
+dest_valid------------------------------>Indicator for completion of multiplication <br />
+dest_ready------------------------------>Indicator for getting output <br />
 
 ### Top Module
 ![Top Module](https://drive.google.com/uc?id=1m9hw0Qw2GRCjbj70ecxzAMXc4HwKlsCn)
@@ -23,8 +23,8 @@ dest_ready------------------------------>Indicator for getting output
 
 ### State Transition Graph
 Controller contains state machine having two states:
-S0------------------------------>Starting state or Idle state
-S1------------------------------>Processing state
+S0------------------------------>Starting state or Idle state <br />
+S1------------------------------>Processing state <br />
 ![STG](https://drive.google.com/uc?id=1scMFOle8yd8ZBpTJu6mAmIpV4THX8OsJ)
 
 ## Simulation using Iverilog and Gtkwave
