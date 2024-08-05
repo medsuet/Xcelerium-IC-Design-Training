@@ -121,6 +121,7 @@ always_comb begin
                         en_final   = 1'b1;
                         clear      = 1'b1;
                         dest_valid = 1'b1;
+                        src_ready  = 1'b1;
                     end else if (!Q0 & Q_1) begin
                         next_state = IDLE;
                         alu_op     = 2'b10;  // Add operation
@@ -129,6 +130,7 @@ always_comb begin
                         en_final   = 1'b1;
                         clear      = 1'b1;
                         dest_valid = 1'b1;
+                        src_ready  = 1'b1;
                     end else begin
                         next_state = IDLE;
                         alu_op     = 2'b00;  // No operation
@@ -137,6 +139,7 @@ always_comb begin
                         en_final   = 1'b1;
                         clear      = 1'b1;
                         dest_valid = 1'b1;
+                        src_ready  = 1'b1;
                     end
             end else if ((Q0 & Q_1) | (!Q0 & !Q_1)) begin
                 next_state = RUN;
@@ -169,6 +172,7 @@ always_comb begin
             if (dest_ready) begin
                 next_state = IDLE;
                 en_final   = 1'b1;
+                src_ready  = 1'b1;
             end else begin
                 next_state = WAIT;
             end
