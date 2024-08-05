@@ -69,7 +69,8 @@ module tb_sequential_multiplier;
     // Task for monitoring outputs
     task monitor_outputs;
         begin
-            expected_product = Multiplicand * Multiplier; // Calculate expected product
+            @(posedge dest_ready) expected_product = Multiplicand * Multiplier; // Calculate expected product
+            @(posedge clk);
             $display("'dest_ready' is 1, Handshake 2 Initiated: Waiting for product");
             if (expected_product == Product) begin
                 pass_count += 1;
@@ -111,6 +112,7 @@ module tb_sequential_multiplier;
         end
     endtask
 
+
     // Stimulus process
     initial begin
         // Initialize Inputs
@@ -118,63 +120,66 @@ module tb_sequential_multiplier;
         
         reset_sequence();
 
-        // Test with various inputs and random delays
-        drive_inputs(2, 4);
-        monitor_outputs();
-        // Random delay between tests will ensure that even if src_ready is 1, if src_valid is not 1 handshake won't occur
-        random_delay();
-        drive_inputs(999, 222);
-        monitor_outputs();
-        random_delay();
-
+        // Directed tests with delays
+        
         // Test case: Multiplication with 0
+        fork
         drive_inputs({WIDTH-1{1'b1}}, 0);
         monitor_outputs();
+        join
+         // Random delay between tests will ensure that even if src_ready is 1, if src_valid is not 1 handshake won't occur
         random_delay();
+        fork
         drive_inputs({1'b1, {WIDTH-1{1'b0}}}, 0);
         monitor_outputs();
+        join
         random_delay();
 
         // Test case: Multiplication with 1
+        fork 
         drive_inputs(1, 1);
         monitor_outputs();
+        join
         random_delay();
+        fork
         drive_inputs({WIDTH-1{1'b1}}, 1);
         monitor_outputs();
+        join
         random_delay();
-        drive_inputs(1, {WIDTH-1{1'b1}});
-        monitor_outputs();
-        random_delay();
-
+        
         // Test case: Multiplication with negative numbers
+        fork
         drive_inputs(-1, -1);
         monitor_outputs();
+        join
         random_delay();
+        fork
         drive_inputs({WIDTH-1{1'b1}}, -1);
         monitor_outputs();
-        random_delay();
-        drive_inputs(-1, {WIDTH-1{1'b1}});
-        monitor_outputs();
+        join
         random_delay();
 
         // Max positive numbers
+        fork
         drive_inputs({WIDTH-1{1'b1}}, {WIDTH-1{1'b1}});
         monitor_outputs();
+        join
         random_delay();
 
         // Max positive and max negative numbers
-        drive_inputs({WIDTH-1{1'b1}}, {1'b1, {WIDTH-1{1'b0}}});
-        monitor_outputs();
-        random_delay();
+        fork
         drive_inputs({1'b1, {WIDTH-1{1'b0}}}, {WIDTH-1{1'b1}});
         monitor_outputs();
+        join
         random_delay();
 
         // Random Testing with delays
         for(int i = 0; i < 100000; i++) begin
+            fork
             // Drive random inputs to the multiplier
             drive_inputs($random, $random); 
             monitor_outputs();
+            join
             random_delay(); // Random delay between tests
         end
 
