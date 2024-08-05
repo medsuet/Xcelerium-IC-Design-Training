@@ -15,22 +15,17 @@ src_valid------------------------------>Indicator for getting valid inputs
 src_ready------------------------------>Indicator for idle state
 dest_valid------------------------------>Indicator for completion of multiplication
 dest_ready------------------------------>Indicator for getting output
+
+### Top Module
 ![Top Module](https://drive.google.com/uc?id=1m9hw0Qw2GRCjbj70ecxzAMXc4HwKlsCn)
-<figure>
-<iframe src="https://drive.google.com/file/d/1C_kK64Cud8xMGOvUlfHM6NeG4tY1sp80/preview" width="520" height="480" allow="autoplay"></iframe>
- <figcaption>Datapath and Controller</figcaption>
-</figure>
+### Datapath and Controller
+![Datapath and Controller](https://drive.google.com/uc?id=1C_kK64Cud8xMGOvUlfHM6NeG4tY1sp80)
 
-
-
-## State Transition Graph
+### State Transition Graph
 Controller contains state machine having two states:
 S0------------------------------>Starting state or Idle state
 S1------------------------------>Processing state
-<figure>
-<iframe src="https://drive.google.com/file/d/1Hy6SxX7PMi24NDgHHsMOXx7LOku5sxJ-/preview" width="430" height="140" allow="autoplay"></iframe>
- <figcaption>STG</figcaption>
-</figure>
+![STG](https://drive.google.com/uc?id=1Hy6SxX7PMi24NDgHHsMOXx7LOku5sxJ-)
 
 ## Simulation using Iverilog and Gtkwave
 
