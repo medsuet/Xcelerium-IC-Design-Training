@@ -22,7 +22,7 @@ run: $(TARGET)
 	./$(TARGET)
 
 # simulation
-vsim: $(TARGET)
+simulate: $(TARGET)
 	gtkwave $(TARGET).vcd
 # clean object files and executables
 clean: 
