@@ -1,20 +1,22 @@
+
 module control_unit (
     input  logic clk,   
     input  logic rst,   
-    input  logic start,             //This will be the inputs ready
-    input  logic in_valid,          //This will be the input valid you can load it 
-    input  logic done,              
-    output logic load,              
-    output logic processing,        //This will be the output_valid  
+    input  logic Src_valid,                             //This was initialy start 
+    input  logic dd_ready,
+    input  logic done, 
+    output logic Src_ready,                             //ready for inputs
+    output logic dd_valid,                              //
+    output logic load,        
     output logic calc        
 );
 
 
     //Initializing the states
     typedef enum logic [2:0] {
-        IDLE,
-        LOAD,  
-        CALC
+        IDLE,  
+        CALC,
+        FINISH
     } state_t;
     state_t state, next_state;
     
@@ -31,67 +33,56 @@ module control_unit (
         //some signals
         load = 0;
         calc = 0;
-        processing=0;
         case (state)
-            IDLE: 
-            begin
-                if (start) begin
-                    next_state = LOAD;
-                    
-                    end else begin
-                    load = 0;
-                    calc = 0;
-                    processing=0;
-                    next_state = IDLE;
-                end
-                    /*
-                    if(in_valid) begin
-                        $display("hey i am here");
-                        load=1;
-                        next_state = CALC;
-                    end
-                    else begin
-                        load=0;
-                        next_state = IDLE;
-                    end  
+            IDLE: begin
+                if (Src_valid) begin
+                    Src_ready=0;
+                    dd_valid=0;
+                    load=1;                                     //for loading outputs
+                    next_state = CALC;
                 end else begin
                     load = 0;
                     calc = 0;
-                    processing=0;
+                    Src_ready=1;
+                    dd_valid=0;
                     next_state = IDLE;
                 end
-                */
             end
-            LOAD:                                       //new added state
-            begin
-                //$display(in_valid);
-                if (in_valid) 
-                begin 
-                    load=1;
-
-                    next_state = CALC;
+            CALC: begin
+                calc = 1;
+                if (done & dd_ready) begin
+                    load = 0;
+                    calc = 0;
+                    Src_ready=1;
+                    dd_valid=1;
+                    next_state = IDLE;
+                end else if (done)
+                begin
+                    calc = 0;
+                    load = 0;
+                    Src_ready=0;
+                    dd_valid=1;
+                    next_state=FINISH;
                 end
                 else begin
+                    next_state = CALC;
+                end
+            end
+            FINISH:
+                if (dd_ready) begin
                     load = 0;
                     calc = 0;
-                    processing=0;
+                    Src_ready=1;
+                    dd_valid=0;
                     next_state = IDLE;
-                end
-            end
-            CALC: 
-            begin
-                calc = 1;
-                processing=1;
-                if (done) begin
-                    next_state = IDLE;
+                end 
+                else begin
+                    calc = 0;
                     load = 0;
-                    processing=0;
-                    calc=0;
-                end else begin
-                    next_state = CALC;
-                    processing=1;
+                    Src_ready=0;
+                    dd_valid=1;
+                    next_state=FINISH;
                 end
-            end
         endcase
     end
 endmodule

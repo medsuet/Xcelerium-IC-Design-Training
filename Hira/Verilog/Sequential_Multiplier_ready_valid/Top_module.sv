@@ -1,13 +1,14 @@
 module top_multiplier (
-    input      logic            clk,   
-    input      logic            rst,   
-    input      logic            start,                      //input ready
-    input      logic            in_valid,                   //input valid
-    input      logic    [15:0]  A,
-    input      logic    [15:0]  B,
-    output     logic    [31:0]  product,
-    output     logic            output_valid,               //This was done before, our output is ready nows
-    output     logic            output_ready                 
+    input logic clk,   
+    input logic rst,   
+    input logic Src_valid,                                   //this was initialy start
+    input logic dd_ready,                                   //newly added
+    input logic [15:0] A,
+    input logic [15:0] B,
+    output logic [31:0] product, 
+    output logic Src_ready,                             //new added signals
+    output logic dd_valid                              //new added signal
+    //output logic done 
 );
 
     wire load, calc;
@@ -27,14 +28,15 @@ module top_multiplier (
     control_unit cu (
         .clk(clk),
         .rst(rst),
-        .start(start),
-        .in_valid(in_valid),                                    //new signal added
+        .Src_valid(Src_valid),
+        .dd_ready(dd_ready),
         .done(dp_done),
         .load(load),
-        .processing(output_ready),                              //new signal added
+        .Src_ready(Src_ready),
+        .dd_valid(dd_valid),
         .calc(calc)
     );
 
-    assign output_valid = dp_done;
+    //assign done = dp_done;
 
 endmodule
