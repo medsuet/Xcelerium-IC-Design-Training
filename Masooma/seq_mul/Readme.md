@@ -6,32 +6,23 @@ It's a 16-bit signed multiplier that multiplies two 16-bit signed integers. It w
 ## Datapath and Controller
 
 Datapath contains two shift registers for shifting multiplier and accumulator. It also contains one counter for counting 16 iterations and a flipflop for storing multiplicand. It also contains four mux for selecting right signal at output in accordance to control signal.
-q------------------------------>Multiplier
-m------------------------------>Multiplicand
-p------------------------------>Product
-clk------------------------------>clock
-rst------------------------------>Asynchronous active low reset
-start------------------------------>Indicator for starting multiplication
-ready------------------------------>Indicator for completion of multiplication
-<figure>
-  <iframe src="https://drive.google.com/file/d/1m9hw0Qw2GRCjbj70ecxzAMXc4HwKlsCn/preview" width="300" height="140" allow="autoplay"></iframe>
-  <figcaption>Top Module Diagram</figcaption>
-</figure>
-<figure>
-<iframe src="https://drive.google.com/file/d/1OBvjs564oGijMuhNYmC7wM_Xsi_AjyQM/preview" width="520" height="470" allow="autoplay"></iframe>
- <figcaption>Datapath and Controller</figcaption>
-</figure>
+q------------------------------>Multiplier <br />
+m------------------------------>Multiplicand <br />
+p------------------------------>Product <br />
+clk------------------------------>clock <br />
+rst------------------------------>Asynchronous active low reset <br />
+start------------------------------>Indicator for starting multiplication <br />
+ready------------------------------>Indicator for completion of multiplication <br />
+### Top Module
+![Top Module](https://drive.google.com/uc?id=1m9hw0Qw2GRCjbj70ecxzAMXc4HwKlsCn)
+### Datapath and Controller
+![Datapath and Controller](https://drive.google.com/uc?id=1OBvjs564oGijMuhNYmC7wM_Xsi_AjyQM)
 
-
-
-## State Transition Graph
-Controller contains state machine having two states:
-S0------------------------------>Starting state or Idle state
-S1------------------------------>Processing state
-<figure>
-<iframe src="https://drive.google.com/file/d/1scMFOle8yd8ZBpTJu6mAmIpV4THX8OsJ/preview" width="640" height="120" allow="autoplay"></iframe>
- <figcaption>STG</figcaption>
-</figure>
+### State Transition Graph
+Controller contains state machine having two states: <br />
+S0------------------------------>Starting state or Idle state <br />
+S1------------------------------>Processing state <br />
+![STG](https://drive.google.com/uc?id=1scMFOle8yd8ZBpTJu6mAmIpV4THX8OsJ)
 
 ## Gate Comparison between Combinational multiplier and Seuential multiplier
 |Multiplier Type | Gates |
