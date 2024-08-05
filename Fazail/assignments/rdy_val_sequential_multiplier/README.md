@@ -1,5 +1,5 @@
 
-# 16-bit Signed Sequential Multiplier Project
+# 16-bit Signed Sequential Multiplier with REady Valid Interface
 
 ## Overview
 
@@ -22,7 +22,7 @@ This project involves the design and implementation of a sequential multiplier. 
 
 Following is the Top Module of the Sequential Multiplier:
 
-![Top Module](docs/Topmodule.png)
+![Top Module](docs/Top-module.png)
 
 The sequential multiplier is designed using a state machine that controls the multiplication process. The primary components include:
 
@@ -77,24 +77,4 @@ To work with this project, you will need the following tools:
 
    ```bash
    make simulate
-   
-## Gate Counts
 
-### Combinational Multiplier
-
-| ITEMS          | Total no.   | Gates   |
-|----------------|-------------|---------|
-| Full Adders    | 225         | 1125    |
-| Half Adders    | 16          | 32      |
-| AND / NAND     | 226 / 30    | 256     |
-|                | Total GATES | 1413    |
-
-### Sequential Multiplier
-
-| ITEMS          | Total no.   | Gates   |
-|----------------|-------------|---------|
-| Adders(32-bit) | 2           | 321     |
-| Adder (5-bit)  | 1           | 25      |
-| Muxes (2x1)    | 3           | 9       |
-| Comparators (2)| 2           | 18      |
-|                | Total GATES | 373     |
