@@ -29,7 +29,7 @@ module Seq_Mul_top_tb;
     // Clock generation
     initial begin
         clk = 1;
-        forever #5 clk = ~clk; // 10 ns period clock
+        forever #5 clk = ~clk; 
     end
 
     // Dump file for waveform
@@ -37,6 +37,17 @@ module Seq_Mul_top_tb;
         $dumpfile("tb.vcd");
         $dumpvars(0, Seq_Mul_top_tb);
     end
+    // Task for reset sequence
+    task reset_sequence;
+        begin
+            Multiplicand = 0;
+            Multiplier = 0;
+            rst = 0;
+            start = 0;
+            @(posedge clk);
+            rst = 1;
+        end
+    endtask
 
     // Task for driving inputs
     task drive_inputs(input logic signed [15:0] in1, input logic signed [15:0] in2);
@@ -46,15 +57,16 @@ module Seq_Mul_top_tb;
             start = 1;
             @(posedge clk);
             start = 0;
+            while(! ready) @(posedge clk);
         end
     endtask
 
     // Task for monitoring outputs
     task monitor_outputs;
         begin
-            wait (ready == 1);
-            exp = Multiplicand * Multiplier;
-            if(exp != Product)begin
+            @(posedge ready) exp = Multiplicand * Multiplier;
+            if(exp != Product)
+            begin
                 $display("Fail");
                 $display("A = %0h, B = %0h, P = %0h,E= %0h", Multiplicand, Multiplier, Product,exp);
             end
@@ -68,23 +80,24 @@ module Seq_Mul_top_tb;
 
     // Stimulus process
     initial begin
-        // Initialize Inputs
-        Multiplicand = 0;
-        Multiplier = 0;
-        rst = 0;
-        start = 0;
-        @(posedge clk);
-        rst = 1;
-        for(int i=0;i<30;i++)begin 
-            //Non Random testing
+        reset_sequence();
+        // for directed testing
+        for(int i=0;i<30;i++)
+        begin 
+            fork
             drive_inputs(0+i,10+i); 
             monitor_outputs();
-            @(posedge clk);
-            //Random Testing
+            join
+        end
+         
+
+        // for random testing
+        for(int i=0;i<30;i++)
+        begin 
+            fork
             drive_inputs($random % 65536,$random % 65536); 
             monitor_outputs();
-            @(posedge clk);
-
+            join
         end
         $finish;
     end
