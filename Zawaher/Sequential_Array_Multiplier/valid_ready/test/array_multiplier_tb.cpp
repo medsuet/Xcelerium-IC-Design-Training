@@ -10,7 +10,7 @@ vluint64_t sim_time = 0;
 
 int main(int argc, char **argv) {
 
-    const int array_size = 10;
+    const int array_size = 1000000;
 
     Verilated::commandArgs(argc, argv);
 

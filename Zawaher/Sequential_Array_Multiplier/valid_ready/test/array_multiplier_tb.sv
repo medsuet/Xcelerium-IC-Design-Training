@@ -29,11 +29,12 @@ module array_multiplier_tb (
         forever #5 clk = ~clk;
     end
     `endif
+
     `ifndef Verilator
     initial begin
-    // Open a VCD file to write the simulation results
-    $dumpfile("waveform.vcd");
-    $dumpvars(0, array_multiplier_tb); // Dump all variables in the array_multiplier_tb module
+        // Open a VCD file to write the simulation results
+        $dumpfile("waveform.vcd");
+        $dumpvars(0, array_multiplier_tb); // Dump all variables in the array_multiplier_tb module
     end
     `endif 
 
@@ -60,36 +61,36 @@ module array_multiplier_tb (
             reset = 1;
             dst_ready = 1'b0;
             @(posedge clk);
-            reset = 0;
+            reset <= 0;
             @(posedge clk);
-            reset = 1;
+            reset <= 1;
         end
     endtask
 
     task driver();
         apply_inputs();
         @(posedge clk);
-        valid_src = 1'b1;
+        valid_src <= 1'b1;
         @(posedge clk);
-        valid_src = 1'b0;
+        valid_src <= 1'b0;
     endtask
 
     task monitor();
         // Wait for the dst_valid signal to be asserted
-        wait(dst_valid);
+        @(posedge dst_valid);
         
         // Check if the product matches the expected value
         if ($signed(product) == $signed(multiplier) * $signed(multiplicand)) begin
             $display("================= Test Passed ================");
             $display("Multiplier: %0d | Multiplicand: %0d | Product: %0d",
-                      multiplier, multiplicand, product);
+                    multiplier, multiplicand, product);
         end
         else begin
             $display("================== Test Failed ================");
             $display("Multiplier: %0d | Multiplicand: %0d ", multiplier, multiplicand);
             $display("Expected %0d, got %0d", $signed(multiplier * multiplicand), product);
         end
-        
+
         // Ensure dst_valid goes low before the next operation
         //@(negedge dst_valid);
     endtask
@@ -102,19 +103,19 @@ module array_multiplier_tb (
     task apply_dst_ready();
         // Ensure dst_ready is asserted when necessary
         @(posedge clk);
-        dst_ready = 1'b1;
+        dst_ready <= 1'b1;
         @(posedge clk);
-        dst_ready = 1'b0;
+        dst_ready <= 1'b0;
     endtask
     
     task directed_tests();
-        // Test 1: valid_dst before dst_ready
-        $display("Running Test 1: dst_valid before dst_ready");
+        // Test 1: valid_src before dst_ready
+        $display("Running Test 1: valid_src before dst_ready");
         apply_inputs();
         @(posedge clk);
-        valid_src = 1'b1;
+        valid_src <= 1'b1;
         @(posedge clk);
-        valid_src = 1'b0;
+        valid_src <= 1'b0;
         @(posedge clk);
         monitor();
         apply_dst_ready();
@@ -123,27 +124,25 @@ module array_multiplier_tb (
         $display("Running Test 2: dst_ready before valid_src");
         apply_inputs();
         @(posedge clk);
-        valid_src = 1'b1;
+        valid_src <= 1'b1;
         @(posedge clk);
-        valid_src = 1'b0;
-        dst_ready = 1'b1;
+        valid_src <= 1'b0;
+        dst_ready <= 1'b1;
         monitor();
         repeat(2) @(posedge clk);
-        dst_ready = 1'b0;
+        dst_ready <= 1'b0;
 
         // Test 3: valid_src and dst_ready at the same time
         $display("Running Test 3: dst_valid and dst_ready at the same time");
         apply_inputs();
         @(posedge clk);
-        valid_src = 1'b1;
+        valid_src <= 1'b1;
         @(posedge clk);
-        valid_src = 1'b0;
+        valid_src <= 1'b0;
         @(posedge clk);
         // Wait for the dst_valid signal to be asserted
-        wait(dst_valid);
-        dst_ready = 1'b1;
-        @(posedge clk);
-        dst_ready = 1'b0;
+        @(posedge dst_valid);
+        dst_ready <= 1'b1;
         
         // Check if the product matches the expected value
         if ($signed(product) == $signed(multiplier) * $signed(multiplicand)) begin
@@ -156,6 +155,10 @@ module array_multiplier_tb (
             $display("Multiplier: %0d | Multiplicand: %0d ", multiplier, multiplicand);
             $display("Expected %0d, got %0d", $signed(multiplier * multiplicand), product);
         end
+
+        @(negedge dst_valid);
+        dst_ready <= 1'b0;
+        
     endtask
     
 endmodule
