@@ -27,7 +27,7 @@ The Pinout diagram of the signed array  multiplier with val_redy interface  is g
 ![Datapath](./docs/Seq_Array_Multiplier_valready_datapath.drawio.png)
 
 ## Controller
-![Controller](./docs/Seq_multiplier_valready_Controller.drawio.png)
+![Controller](./docs/Seq_multiplier_Controller.drawio.png)
 
 ***Note:***
 - The inputs that are not written in the STG are treated as don't  care .
