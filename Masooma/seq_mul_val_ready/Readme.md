@@ -15,10 +15,7 @@ src_valid------------------------------>Indicator for getting valid inputs
 src_ready------------------------------>Indicator for idle state
 dest_valid------------------------------>Indicator for completion of multiplication
 dest_ready------------------------------>Indicator for getting output
-<figure>
-<iframe src="https://drive.google.com/file/d/1hT8bbG7P7hPx5XWerwEfiEe3f09Tx1gR/preview" width="440" height="230" allow="autoplay"></iframe>
-  <figcaption>Top Module Diagram</figcaption>
-</figure>
+![Top Module](https://drive.google.com/uc?id=1m9hw0Qw2GRCjbj70ecxzAMXc4HwKlsCn)
 <figure>
 <iframe src="https://drive.google.com/file/d/1C_kK64Cud8xMGOvUlfHM6NeG4tY1sp80/preview" width="520" height="480" allow="autoplay"></iframe>
  <figcaption>Datapath and Controller</figcaption>
