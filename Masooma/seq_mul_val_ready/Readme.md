@@ -19,13 +19,13 @@ dest_ready------------------------------>Indicator for getting output
 ### Top Module
 ![Top Module](https://drive.google.com/uc?id=1m9hw0Qw2GRCjbj70ecxzAMXc4HwKlsCn)
 ### Datapath and Controller
-![Datapath and Controller](https://drive.google.com/uc?id=1C_kK64Cud8xMGOvUlfHM6NeG4tY1sp80)
+![Datapath and Controller](https://drive.google.com/uc?id=1OBvjs564oGijMuhNYmC7wM_Xsi_AjyQM)
 
 ### State Transition Graph
 Controller contains state machine having two states:
 S0------------------------------>Starting state or Idle state
 S1------------------------------>Processing state
-![STG](https://drive.google.com/uc?id=1Hy6SxX7PMi24NDgHHsMOXx7LOku5sxJ-)
+![STG](https://drive.google.com/uc?id=1scMFOle8yd8ZBpTJu6mAmIpV4THX8OsJ)
 
 ## Simulation using Iverilog and Gtkwave
 
