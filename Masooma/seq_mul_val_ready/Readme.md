@@ -17,26 +17,26 @@ dest_valid------------------------------>Indicator for completion of multiplicat
 dest_ready------------------------------>Indicator for getting output <br />
 
 ### Top Module
-![Top Module](https://drive.google.com/uc?id=1m9hw0Qw2GRCjbj70ecxzAMXc4HwKlsCn)
+![Top Module](https://drive.google.com/uc?id=1hT8bbG7P7hPx5XWerwEfiEe3f09Tx1gR)
 ### Datapath and Controller
-![Datapath and Controller](https://drive.google.com/uc?id=1OBvjs564oGijMuhNYmC7wM_Xsi_AjyQM)
+![Datapath and Controller](https://drive.google.com/uc?id=1C_kK64Cud8xMGOvUlfHM6NeG4tY1sp80)
 
 ### State Transition Graph
-Controller contains state machine having two states:
+Controller contains state machine having two states: <br />
 S0------------------------------>Starting state or Idle state <br />
 S1------------------------------>Processing state <br />
-![STG](https://drive.google.com/uc?id=1scMFOle8yd8ZBpTJu6mAmIpV4THX8OsJ)
+![STG](https://drive.google.com/uc?id=1Hy6SxX7PMi24NDgHHsMOXx7LOku5sxJ-)
 
 ## Simulation using Iverilog and Gtkwave
 
-To simulate code on iverilog, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul directory:
+To simulate code on iverilog, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul_val_ready directory:
 
     make
 
-To add waves, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul directory:
+To add waves, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul_val_ready  directory:
 
     make waveform
-To clean .vvp and .vcd, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul directory:
+To clean .vvp and .vcd, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul_val_ready  directory:
 
     make clean
 
