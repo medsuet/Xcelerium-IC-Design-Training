@@ -87,7 +87,12 @@ src/4_bit_counter/counter
 src/4_bit_counter/docs/wavedrom (1).png:Zone.Identifier
 # ignore dump files .vcd
 *.vcd
-# ignore executable
+# ignore executable of 16_bit_sequential_multiplier
 src/16_bit_sequential_multiplier/signed_multiplier
 src/valid_ready_interface_seq_multiplier/signed_multiplier
 src/valid_ready_interface_seq_multiplier/valid_ready_signed_multiplier
+
+# ignore cocotb_tasks extra files
+src/cocotb_tasks/tests/__pycache__
+*.xml
+src/cocotb_tasks/sim_build
