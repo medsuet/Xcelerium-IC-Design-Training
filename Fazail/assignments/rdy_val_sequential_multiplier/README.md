@@ -3,7 +3,7 @@
 
 ## Overview
 
-This project involves the design and implementation of a sequential multiplier. A sequential multiplier is a digital circuit that multiplies two binary numbers in a sequential manner, producing the result within 17-18 clock cycles. This type of multiplier is generally simpler and requires less hardware compared to parallel multipliers, but it takes more clock cycles to produce the result.
+This project involves the design and implementation of a sequential multiplier with the valid ready interface. A sequential multiplier is a digital circuit that multiplies two binary numbers in a sequential manner, producing the result within 17-18 clock cycles. This type of multiplier is generally simpler and requires less hardware compared to parallel multipliers, but it takes more clock cycles to produce the result.
 
 ## Project Structure
 
@@ -15,8 +15,7 @@ This project involves the design and implementation of a sequential multiplier. 
 ## Features
 
 - **Sequential Operation**: The multiplier performs multiplication in a sequence of steps, making it efficient in terms of hardware utilization.
-- **Configurable Bit-width**: The bit-width of the multiplicand and multiplier can be configured as per requirements but you must have to change its shift register.
-- **Start and Ready Signals**: The design includes start and ready signals to control the operation of the multiplier.
+- **Valid-Ready Interface**: The design includes valid ready signals to control the operation of the multiplier.
 
 ## Design Details
 
@@ -38,8 +37,9 @@ The following is the Datapath of the sequential multiplier:
 
 ### States of the Control Unit
 
-1. **Idle**: Waiting for the start signal.
-2. **Calc**: Performing the multiplication over multiple clock cycles.
+1. **IDLE**: Waiting for the src_valid signal. (src_ready signal is always asserted in this state) 
+2. **CALC**: Performing the multiplication over multiple clock cycles.
+3. **WAIT_DST_RDY**: Holding the output until the destination ready signal is asserted.
 
 The following is the Controller of the sequential multiplier:
 
@@ -59,8 +59,8 @@ To work with this project, you will need the following tools:
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
-   cd sequential-multiplier
+   git clone git@github.com:Fazail333/Xcelerium-IC-Design-Training.git
+   cd ./Fazail/assignments/rdy_val_sequential_multiplier
    ```
 
 2. Set up your simulation environment as per the requirements of your simulator tool.
