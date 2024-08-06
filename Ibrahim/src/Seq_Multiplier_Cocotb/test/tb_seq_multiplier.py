@@ -65,7 +65,7 @@ async def tb_seq_multiplier(dut):
     await reset_sequence(dut)
 
     # Random testing
-    for _ in range(10000):
+    for _ in range(100000):
         a = random.randint(-32767, 32767)
         b = random.randint(-32767, 32767)
         dut._log.info(f"Testing with random A = {a}, B = {b}")
