@@ -1,0 +1,10 @@
+//Object Files 
+*.o
+*.d
+*.obj
+*.elf
+maze
+part0
+part1
+boothMultiplier
+

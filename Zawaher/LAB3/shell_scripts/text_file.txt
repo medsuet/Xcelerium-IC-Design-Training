@@ -1,0 +1,6 @@
+Assalam-o-alaikum everybody.
+I am Zawaher Bin Asim. An Electrical Engineer from Uet Lahore.
+Currently, I am working as trainee at Xcelerium Inc.
+After six months of trainig I will join the Xcelerium team.
+My experties are in Desiging the Datapath and Controllers of the IP Cores.
+  
