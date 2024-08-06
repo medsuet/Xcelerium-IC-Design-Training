@@ -14,8 +14,6 @@ async def reset_sequence(dut):
     """Reset sequence."""
     dut.rst.value = 0
     await RisingEdge(dut.clk)
-    await RisingEdge(dut.clk)
-    await RisingEdge(dut.clk)
     dut.rst.value = 1
     dut._log.info("Reset sequence complete")
 
