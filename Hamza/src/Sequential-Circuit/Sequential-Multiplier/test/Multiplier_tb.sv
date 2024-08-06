@@ -49,54 +49,31 @@ module Multiplier_tb #(
         $dumpvars(0, Multiplier_tb);
     end
 
-    task driver (input int tests);
+    // Task for driving inputs
+    task driver(input logic signed [15:0] in1, input logic signed [15:0] in2);
         begin
-            for (int j = 0;j <= tests ; j++) begin
-                Multiplier = $random();
-                Multiplicand = $random();
-
-                start = 1;
-                @(posedge clk);
-                start = 0;
-
-                while(!ready) begin
-                    @(posedge clk);
-                end
-            end
-        end
-    endtask
-
-    task monitor(input int tests);
-        for(int i = 0; i <= tests; i++) begin
-            exp = Multiplier * Multiplicand;
-            if (exp != Product) begin
-                $display("Fail: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
-            end else begin
-                $display("Pass: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
-            end
-        end
-    endtask
-
-    task direct_test(input signed [WIDTH-1:0] in_a, in_b);
-    
-        Multiplier =  in_a; Multiplicand = in_b;
-
-        start = 1;
-        @(posedge clk);
-        start = 0;
-
-        // gives the clock signal till the ready comes
-        while (!ready) begin
+            Multiplicand = in1;
+            Multiplier = in2;
+            start = 1;
             @(posedge clk);
+            start = 0;
+            while(! ready) @(posedge clk);
         end
+    endtask
 
-        exp = in_a * in_b;
-        if (exp != Product) begin
-            $display("Fail: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
-        end else begin
-            $display("Pass: A = %0d, B = %0d, P = %0d, E = %0d", Multiplicand, Multiplier, Product, exp);
+    // Task for monitoring outputs
+    task monitor;
+        begin
+            @(posedge ready) exp = Multiplicand * Multiplier;
+            if(exp != Product)
+            begin
+                $display("Fail: A = %0h, B = %0h, P = %0h,E= %0h", Multiplicand, Multiplier, Product,exp);
+            end
+            else
+            begin
+                $display("Pass: A = %0h, B = %0h, P = %0h,E= %0h", Multiplicand, Multiplier, Product,exp);
+            end
         end
-        
     endtask
 
     // Task for reset sequence
@@ -119,21 +96,29 @@ module Multiplier_tb #(
         
         reset_sequence();
 
-        /* ---> Direct Test <--- */
-        direct_test (10, 1);
-        direct_test (10, -1);
-        direct_test (-10, 1);
-        direct_test (-10, -1);
-        direct_test (0, 0);
-        direct_test (0, -1);
-        direct_test (-1, 0);
-        direct_test (-100, -1001);
+        //directed testbench
+        fork
+            driver(10,1); 
+            monitor();
+        join
+        
+        fork
+            driver(0,1000); 
+            monitor();
+        join
+        
+        fork
+            driver(-1,1000); 
+            monitor();
+        join
 
         // Fork-join for parallel test execution
-        fork
-            driver(50);
-            monitor(50); 
-        join
+        for (int i=0; i<200 ;i++ ) begin
+            fork
+                driver($random ,$random);
+                monitor(); 
+            join
+        end
 
         $finish;
     end
