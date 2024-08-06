@@ -1,0 +1,35 @@
+# Name: makefile
+# Author: Muhammad Tayyab
+# Date: 10-7-2024
+# Description: makefile for Lab 3 task 5.3
+
+
+SCRIPTS = $(wildcard *.sh)
+INSTALLDIR = installscripts
+
+all : syntax test install
+
+syntax :
+	bash -n $(SCRIPTS)
+	@echo "Syntax of all scripts checked."
+
+test :
+	./hello.sh
+	./Ex1.3.sh -6 5
+	./Ex2.1.sh 0
+	./Ex2.1.sh 99999999
+	./Ex2.2.sh 500
+	./Ex3.1.sh 0
+	./Ex3.1.sh 75
+	./Ex3.2.sh
+	./Ex4.1.sh
+	./Ex4.21.sh
+	./Ex4.22.sh
+	./Ex4.3.sh
+
+install:$(INSTALLDIR)
+	cp -t $(INSTALLDIR) $(SCRIPTS)
+	@echo "Scripts copied to /$(INSTALLDIR)"
+
+$(INSTALLDIR):
+	mkdir $(INSTALLDIR)
