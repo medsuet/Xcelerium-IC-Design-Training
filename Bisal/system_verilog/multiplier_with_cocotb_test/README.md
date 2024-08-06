@@ -1,8 +1,91 @@
-# Sequential Signed Multiplier Project
+# Sequential Signed Multiplier Project with Python Test 
 
-## Objective
+## Introduction
 
-This project implements a sequential multiplier using Verilog, consisting of two main components: the Control Unit and the Data Path. The system multiplies two 16-bit signed numbers sequentially and outputs a 32-bit signed product. The project also includes a testbench for verification.
+This project implements a sequential multiplier using Verilog, consisting of two main components: the Control Unit and the Data Path. The system multiplies two 16-bit signed numbers sequentially and outputs a 32-bit signed product. The project also includes a testbench for verification using Cocotb.
+
+## What is Cocotb?
+
+Cocotb (Coroutine-based Co-simulation Testbench) is a Python library that allows you to write testbenches for your HDL code (e.g., Verilog, VHDL) in Python. It leverages the simulator's VPI/VHPI interface to provide an efficient way to drive and monitor signals in your design. Cocotb is particularly useful for writing complex testbenches, as it provides a high-level, Pythonic interface for interacting with your HDL.
+
+## Prerequisites
+
+- Verilog/SystemVerilog simulator (e.g., Icarus Verilog)
+- Python 3.x
+- Cocotb library
+
+## Installation
+
+### Cocotb
+
+To install Cocotb, you can use pip:
+
+```sh
+pip install cocotb
+```
+
+### Icarus Verilog
+
+To install Icarus Verilog, follow these steps:
+
+On Ubuntu:
+
+```sh
+sudo apt-get update
+sudo apt-get install iverilog
+```
+
+On macOS (using Homebrew):
+
+```sh
+brew install icarus-verilog
+```
+
+### Setting Up Cocotb in a Virtual Environment
+
+1. Create a virtual environment:
+
+    ```sh
+    python -m venv myenv
+    ```
+
+2. Activate the virtual environment:
+
+    On Windows:
+
+    ```sh
+    myenv\Scripts\activate
+    ```
+
+    On Unix or macOS:
+
+    ```sh
+    source myenv/bin/activate
+    ```
+
+3. Install Cocotb in the virtual environment:
+
+    ```sh
+    pip install cocotb
+    ```
+
+## Running the Testbench
+
+To run the testbench, use the following command:
+
+```sh
+make SIM=icarus
+```
+
+This command runs the simulation using Icarus Verilog and executes the Cocotb testbench.
+
+## Viewing Waveforms
+
+To generate waveforms for viewing, ensure your Makefile includes commands to dump VCD files. Once the simulation is complete, you can use GTKWave to view the waveform:
+
+```sh
+gtkwave waveform.vcd
+```
 
 ## Project Structure
 
@@ -15,12 +98,14 @@ This project implements a sequential multiplier using Verilog, consisting of two
 The Top Module integrates the Control Unit and Data Path, coordinating the overall multiplication process.
 
 #### Inputs
+
 - `clk`: Clock signal.
 - `reset`: Reset signal to initialize the state.
 - `start`: Signal to start the multiplication process.
 - `A`, `B`: 16-bit input values to be multiplied.
 
 #### Outputs
+
 - `P`: 32-bit product of the multiplication.
 - `ready`: Indicates when the multiplication is complete.
 
@@ -33,20 +118,23 @@ The Top Module integrates the Control Unit and Data Path, coordinating the overa
 The Control Unit handles the state transitions between different stages of the multiplication process, including initialization, calculation, and completion.
 
 #### Inputs
+
 - `clk`: Clock signal.
 - `reset`: Reset signal to initialize the state.
 - `start`: Signal to start the multiplication process.
 - `count`: Counter value indicating the current step in the multiplication.
 
 #### Outputs
+
 - `enReg`: Enable signal for loading inputs into registers.
 - `enCount`: Enable signal for the counter and calculation operations.
-- `enShift`: Enable signal for shifting calculated product for each count.
+- `enShift`: Enable signal for shifting the calculated product for each count.
 - `ready`: Indicates when the multiplication is complete.
 
 #### State Diagram
 
 The Control Unit operates in a finite state machine with the following states:
+
 1. **START**: Waits for the start signal. On receiving the start signal, it transitions to the CALC state.
 2. **CALC**: Performs the multiplication by iterating through the bits of the multiplicand. The state transitions back to START after completion.
 
@@ -56,18 +144,19 @@ The Control Unit operates in a finite state machine with the following states:
 
 ### Data Path
 
-The Data Path module performs the multiplication operation by accumulating partial products and computes final result 'P'.
+The Data Path module performs the multiplication operation by accumulating partial products and computing the final result `P`.
 
 #### Inputs
+
 - `clk`: Clock signal.
 - `reset`: Reset signal to initialize registers.
 - `enReg`: Enable signal to load the input values into internal registers.
 - `enCount`: Enable signal to increment the count.
 - `enShift`: Enable signal to perform shift operations.
-- `ready`: Signal indicating that the result is ready.
 - `A`, `B`: 16-bit input values to be multiplied.
 
 #### Outputs
+
 - `P`: 32-bit product of the multiplication.
 - `count`: 4-bit counter value.
 
@@ -77,64 +166,44 @@ The Data Path uses registers to store the multiplicand, multiplier, and intermed
   <img src="docs/images/datapath.png" alt="Data Path Diagram" />
 </p>
 
+## Testbench Explanation
 
-#### Testbench
+The testbench is written using Cocotb to verify the functionality of the sequential signed multiplier. It consists of several key functions and test cases.
 
-The testbench verifies the functionality of the Top Module by providing test cases and checking the output.
+### Clock Generation
+
+A clock generation coroutine (`clk_gen`) creates a continuous clock signal for the DUT (Device Under Test).
+
+### Signed Conversion
+
+A helper coroutine (`to_signed`) converts unsigned values to signed values, considering the bit-width of the signals.
+
+### Test Execution
+
+The `run_test` coroutine sets the input values, initiates the multiplication process, and checks the output against the expected result. It also logs the results of the test.
+
+### Directed Tests
+
+The `directed_tests` coroutine runs specific test cases with known inputs and expected outputs. It initializes the DUT, runs the directed test cases, and logs the pass/fail results.
+
+### Random Tests
+
+The `random_tests` coroutine performs a large number of random test cases to verify the robustness of the multiplier. It initializes the DUT, runs random test cases, and logs the pass/fail results.
+
+By following this structure, the testbench thoroughly verifies the functionality of the sequential signed multiplier, ensuring it handles both directed and random test cases correctly.
 
 ## Running the Project
+To run the project, a Makefile is provided which can be used by the following commands:
 
-### Prerequisites
+To display the final outputs just run command below, within you virtual environment
 
-To run this project, you need a SystemVerilog simulator (e.g., ModelSim).
+```sh
+make 
+```
+To see waveforms run the commands below 
 
-### Makefile Commands
-
-Run the project using commands given below:
-
-- **Compile the project:**
-
-  ```bash
-    make compile
-  
-- **Simulate the project:**
-
-  ```bash
-    make simulate
-  
-- **Display waveform:**
-
-  ```bash
-    make waveform
-
-- **Remove the project:**
-
-  ```bash
-    make clean
-  
-  
-### Expected Waveform
-
-For the example inputs in waveform below the inputs are `A = 1` and `B = 1` in hex format, the waveform shows the final product being displayed after 16 cycles for the progression through the states, the accumulation of partial products, output. The `ready` signal will be asserted when the product is available.
-
-![Example Waveform](docs/images/waveformexample.png)
-
-## Gate Count Comparison
-
-### 16-Bit Combinational vs Sequential Multiplier
-
-In the design of digital multipliers, the gate count is a critical factor in determining the complexity and resource usage of the implementation. For a 16-bit multiplier, the combinational approach typically requires more gates compared to the sequential approach due to its need for a complete combinatorial logic circuit that processes all bits simultaneously.
-
-- **Combinational Multiplier:** The 16-bit combinational multiplier generally requires approximately 256 gates. This higher gate count arises from the need to implement all the necessary logic for parallel bitwise operations and summation, leading to a more complex and gate-intensive design.
-
-- **Sequential Multiplier:** In contrast, the sequential multiplier, which processes bits sequentially rather than in parallel, utilizes roughly 200 gates. The reduction in gate count is due to the sequential processing nature, where the design can leverage registers and control logic to manage intermediate results and reduce the overall gate requirements.
-
-This comparison highlights the trade-off between parallelism and gate efficiency in multiplier design. While the combinational multiplier offers faster computation by handling all bits simultaneously, the sequential multiplier can be more gate-efficient, potentially offering advantages in resource-constrained environments.
-
-
-
-
-
-
+```sh
+ gtkwave dump.vcd
+```
 
 
