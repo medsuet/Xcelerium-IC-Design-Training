@@ -74,7 +74,7 @@ The Control Unit operates as a finite state machine with the following states:
 4. **WAIT**: Waits for the `dst_ready` signal to assert `dst_valid` and then returns to IDLE.
 
 <p align="center">
-  <img src="docs/images/state_machine.png" alt="Control Unit State Diagram" />
+  <img src="docs/images/control_state.png" alt="Control Unit State Diagram" />
 </p>
 
 ### Data Path
