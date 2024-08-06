@@ -1,0 +1,10 @@
+2024-07-01 alice login
+2024-07-01 bob logout
+2024-07-02 alice upload
+2024-07-02 carol login
+2024-07-03 alice download
+2024-07-03 bob login
+2024-07-04 carol logout
+2024-07-04 alice login
+2024-07-05 bob download
+2024-07-05 carol upload
