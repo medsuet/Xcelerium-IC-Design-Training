@@ -69,7 +69,7 @@ async def multiplier_tb(dut):
     # Random testing
     for _ in range(400):
         a = random.randint(-32768, 32767)
-        b = random.randint(-24000, 24000)
+        b = random.randint(-32768, 32767)
         exp = a * b
         dut._log.info(f"Testing with random A = {a}, B = {b}")
         drive_task = cocotb.start_soon(driver(dut, a, b))

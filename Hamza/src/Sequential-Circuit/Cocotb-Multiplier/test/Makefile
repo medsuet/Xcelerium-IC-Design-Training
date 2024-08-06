@@ -1,4 +1,4 @@
-SIM ?= icarus
+SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 VERILOG_SOURCES += $(PWD)/../src/Controller.sv
 VERILOG_SOURCES += $(PWD)/../src/Datapath.sv
