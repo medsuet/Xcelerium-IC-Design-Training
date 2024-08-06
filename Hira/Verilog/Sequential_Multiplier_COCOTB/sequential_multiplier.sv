@@ -31,18 +31,21 @@ always_comb begin
         begin
             partial_product = ~partial_product;
         end
-        //$display("%b",partial_product);
+        if (bit_index==0)
+        begin
+            product_reg = 0;
+        end
         partial_product = partial_product << bit_index;
+        //$display("%b",partial_product);
         product_reg = product_reg + partial_product;
         if (bit_index == WIDTH-1) 
         begin 
             product_reg = product_reg + 32'h10000; 
-            //$display("%b",product_reg); 
+            
         end
         
     end
-    else 
-    begin
+    else begin
         partial_product = 0;
         product_reg=0;
 
@@ -53,10 +56,8 @@ end
 
 
 
-always_ff @(posedge clk or posedge rst) 
-begin
-    if (rst) 
-    begin
+always_ff @(posedge clk or posedge rst) begin
+    if (rst) begin
         product <= 0;
         done <= 0;
         bit_index <= 0;
@@ -65,14 +66,13 @@ begin
         begin
             product <= 0;
             //extended_B<={ {16{A[15]}}, B };
-            bit_index <= 0;
+            //bit_index <= 0;
             done <= 0;
         end else 
             if (calc) 
             begin
-                bit_index <= bit_index + 1;
-                if (bit_index == WIDTH-1) 
-                begin 
+                bit_index <= bit_index +1;
+                if (bit_index == WIDTH-1) begin 
                     product <= product_reg;
                     done <= 1;
                 end
