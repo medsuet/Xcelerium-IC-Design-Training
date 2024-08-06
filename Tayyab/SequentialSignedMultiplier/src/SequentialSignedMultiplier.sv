@@ -22,7 +22,7 @@
     Supports valid/ready interface.
 */
 
-module SequentialSignedMultiplier #(parameter NUMBITS)
+module SequentialSignedMultiplier #(parameter NUMBITS=16)
 (
     input logic clk, reset,
     input logic [(NUMBITS-1):0] num_a, num_b,

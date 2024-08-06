@@ -1,7 +1,7 @@
 /*
     Name: controller.sv
     Author: Muhammad Tayyab
-    Date: 30-7-2024
+    Date: 5-8-2024
     Description: Controller for SequentialSignedMultiplier.sv
 */
 
@@ -17,14 +17,14 @@ module controller #(parameter NUMBITS)
 );
 
 // Define states
-typedef enum logic [1:0] { IDLE, INPUTDATA, CALCULATE, READY } type_states_e;
+typedef enum logic { S0, S1 } type_states_e;
 
 type_states_e current_state, next_state;
 
 // Store current state
 always_ff @(posedge clk, negedge reset) begin
     if (!reset)
-        current_state <= IDLE;
+        current_state <= S0;
     else
         current_state <= next_state;
 end
@@ -33,11 +33,9 @@ end
 always_comb 
 begin
     case (current_state)
-        IDLE: next_state = (valid_src) ? INPUTDATA : IDLE;
-        INPUTDATA: next_state = CALCULATE;
-        CALCULATE: next_state = (finish) ? READY : CALCULATE;
-        READY: next_state = (ready_dst) ? IDLE : READY;
-        default: next_state = IDLE;
+        S0: next_state = (valid_src) ? S1 : S0;
+        S1: next_state = (finish && ready_dst) ? S0 : S1;
+        default: next_state = S0;
     endcase
 end
 
@@ -49,41 +47,24 @@ begin
     num_b_wr=1'b1;
 
     case (current_state)
-        IDLE: 
+        S0: 
             begin
-                num_a_mux_sel=1'bx;
-                num_b_mux_sel=1'bx;
-                product_wr=1'b0;
-                product_clear=1'b0;
-                valid_dst=1'b0;
-                ready_src=1'b1;
+                num_a_mux_sel = (valid_src) ? 1'b1 : 1'bx ;
+                num_b_mux_sel = (valid_src) ? 1'b1 : 1'bx ;
+                product_wr    = (valid_src) ? 1'b1 : 1'b0 ;
+                product_clear = (valid_src) ? 1'b1 : 1'b0 ;
+                valid_dst     = (valid_src) ? 1'b0 : 1'b0 ;
+                //ready_src     = (valid_src) ? 1'b0 : 1'b1 ;
+                ready_src     = 1'b1 ;
             end
-        INPUTDATA: 
-              begin
-                num_a_mux_sel=1'b1;
-                num_b_mux_sel=1'b1;
-                product_wr=1'b1;
-                product_clear=1'b1;
-                valid_dst=1'b0;
-                ready_src=1'b0;
-              end
-        CALCULATE: 
-              begin
-                num_a_mux_sel=1'b0;
-                num_b_mux_sel=1'b0;
-                product_wr=num_a_lsb;
-                product_clear=1'b0;
-                valid_dst=1'b0;
-                ready_src=1'b0;
-              end
-        READY: 
+        S1: 
             begin
-                num_a_mux_sel=1'bx;
-                num_b_mux_sel=1'bx;
-                product_wr=1'b0;
-                product_clear=1'b0;
-                valid_dst=1'b1;
-                ready_src=1'b0;
+                num_a_mux_sel = (finish) ? 1'bx : 1'b0 ;
+                num_b_mux_sel = (finish) ? 1'bx : 1'b0 ;
+                product_wr    = (finish) ? 1'b0 : num_a_lsb ;
+                product_clear = (finish) ? 1'b0 : 1'b0 ;
+                valid_dst     = (finish) ? 1'b1 : 1'b0 ;
+                ready_src     = (finish) ? ready_dst : 1'b0 ;
             end
     endcase
 end

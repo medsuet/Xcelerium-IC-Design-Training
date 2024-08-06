@@ -22,38 +22,28 @@ Outputs: product         : <2*NUMBITS> wide result of num_a * num_b
 Supports valid/ready interface.
 ```
 ### Run tests
-ModelSim is used as SystemVerilog simulator.
+Verilator is used as SystemVerilog simulator.
 
 Use makefile to run random tests on the unit.
 
-`make compile`\
-Compiles the modules source files and testbench.\
-PHONY target for make work/_lib.qdb
+`make verilate`\
+Compiles the modules source files.\
 
 `make simulate`\
-Simulates directed and  random tests on SequentialSignedMultiplier module.\
-Displays messages on console and in transcript file.\
-Runs compile target if required.\
-PHONY target for make transcript.\
+Simulates random tests on SequentialSignedMultiplier module.\
+Displays scoreboard on console and generates waveform.vcd file.\
+(No need to run verilate target).\
 See simulation options.
 
-`make waveform.vcd`\
-Simulates directed and  random tests on SequentialSignedMultiplier module and generates waveform.vcd file.\
-Runs compile target if required.
-
 `make clean`\
-Cleans the simulation files: work directory and  transcript.
+Cleans the simulation files and directories.
 
 ### Simulation options
 These parameters can be set on simulation time.\
-For example: `make simulate SIMTIME="10 ms" NUMTESTS=1e6`
+For example: `make simulate NUMTESTS=1000000`
 
-`SIMTIME` (default 1ms)\
-Running time of simulation. Requires a larger value for longer tests.
-If simulation exits without any message, try increasing SIMTIME.
-
-`NUMTESTS` (default 1e4)\
-Number of times to run random tests on the module.
+`NUMTESTS` (default 10000)\
+Number of random tests to run on the module.
 
 ### C model
 Model of SequentialSignedMultiplier module written in C.\
