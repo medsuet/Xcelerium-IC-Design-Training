@@ -59,10 +59,6 @@ vsim.wlf
 # Ignore compiled simulation files in the src/Sequential_Multiplier directory
 src/Sequential_Multiplier/tb_seq_multiplier
 
-# Simulation Files
-*.vvp
-*.vcd
-
 *.idb
 *.pdb
 
@@ -78,4 +74,9 @@ dkms.conf
 # Simulation Files
 *.vvp
 *.vcd
+*.xml
+*obj_dir/
+*venv/
+*sim_build/
+*__pycache__/
 
