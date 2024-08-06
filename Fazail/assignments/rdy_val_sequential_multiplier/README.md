@@ -1,5 +1,5 @@
 
-# 16-bit Signed Sequential Multiplier with REady Valid Interface
+# 16-bit Signed Sequential Multiplier with Ready Valid Interface
 
 ## Overview
 
