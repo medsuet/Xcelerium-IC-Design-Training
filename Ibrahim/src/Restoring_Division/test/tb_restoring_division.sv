@@ -1,20 +1,25 @@
-module tb_sequential_multiplier;
+module tb_restoring_division;
     // Parameter definition with default value
     parameter WIDTH = 16;
 
     // Inputs
-    logic signed [WIDTH-1:0] Multiplicand; // Input for multiplicand
-    logic signed [WIDTH-1:0] Multiplier;   // Input for multiplier
+    logic [WIDTH-1:0]dividend; // Input fordividend
+    logic [WIDTH-1:0] divisor;   // Input for divisor
     logic clk;                             // Clock signal
-    logic rst;                             // Reset signal
+    logic rst_n;                             // Reset signal
     logic src_valid;                       // Source valid signal
     logic dest_ready;                      // Destination ready signal
 
     // Expected product for verification
-    logic signed [(2*WIDTH)-1:0] expected_product;
+    logic [WIDTH-1:0] expected_quotient;
+    logic [WIDTH-1:0] expected_remainder;
+
+    logic [WIDTH-1:0] rand_dividend;
+    logic [WIDTH-2:0] rand_divisor;
 
     // Outputs
-    logic signed [(2*WIDTH)-1:0] Product;  // Output product
+    logic [WIDTH-1:0] quotient;  // Output product
+    logic [WIDTH-1:0] remainder;
     logic src_ready, dest_valid;           // Handshake signals
 
     // Pass and fail counters
@@ -22,16 +27,17 @@ module tb_sequential_multiplier;
     integer fail_count = 0;
 
     // Instantiate the Unit Under Test (UUT)
-    seq_multiplier #(.WIDTH(WIDTH)) uut (
-        .multiplicand(Multiplicand),
-        .multiplier(Multiplier),
+    restoring_division #(.WIDTH(WIDTH)) uut (
+        .dividend(dividend),
+        .divisor(divisor),
         .clk(clk),
-        .rst_n(rst),
+        .rst_n(rst_n),
         .src_valid(src_valid),
         .dest_ready(dest_ready),
         .dest_valid(dest_valid),
         .src_ready(src_ready),
-        .product(Product)
+        .quotient(quotient),
+        .remainder(remainder)
     );
 
     // Clock generation
@@ -42,20 +48,20 @@ module tb_sequential_multiplier;
 
     // Dump file for waveform
     initial begin
-        $dumpfile("val_ready.vcd");
+        $dumpfile("restoring.vcd");
         $dumpvars(0);
     end
 
     // Task for driving inputs
-    task drive_inputs(input logic signed [WIDTH-1:0] in1, input logic signed [WIDTH-1:0] in2);
+    task drive_inputs(input logic [WIDTH-1:0] in1, input logic [WIDTH-1:0] in2);
         begin
-            Multiplicand = in1;            // Assign input to multiplicand
-            Multiplier = in2;              // Assign input to multiplier
+           dividend = in1;            // Assign input todividend
+            divisor = in2;              // Assign input to divisor
             src_valid = 1;                 // Assert src_valid signal
 
             @(posedge clk);
             while (!src_ready) @(posedge clk); // Wait for src_ready signal
-            $display("\nHandshake 1 complete: Multiplicand = %0d, Multiplier = %0d", Multiplicand, Multiplier);
+            $display("\nHandshake 1 complete:dividend = %0d, divisor = %0d",dividend, divisor);
             src_valid = 0;                       // Deassert src_valid signal
 
             while (!dest_valid) @(posedge clk);  // Wait for dest_valid signal
@@ -69,15 +75,16 @@ module tb_sequential_multiplier;
     // Task for monitoring outputs
     task monitor_outputs;
         begin
-            @(posedge dest_ready) expected_product = Multiplicand * Multiplier; // Calculate expected product
+            @(posedge dest_ready) expected_quotient = dividend / divisor; 
+            expected_remainder = dividend % divisor;
             @(posedge clk);
             $display("'dest_ready' is 1, Handshake 2 Initiated: Waiting for product");
-            if (expected_product == Product) begin
+            if ((expected_quotient == quotient ) && (expected_remainder == remainder)) begin
                 pass_count += 1;
-                $display("PASS: time = %0t, Multiplicand = %0d, Multiplier = %0d, Product = %0d, Expected = %0d", $time, Multiplicand, Multiplier, Product, expected_product);
-            end else begin
+                $display("PASS: time = %0t,dividend = %0d, divisor = %0d, quotient = %0d, Expected = %0d, remainder = %0d, Expected = %0d", $time,dividend, divisor, quotient, expected_quotient, remainder, expected_remainder);
+            end  else begin
                 fail_count += 1;
-                $display("FAIL: time = %0t, Multiplicand = %0d, Multiplier = %0d, Product = %0d, Expected = %0d", $time, Multiplicand, Multiplier, Product, expected_product);
+                $display("FAIL: time = %0t,dividend = %0d, divisor = %0d, quotient = %0d, Expected = %0d, remainder = %0d, Expected = %0d", $time,dividend, divisor, quotient, expected_quotient, remainder, expected_remainder);
             end
         end
     endtask
@@ -86,9 +93,9 @@ module tb_sequential_multiplier;
     task reset_sequence();
         begin
             @(posedge clk);
-            rst = 0;                       // Assert reset signal
+            rst_n = 0;                       // Assert reset signal
             repeat(200) @(posedge clk);
-            rst = 1;                       // Deassert reset signal
+            rst_n = 1;                       // Deassert reset signal
         end
     endtask
 
@@ -96,11 +103,11 @@ module tb_sequential_multiplier;
     task init_sequence();
         begin
             // Initialize Inputs
-            Multiplicand = 0;              // Initialize multiplicand to 0
-            Multiplier = 0;                // Initialize multiplier to 0
+            dividend = 0;              // Initializedividend to 0
+            divisor = 0;                // Initialize divisor to 0
             src_valid = 0;                 // Initialize src_valid to 0
             dest_ready = 0;                // Initialize dest_ready to 0
-            rst = 1;                       // Initialize rst to 1
+            rst_n = 1;                       // Initialize rst_n to 1
         end
     endtask
 
@@ -112,7 +119,7 @@ module tb_sequential_multiplier;
         end
     endtask
 
-    task pass_inputs(input logic signed [WIDTH-1:0] in1, input logic signed [WIDTH-1:0] in2);
+    task pass_inputs(input logic [WIDTH-1:0] in1, input logic [WIDTH-1:0] in2);
         begin
             fork
                 drive_inputs(in1, in2);
@@ -131,32 +138,21 @@ module tb_sequential_multiplier;
         reset_sequence();
 
         // Directed tests with delays
-        
-        // Test case: Multiplication with 0
-        pass_inputs({WIDTH-1{1'b1}}, 0);
-        pass_inputs({1'b1, {WIDTH-1{1'b0}}}, 0);
 
-        // Test case: Multiplication with 1
-        
-        pass_inputs(1, 1);
-        pass_inputs({WIDTH-1{1'b1}}, 1);
-
-        
-        // Test case: Multiplication with negative numbers
-        pass_inputs(-1, -1);
-        pass_inputs({WIDTH-1{1'b1}}, -1);
-
-        // Max positive numbers
-        pass_inputs({WIDTH-1{1'b1}}, {WIDTH-1{1'b1}});
-
-        // Max positive and max negative numbers
-        pass_inputs({1'b1, {WIDTH-1{1'b0}}}, {WIDTH-1{1'b1}});
-
+        // Division by 1
+        pass_inputs(65535,1);
+        pass_inputs(32767,1);
 
         // Random Testing with delays
         for(int i = 0; i < 100000; i++) begin
-            // Drive random inputs to the multiplier
-            pass_inputs($random, $random); 
+            // Generate random inputs for dividend
+            rand_dividend = $random;
+            // Generate random inputs for divisor within range 1 to 32768
+            rand_divisor = $random;
+            if(rand_divisor == '0) begin
+                rand_divisor += 1;
+            end
+            pass_inputs(rand_dividend, rand_divisor);
         end
 
         // Display final results

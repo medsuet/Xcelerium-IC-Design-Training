@@ -89,7 +89,7 @@ always_comb begin
             dest_valid = 1'b0;
 
             // Transition based on count_done and Q0, Q_1 values
-            if (count_done && !dest_valid) begin
+            if (count_done && !dest_ready) begin
                 if (Q0 & !Q_1) begin
                     next_state = WAIT;
                     alu_op     = 2'b01;  // Subtract operation
@@ -112,7 +112,7 @@ always_comb begin
                     clear      = 1'b1;
                     dest_valid = 1'b1;
                 end 
-            end else if (count_done && dest_valid) begin
+            end else if (count_done && dest_ready) begin
                     if (Q0 & !Q_1) begin
                         next_state = IDLE;
                         alu_op     = 2'b01;  // Subtract operation
