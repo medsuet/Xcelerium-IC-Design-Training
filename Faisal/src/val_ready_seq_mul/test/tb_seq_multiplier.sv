@@ -1,7 +1,7 @@
 module tb_seq_multiplier;
 
 // parameter define
-parameter CYCLE = 10; 
+parameter CYCLE = 20; 
 parameter WIDTH = 16; // width of multiplicand and multiplier 
 parameter MAXNUM = 65536; // max number of 16 bit
 parameter NUMTESTS = 500; // number of random tests
@@ -74,7 +74,7 @@ parameter NUMTESTS = 500; // number of random tests
     task reset_sequence;
         begin
             rst = 0;
-            repeat(10) @(posedge clk);
+            repeat(5) @(posedge clk);
             rst = 1;
         end
     endtask
@@ -83,21 +83,21 @@ parameter NUMTESTS = 500; // number of random tests
     task drive_inputs(input logic signed [WIDTH-1:0] input1, input logic signed [WIDTH-1:0] input2);
         begin
             Multiplicand = input1;
-            Multiplier = input2;
+            Multiplier = input2; 
             src_valid = 1;
             @(posedge clk);
+            while (!src_ready) @(posedge clk);
             src_valid = 0;
         end
     endtask
 
     // Task for monitor
     task monitor_outputs;
-        begin            
-            dest_ready = 1;
-            
+        begin 
+            expected = Multiplicand * Multiplier;          
             while (!dest_valid) @(posedge clk);
+            dest_ready = 1;
             count_tests ++;
-            expected = Multiplicand * Multiplier;
             
             if (expected != Product) 
             begin
@@ -110,7 +110,7 @@ parameter NUMTESTS = 500; // number of random tests
                 $display("Test:%0d Pass: A = %0d, B = %0d, P = %0d, E = %0d",count_tests, Multiplicand, Multiplier, Product, expected);
             end
             
-            dest_ready = 0;
+            @(posedge clk) dest_ready = 0;
         end
     endtask
 
