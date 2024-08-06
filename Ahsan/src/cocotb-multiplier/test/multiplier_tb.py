@@ -4,9 +4,9 @@ import random
 
 # Function to convert an integer to a signed value of a given bit width
 def to_signed(val, bits):
-    if val >= 2**(bits-1):
-        val -= 2**bits
-    return val
+    mask = 1 << (bits - 1)
+    return (val & (mask - 1)) - (val & mask)
+
 
 @cocotb.coroutine
 async def clock_gen(dut):
