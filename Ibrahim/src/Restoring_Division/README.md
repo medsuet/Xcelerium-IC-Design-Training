@@ -83,7 +83,7 @@ The sequence of operations for the handshake is as follows:
 5. Once the result is ready, the divider asserts `dest_valid`.
 6. The testbench asserts `dest_ready` to accept the result.
 7. The result is transferred to the testbench, completing the handshake.
-8. The divider deasserts `dest_valid` and asserts `src_ready` to indicate readiness for new inputs.
+8. The divider deasserts `dest_valid` and asserts `src_ready` to indicate readiness for new inputs
 
 ## **Example Output**
 
