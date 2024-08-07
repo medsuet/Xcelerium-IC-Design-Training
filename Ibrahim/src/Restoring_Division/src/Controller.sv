@@ -1,22 +1,22 @@
 module Controller (
     input logic       clk,          // Clock signal
-    input logic       rst_n,        // Ative-low reset signal
-    input logic       src_valid,    // Source ready
+    input logic       rst_n,        // Active-low reset signal
+    input logic       src_valid,    // Source valid signal
     input logic       dest_ready,   // Destination ready signal
     input logic       count_done,   // Count complete signal
-    input logic       sub_msb,
+    input logic       sub_msb,      // Most significant bit of the subtraction result (A-M)
 
-    output logic      src_ready,    // source ready indicating multiplier is ready to Accept new value
-    output logic      dest_valid,   // Destination valid signal
-    output logic      en_M,     
-    output logic      en_Q,      
-    output logic      en_count,     
-    output logic      en_A,        
+    output logic      src_ready,    // Source ready signal indicating the divider is ready to accept new value
+    output logic      dest_valid,   // Destination valid signal indicating the quotient and remainder are ready
+    output logic      en_M,         // Enable signal for M register
+    output logic      en_Q,         // Enable signal for Q register
+    output logic      en_count,     // Enable signal for count register
+    output logic      en_A,         // Enable signal for A register
     output logic      alu_op,       // ALU operation code
-    output logic      sel_Q,         // Select Q
-    output logic      sel_A,         // Select A       
-    output logic      en_out,       // Enable to store the product until destination handshake is complete
-    output logic      en_final,     // The product will be provided when destination handshake is complete
+    output logic      sel_Q,        // Select signal for Q register
+    output logic      sel_A,        // Select signal for A register
+    output logic      en_out,       // Enable signal to store the quotient and remainder until destination handshake is complete
+    output logic      en_final,     // Final enable signal to provide the quotient and remainder when destination handshake is complete
     output logic      clear         // Clear signal
 );
 
@@ -24,7 +24,7 @@ module Controller (
 typedef enum logic [1:0]{
     IDLE = 2'b00,  // Idle state
     RUN  = 2'b01,  // Run state
-    WAIT = 2'b10  // Wait state
+    WAIT = 2'b10   // Wait state
 } state_t;
 
 state_t current_state, next_state;  // Current and next state variables
@@ -83,35 +83,8 @@ always_comb begin
             src_ready  = 1'b0;
             dest_valid = 1'b0;
 
-            // if (count_done && dest_ready && src_valid) begin
-            //     clear = 1'b1;
-            //     case(sub_msb)
-            //         1'b0: begin
-            //             next_state = RUN;
-            //             en_count   = 1'b1;
-            //             sel_Q      = 1'b0;
-            //             sel_A      = 1'b0;
-            //             en_A       = 1'b1;
-            //             en_Q       = 1'b1;
-            //             en_M       = 1'b1;
-            //             alu_op     = 1'b1;
-            //             dest_valid = 1'b1;
-            //             src_ready  = 1'b1;
-            //         end
-            //         1'b1: begin
-            //             next_state = RUN;
-            //             en_count   = 1'b1;
-            //             sel_Q      = 1'b0;
-            //             sel_A      = 1'b0;
-            //             en_A       = 1'b1;
-            //             en_Q       = 1'b1;
-            //             en_M       = 1'b1;
-            //             alu_op     = 1'b0;
-            //             dest_valid = 1'b1;
-            //             src_ready  = 1'b1;
-            //         end
-            //     endcase 
             if (count_done && !dest_ready) begin
+                // Transition to WAIT state and determine ALU operation based on sub_msb
                 case(sub_msb) 
                     1'b0: begin
                         next_state = WAIT;
@@ -130,7 +103,8 @@ always_comb begin
                         alu_op     = 1'b0;
                     end
                 endcase
-            end else if(count_done && dest_ready) begin
+            end else if (count_done && dest_ready) begin
+                // Transition to IDLE state when the destination is ready
                 case(sub_msb) 
                     1'b0: begin
                         next_state = IDLE;
@@ -161,6 +135,7 @@ always_comb begin
                 endcase
             end else begin
                 next_state = RUN;
+                // Determine ALU operation based on sub_msb
                 case(sub_msb)
                     1'b0: alu_op = 1'b1;
                     1'b1: alu_op = 1'b0;
@@ -183,7 +158,7 @@ always_comb begin
             src_ready  = 1'b0;
             dest_valid = 1'b1;
 
-            // Transition to DONE state if dest_ready is high
+            // Transition to IDLE state if dest_ready is high
             if (dest_ready) begin
                 next_state = IDLE;
                 en_final   = 1'b1;

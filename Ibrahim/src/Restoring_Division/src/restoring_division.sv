@@ -1,19 +1,21 @@
 `include "src/Datapath.sv"
 `include "src/Controller.sv"
+
+// Restoring Division module parameterized by WIDTH
 module restoring_division #(
     parameter WIDTH = 16
 ) (
-    input logic              clk,
-    input logic              rst_n,
-    input logic              src_valid,
-    input logic              dest_ready,
-    input logic [WIDTH-1:0]  dividend,
-    input logic [WIDTH-1:0]  divisor,
+    input logic              clk,           // Clock signal
+    input logic              rst_n,         // Active-low reset signal
+    input logic              src_valid,     // Source valid signal
+    input logic              dest_ready,    // Destination ready signal
+    input logic [WIDTH-1:0]  dividend,      // Dividend input
+    input logic [WIDTH-1:0]  divisor,       // Divisor input
 
-    output logic [WIDTH-1:0] quotient,
-    output logic [WIDTH-1:0] remainder,
-    output logic             dest_valid,
-    output logic             src_ready
+    output logic [WIDTH-1:0] quotient,      // Quotient output
+    output logic [WIDTH-1:0] remainder,     // Remainder output
+    output logic             dest_valid,    // Destination valid signal
+    output logic             src_ready      // Source ready signal
 );
 
 logic alu_op, count_done, en_A, en_M, en_Q, en_count, sel_A, sel_Q;
@@ -42,6 +44,7 @@ Controller C1(
     .clear(clear)
 );
 
+// Datapath instance to perform the division operation
 Datapath #(
     .WIDTH_M(WIDTH)
 ) D1(

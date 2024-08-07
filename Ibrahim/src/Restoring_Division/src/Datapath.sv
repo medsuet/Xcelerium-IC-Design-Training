@@ -3,41 +3,38 @@
 `include "src/Mux.sv"
 
 module Datapath #(
-    parameter WIDTH_M = 16
+    parameter WIDTH_M = 16  // Width of the inputs and outputs
 ) (
     input logic                clk,               // Clock signal
     input logic                rst_n,             // Active-low reset signal
-    input logic [WIDTH_M-1:0]  dividend,        
-    input logic [WIDTH_M-1:0]  divisor,     
-    input logic                en_Q,          
-    input logic                en_M,           
-    input logic                en_A,   
-    input logic                en_count,                   
+    input logic [WIDTH_M-1:0]  dividend,          // Dividend input for division
+    input logic [WIDTH_M-1:0]  divisor,           // Divisor input for division
+    input logic                en_Q,              // Enable signal for dividend register
+    input logic                en_M,              // Enable signal for divisor register
+    input logic                en_A,              // Enable signal for remainder register
+    input logic                en_count,          // Enable signal for counter
     input logic                alu_op,            // ALU operation code
-    input logic                sel_Q,              // 
-    input logic                sel_A,              // 
-    input logic                en_out,            // Enable output signal
-    input logic                en_final,          // Enable to assign product to when destination handshake is complete
+    input logic                sel_Q,             // Select signal for dividend mux
+    input logic                sel_A,             // Select signal for remainder mux
+    input logic                en_out,            // Enable signal to output quotient and remainder
+    input logic                en_final,          // Enable signal to provide final quotient and remainder
     input logic                clear,             // Clear signal
 
-    output logic               count_done,        // Signal indicating count is done
-    output logic               sub_msb,                
-    output logic [WIDTH_M-1:0] quotient,          
-    output logic [WIDTH_M-1:0] remainder
+    output logic               count_done,        // Signal indicating the counter has completed
+    output logic               sub_msb,           // Most significant bit of the subtraction result (A-M)
+    output logic [WIDTH_M-1:0] quotient,          // Output quotient
+    output logic [WIDTH_M-1:0] remainder          // Output remainder
 );
 
-logic [4:0] count;                                  // 5-bit counter
-logic [WIDTH_M-1:0] divisor_out, dividend_out, remainder_out;
-logic [WIDTH_M-1:0] mux_Q, mux_A, A_out, Q_out, remainder_given, new_A;
-logic [(2*WIDTH_M)-1:0] shifted_combined, combined, quotient_given, partial_diff;
+// Internal signals
+logic [4:0] count;                                             // 5-bit counter for the number of iterations
+logic [WIDTH_M:0] divisor_out, remainder_given, remainder_out; // Internal registers for divisor, dividend, and remainder
+logic [WIDTH_M-1:0] dividend_out;
+logic [WIDTH_M:0] mux_Q, mux_A, new_A, partial_diff, A_out, Q_out;
+logic [(2*WIDTH_M):0] shifted_combined, combined;
+logic [(2*WIDTH_M)-1:0] quotient_given;
 
-// always_comb begin
-//     if(divisor == '0) begin
-//         divisor = {{WIDTH_M-2{1'b0}}, 1'b1};
-//     end
-// end
-
-// Register for multiplicand
+// Register for divisor
 Register #(
     .WIDTH(WIDTH_M)
 ) Divisor_reg(
@@ -49,6 +46,7 @@ Register #(
     .out(divisor_out)
 );
 
+// Mux to select between dividend and Q_out from the ALU
 Mux #(
     .WIDTH(WIDTH_M)
 ) mux_dividend(
@@ -58,6 +56,7 @@ Mux #(
     .out(mux_Q)
 );
 
+// Register for dividend
 Register #(
     .WIDTH(WIDTH_M)
 ) Dividend_reg(
@@ -69,6 +68,7 @@ Register #(
     .out(dividend_out)
 );
 
+// Mux to select between zero and A_out from ALU
 Mux #(
     .WIDTH(WIDTH_M)
 ) mux_remainder(
@@ -78,9 +78,10 @@ Mux #(
     .out(mux_A)
 );
 
+// Register for remainder
 Register #(
     .WIDTH(WIDTH_M)
-) Accumulator_reg(
+) Remainder_reg(
     .clk(clk),
     .rst_n(rst_n),
     .clear(clear),
@@ -89,35 +90,32 @@ Register #(
     .out(remainder_out)
 );
 
-
-// Counter
+// Counter to keep track of iterations
 always_ff @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
-        count <= #1 'b0;
+        count <= #1 'b0;  // Reset counter
     end else if(clear) begin
-        count <= #1 'b0;
+        count <= #1 'b0;  // Clear counter
     end else if(en_count) begin
-        count <= #1 count + 1;
+        count <= #1 count + 1;  // Increment counter
     end 
 end
 
-// Signal indicating count is done
-assign count_done = (count == 16) ?  1'b1 :  1'b0;
+// Signal indicating count is done when counter reaches WIDTH_M
+assign count_done = (count == WIDTH_M) ? 1'b1 : 1'b0;
 
-// Concatenating wires for shifting
+// Concatenate remainder and dividend for shifting
 assign combined = {remainder_out, dividend_out};
 
-
-// Shifting logic
+// Shifting logic to prepare for the next iteration
 assign shifted_combined = {combined[(2*WIDTH_M)-2:0], 1'b0};
 
-assign new_A = shifted_combined[(2*WIDTH_M)-1:WIDTH_M];
+// Compute new remainder and partial difference
+assign new_A = shifted_combined[(2*WIDTH_M):WIDTH_M];
 assign partial_diff = new_A - divisor_out;
 
-always_comb begin
-    sub_msb = partial_diff[15];
-end
-
+// Determine the most significant bit of the partial difference
+assign sub_msb = partial_diff[WIDTH_M];
 
 // ALU to perform operations based on alu_op
 ALU #(
@@ -131,21 +129,19 @@ ALU #(
     .Q_out(Q_out)
 );
 
-
-// Store the quotient and remainder calculated in these registers 
+// Store the quotient and remainder when en_out is high
 always_ff @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
         remainder_given <= '0;
         quotient_given  <= '0;
-    end  else if(en_out) begin
+    end else if(en_out) begin
         remainder_given <= A_out;
         quotient_given  <= Q_out;
     end
 end
 
-// Output these quotient and remainder when destination handshake is complete
-assign quotient = (!en_final) ? {WIDTH_M{1'b0}} : quotient_given;
-
+// Output the quotient and remainder when en_final is high (When Handshake is Complete)
+assign quotient  = (!en_final) ? {WIDTH_M{1'b0}} : quotient_given;
 assign remainder = (!en_final) ? {WIDTH_M{1'b0}} : remainder_given;
 
 endmodule
