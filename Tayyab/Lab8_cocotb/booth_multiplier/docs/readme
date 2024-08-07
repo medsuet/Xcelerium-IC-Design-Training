@@ -1,9 +1,9 @@
 # Booth multiplier
 
-Multiplies using Booth's multipler algorithem
+Multiplier unit using Booth's multipler algorithem
 
 ```
-Parameters: NUMBITS:    number of bits (width) of multiplier and multiplicand
+Parameters: NUMBITS     : number of bits (width) of multiplier and multiplicand
 
 Inputs: clk             : clock signal
         reset           : reset signal (active low)
@@ -13,9 +13,9 @@ Inputs: clk             : clock signal
         ready_dst       : ready signal from detination signaling that output (porduct) has been processed
 
 Outputs: ready           : set to 1 when result (product) is available
-            product         : <2*NUMBITS> wide result of num_a * num_b
-            valid_dst       : valid signal to destination signaling availability of output (product)
-            ready_scr       : ready signal to source signaling that inputs (num_a, num_b) has been processed
+         product         : <2*NUMBITS> wide result of num_a * num_b
+         valid_dst       : valid signal to destination signaling availability of output (product)
+         ready_scr       : ready signal to source signaling that inputs (num_a, num_b) has been processed
 
 Supports valid/ready interface.
 ```
