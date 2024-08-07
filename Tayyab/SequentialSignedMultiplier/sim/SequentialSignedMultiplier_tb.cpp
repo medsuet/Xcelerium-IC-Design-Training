@@ -3,6 +3,8 @@
     Author: Muhammad Tayyab
     Date: 6-8-2024
     Description: Verilator testbench for SequentialSignedMultiplier.sv
+
+    Comandline argument: argv[1]   : number of random tests to run
 */
 
 #include <stdlib.h>
@@ -119,7 +121,7 @@ void driver(VSequentialSignedMultiplier *dut) {
             case 5:
                 dut->reset=1;
                 dut->num_a=dut->num_a;
-                dut->num_b=dut->num_a;
+                dut->num_b=dut->num_b;
                 dut->valid_src=1;
                 // if ready_src, deassert valid_src and go back to state 4
                 if (dut->ready_src) {

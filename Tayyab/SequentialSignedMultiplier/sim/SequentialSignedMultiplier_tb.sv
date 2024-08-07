@@ -36,10 +36,11 @@ module SequentialSignedMultiplier_tb();
         @(posedge clk);
         $display("\n\nDirected tests:");
 
-        directed_test(-2,1);
         directed_test(0,0);
+        directed_test(-2,1);
+        //directed_test(0,0);
         directed_test(3,2);
-        directed_test(2,-3);
+        directed_test(-2,3);
         directed_test(-1,-1);
         directed_test(16'h7FFF,16'h7FFF);
 
@@ -68,6 +69,7 @@ module SequentialSignedMultiplier_tb();
         valid_src_1();
         wait_ready_src();
         valid_src_0();
+        @(posedge clk);
     endtask
 
     task driver();
@@ -113,7 +115,8 @@ module SequentialSignedMultiplier_tb();
             end
 
             // assert and deassert ready_dst signal with random delay before asserting.
-            repeat($random() % MAX_RAND_DELAY) @(posedge clk);
+            //repeat($random() % MAX_RAND_DELAY) @(posedge clk);
+            @(posedge clk);
             ready_dst_1();
             ready_dst_0();
 

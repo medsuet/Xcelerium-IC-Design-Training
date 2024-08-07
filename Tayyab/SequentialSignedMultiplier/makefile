@@ -7,8 +7,8 @@ NUMTESTS = 10000
 verilate: $(SOURCES)
 	verilator --cc $?
 
-simulate : $(SOURCES)
-	verilator --trace --build --cc $? --exe $(TB)
+simulate : $(TB) $(SOURCES)
+	verilator --trace --build --cc $(SOURCES) --exe $(TB)
 	./obj_dir/VSequentialSignedMultiplier $(NUMTESTS)
 
 clean:
