@@ -256,10 +256,6 @@ To run a specific program, set the `PROG` variable: x could be 1, 2, 3, 4 and 5.
 ```bash
 make run PROG=Problems/Problem_x/problem_x
 ```
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 238beb3 (Modified Makefile for lab6_assembly)
 To run a specific Task, set the `PROG` variable: x could be 1,2 and 3.
 ```bash
 make run PROG=Tasks/task_x
