@@ -16,10 +16,15 @@
 /Lab3/main
 /self/
 */ModelSim/
-*/work/
-*/obj_dir/
+work/
+obj_dir/
+sim_build/
+__pycache__
 transcript
 *.vcd
 *.sv.bak
 *.drawio
 *.json
+cocotb
+requirements.txt
+results.xml
