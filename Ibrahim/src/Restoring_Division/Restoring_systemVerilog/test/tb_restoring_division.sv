@@ -70,7 +70,7 @@ module tb_restoring_division;
             
             @(posedge clk);
             dest_ready = 0;        // Deassert dest_ready signal
-        end
+        end 
     endtask
 
     // Task for monitoring outputs
@@ -82,7 +82,8 @@ module tb_restoring_division;
             $display("'dest_ready' is 1, Handshake 2 Initiated: Waiting for product");
             if ((expected_quotient == quotient) && (expected_remainder == remainder)) begin
                 pass_count += 1;
-                $display("PASS: time = %0t, dividend = %0d, divisor = %0d, quotient = %0d, Expected_Q = %0d, remainder = %0d, Expected_A = %0d", $time, dividend, divisor, quotient, expected_quotient, remainder, expected_remainder);
+                $display("PASS");
+                // $display("PASS: time = %0t, dividend = %0d, divisor = %0d, quotient = %0d, Expected_Q = %0d, remainder = %0d, Expected_A = %0d", $time, dividend, divisor, quotient, expected_quotient, remainder, expected_remainder);
             end else begin
                 fail_count += 1;
                 $display("FAIL: time = %0t, dividend = %0d, divisor = %0d, quotient = %0d, Expected_Q = %0d, remainder = %0d, Expected_A = %0d", $time, dividend, divisor, quotient, expected_quotient, remainder, expected_remainder);
@@ -142,7 +143,6 @@ module tb_restoring_division;
         pass_inputs(32767, 1);  // Test with half of the maximum dividend and divisor 1
 
         pass_inputs(1, 65535);  // Test with dividend 1 and maximum divisor  
-
 
         // Random Testing with delays
         for (int i = 0; i < 100000; i++) begin

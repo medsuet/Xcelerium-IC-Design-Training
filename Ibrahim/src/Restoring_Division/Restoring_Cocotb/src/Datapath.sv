@@ -1,6 +1,4 @@
-`include "src/ALU.sv"
-`include "src/Register.sv"
-`include "src/Mux.sv"
+/* verilator lint_off WIDTHTRUNC */
 
 module Datapath #(
     parameter WIDTH_M = 16  // Width of the inputs and outputs
@@ -28,11 +26,10 @@ module Datapath #(
 
 // Internal signals
 logic [4:0] count;                                             // 5-bit counter for the number of iterations
-logic [WIDTH_M:0] divisor_out, remainder_given, remainder_out; // Internal registers for divisor, dividend, and remainder
-logic [WIDTH_M-1:0] dividend_out;
-logic [WIDTH_M:0] mux_Q, mux_A, new_A, partial_diff, A_out, Q_out;
+logic [WIDTH_M-1:0] divisor_out, remainder_given, remainder_out; // Internal registers for divisor, dividend, and remainder
+logic [WIDTH_M-1:0] dividend_out, mux_Q, Q_out, mux_A, A_out, quotient_given;
+logic [WIDTH_M:0]  new_A, partial_diff;
 logic [(2*WIDTH_M):0] shifted_combined, combined;
-logic [(2*WIDTH_M)-1:0] quotient_given;
 
 // Register for divisor
 Register #(
@@ -145,3 +142,5 @@ assign quotient  = (!en_final) ? {WIDTH_M{1'b0}} : quotient_given;
 assign remainder = (!en_final) ? {WIDTH_M{1'b0}} : remainder_given;
 
 endmodule
+
+/* verilator lint_on WIDTHTRUNC */

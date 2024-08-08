@@ -28,7 +28,7 @@ Controller C1(
     .src_valid(src_valid),
     .dest_ready(dest_ready),     
     .count_done(count_done), 
-    .sub_msb(sub_msb),      
+    .sub_msb(sub_msb),        
 
     .src_ready(src_ready),
     .dest_valid(dest_valid),
@@ -64,7 +64,7 @@ Datapath #(
     .clear(clear),
 
     .count_done(count_done), 
-    .sub_msb(sub_msb),        
+    .sub_msb(sub_msb),           
     .quotient(quotient),
     .remainder(remainder)
 );
