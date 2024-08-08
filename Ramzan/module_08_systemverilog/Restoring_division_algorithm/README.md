@@ -1,5 +1,4 @@
-# 16x16 Sequential Signed Multiplier
-
+# Restoring Division Algorithm
 ## Introduction
 Restoring divison alogorithm to find QUOTIENT and REMAINDER.
 **Q(dividend)** and **M(divisor)** are my inuts and **QUOTIENT** and **REMAINDER** are outputs.<br>
@@ -24,9 +23,6 @@ make clean
 
 ### Top Level Diagram
 ![TopLevel](docs/TopLevel.png)
-
-### Ready Valid HandShake Mechanism
-![Datapath](docs/HandShake.png)
 
 ### Datapath
 ![Datapath](docs/Datapath.png)

@@ -1,4 +1,4 @@
-# 16x16 Sequential Signed Multiplier
+# Restoring_Division_Algorithm
 
 ## Introduction
 Restoring divison alogorithm to find QUOTIENT and REMAINDER.
@@ -25,8 +25,6 @@ make clean
 ### Top Level Diagram
 ![TopLevel](docs/TopLevel.png)
 
-### Ready Valid HandShake Mechanism
-![Datapath](docs/HandShake.png)
 
 ### Datapath
 ![Datapath](docs/Datapath.png)
@@ -34,7 +32,7 @@ make clean
 ### Controller
 ![Datapath](docs/Controller.png)
 
-### Simulation Waveform
+### Simulation
 ![Datapath](docs/results.png)
 
 ### Gate Counts
