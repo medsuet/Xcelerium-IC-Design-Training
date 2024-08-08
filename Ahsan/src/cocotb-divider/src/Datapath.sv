@@ -6,15 +6,16 @@ output logic msb;
 output logic [15:0] remainder,quotient;
 
 // intermediate wires
-logic [31:0] combined,shifted;
-logic [15:0] A,Q,M,A_in,A_M,Q_in,Q_mod;
+logic [32:0] combined,shifted;
+logic [15:0] Q,M,Q_in,Q_mod;
 logic [4:0] counter ;
+logic [16:0] A,A_in,A_M;
 
 assign combined = {A,Q};
 
-assign shifted  = {combined[30:0],1'b0};
+assign shifted  = {combined[31:0],1'b0};
 
-assign A_M     = shifted[31:16] - M;
+assign A_M     = shifted[32:16] - M;
 
 //mux for choosing if we wana recover A or not
 assign A_in = ( mux_sel_msb == 1'b0 )? A_M  : A_M + M ;
@@ -29,7 +30,7 @@ assign Q_in = ( mux_sel_quotient == 1'b0 )? divident : Q_mod;
 assign count_comp = ( counter == 5'd17 ) ? 1'b1: 1'b0;
 
 //msb of A for checking
-assign msb  = A_M[15];
+assign msb  = A_M[16];
 
 //flipflops
 always_ff @( posedge clk or negedge rst ) 

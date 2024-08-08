@@ -2,20 +2,20 @@
 module Seq_Div_top_tb;
 
     // Inputs
-    logic signed [15:0] divident;
-    logic signed [15:0] divisor;
+    logic   [15:0] divident;
+    logic   [15:0] divisor;
     logic clk;
     logic rst;
     logic start;
 
     //refernce model output
-    logic signed [15:0] exp_remain;
-    logic signed [15:0] exp_quot;
+    logic  [15:0] exp_remain;
+    logic  [15:0] exp_quot;
 
     // Outputs
     logic ready;
-    logic signed [15:0] remainder;
-    logic signed [15:0] quotient;
+    logic  [15:0] remainder;
+    logic  [15:0] quotient;
 
 
     // Instantiate the Unit Under Test (UUT)
@@ -72,7 +72,7 @@ module Seq_Div_top_tb;
         begin
             @(posedge ready); 
             exp_remain = divident % divisor;
-            exp_quot = divident / divisor;
+            exp_quot   = divident / divisor;
             if((exp_remain == remainder) && (exp_quot == quotient))
             begin
                 $display("pass");
@@ -81,7 +81,7 @@ module Seq_Div_top_tb;
             else
             begin
                 $display("fail");
-             $display("A = %0h, B = %0h, Rem = %0h,exp_remain= %0h,quot=%0h,exp_quot", divident, divisor,remainder,exp_remain,quotient,exp_quot);
+                $display("A = %d, B =%d, Rem =%d,exp_remain=%d,quot=%d,exp_quot=%d", divident, divisor,remainder,exp_remain,quotient,exp_quot);
             end
         end
     endtask
@@ -89,21 +89,15 @@ module Seq_Div_top_tb;
     // Stimulus process
     initial begin
         reset_sequence(); 
-          
-         
 
         // for random testing
-        for(int i=0;i<3000;i++)
+        for(int i=0;i<1000000;i++)
         begin 
             fork
-            drive_inputs(10+i,1+i); 
+            drive_inputs($random % 65536,$random % 65536); 
             monitor_outputs();
             join
         end
-      //  fork
-       //     drive_inputs(256,24600); 
-       //     monitor_outputs();
-       // join
         $finish;
     end
 endmodule
