@@ -1,7 +1,4 @@
 module restoring_division_con
-#(
-    parameter BITS = 16
-)
 (
     input logic clk,rst,
     input logic valid_src, 

@@ -21,7 +21,7 @@ logic unsigned [BITS-1:0] reminder;
 //logic unsigned [BITS-1:0] random_number_1;
 //logic unsigned [BITS-1:0] random_number_2;
 
-int n = 20000;
+int n = 400000;
 int pass = 0;
 int fail = 0;
 int math_error = 0;
@@ -115,7 +115,7 @@ task monitor_outputs;
         begin
             pass = pass+1;
             $display("pass");
-            $display("dividend = %0d, divisor = %0d, Q = %0d,R= %0d, Q_e = %0d,R_e = %0d", dividend, divisor, quotient, reminder,exp_q,exp_r);
+            //$display("dividend = %0d, divisor = %0d, Q = %0d,R= %0d, Q_e = %0d,R_e = %0d", dividend, divisor, quotient, reminder,exp_q,exp_r);
         end
     end
 endtask
