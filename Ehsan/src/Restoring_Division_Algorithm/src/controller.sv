@@ -1,7 +1,12 @@
 module controller (
-    input logic clk, rst, A_msb, counter_signal, src_valid, dest_ready,
-    output logic mux0_sel, mux1_sel, clear_bit, dest_valid, src_ready, enable, Q_0
+    
+//======================= Declearing Input And Outputs =======================//
+
+    input    logic   clk, rst, A_msb, counter_signal, src_valid, dest_ready,
+    output   logic   mux0_sel, mux1_sel, clear_bit, dest_valid, src_ready, enable, Q_0
 );
+//======================= Declearing Internal Signals ========================//
+
     logic [1:0] c_state, n_state;
     parameter S0 = 2'b00, S1 = 2'b01, S2 = 2'b10;
 

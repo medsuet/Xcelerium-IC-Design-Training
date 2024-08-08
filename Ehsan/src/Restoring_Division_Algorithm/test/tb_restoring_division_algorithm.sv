@@ -1,10 +1,16 @@
+parameter WIDTH = 16;
+
 module tb;
 
-    logic clk, rst, src_valid, src_ready, dest_valid, dest_ready;
-    logic [15:0] divisor, dividend;
-    logic [15:0] remainder, quotient, exp_remainder, exp_quotient;
+//=================== Declearing Input And Outputs For UUT ===================//
 
-    restoring_division_top uut (
+    logic                 clk, rst, src_valid, src_ready, dest_valid, dest_ready;
+    logic   [WIDTH-1:0]   divisor, dividend;
+    logic   [WIDTH-1:0]   remainder, quotient, exp_remainder, exp_quotient;
+
+//========================== Instantiations Module ===========================//
+
+    restoring_division_top #(.WIDTH(WIDTH)) uut (
         .clk(clk),
         .rst(rst),
         .src_valid(src_valid),
@@ -30,7 +36,7 @@ module tb;
     end
 
     //driving inputs
-    task drive_inputs(input logic signed [15:0] input_1, input logic signed [15:0] input_2);
+    task drive_inputs(input logic signed [WIDTH-1:0] input_1, input logic signed [WIDTH-1:0] input_2);
         begin
         dividend = input_1;
         divisor = input_2;
@@ -76,10 +82,10 @@ module tb;
         dest_ready = 0;
 
         //directed tests
-        fork
-            drive_inputs(65234 ,32770);
-            monitor_outputs();    
-        join
+        // fork
+        //     drive_inputs(65234 ,32770);
+        //     monitor_outputs();    
+        // join
 
         //random testing
         for (int i=1; i<100;i++ ) begin
@@ -88,7 +94,6 @@ module tb;
                 monitor_outputs();    
             join
         end
-
         $finish;
     end
 endmodule
