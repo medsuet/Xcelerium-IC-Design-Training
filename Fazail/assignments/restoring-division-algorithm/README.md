@@ -32,7 +32,7 @@ The following is the Controller :
 ## Simulation
 The design is simulated using the following tools:
 
-- **CoCtb**: A testing framework for hardware designs.
+- **CoCotb**: A testing framework for hardware designs.
 - **Icarus Verilog**: A Verilog simulation and synthesis tool.
 - **Verilator**: A high-performance Verilog simulator.
 - **Vivado**: Xilinx's FPGA design suite.
@@ -43,7 +43,7 @@ The design is simulated using the following tools:
 1. **Setup the Environment**
 
    Ensure that you have the required tools installed:
-   - CoCtb
+   - CoCotb
    - Icarus Verilog
    - Verilator
    - Vivado
@@ -97,5 +97,3 @@ The design is simulated using the following tools:
 
    ```bash
    make coco_wave
-
-
