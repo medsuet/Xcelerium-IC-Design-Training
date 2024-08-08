@@ -1,26 +1,34 @@
-# Set up the environment
-TOPLEVEL_LANG = verilog
-COCOTB = $(shell python3 -c "import cocotb; print(cocotb.__file__)")
-PYTHONPATH = $(shell python3 -c "import os; import cocotb; print(os.path.dirname(cocotb.__file__))")
+# Defaults
+SIM ?= icarus
+TOPLEVEL_LANG ?= verilog
 
-# Design and testbench files
+# Source files
+SOURCES_SV += ../define/array_mul.svh \
+               ../src/array_multiplier_datapath.sv \
+               ../src/array_multiplier_controller_valready.sv \
+               ../src/array_multiplier.sv
+
+# TOPLEVEL is the name of the top-level module in your Verilog or VHDL file
 TOPLEVEL = array_multiplier
+
+# MODULE is the basename of the Python test file
 MODULE = array_multiplier_tb
-SRC_DIR = ./src
-TB_DIR = ./tb
-IVERILOG_ARGS = -g2012 -o simv
-VPI_ARGS = -I $(COCOTB)/include
 
-# Makefile rules
-all: sim
+# Include cocotb's make rules to handle simulator setup
+include $(shell cocotb-config --makefiles)/Makefile.sim
 
-sim: $(TOPLEVEL).v $(TB_DIR)/array_multiplier.py
-	@echo "Running simulation..."
-	iverilog $(IVERILOG_ARGS) -I $(COCOTB)/include -I $(SRC_DIR) $(SRC_DIR)/array_multiplier.sv $(TB_DIR)/array_multiplier.py
-	vvp simv
+# Override default simulator flags for Icarus Verilog
+IVERILOG_ARGS += -g2012 -o $(SIM_BUILD)/simv
+
+# Rules
+all: $(SIM_BUILD)/simv
+
+$(SIM_BUILD)/simv: $(SOURCES_SV) $(MODULE).py
+	mkdir -p $(SIM_BUILD)
+	iverilog $(IVERILOG_ARGS) $(SOURCES_SV) $(MODULE).py
+	vvp $(SIM_BUILD)/simv
 
 clean:
-	@echo "Cleaning up..."
-	rm -f simv
+	rm -rf $(SIM_BUILD) *.vcd
 
-.PHONY: all sim clean
+.PHONY: all clean

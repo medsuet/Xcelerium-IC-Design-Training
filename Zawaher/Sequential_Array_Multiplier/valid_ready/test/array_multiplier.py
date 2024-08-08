@@ -1,4 +1,5 @@
 import cocotb
+from cocotb.clock import Clock
 from cocotb.regression import TestFactory
 from cocotb.result import TestFailure
 from cocotb.regression import TestFactory
