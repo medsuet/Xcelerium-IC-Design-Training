@@ -1,5 +1,5 @@
 
-module Seq_Div_top_tb;
+module divider_tb;
 
     // Inputs
     logic   [15:0] divident;
@@ -28,76 +28,10 @@ module Seq_Div_top_tb;
             .quotient(quotient),
             .start(start));
 
-    // Clock generation
-    initial begin
-        clk = 1;
-        forever #5 clk = ~clk; 
-    end
-
     // Dump file for waveform
     initial begin
         $dumpfile("tb.vcd");
-        $dumpvars(0, Seq_Div_top_tb);
+        $dumpvars(0,divider_tb);
     end
-    // Task for reset sequence
-    task reset_sequence;
-        begin
-            divident = 0;
-            divisor = 0;
-            rst = 0;
-            start = 0;
-            exp_quot = 0;
-            exp_remain = 0;
-            repeat(3)@(posedge clk);
-            start = 0;
-            @(posedge clk);
-            rst = 1;
-        end
-    endtask
-
-    // Task for driving inputs
-    task drive_inputs(input logic signed [15:0] in1, input logic signed [15:0] in2);
-        begin
-            divident = in1;
-            divisor = in2;
-            start = 1;
-            @(posedge clk);
-            start = 0;
-            while(! ready) @(posedge clk);
-        end
-    endtask
-
-    // Task for monitoring outputs
-    task monitor_outputs;
-        begin
-            @(posedge ready); 
-            exp_remain = divident % divisor;
-            exp_quot   = divident / divisor;
-            if((exp_remain == remainder) && (exp_quot == quotient))
-            begin
-                $display("pass");
-              // $display("A = %0h, B = %0h, Rem = %0h,exp_remain= %0h,quot=%0h,exp_quot", divident, divisor,remainder,exp_remain,quotient,exp_quot);
-            end
-            else
-            begin
-                $display("fail");
-                $display("A = %d, B =%d, Rem =%d,exp_remain=%d,quot=%d,exp_quot=%d", divident, divisor,remainder,exp_remain,quotient,exp_quot);
-            end
-        end
-    endtask
-
-    // Stimulus process
-    initial begin
-        reset_sequence(); 
-
-        // for random testing
-        for(int i=0;i<1000000;i++)
-        begin 
-            fork
-            drive_inputs($random % 65536,$random % 65536); 
-            monitor_outputs();
-            join
-        end
-        $finish;
-    end
+   
 endmodule

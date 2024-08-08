@@ -70,7 +70,7 @@ always_ff@(posedge clk or negedge rst) begin
     end
     else
     begin
-        remainder = A_in;
+        remainder = A_in[15:0];
         quotient  = Q_mod;
     end  
 end
