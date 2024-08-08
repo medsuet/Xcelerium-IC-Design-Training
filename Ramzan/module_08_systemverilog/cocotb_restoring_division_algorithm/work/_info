@@ -1,0 +1,86 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/Restoring_division_algorithm
+vcontroller
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1723154175
+!i10b 1
+!s100 z6il]1HJedol^D]:hG<Qb0
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+Iea77eg>G3PPF2o?0<BkN_0
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+w1723013406
+8controller.sv
+Fcontroller.sv
+!i122 6
+L0 1 128
+Z5 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z6 !s108 1723154174.000000
+!s107 restoring_division_tb.sv|controller.sv|datapath.sv|
+Z7 !s90 -work|work|datapath.sv|controller.sv|restoring_division_tb.sv|
+!i113 1
+Z8 o-work work
+Z9 tCvgOpt 0
+vdatapath
+R1
+R2
+!i10b 1
+!s100 Po`BE><VTLEUgI4lZ>EK93
+R3
+IjfS1]04]MADd7jFiecWUM3
+R4
+S1
+R0
+w1723034206
+8datapath.sv
+Fdatapath.sv
+!i122 6
+L0 1 143
+R5
+r1
+!s85 0
+31
+R6
+Z10 !s107 restoring_division_tb.sv|controller.sv|datapath.sv|
+R7
+!i113 1
+R8
+R9
+vrestoring_division_tb
+R1
+R2
+!i10b 1
+!s100 [1h8:Ye32;_XX=H=kOiQG2
+R3
+IL=UbNj:b?2Uj6ZFPL;7Id0
+R4
+S1
+R0
+w1723141287
+8restoring_division_tb.sv
+Frestoring_division_tb.sv
+!i122 6
+L0 1 94
+R5
+r1
+!s85 0
+31
+R6
+R10
+R7
+!i113 1
+R8
+R9
