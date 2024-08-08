@@ -14,7 +14,7 @@ from cocotb.clock import Clock
 from random import randint
 
 # Control vars
-NUMBITS = 4
+NUMBITS = 32
 directed_test_pairs = [(1,1),(0,1),(8,0)]
 NUM_RAND_TESTS = int(1e3)
 

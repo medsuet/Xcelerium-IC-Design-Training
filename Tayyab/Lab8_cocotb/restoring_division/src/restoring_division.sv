@@ -22,7 +22,7 @@
     Supports valid/ready interface.
 */
 
-module restoring_division #(parameter NUMBITS = 4)
+module restoring_division #(parameter NUMBITS = 32)
 (
     input logic clk, reset,
     input logic [(NUMBITS-1):0] dividend, divisor,
