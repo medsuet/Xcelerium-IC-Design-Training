@@ -1,1 +1,9 @@
-PASS: multiplier = -11006, multiplicand =  -7964 | product =   710197104 
+PASS: multiplier = -10743, multiplicand =  22115 | product =   329121572 
+PASS: multiplier =  31501, multiplicand = -26227 | product =  -237581445 
+PASS: multiplier = -31643, multiplicand =  21010 | product =  -826176727 
+PASS: multiplier =  -7423, multiplicand = -13043 | product =  -664819430 
+PASS: multiplier =  -3722, multiplicand = -12995 | product =    96818189 
+PASS: multiplier =  22509, multiplicand =  -2164 | product =    48367390 
+PASS: multiplier =  -5639, multiplicand =   9414 | product =   -48709476 
+PASS: multiplier = -31547, multiplicand = -11606 | product =   -53085546 
+PASS: multiplier = -31547, multiplicand = -11606 | product =   366134482 
