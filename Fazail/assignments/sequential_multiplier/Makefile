@@ -6,6 +6,9 @@ SRC_SV = src/controller.sv 				\
 			src/sequential_multiplier.sv 	\
 			test/tb_sequential_multiplier.sv
 
+PY_TB := ./test/*.py
+VCD := ./test/*.vcd
+
 WORK_DIR = work
 
 # Default target
@@ -63,10 +66,22 @@ verilator: ./obj_dir/V$(MODULE)
 		  --exe ./test/$(MODULE).cpp 		\
 		  --timing
 	@touch .stamp.verilate
+
+#----------------------#
+#------ COCO TB -------#
+#----------------------#
+
+cocotb: $(PY_TB)
+	cd ./test/ && $(MAKE)
+
+coco_wave: cocotb $(VCD)
+	gtkwave $(VCD)
 	
 # Clean up generated files
 clean:
 	@echo "Cleaning up..."
+	rm -rf ./test/__pycache__ ./test/sim_build
+	rm -rf ./test/*.vcd ./test/*.xml ./test/*.log
 	rm -rf $(WORK_DIR) transcript vsim.wlf
 	rm -rf *.jou *.log *.pb *.wdb xsim.dir *.str
 	rm -rf .*.timestamp *.tcl *.vcd .*.verilate

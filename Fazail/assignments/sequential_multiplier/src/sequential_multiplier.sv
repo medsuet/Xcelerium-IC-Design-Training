@@ -1,6 +1,4 @@
-module sequential_multiplier #(
-    WIDTH = 16
-    )(
+module sequential_multiplier (
         input logic signed [WIDTH-1:0] multiplier,
         input logic signed [WIDTH-1:0] multiplicand,
         input logic start,
@@ -10,6 +8,8 @@ module sequential_multiplier #(
         output logic signed [2*WIDTH-1:0] product,
         output logic ready
 );
+
+localparam WIDTH = 16;
 
 logic en_in, bit_sel, count_15, count_14, count_en, clr;
 logic bit_01, count_lb;

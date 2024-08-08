@@ -1,6 +1,4 @@
-module datapath #(
-    WIDTH = 16
-) (
+module datapath (
     input logic signed [WIDTH-1:0] multiplicand,
     input logic signed [WIDTH-1:0] multiplier,
 
@@ -21,6 +19,8 @@ module datapath #(
     // Final Product
     output logic signed [2*WIDTH-1:0] product
 );
+
+localparam WIDTH = 16;
 
 logic signed [WIDTH-1 : 0] in_a;
 logic signed [2*WIDTH-1 : 0] ext_a, mux_a, mux_lb, shft_a, pp, add_pp;
@@ -90,16 +90,16 @@ assign product =  (clr) ? pp : '0;
 
 endmodule
 
-module shift_register #(
-    WIDTH = 16
-)(
-    input logic signed [16-1:0]in,
+module shift_register (
+    input logic signed [WIDTH-1:0]in,
     input logic en,
 
     input logic clk, n_rst,
 
     output logic signed out_b
 );
+
+localparam WIDTH = 16;
 
 logic signed [WIDTH-1:0] in_b;
 

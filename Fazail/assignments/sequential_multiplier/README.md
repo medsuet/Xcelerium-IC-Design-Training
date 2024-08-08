@@ -53,6 +53,7 @@ To work with this project, you will need the following tools:
 
 - **Model Sim**: For simulating the design.
 - **Verilator**: For simulating the design.
+- **Cocotb**: For simulating the design
 - **Makefile**: To run the simulation.
 
 ### Installation
@@ -78,6 +79,19 @@ To work with this project, you will need the following tools:
 
    ```bash
    make ver_waves
+   
+### Run Cocotb
+
+1. Run the sequential multiplier simulation:
+
+   ```bash
+   make cocotb
+   ```
+
+2. Run the wave form of the simulation:
+
+   ```bash
+   make coco_wave
    
 ## Gate Counts
 

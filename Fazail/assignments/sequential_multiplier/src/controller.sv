@@ -1,6 +1,4 @@
-module controller #(
-    WIDTH = 16
-) (
+module controller (
     input logic clk,
     input logic n_rst,
 
@@ -22,7 +20,10 @@ module controller #(
     // product ready signal
     output logic ready
 );
-parameter IDLE = 1'b0, CALC = 1'b1;
+
+localparam WIDTH = 16;
+
+localparam IDLE = 1'b0, CALC = 1'b1;
 logic c_state, n_state;
 
 always_ff @( posedge clk or negedge n_rst ) begin : state_register

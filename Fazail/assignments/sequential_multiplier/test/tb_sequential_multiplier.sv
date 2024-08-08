@@ -1,11 +1,11 @@
-localparam WIDTH = 16;
-
 module tb_sequential_multiplier (
     `ifdef VERILATOR
         input logic clk
     `endif
         
 );
+
+localparam WIDTH = 16;
 
 logic signed [WIDTH-1:0] multiplier, m_in;
 logic signed [WIDTH-1:0] multiplicand, m_in2;
@@ -51,14 +51,14 @@ initial begin
     direct_test (0, 0);
     direct_test (0, -1);
     direct_test (-1, 0);
-    direct_test (-100, -1001);
+    direct_test (32770, 65234);
 
     reset_seq;
 
 
     fork
-        driver(10);
-        monitor(10);  
+        driver(1000);
+        monitor(1000);  
     join
 
     $display("\n>>> All the Random tests Result Store in the Log file . <<<\n");
