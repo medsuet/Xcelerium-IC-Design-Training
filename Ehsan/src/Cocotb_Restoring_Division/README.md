@@ -1,13 +1,13 @@
 
-# Valid Ready interface restoring division
+# Restoring Division With Cocotb
 
-## State machine
+## State Machine
 ![state_machine](./docs/state_machine.jpg)
 
-## Data path and controller
+## Data Path And Controller
 ![data_path_and_controller](./docs/data_path_and_controller.jpg)
 
-## Pinout diagram
+## Pinout Diagram
 ![pinout](./docs/pinout_diagram.jpg)
 
 # Run 

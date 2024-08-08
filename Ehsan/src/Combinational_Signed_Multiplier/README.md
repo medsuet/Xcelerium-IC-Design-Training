@@ -1,5 +1,5 @@
 
-# 16bit x 16bit Combinational signed multiplier
+# 16bit x 16bit Combinational Signed Multiplier
 
 ![multiplier](./docs/signed_multiplier.jpg) 
 
@@ -10,7 +10,7 @@ Install iverilog and gtkwave
 make install
 ```
 
-# Run simulation
+# Run Simulation
 To compile design
 ```bash
 make compile
@@ -30,4 +30,3 @@ To delete files made by simulator
 ```bash
 make clean
 ```
-

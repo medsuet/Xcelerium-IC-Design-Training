@@ -1,6 +1,6 @@
-# Counter with comparator
+# Counter With Comparator
 
-## Data path
+## Data Path
 ![data_path](./docs/counter.png) 
 
 ## Wave
@@ -13,7 +13,7 @@ Install iverilog and gtkwave
 make install
 ```
 
-# Run simulation
+# Run Simulation
 To compile design
 ```bash
 make compile

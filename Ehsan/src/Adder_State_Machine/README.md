@@ -1,7 +1,7 @@
 
 # 4bit Adder 
 
-## state machine
+## State Machine
 ![state_machine](./docs/adder_state_machine.jpg)
 
 # Installation
@@ -10,7 +10,7 @@ Install iverilog and gtkwave
 make install
 ```
 
-# Run simulation
+# Run Simulation
 To compile design
 ```bash
 make compile

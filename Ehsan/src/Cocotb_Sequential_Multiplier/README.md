@@ -1,12 +1,12 @@
-# sequential multiplier with cocotb
+# Sequential Multiplier With Cocotb
 
-## State machine
+## State Machine
 ![state_machine](./docs/state_machine.jpg)
 
-## Data path and controller
+## Data Path And Controller
 ![state_machine](./docs/data_path_and_controller.jpg)
 
-## Pinout diagram
+## Pinout Diagram
 ![state_machine](./docs/pinout_diagram.jpg)
 
 # Run 
