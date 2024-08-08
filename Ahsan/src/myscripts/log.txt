@@ -1,0 +1,6 @@
+2022-07-01 alice login
+2022-07-01 bob logout
+2022-07-02 alice logout
+2022-07-02 bob login
+2022-07-02 alice login
+2022-07-03 charlie login
