@@ -15,7 +15,8 @@
             ready_dst       : ready signal from detination signaling that output (porduct) has been processed
     
     Outputs: ready           : set to 1 when result (product) is available
-             product         : <2*NUMBITS> wide result of num_a * num_b
+             product_low     : lower half <NUMBITS> of the result
+             product_high    : upper half <NUMBITS> of the result
              valid_dst       : valid signal to destination signaling availability of output (product)
              ready_scr       : ready signal to source signaling that inputs (num_a, num_b) has been processed
     

@@ -22,10 +22,18 @@ module datapath #(parameter NUMBITS = 32)
 
     assign product_high = ac;
     assign product_low = qr;
-    assign br = num_a;
+
+    // br signals
+    always_ff @(posedge clk, negedge reset)
+    begin
+        if (!reset)
+            br <= 0;
+        else if (input_data)
+            br <= num_a;
+    end
 
     // ac signals
-    always @(posedge clk, negedge reset)
+    always_ff @(posedge clk, negedge reset)
     begin
         if (!reset)
             ac <= 0;
@@ -45,7 +53,7 @@ module datapath #(parameter NUMBITS = 32)
     assign ac_shifted = {ac_add_br[NUMBITS-1], ac_add_br[(NUMBITS-1):1]};
 
     // qr signals
-    always @(posedge clk, negedge reset)
+    always_ff @(posedge clk, negedge reset)
     begin
         if (!reset)
             qr <= 0;
@@ -56,7 +64,7 @@ module datapath #(parameter NUMBITS = 32)
     assign qr_shifted = {ac_add_br[0], qr[(NUMBITS-1):1]};
 
     // qn and qn-1
-    always @(posedge clk, negedge reset)
+    always_ff @(posedge clk, negedge reset)
     begin
         if (!reset)
             qn1 <= 0;
