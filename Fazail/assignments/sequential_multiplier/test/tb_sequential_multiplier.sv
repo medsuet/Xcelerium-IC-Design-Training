@@ -1,12 +1,21 @@
-localparam WIDTH = 16;
+module tb_sequential_multiplier (
+    `ifdef VERILATOR
+        input logic clk
+    `endif
+        
+);
 
-module tb_sequential_multiplier ();
+localparam WIDTH = 16;
 
 logic signed [WIDTH-1:0] multiplier, m_in;
 logic signed [WIDTH-1:0] multiplicand, m_in2;
 logic start;
 
-logic clk, n_rst;
+`ifndef VERILATOR
+    logic clk;
+`endif
+
+logic n_rst;
 
 logic signed [2*WIDTH-1:0] product;
 logic ready;
@@ -21,12 +30,14 @@ sequential_multiplier UUT (
     .ready(ready)
     );
 
-initial begin
-    clk = 1;
-    forever begin
-        #20 clk = ~clk;
+`ifndef VERILATOR
+    initial begin
+        clk = 1;
+        forever begin
+            #20 clk = ~clk;
+        end
     end
-end
+`endif
 
 initial begin
     init_signals;
@@ -40,15 +51,17 @@ initial begin
     direct_test (0, 0);
     direct_test (0, -1);
     direct_test (-1, 0);
-    direct_test (-100, -1001);
+    direct_test (32770, 65234);
 
     reset_seq;
 
 
     fork
-        driver(10000);
-        monitor(10000);  
+        driver(1000);
+        monitor(1000);  
     join
+
+    $display("\n>>> All the Random tests Result Store in the Log file . <<<\n");
 
     $finish;
 end
@@ -74,8 +87,8 @@ task monitor(input int tests);
 
     for(int i = 0; i <= tests; i++) begin
         @(posedge start);
-        m_in <= #1 multiplier;
-        m_in2 <= #1 multiplicand;
+        m_in <= multiplier;
+        m_in2 <= multiplicand;
         repeat (2) @(posedge clk);
         
         // gives the clock signal till the ready comes

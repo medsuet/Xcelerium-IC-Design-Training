@@ -29,10 +29,11 @@ To run the simulation:
    make
 
 ### Waves GUI
-To run the waves in modelsim gui mode, you have to run the following command:
+To run the waves in verilator gui mode, you have to run the following command:
    ```sh
-   make vsim
+   make ver_waves
 ```
+
 ### Waveform sample
 
 The waveform of the design is as follows:
