@@ -1,0 +1,14 @@
+University's Name: UET
+Department's Name: EE
+
+Student's Name: A
+Student's ID: 1
+Student's Grade in subject 1: 100.000000
+Student's Grade in subject 2: 99.000000
+Student's Grade in subject 3: 97.000000Department's Name: CS
+
+Student's Name: B
+Student's ID: 2
+Student's Grade in subject 1: 100.000000
+Student's Grade in subject 2: 98.000000
+Student's Grade in subject 3: 90.000000
