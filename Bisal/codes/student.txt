@@ -1,0 +1,5 @@
+
+Student Information:
+Name: aisha
+ID: 345
+Grades: 45.000000 67.000000 89.000000  
