@@ -47,3 +47,7 @@ This repository contains all the Excercises that is important for the IC Design 
 ## Implementation of Sequential Binary Multiplication with Ready/Valid Protocol
 
 - **Description:** Read the `README.md` file in `Multiplier_w_RV_Protocol` folder which contains files that implement sequential binary multiplier with Ready/Valid Protocol aims to ensures the good communication with multiplier. 
+
+## Implementation of Sequential Binary Multiplication and Sequential Binary Divider with Ready/Valid Protocol using COCOTB
+
+- **Description:** Read the `README.md` file in `cocotb_task` folder which contains folder that implement sequential binary multiplier and sequential binary divider with Ready/Valid Protocol aims to ensures the good communication. 
