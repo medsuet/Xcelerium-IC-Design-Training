@@ -60,7 +60,7 @@ endmodule
 module Sign_Extension(input logic [15:0]input1,output logic [31:0]output1);
     assign output1={{16{input1[15]}},input1[15:0]};
 endmodule
-module Sequential_Multiplier(input logic clk,input logic reset,logic valid_src,logic ready_dst,input logic[15:0]input1,input logic input2_bit,output logic[31:0]Product,output logic End_of_Transmission);
+module Sequential_Multiplier(input logic clk,input logic reset,logic valid_src,logic ready_dst,input logic[15:0]input1,input logic input2_bit,output logic[31:0]Product,output logic End_of_Transmission,output logic ready_src,output logic valid_dst);
     logic [31:0]Sign_Extended_input1;
     logic [31:0]out_MUX1;
     logic [31:0]out_MUX2;
@@ -69,14 +69,13 @@ module Sequential_Multiplier(input logic clk,input logic reset,logic valid_src,l
     logic [31:0] _2s_complement;
     logic Mux_Sel1,Mux_Sel2,Summer_enable;
     logic[4:0]shift_amount;
-    logic ready_src,valid_dst;
     Sign_Extension SE(input1,Sign_Extended_input1);
     Mux2x1 #(32)mux1(Mux_Sel2,Sign_Extended_input1,32'b0,out_MUX1);
 //    assign _2s_complement_33_bit=(~out_MUX1)+33'b1;
     assign _2s_complement=(~out_MUX1)+32'b1;
     
     Mux2x1 #(32)mux2(Mux_Sel1,out_MUX1,_2s_complement,out_MUX2);
-    Controller CONTROLLER1(clk,reset,valid_src,ready_dst,input2_bit,Mux_Sel1,Mux_Sel2,Summer_enable,End_of_Transmission,shift_amount);
+    Controller CONTROLLER1(clk,reset,valid_src,ready_dst,input2_bit,Mux_Sel1,Mux_Sel2,Summer_enable,End_of_Transmission,shift_amount,ready_src,valid_dst);
     Shift_Register #(32)SR(shift_amount,out_MUX2,shifted_partial_product);
     Summer #(32)SUMMER1(clk,reset,Summer_enable,End_of_Transmission,shifted_partial_product,Product);
 endmodule
@@ -381,10 +380,10 @@ module Controller(
     input logic valid_src,ready_dst,
     input logic input_bit,
     output logic Mux_Sel1,Mux_Sel2,Summer_enable,End_of_Transmission,
-    output logic [4:0]shift_amount);
+    output logic [4:0]shift_amount,
+    output logic ready_src,valid_dst);
     logic [4:0] c_state, n_state;
     parameter S0=5'd0, S1=5'd1, S2=5'd2,S3=5'd3, S4=5'd4, S5=5'd5,S6=5'd6, S7=5'd7, S8=5'd8,S9=5'd9, S10=5'd10, S11=5'd11,S12=5'd12, S13=5'd13, S14=5'd14,S15=5'd15, S16=5'd16,S17=5'd17;
-    logic ready_src,valid_dst;
     //state register
     always_ff @ (posedge clk or negedge reset)
     begin
