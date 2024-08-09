@@ -1,8 +1,6 @@
 # Prerequisites
 *.d
 
-/.vscode
-
 # Object files
 *.o
 *.ko
@@ -38,6 +36,8 @@
 *.x86_64
 *.hex
 
+src/Lab2/final
+
 # Debug files
 *.dSYM/
 *.su
@@ -52,3 +52,16 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# simulation files
+*.xml
+*.vcd
+*.vvp
+*transcript
+*vsim.wlf
+*work/
+*.vscode/
+*obj_dir/
+*venv/
+*sim_build/
+*__pycache__/
