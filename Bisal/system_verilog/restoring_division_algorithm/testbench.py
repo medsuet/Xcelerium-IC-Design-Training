@@ -79,7 +79,7 @@ async def random_tests(dut):
 
     pass_count = 0
     fail_count = 0
-    num_tests = 100
+    num_tests = 100000
     
     for _ in range(num_tests):
         dividend = random.randint(1, 1000)
