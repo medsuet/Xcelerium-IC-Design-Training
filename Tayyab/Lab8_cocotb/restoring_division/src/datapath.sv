@@ -40,7 +40,7 @@ module datapath #(parameter NUMBITS = 32)
         else if (a_en)
             a <= (input_data) ? (0) : (a_restore);
     end
-
+        
     assign a_shifted = {a[(NUMBITS-2):0], q[NUMBITS-1]};
     assign a_sub_m = a_shifted - m;
     assign a_restore = (a_sub_m[NUMBITS-1]) ? a_shifted : a_sub_m;

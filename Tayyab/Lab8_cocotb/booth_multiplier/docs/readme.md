@@ -25,6 +25,13 @@ Python reference model is preset in sim/ref_models
 ### Run tests
 Cocotb is used for simulation. The python reference model and testbench are used.
 
+Python testbench: [boothmultiplier_tb.py](../sim/boothmultiplier_tb.py)\
+The python testbench runs directed and random tests on the unit. 
+Default directed test pairs (multiplier, multiplicand) are [(-1,-1),(2,3),(3,-2),(-6,6)] and default number of random tests is 1000.
+
+Define new directed tests, add a new (multiplier, multiplicand) tuple to python list directed_test_pairs (testbench, line 18).\
+To change number of random tests, set value of NUM_RAND_TESTS constant (testbench, line 19).
+
 `make`\
 Runs cocotb simulation.
 

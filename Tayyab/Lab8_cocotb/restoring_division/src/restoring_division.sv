@@ -10,7 +10,7 @@
     Inputs: clk             : clock signal
             reset           : reset signal (active low)
             dividend        : <NUMBITS> wide dividend
-            dividend        : <NUMBITS> wide divisor
+            divisor         : <NUMBITS> wide divisor
             valid_scr       : valid signal from source signaling availability of inputs (dividend, divisor)
             ready_dst       : ready signal from destination signaling that outputs (quotient, remainder) are available
     

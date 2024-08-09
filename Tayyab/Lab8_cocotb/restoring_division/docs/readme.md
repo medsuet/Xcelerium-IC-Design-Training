@@ -24,7 +24,7 @@ Supports valid/ready interface.
 ### Run tests
 Cocotb is used for simulation.
 
-Python testbench: [a relative link](../sim/restoring_division_tb.py)\
+Python testbench: [restoring_division_tb.py](../sim/restoring_division_tb.py)\
 The python testbench runs directed and random tests on the unit. 
 Default directed test pairs (dividend, divisor) are [(1,1),(0,1),(8,0)] and default number of random tests is 1000.
 
