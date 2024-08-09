@@ -17,19 +17,28 @@ async def monitor_output(dut):
     """Monitor output and compare with reference product"""
     while True:
         await RisingEdge(dut.rst)
+        await RisingEdge(dut.clk)
+
         await FallingEdge(dut.rst)
+        await RisingEdge(dut.clk)
+
         await RisingEdge(dut.start)
+        await RisingEdge(dut.clk)
+
         await FallingEdge(dut.start)
 
         ref_product = int(dut.A.value.signed_integer * dut.B.value.signed_integer)
-        while not dut.done.value:
+        while (dut.done.value==0):
             await RisingEdge(dut.clk)
         
-        product = int(dut.product.value.signed_integer)
-        if product == ref_product:
-            dut._log.info(f"Passed: A = {dut.A.value.signed_integer}, B = {dut.B.value.signed_integer}, Product = {product}")
+        a_signed = await to_signed(int(dut.A.value), 16)
+        b_signed = await to_signed(int(dut.B.value), 16)
+        p_signed = await to_signed(int(dut.product.value), 32)
+        if p_signed == ref_product:
+            dut._log.info(f"Passed: A = {a_signed}, B = {b_signed}, Product = {p_signed}")
         else:
-            dut._log.error(f"Test failed: A = {dut.A.value.signed_integer}, B = {dut.B.value.signed_integer}, Expected Product = {ref_product}, Got Product = {product}")
+            dut._log.error(f"Test failed: A = {a_signed}, B = {b_signed}, Expected Product = {ref_product}, Got Product = {p_signed}")
+        await RisingEdge(dut.clk)
 
 # Random test cases
 async def random_test(dut):
@@ -49,12 +58,6 @@ async def random_test(dut):
         
         while (dut.done.value==0):
             await RisingEdge(dut.clk)
-        """
-        a_signed = await to_signed(int(dut.A.value), 16)
-        b_signed = await to_signed(int(dut.B.value), 16)
-        p_signed = await to_signed(int(dut.product.value), 32)
-        dut._log.info(f" A = {a_signed}, B = {b_signed}, Product = {p_signed }")
-        """
         await RisingEdge(dut.clk)  # Delay between tests
         
 
@@ -79,12 +82,6 @@ async def driver(dut, A_in, B_in):
 
     while(dut.done.value==0):
         await RisingEdge(dut.clk)
-    """
-    a_signed = await to_signed(int(dut.A.value), 16)
-    b_signed = await to_signed(int(dut.B.value), 16)
-    p_signed = await to_signed(int(dut.product.value), 32)
-    dut._log.info(f" A = {a_signed}, B = {b_signed}, Product = {p_signed }")
-    """
     await RisingEdge(dut.clk)  # Delay between tests
 
 # Top-level test
@@ -92,7 +89,7 @@ async def driver(dut, A_in, B_in):
 async def top_test(dut):
     """Top-level test"""
     cocotb.start_soon(clock_gen(dut.clk))  # Start the clock generator
-    #cocotb.start_soon(monitor_output(dut))  # Start the monitor
+    cocotb.start_soon(monitor_output(dut))  # Start the monitor
 
     # Run random test cases
     await random_test(dut)
