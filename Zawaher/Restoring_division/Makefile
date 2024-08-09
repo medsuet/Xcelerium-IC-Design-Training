@@ -104,7 +104,14 @@ verilator: ./obj_dir/V$(MODULE)
 lint: $(SOURCES_SV)
 	verilator --lint-only $(SOURCES_SV)
 
+#===========================================================#
+#															#
+#				COCOTB TEST_BENCH							#
+#															#
+#===========================================================#
 
+cocotb:
+	make -C test/
 
 .PHONY : clean
 clean:
@@ -113,3 +120,8 @@ clean:
 	rm -rf .stamp.*
 	rm -rf ./obj_dir
 	rm -rf waveform.vcd *.vvp
+	rm -rf test/__pycache__
+	rm -rf test/results.xml
+	rm -rf test/sim_build
+	rm -rf test/*.vcd
+
