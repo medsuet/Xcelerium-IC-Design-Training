@@ -37,3 +37,23 @@ Runs cocotb simulation.
 
 `clean`\
 Cleans build files.
+
+### Design
+Top level diagram:
+
+![image](images/top_level_diagram.drawio.svg)
+
+
+Controller-datapath connections:
+
+![image](images/datapath_controller.drawio.svg)
+
+
+Datapath:
+
+![image](images/datapath.drawio.svg)
+
+
+Controller:
+
+![image](images/stg.drawio.svg)
