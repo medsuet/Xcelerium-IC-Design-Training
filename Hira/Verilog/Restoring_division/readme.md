@@ -40,10 +40,10 @@ The Verilog code is divided into two main modules:
 
 - **Inputs**: `clk`, `rst`, `enable_count`, `enable_registers`, `selc_A`, `dividend`, `divisor`
 - **Outputs**: `done`, `temp`, `quotient`, `remainder`
-(Top_module.png)
+![Top_module](Top_module.png)
 
 This module implements the datapath for the restoring division algorithm. It handles the initialization, shifting, subtraction, and decision-making process.
-(data_path.png)
+![data_path](data_path.png)
 
 
 ### 2. `Control_unit`
@@ -52,7 +52,7 @@ This module implements the datapath for the restoring division algorithm. It han
 - **Outputs**: `selc_A`, `enable_count`, `enable_registers`, `src_ready`, `dd_valid`
 
 The control unit manages the state machine, controlling the overall flow of the division process based on the inputs and intermediate results.
-(flow.png)
+![flow](flow.png)
 
 ## cocotb Testbench
 
