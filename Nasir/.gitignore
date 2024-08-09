@@ -93,6 +93,11 @@ src/valid_ready_interface_seq_multiplier/signed_multiplier
 src/valid_ready_interface_seq_multiplier/valid_ready_signed_multiplier
 
 # ignore cocotb_tasks extra files
+src/cocotb_tasks/tests/__pycache__
+*.xml
+src/cocotb_tasks/sim_build
+
+# ignore cocotb_tasks extra files
 src/cocotb_tasks/seq_multiplier_16_bit_signed/tests/__pycache__
 *.xml
 src/cocotb_tasks/seq_multiplier_16_bit_signed/sim_build
