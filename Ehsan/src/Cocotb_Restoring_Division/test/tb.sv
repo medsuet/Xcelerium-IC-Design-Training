@@ -21,9 +21,6 @@ module tb;
     logic                 dest_valid;
     logic                 dest_ready;
  
-    logic   [WIDTH-1:0]   exp_remainder;
-    logic   [WIDTH-1:0]   exp_quotient;
-
 //=========================== Module Instantiation ===========================//
 
     restoring_division_top #(.WIDTH(WIDTH)) uut (
