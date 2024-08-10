@@ -1,11 +1,30 @@
+/*******************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 01-08-2024
+  +  Description : Implementation of restoring division algorithm, utilizing 
+                   valid-ready (handshake) protocol.
+*******************************************************************************/
+
 module controller (
-    
+
 //======================= Declearing Input And Outputs =======================//
 
-    input    logic   clk, rst, A_msb, counter_signal, src_valid, dest_ready,
-    output   logic   mux0_sel, mux1_sel, clear_bit, dest_valid, src_ready, enable, Q_0
+    input     logic     clk,
+    input     logic     rst,
+    input     logic     A_msb,
+    input     logic     counter_signal,
+    input     logic     src_valid,
+    input     logic     dest_ready,
+
+    output    logic     mux0_sel,
+    output    logic     mux1_sel,
+    output    logic     clear_bit,
+    output    logic     dest_valid,
+    output    logic     src_ready,
+    output    logic     enable,
+    output    logic     Q_0
 );
-//======================= Declearing Internal Signals ========================//
+//============================= State Machine ================================//
 
     logic [1:0] c_state, n_state;
     parameter S0 = 2'b00, S1 = 2'b01, S2 = 2'b10;

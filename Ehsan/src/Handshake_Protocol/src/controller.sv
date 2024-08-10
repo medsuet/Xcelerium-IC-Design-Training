@@ -1,3 +1,10 @@
+/********************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 29-7-2024
+  +  Description : Implementation of sequential multiplier using booth algorithm.
+                   Also support valid ready (handshake) protocol..
+********************************************************************************/
+
 module controller (
 
 //======================= Declearing Input And Outputs =======================//

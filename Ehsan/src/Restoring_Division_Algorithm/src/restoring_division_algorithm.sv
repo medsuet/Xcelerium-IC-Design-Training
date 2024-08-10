@@ -1,19 +1,34 @@
+/*******************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 01-08-2024
+  +  Description : Implementation of restoring division algorithm, utilizing 
+                   valid-ready (handshake) protocol.
+*******************************************************************************/
+
 module restoring_division_top (
 
 //======================= Declearing Input And Outputs =======================//
 
-    input   logic                clk, rst, src_valid, dest_ready,
-    input   logic  [WIDTH-1:0]   dividend, divisor,
-    output  logic  [WIDTH-1:0]   remainder, quotient,
-    output  logic                dest_valid, src_ready
+    input    logic                 clk,
+    input    logic                 rst,
+    input    logic                 src_valid,
+    input    logic                 dest_ready,
+    input    logic   [WIDTH-1:0]   dividend,
+    input    logic   [WIDTH-1:0]   divisor,
+
+    output   logic                 dest_valid,
+    output   logic                 src_ready,
+    output   logic   [WIDTH-1:0]   quotient,
+    output   logic   [WIDTH-1:0]   remainder
 );
+
 //======================= Declearing Internal Signals ========================//
 
 logic mux0_sel, mux1_sel, counter_signal, Q_0, A_msb, clear_bit, enable;
 
-//========================== Module Instantiation ============================//
+//=========================== Module Instantiation ===========================//
 
-    data_path #(.WIDTH(WIDTH)) data_path (
+    data_path #(.WIDTH(WIDTH)) data_path(
         .clk(clk),
         .rst(rst),
         .clear_bit(clear_bit),
@@ -28,8 +43,7 @@ logic mux0_sel, mux1_sel, counter_signal, Q_0, A_msb, clear_bit, enable;
         .remainder(remainder),
         .quotient(quotient)     
     );
-
-//========================== Module Instantiation ============================//
+//=========================== Module Instantiation ===========================//
 
     controller ctrl_unit(
         .clk(clk),

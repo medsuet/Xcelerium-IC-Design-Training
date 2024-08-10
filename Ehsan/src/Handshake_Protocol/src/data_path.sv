@@ -1,3 +1,10 @@
+/********************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 29-7-2024
+  +  Description : Implementation of sequential multiplier using booth algorithm.
+                   Also support valid ready (handshake) protocol..
+********************************************************************************/
+
 module data_path (
 
 //======================= Declearing Input And Outputs =======================//
@@ -48,7 +55,7 @@ always_comb begin
     endcase
 end
 
-//============================== Left Shifting ===============================//
+//============================== Right Shifting ==============================//
 
 assign combined_shift_A_Q = {mux1_out[MUL_WIDTH-1],mux1_out[MUL_WIDTH-1:0],Q[MUL_WIDTH-1:1]};
 

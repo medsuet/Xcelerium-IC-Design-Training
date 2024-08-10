@@ -1,11 +1,11 @@
-/*******************************************************************************
+/********************************************************************************
   +  Author      : Muhammad Ehsan
   +  Date        : 29-7-2024
-  +  Description : Multiplies two (MUL_WIDTH) bit signed numbers sequentially 
-                   using booth algorithm. Also support valid ready interface.
-*******************************************************************************/
+  +  Description : Implementation of sequential multiplier using booth algorithm.
+                   Also support valid ready (handshake) protocol..
+********************************************************************************/
 
-module sequential_multiplier (
+module sequential_multiplier_top (
 
 //======================= Declearing Input And Outputs =======================//
 
@@ -41,7 +41,6 @@ logic mux0_sel, mux1_sel, counter_signal, Q_1_bit, Q0_bit, clear_bit, alu_ctrl, 
         .product_en(product_en),
         .alu_ctrl(alu_ctrl)
     );
-
 //========================== Module Instantiation ============================//
 
     controller ctrl_unit(

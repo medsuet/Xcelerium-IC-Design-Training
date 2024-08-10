@@ -1,12 +1,12 @@
-# Valid Ready Interface Restoring Division
+# Valid Ready interface restoring division
 
-## State Machine
+## State machine
 ![state_machine](./docs/state_machine.jpg)
 
-## Data Path And Controller
+## Data path and controller
 ![data_path_and_controller](./docs/data_path_and_controller.jpg)
 
-## Pinout Diagram
+## Pinout diagram
 ![pinout](./docs/pinout_diagram.jpg)
 
 # Installation

@@ -1,3 +1,10 @@
+/********************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 29-7-2024
+  +  Description : Implementation of sequential multiplier using booth algorithm.
+                   Also support valid ready (handshake) protocol..
+********************************************************************************/
+
 parameter MUL_WIDTH = 16;
 
 module tb;
@@ -6,20 +13,19 @@ module tb;
 
     logic                                clk;              
     logic                                rst;             
+    logic signed   [MUL_WIDTH-1:0]       multiplicand;    
+    logic signed   [MUL_WIDTH-1:0]       multiplier;      
+    logic signed   [(2*MUL_WIDTH)-1:0]   product;    
     logic                                src_valid;
     logic                                src_ready;
     logic                                dest_valid;
     logic                                dest_ready;
 
-    logic signed   [MUL_WIDTH-1:0]       multiplicand;    
-    logic signed   [MUL_WIDTH-1:0]       multiplier;      
-
-    logic signed   [(2*MUL_WIDTH)-1:0]   product;         
     logic signed   [(2*MUL_WIDTH)-1:0]   exp_product;
 
 //=========================== Module Instantiation ===========================//
 
-    sequential_multiplier #(.MUL_WIDTH(MUL_WIDTH)) uut (
+    sequential_multiplier_top #(.MUL_WIDTH(MUL_WIDTH)) uut (
         .multiplicand(multiplicand),
         .multiplier(multiplier),
         .clk(clk),
@@ -30,7 +36,6 @@ module tb;
         .dest_ready(dest_ready),
         .product(product)
     );
-
 //============================= Clock Generation =============================//
 
     initial begin
@@ -87,9 +92,19 @@ module tb;
         rst = 1;
     endtask
 
+//================================== Testing =================================//
+
     initial begin
         reset_circuit;
         dest_ready = 0;
+
+        // Directed Testing 
+        fork
+            drive_inputs(1,1);
+            monitor_outputs();    
+        join
+
+        // Random Testing 
         fork
             for (int i=0; i<20;i++ ) begin
                 drive_inputs($random % (2^MUL_WIDTH),$random % (2^MUL_WIDTH));

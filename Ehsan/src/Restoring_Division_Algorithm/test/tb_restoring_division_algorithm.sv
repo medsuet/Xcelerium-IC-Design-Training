@@ -1,14 +1,31 @@
+/*******************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 01-08-2024
+  +  Description : Implementation of restoring division algorithm, utilizing 
+                   valid-ready (handshake) protocol.
+*******************************************************************************/
+
 parameter WIDTH = 16;
 
 module tb;
 
 //=================== Declearing Input And Outputs For UUT ===================//
 
-    logic                 clk, rst, src_valid, src_ready, dest_valid, dest_ready;
-    logic   [WIDTH-1:0]   divisor, dividend;
-    logic   [WIDTH-1:0]   remainder, quotient, exp_remainder, exp_quotient;
+    logic                 clk;
+    logic                 rst;
+    logic   [WIDTH-1:0]   dividend;
+    logic   [WIDTH-1:0]   divisor;
+    logic   [WIDTH-1:0]   remainder;
+    logic   [WIDTH-1:0]   quotient;
+    logic                 src_valid;
+    logic                 src_ready;
+    logic                 dest_valid;
+    logic                 dest_ready;
+ 
+    logic   [WIDTH-1:0]   exp_remainder;
+    logic   [WIDTH-1:0]   exp_quotient;
 
-//========================== Instantiations Module ===========================//
+//=========================== Module Instantiation ===========================//
 
     restoring_division_top #(.WIDTH(WIDTH)) uut (
         .clk(clk),
@@ -23,19 +40,22 @@ module tb;
         .quotient(quotient)
     );
 
-    //clock generation
+//============================= Clock Generation =============================//
+
     initial begin
         clk = 1;
         forever #5 clk = ~clk; 
     end
 
-    //generating wavefile
+//=========================== Generating Waveform ============================//
+
     initial begin
         $dumpfile("waveform.vcd");
         $dumpvars(0);
     end
 
-    //driving inputs
+//============================== Driving Inputs ==============================//
+
     task drive_inputs(input logic signed [WIDTH-1:0] input_1, input logic signed [WIDTH-1:0] input_2);
         begin
         dividend = input_1;
@@ -54,7 +74,8 @@ module tb;
 
     endtask 
 
-    //monitoring outputs
+//============================ Monitoring Outputs ============================//
+
     task monitor_outputs;
         begin
             @(posedge dest_ready);
@@ -70,30 +91,35 @@ module tb;
         end
     endtask
 
+//=============================== RESET Circuit ==============================//
+
     task reset_circuit;
         rst = 0;
         #5;
         rst = 1;
     endtask
 
+//================================== Testing =================================//
+
     initial begin
 
         reset_circuit;
         dest_ready = 0;
 
-        //directed tests
-        // fork
-        //     drive_inputs(65234 ,32770);
-        //     monitor_outputs();    
-        // join
+        // Directed Testing 
+        fork
+            drive_inputs(65234 ,32770);
+            monitor_outputs();    
+        join
 
-        //random testing
+        // Random Testing 
         for (int i=1; i<100;i++ ) begin
             fork
                 drive_inputs($random ,$random);
                 monitor_outputs();    
             join
         end
+
         $finish;
     end
 endmodule
