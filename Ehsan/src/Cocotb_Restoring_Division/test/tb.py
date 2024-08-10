@@ -1,9 +1,15 @@
+#################################################################################
+#  +  Author      : Muhammad Ehsan
+#  +  Date        : 06-08-2024
+#  +  Description : Testing restoring division algorithm using Cocotb.
+#################################################################################
+
 import cocotb
-from cocotb.triggers import RisingEdge, Timer, Join, Combine
-# from cocotb.regression import TestFactory
+from cocotb.triggers import RisingEdge, Timer
 import random
 
-# Clock generation
+#------------------------------ Clock Generation ------------------------------#
+
 async def clock_gen(dut):
     """Clock generation."""
     while True:
@@ -12,7 +18,8 @@ async def clock_gen(dut):
         dut.clk.value = 1
         await Timer(5, units='ns')
 
-#reset circuit
+#--------------------------------- RESET Circuit ------------------------------#
+
 async def reset_circuit(dut):
     """Reset circuit."""
     dut.rst.value = 0
@@ -20,7 +27,8 @@ async def reset_circuit(dut):
     dut.rst.value = 1
     dut._log.info("Reset complete")
 
-#driving inputs
+#-------------------------------- Driving Inputs ------------------------------#
+
 async def drive_inputs(dut, dividend, divisor):
     """Drive inputs to the DUT."""
     dut.dividend.value = dividend
@@ -37,9 +45,13 @@ async def drive_inputs(dut, dividend, divisor):
     dut.dest_ready.value = 0
     await RisingEdge(dut.clk)
 
-#monitoring outputs
-async def monitor_outputs(dut, exp_quotient, exp_remainder):
+#------------------------------ Monitoring Outputs ----------------------------#
+
+async def monitor_outputs(dut, dividend, divisor):
     """Monitor outputs"""
+    exp_quotient = dividend // divisor
+    exp_remainder = dividend % divisor
+
     while not dut.dest_valid.value:
         await RisingEdge(dut.clk)
     await RisingEdge(dut.clk)
@@ -53,24 +65,33 @@ async def monitor_outputs(dut, exp_quotient, exp_remainder):
     else:
         dut._log.info("Test Pass")
 
+#----------------------------------- Testing ----------------------------------#
+
 @cocotb.test()
 async def tb(dut):
     """Test restoring division algorithm."""
 
+    WIDTH = 16                                   # Width Of Inputs
+    Number_of_Tests = 300                        # Number Of Tests Cases
     cocotb.start_soon(clock_gen(dut))
-
     await reset_circuit(dut)
-    
     dut.dest_ready.value = 0
 
-    for i in range(300):
-        dividend = random.randint(0,65000)
-        divisor = random.randint(1,65000)
-        exp_quotient = dividend // divisor
-        exp_remainder = dividend % divisor
+    # Direct Test
+    dividend = 0
+    divisor = 1
+    drive_task = cocotb.start_soon(drive_inputs(dut, dividend, divisor))
+    monitor_task = cocotb.start_soon(monitor_outputs(dut, dividend, divisor))
+    await drive_task
+    await monitor_task
+
+    # Random Test
+    for i in range(Number_of_Tests):
+        dividend = random.randint(0,(2**WIDTH)-1)
+        divisor = random.randint(1,(2**WIDTH)-1)
 
         drive_task = cocotb.start_soon(drive_inputs(dut, dividend, divisor))
-        monitor_task = cocotb.start_soon(monitor_outputs(dut, exp_quotient, exp_remainder))
+        monitor_task = cocotb.start_soon(monitor_outputs(dut, dividend, divisor))
         await drive_task
         await monitor_task
 

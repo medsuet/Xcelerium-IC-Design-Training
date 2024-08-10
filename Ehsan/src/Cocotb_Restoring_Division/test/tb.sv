@@ -1,14 +1,32 @@
+/*******************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 06-08-2024
+  +  Description : Testing restoring division algorithm using Cocotb.
+*******************************************************************************/
+
+parameter WIDTH = 16;
+
 module tb;
 
 //=================== Declearing Input And Outputs For UUT ===================//
 
-    logic            clk, rst, src_valid, src_ready, dest_valid, dest_ready;
-    logic   [15:0]   divisor, dividend;
-    logic   [15:0]   remainder, quotient, exp_remainder, exp_quotient;
+    logic                 clk;
+    logic                 rst;
+    logic   [WIDTH-1:0]   dividend;
+    logic   [WIDTH-1:0]   divisor;
+    logic   [WIDTH-1:0]   remainder;
+    logic   [WIDTH-1:0]   quotient;
+    logic                 src_valid;
+    logic                 src_ready;
+    logic                 dest_valid;
+    logic                 dest_ready;
+ 
+    logic   [WIDTH-1:0]   exp_remainder;
+    logic   [WIDTH-1:0]   exp_quotient;
 
-//========================== Instantiations Module ===========================//
+//=========================== Module Instantiation ===========================//
 
-    restoring_division uut (
+    restoring_division_top #(.WIDTH(WIDTH)) uut (
         .clk(clk),
         .rst(rst),
         .src_valid(src_valid),
@@ -20,12 +38,13 @@ module tb;
         .remainder(remainder),
         .quotient(quotient)
     );
+
 //=========================== Generating Waveform ============================//
 
     initial begin
         $dumpfile("waveform.vcd");
         $dumpvars(0);
     end
-    
+
 endmodule
 

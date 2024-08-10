@@ -1,7 +1,30 @@
+/*******************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 06-08-2024
+  +  Description : Testing restoring division algorithm using Cocotb.
+*******************************************************************************/
+
 module controller (
-    input logic clk, rst, A_msb, counter_signal, src_valid, dest_ready,
-    output logic mux0_sel, mux1_sel, clear_bit, dest_valid, src_ready, enable, Q_0
+
+//======================= Declearing Input And Outputs =======================//
+
+    input     logic     clk,
+    input     logic     rst,
+    input     logic     A_msb,
+    input     logic     counter_signal,
+    input     logic     src_valid,
+    input     logic     dest_ready,
+
+    output    logic     mux0_sel,
+    output    logic     mux1_sel,
+    output    logic     clear_bit,
+    output    logic     dest_valid,
+    output    logic     src_ready,
+    output    logic     enable,
+    output    logic     Q_0
 );
+//============================= State Machine ================================//
+
     logic [1:0] c_state, n_state;
     parameter S0 = 2'b00, S1 = 2'b01, S2 = 2'b10;
 
@@ -21,7 +44,8 @@ module controller (
                 dest_valid = 0;
                 mux0_sel = 0;
                 enable = 0;
-                clear_bit = 1; 
+                clear_bit = 1;
+                
                 Q_0 = 0;
                 mux1_sel = 1;
 
@@ -44,9 +68,7 @@ module controller (
                     if (counter_signal == 1 && dest_ready == 1) begin
                         dest_valid = 1;
                         enable = 1;
-
                         mux1_sel = 0;
-
                         n_state = S0;
                     end
 
@@ -82,7 +104,7 @@ module controller (
                 clear_bit = 1; 
                 mux1_sel = 0;
                 Q_0 = 1;
-                
+
                 if (dest_ready == 0) begin
                     n_state = S2;
                 end
