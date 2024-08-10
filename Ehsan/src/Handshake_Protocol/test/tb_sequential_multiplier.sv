@@ -98,7 +98,7 @@ module tb;
         reset_circuit;
         dest_ready = 0;
 
-        // Directed Testing 
+        // Direct Testing 
         fork
             drive_inputs(1,1);
             monitor_outputs();    
