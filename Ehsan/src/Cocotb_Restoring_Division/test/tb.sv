@@ -1,8 +1,12 @@
 module tb;
 
-    logic clk, rst, src_valid, src_ready, dest_valid, dest_ready;
-    logic [15:0] divisor, dividend;
-    logic [15:0] remainder, quotient, exp_remainder, exp_quotient;
+//=================== Declearing Input And Outputs For UUT ===================//
+
+    logic            clk, rst, src_valid, src_ready, dest_valid, dest_ready;
+    logic   [15:0]   divisor, dividend;
+    logic   [15:0]   remainder, quotient, exp_remainder, exp_quotient;
+
+//========================== Instantiations Module ===========================//
 
     restoring_division uut (
         .clk(clk),
@@ -16,11 +20,12 @@ module tb;
         .remainder(remainder),
         .quotient(quotient)
     );
+//=========================== Generating Waveform ============================//
 
-    //generating wavefile
     initial begin
         $dumpfile("waveform.vcd");
         $dumpvars(0);
     end
+    
 endmodule
 

@@ -1,10 +1,17 @@
 module restoring_division (
-    input logic clk, rst, src_valid, dest_ready,
-    input logic [15:0] dividend, divisor,
-    output logic dest_valid, src_ready,
-    output logic [15:0] remainder, quotient
+
+//======================= Declearing Input And Outputs =======================//
+
+    input    logic            clk, rst, src_valid, dest_ready,
+    input    logic   [15:0]   dividend, divisor,
+    output   logic   [15:0]   remainder, quotient
+    output   logic            dest_valid, src_ready,
 );
+//======================= Declearing Internal Signals ========================//
+
 logic mux0_sel, mux1_sel, counter_signal, Q_0, A_msb, clear_bit, enable;
+
+//========================== Module Instantiation ============================//
 
     data_path data_path(
         .clk(clk),
@@ -21,6 +28,8 @@ logic mux0_sel, mux1_sel, counter_signal, Q_0, A_msb, clear_bit, enable;
         .remainder(remainder),
         .quotient(quotient)     
     );
+
+//========================== Module Instantiation ============================//
 
     controller ctrl_unit(
         .clk(clk),
