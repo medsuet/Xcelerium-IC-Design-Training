@@ -1,13 +1,32 @@
-module sequential_multiplier (
-    input logic clk, rst, src_valid, dest_ready,
-    input logic [15:0] multiplier, multiplicand,
-    output logic dest_valid, src_ready,
-    output logic [31:0] product
-);
-logic mux0_sel, mux1_sel, mux2_sel, counter_signal,
-        Q_1_bit, Q0_bit, clear_bit, alu_ctrl, product_en;
+/*******************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 29-7-2024
+  +  Description : Multiplies two (MUL_WIDTH) bit signed numbers sequentially 
+                   using booth algorithm. Also support valid ready interface.
+*******************************************************************************/
 
-    data_path data_path(
+module sequential_multiplier (
+
+//======================= Declearing Input And Outputs =======================//
+
+    input    logic                         clk,
+    input    logic                         rst,
+    input    logic                         src_valid,
+    input    logic                         dest_ready,
+    input    logic   [MUL_WIDTH-1:0]       multiplicand,
+    input    logic   [MUL_WIDTH-1:0]       multiplier,
+
+    output   logic   [(2*MUL_WIDTH)-1:0]   product,
+    output   logic                         dest_valid, 
+    output   logic                         src_ready
+);
+//======================= Declearing Internal Signals ========================//
+
+logic mux0_sel, mux1_sel, counter_signal, Q_1_bit, Q0_bit, clear_bit, alu_ctrl, product_en;
+
+//=========================== Module Instantiation ===========================//
+
+    data_path #(.MUL_WIDTH(MUL_WIDTH)) data_path(
         .clk(clk),
         .rst(rst),
         .clear_bit(clear_bit),
@@ -23,24 +42,22 @@ logic mux0_sel, mux1_sel, mux2_sel, counter_signal,
         .alu_ctrl(alu_ctrl)
     );
 
+//========================== Module Instantiation ============================//
+
     controller ctrl_unit(
         .clk(clk),
         .rst(rst),
         .clear_bit(clear_bit),
-
         .src_valid(src_valid),
         .src_ready(src_ready),
         .dest_valid(dest_valid),
         .dest_ready(dest_ready),
-
-
         .Q0_bit(Q0_bit),
         .Q_1_bit(Q_1_bit),
         .counter_signal(counter_signal),
         .mux0_sel(mux0_sel),
         .mux1_sel(mux1_sel),
         .product_en(product_en),
-
         .alu_ctrl(alu_ctrl)
     );
 

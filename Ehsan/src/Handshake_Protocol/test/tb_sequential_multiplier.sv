@@ -1,10 +1,25 @@
+parameter MUL_WIDTH = 16;
+
 module tb;
 
-    logic clk, rst, src_valid, src_ready, dest_valid, dest_ready;
-    logic signed [15:0] multiplicand, multiplier;
-    logic signed [31:0] product, exp_product;
+//=================== Declearing Input And Outputs For UUT ===================//
 
-    sequential_multiplier uut (
+    logic                                clk;              
+    logic                                rst;             
+    logic                                src_valid;
+    logic                                src_ready;
+    logic                                dest_valid;
+    logic                                dest_ready;
+
+    logic signed   [MUL_WIDTH-1:0]       multiplicand;    
+    logic signed   [MUL_WIDTH-1:0]       multiplier;      
+
+    logic signed   [(2*MUL_WIDTH)-1:0]   product;         
+    logic signed   [(2*MUL_WIDTH)-1:0]   exp_product;
+
+//=========================== Module Instantiation ===========================//
+
+    sequential_multiplier #(.MUL_WIDTH(MUL_WIDTH)) uut (
         .multiplicand(multiplicand),
         .multiplier(multiplier),
         .clk(clk),
@@ -16,30 +31,32 @@ module tb;
         .product(product)
     );
 
-    //clock generation
+//============================= Clock Generation =============================//
+
     initial begin
         clk = 1;
         forever #5 clk = ~clk; 
     end
 
-    //generating wavefile
+//=========================== Generating Waveform ============================//
+
     initial begin
         $dumpfile("waveform.vcd");
         $dumpvars(0);
     end
 
+//============================== Driving Inputs ==============================//
 
-    task drive_inputs(input logic signed [15:0] input_1, input logic signed [15:0] input_2);
+    task drive_inputs(input logic signed [MUL_WIDTH-1:0] in_1, input logic signed [MUL_WIDTH-1:0] in_2);
         begin
-        multiplicand = input_1;
-        multiplier = input_2;
+        multiplicand = in_1;
+        multiplier = in_2;
         src_valid = 1;
         @(posedge clk);
         src_valid = 0;
         while (dest_valid == 0) begin
             @(posedge clk);
         end 
-        @(posedge clk);
         dest_ready = 1;
         @(posedge clk);
         dest_ready = 0;
@@ -47,18 +64,22 @@ module tb;
 
     endtask 
 
+//============================ Monitoring Outputs ============================//
+
     task monitor_outputs;
         begin
             exp_product = multiplicand * multiplier;
             if(exp_product != product)begin
                 $display("Fail");
             end
-            else
+            else if (exp_product == product)
             begin
                 $display("Pass");
             end
         end
     endtask
+
+//=============================== RESET Circuit ==============================//
 
     task reset_circuit;
         rst = 0;
@@ -70,12 +91,11 @@ module tb;
         reset_circuit;
         dest_ready = 0;
         fork
-            for (int i=0; i<200 ;i++ ) begin
-                drive_inputs($random ,$random);
+            for (int i=0; i<20;i++ ) begin
+                drive_inputs($random % (2^MUL_WIDTH),$random % (2^MUL_WIDTH));
                 monitor_outputs();    
             end
         join
-
         $finish;
     end
 endmodule

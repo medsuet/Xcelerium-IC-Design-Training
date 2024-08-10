@@ -1,12 +1,12 @@
-# Valid Ready Interface Sequential Multiplier
+# Valid Ready interface sequential multiplier
 
-## State Machine
+## State machine
 ![state_machine](./docs/state_machine.jpg)
 
-## Data Path and Controller
+## Data path and controller
 ![state_machine](./docs/data_path_and_controller.jpg)
 
-## Pinout Diagram
+## Pinout diagram
 ![state_machine](./docs/pinout_diagram.jpg)
 
 # Installation
@@ -16,7 +16,7 @@ Install iverilog and gtkwave
 make install
 ```
 
-# Run Simulation
+# Run simulation
 To compile design
 ```bash
 make compile

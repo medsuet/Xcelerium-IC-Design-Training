@@ -1,7 +1,25 @@
 module controller (
-    input logic clk, rst, Q0_bit, Q_1_bit, counter_signal, src_valid, dest_ready,
-    output logic mux0_sel, mux1_sel, alu_ctrl, clear_bit, dest_valid, src_ready, product_en
+
+//======================= Declearing Input And Outputs =======================//
+
+    input    logic    clk,
+    input    logic    rst,
+    input    logic    Q0_bit,
+    input    logic    Q_1_bit,
+    input    logic    counter_signal,
+    input    logic    src_valid,
+    input    logic    dest_ready,
+    
+    output   logic    mux0_sel,
+    output   logic    mux1_sel,
+    output   logic    alu_ctrl,
+    output   logic    clear_bit,
+    output   logic    dest_valid,
+    output   logic    src_ready,
+    output   logic    product_en
 );
+//============================= State Machine ================================//
+
     logic [1:0] c_state, n_state;
     parameter S0 = 2'b00, S1 = 2'b01, S2 = 2'b10;
 
@@ -40,7 +58,6 @@ module controller (
                     product_en = 0;
                     mux0_sel = 1;
 
-                    
                     if (counter_signal == 1 && dest_ready == 1) begin
                         dest_valid = 1;
                         product_en = 1;
