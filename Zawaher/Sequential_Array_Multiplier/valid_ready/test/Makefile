@@ -1,34 +1,32 @@
 # Defaults
-SIM ?= icarus
+SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 
-# Source files
-SOURCES_SV += ../define/array_mul.svh \
-               ../src/array_multiplier_datapath.sv \
-               ../src/array_multiplier_controller_valready.sv \
-               ../src/array_multiplier.sv
+# Define the source directories
+SRC_DIR = $(PWD)/../src
+INC_DIR = $(PWD)/../define
 
-# TOPLEVEL is the name of the top-level module in your Verilog or VHDL file
-TOPLEVEL = array_multiplier
+# Source files
+VERILOG_SOURCES += $(INC_DIR)/array_mul.svh
+VERILOG_SOURCES += $(SRC_DIR)/array_multiplier_datapath.sv
+VERILOG_SOURCES += $(SRC_DIR)/array_multiplier_controller_valready.sv
+VERILOG_SOURCES += $(SRC_DIR)/array_multiplier.sv
+VERILOG_SOURCES += $(PWD)/cocotb.sv
+
+# TOPLEVEL is the name of the top-level module in the Verilog files
+TOPLEVEL = cocotb
 
 # MODULE is the basename of the Python test file
 MODULE = array_multiplier_tb
 
+# Additional Verilator arguments
+VERILATOR_ARGS += -I$(INC_DIR) --Wno-WIDTHTRUNC --Wno-LATCH --trace
+
 # Include cocotb's make rules to handle simulator setup
-include $(shell cocotb-config --makefiles)/Makefile.sim
+COCOTB_MAKEFILES := $(shell cocotb-config --makefiles)
+ifneq ($(COCOTB_MAKEFILES),)
+include $(COCOTB_MAKEFILES)/Makefile.sim
+else
+$(error "cocotb-config is not correctly set up or Makefile.sim not found.")
+endif
 
-# Override default simulator flags for Icarus Verilog
-IVERILOG_ARGS += -g2012 -o $(SIM_BUILD)/simv
-
-# Rules
-all: $(SIM_BUILD)/simv
-
-$(SIM_BUILD)/simv: $(SOURCES_SV) $(MODULE).py
-	mkdir -p $(SIM_BUILD)
-	iverilog $(IVERILOG_ARGS) $(SOURCES_SV) $(MODULE).py
-	vvp $(SIM_BUILD)/simv
-
-clean:
-	rm -rf $(SIM_BUILD) *.vcd
-
-.PHONY: all clean

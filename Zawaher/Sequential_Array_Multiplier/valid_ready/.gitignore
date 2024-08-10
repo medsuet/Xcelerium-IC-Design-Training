@@ -20,3 +20,7 @@ xsim.dir
 *.vcd
 *.vvp
 obj_dir
+test/__pycache__
+test/sim_build
+test/*.xml
+	

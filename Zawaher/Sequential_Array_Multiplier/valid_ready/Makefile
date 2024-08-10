@@ -131,6 +131,15 @@ iver_waves:
 	@echo "### RUNNING GTKWave ###"
 	gtkwave waveform.vcd
 
+#================================================================#
+#                                                                #
+#                COCOTB TEST_BENCH                               #
+#                                                                #
+#================================================================#
+
+cocotb:
+	make -C test/
+
 
 .PHONY : clean
 clean:
@@ -139,3 +148,7 @@ clean:
 	rm -rf .stamp.*
 	rm -rf ./obj_dir
 	rm -rf waveform.vcd *.vvp
+	rm -rf test/__pycache__
+	rm -rf test/sim_build
+	rm -rf test/*.xml
+	
