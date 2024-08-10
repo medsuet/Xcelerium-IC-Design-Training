@@ -1,7 +1,30 @@
+/*********************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 27-7-2024
+  +  Description : Implementation of sequential multiplier using booth algorithm.
+*********************************************************************************/
+
 module controller (
-    input logic clk, rst, Q0_bit, Q_1_bit, counter_signal, start_bit,
-    output logic mux0_sel, mux1_sel, mux2_sel, alu_ctrl, counter_en, ready_bit, clear_bit
+
+//======================= Declearing Input And Outputs =======================//
+
+    input     logic     clk,
+    input     logic     rst,
+    input     logic     Q0_bit,
+    input     logic     Q_1_bit,
+    input     logic     counter_signal,
+    input     logic     start_bit,
+
+    output    logic     mux0_sel,
+    output    logic     mux1_sel,
+    output    logic     mux2_sel,
+    output    logic     alu_ctrl,
+    output    logic     counter_en,
+    output    logic     ready_bit,
+    output    logic     clear_bit
 );
+//============================= State Machine ================================//
+
     logic c_state, n_state;
     parameter idle = 0, multiplication = 1;
 

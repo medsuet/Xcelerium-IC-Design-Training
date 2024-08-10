@@ -1,10 +1,28 @@
+/*********************************************************************************
+  +  Author      : Muhammad Ehsan
+  +  Date        : 27-7-2024
+  +  Description : Implementation of sequential multiplier using booth algorithm.
+*********************************************************************************/
+
 module sequential_multiplier (
-    input logic clk, rst, start_bit,
-    input logic [15:0] multiplier, multiplicand,
-    output logic ready_bit,
-    output logic [31:0] product
+
+//======================= Declearing Input And Outputs =======================//
+
+    input   logic                       clk,
+    input   logic                       rst,
+    input   logic  [MUL_WIDTH-1:0]      multiplicand,
+    input   logic  [MUL_WIDTH-1:0]      multiplier,
+    input   logic                       start_bit,
+    output  logic                       ready_bit,
+    output  logic  [(2*MUL_WIDTH)-1:0]  product
 );
-logic mux0_sel, mux1_sel, mux2_sel, counter_en, counter_signal, Q_1_bit, Q0_bit, clear_bit, alu_ctrl;
+
+//======================= Declearing Internal Signals ========================//
+
+    logic  mux0_sel, mux1_sel, mux2_sel, counter_en, counter_signal;
+    logic  Q_1_bit, Q0_bit, clear_bit, alu_ctrl;
+
+//=========================== Module Instantiation ===========================//
 
     data_path data_path(
         .clk(clk),
@@ -22,6 +40,8 @@ logic mux0_sel, mux1_sel, mux2_sel, counter_en, counter_signal, Q_1_bit, Q0_bit,
         .counter_en(counter_en),
         .alu_ctrl(alu_ctrl)
     );
+
+//=========================== Module Instantiation ===========================//
 
     controller ctrl_unit(
         .clk(clk),

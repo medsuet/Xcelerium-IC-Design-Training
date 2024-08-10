@@ -9,6 +9,8 @@ parameter MUL_WIDTH = 16;
 
 module tb;
 
+    logic signed   [(2*MUL_WIDTH)-1:0]   exp_product;
+    
 //=================== Declearing Input And Outputs For UUT ===================//
 
     logic                                clk;              
@@ -20,9 +22,7 @@ module tb;
     logic                                src_ready;
     logic                                dest_valid;
     logic                                dest_ready;
-
-    logic signed   [(2*MUL_WIDTH)-1:0]   exp_product;
-
+    
 //=========================== Module Instantiation ===========================//
 
     sequential_multiplier_top #(.MUL_WIDTH(MUL_WIDTH)) uut (
