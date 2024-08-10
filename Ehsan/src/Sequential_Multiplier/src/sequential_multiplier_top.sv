@@ -8,15 +8,14 @@ module sequential_multiplier (
 
 //======================= Declearing Input And Outputs =======================//
 
-    input   logic                       clk,
-    input   logic                       rst,
-    input   logic  [MUL_WIDTH-1:0]      multiplicand,
-    input   logic  [MUL_WIDTH-1:0]      multiplier,
-    input   logic                       start_bit,
-    output  logic                       ready_bit,
-    output  logic  [(2*MUL_WIDTH)-1:0]  product
+    input   logic                                 clk,
+    input   logic                                 rst,
+    input   logic   signed  [MUL_WIDTH-1:0]       multiplicand,
+    input   logic   signed  [MUL_WIDTH-1:0]       multiplier,
+    input   logic                                 start_bit,
+    output  logic                                 ready_bit,
+    output  logic   signed  [(2*MUL_WIDTH)-1:0]   product
 );
-
 //======================= Declearing Internal Signals ========================//
 
     logic  mux0_sel, mux1_sel, mux2_sel, counter_en, counter_signal;
@@ -24,7 +23,7 @@ module sequential_multiplier (
 
 //=========================== Module Instantiation ===========================//
 
-    data_path data_path(
+    data_path #(.MUL_WIDTH(MUL_WIDTH)) data_path(
         .clk(clk),
         .rst(rst),
         .clear_bit(clear_bit),
@@ -40,7 +39,6 @@ module sequential_multiplier (
         .counter_en(counter_en),
         .alu_ctrl(alu_ctrl)
     );
-
 //=========================== Module Instantiation ===========================//
 
     controller ctrl_unit(

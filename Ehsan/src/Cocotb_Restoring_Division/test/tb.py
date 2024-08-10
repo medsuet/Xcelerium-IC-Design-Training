@@ -11,7 +11,6 @@ import random
 #------------------------------ Clock Generation ------------------------------#
 
 async def clock_gen(dut):
-    """Clock generation."""
     while True:
         dut.clk.value = 0
         await Timer(5, units='ns')
@@ -21,7 +20,6 @@ async def clock_gen(dut):
 #--------------------------------- RESET Circuit ------------------------------#
 
 async def reset_circuit(dut):
-    """Reset circuit."""
     dut.rst.value = 0
     await Timer(5, units='ns')
     dut.rst.value = 1
@@ -30,7 +28,6 @@ async def reset_circuit(dut):
 #-------------------------------- Driving Inputs ------------------------------#
 
 async def drive_inputs(dut, dividend, divisor):
-    """Drive inputs to the DUT."""
     dut.dividend.value = dividend
     dut.divisor.value = divisor
     dut.src_valid.value = 1
@@ -48,7 +45,6 @@ async def drive_inputs(dut, dividend, divisor):
 #------------------------------ Monitoring Outputs ----------------------------#
 
 async def monitor_outputs(dut, dividend, divisor):
-    """Monitor outputs"""
     exp_quotient = dividend // divisor
     exp_remainder = dividend % divisor
 
@@ -69,10 +65,10 @@ async def monitor_outputs(dut, dividend, divisor):
 
 @cocotb.test()
 async def tb(dut):
-    """Test restoring division algorithm."""
 
     WIDTH = 16                                   # Width Of Inputs
     Number_of_Tests = 300                        # Number Of Tests Cases
+    
     cocotb.start_soon(clock_gen(dut))
     await reset_circuit(dut)
     dut.dest_ready.value = 0

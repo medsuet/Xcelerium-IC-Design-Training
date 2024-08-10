@@ -41,8 +41,9 @@ module controller (
         case (c_state)
             idle: begin
                 mux2_sel = 0;
+                alu_ctrl = 0;
+                clear_bit = 1;
                 if (start_bit == 0) begin
-                    clear_bit = 1;
                     ready_bit = 0;
                     mux0_sel = 0;
                     n_state = idle;

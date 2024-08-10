@@ -5,11 +5,14 @@
                    Also support valid ready (handshake) protocol..
 ********************************************************************************/
 
-parameter MUL_WIDTH = 16;
+parameter MUL_WIDTH = 4;
 
 module tb;
 
-    logic signed   [(2*MUL_WIDTH)-1:0]   exp_product;
+    int Pass;                                           //No. of tests passes
+    int Fail;                                           //No. of tests fails
+    int test_cases = 1000;                              //No. of tests
+    logic signed   [(2*MUL_WIDTH)-1:0]   exp_product;   //Expected Product
     
 //=================== Declearing Input And Outputs For UUT ===================//
 
@@ -66,19 +69,22 @@ module tb;
         @(posedge clk);
         dest_ready = 0;
         end
-
     endtask 
 
 //============================ Monitoring Outputs ============================//
 
     task monitor_outputs;
         begin
+            while (!dest_valid) begin
+                @(posedge clk);
+            end
             exp_product = multiplicand * multiplier;
-            if(exp_product != product)begin
+            if(exp_product != product) begin
+                Fail++;
                 $display("Fail");
             end
-            else if (exp_product == product)
-            begin
+            else if (exp_product == product) begin
+                Pass++;
                 $display("Pass");
             end
         end
@@ -106,11 +112,14 @@ module tb;
 
         // Random Testing 
         fork
-            for (int i=0; i<20;i++ ) begin
+            for (int i=0; i<test_cases-1;i++ ) begin
                 drive_inputs($random % (2^MUL_WIDTH),$random % (2^MUL_WIDTH));
                 monitor_outputs();    
             end
         join
+        
+        // Showing No. Of Tests Pass And Fail         
+        $display("No. of test = %0d, Passed = %0d, Failed = %0d", test_cases, Pass, Fail);
         $finish;
     end
 endmodule

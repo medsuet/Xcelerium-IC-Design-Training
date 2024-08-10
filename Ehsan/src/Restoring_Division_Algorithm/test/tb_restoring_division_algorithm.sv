@@ -9,21 +9,25 @@ parameter WIDTH = 16;
 
 module tb;
 
+    int Pass;                              //No. of tests passes
+    int Fail;                              //No. of tests fails
+    int test_cases = 1000;                 //No. of tests
+    
+    logic    [WIDTH-1:0]    exp_remainder;
+    logic    [WIDTH-1:0]    exp_quotient;
+
 //=================== Declearing Input And Outputs For UUT ===================//
 
-    logic                 clk;
-    logic                 rst;
-    logic   [WIDTH-1:0]   dividend;
-    logic   [WIDTH-1:0]   divisor;
-    logic   [WIDTH-1:0]   remainder;
-    logic   [WIDTH-1:0]   quotient;
-    logic                 src_valid;
-    logic                 src_ready;
-    logic                 dest_valid;
-    logic                 dest_ready;
- 
-    logic   [WIDTH-1:0]   exp_remainder;
-    logic   [WIDTH-1:0]   exp_quotient;
+    logic                   clk;
+    logic                   rst;
+    logic    [WIDTH-1:0]    dividend;
+    logic    [WIDTH-1:0]    divisor;
+    logic    [WIDTH-1:0]    remainder;
+    logic    [WIDTH-1:0]    quotient;
+    logic                   src_valid;
+    logic                   src_ready;
+    logic                   dest_valid;
+    logic                   dest_ready;
 
 //=========================== Module Instantiation ===========================//
 
@@ -78,14 +82,18 @@ module tb;
 
     task monitor_outputs;
         begin
-            @(posedge dest_ready);
+            while (!dest_valid) begin
+                @(posedge clk);
+            end
             exp_remainder = int'(dividend % divisor);
             exp_quotient = int'(dividend / divisor);
 
             if(exp_remainder != remainder && exp_quotient != quotient)begin
+                Fail++;
                 $display("Fail");
             end
             else if (exp_remainder == remainder && exp_quotient == quotient)begin
+                Pass++;
                 $display("Pass");
             end
         end
@@ -108,18 +116,20 @@ module tb;
 
         // Direct Testing 
         fork
-            drive_inputs(1 ,1);
+            drive_inputs(1,1);
             monitor_outputs();    
         join
 
         // Random Testing 
-        for (int i=1; i<100;i++ ) begin
+        for (int i=1; i<test_cases;i++ ) begin
             fork
                 drive_inputs($random ,$random);
                 monitor_outputs();    
             join
         end
 
+        // Showing No. Of Tests Pass And Fail 
+        $display("No. of test = %0d, Passed = %0d, Failed = %0d", test_cases, Pass, Fail);
         $finish;
     end
 endmodule

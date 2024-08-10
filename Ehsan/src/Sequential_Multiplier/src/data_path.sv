@@ -8,25 +8,25 @@ module data_path (
 
 //======================= Declearing Input And Outputs =======================//
 
-    input    logic                         clk,
-    input    logic                         rst,
-    input    logic   [MUL_WIDTH-1:0]       multiplicand,
-    input    logic   [MUL_WIDTH-1:0]       multiplier,
-    input    logic                         clear_bit,
-    input    logic                         mux0_sel,
-    input    logic                         mux1_sel,
-    input    logic                         mux2_sel,
-    input    logic                         counter_en,
-    input    logic                         alu_ctrl,
+    input    logic                                 clk,
+    input    logic                                 rst,
+    input    logic   signed  [MUL_WIDTH-1:0]       multiplicand,
+    input    logic   signed  [MUL_WIDTH-1:0]       multiplier,
+    input    logic                                 clear_bit,
+    input    logic                                 mux0_sel,
+    input    logic                                 mux1_sel,
+    input    logic                                 mux2_sel,
+    input    logic                                 counter_en,
+    input    logic                                 alu_ctrl,
 
-    output   logic   [(2*MUL_WIDTH)-1:0]   product,
-    output   logic                         counter_signal,
-    output   logic                         Q_1_bit,
-    output   logic                         Q0_bit
+    output   logic   signed  [(2*MUL_WIDTH)-1:0]   product,
+    output   logic                                 counter_signal,
+    output   logic                                 Q_1_bit,
+    output   logic                                 Q0_bit
 );
 //======================= Declearing Internal Signals ========================//
 
-    logic                            Q_0_bit, Q_1__bit;
+    logic                            Q_0_bit,Q_1__bit;
     logic   [$clog2(MUL_WIDTH)+1:0]  counter;
     logic   [MUL_WIDTH-1:0]          Q, M, A, mux0_out, mux1_out, alu_out;
     logic   [(2*MUL_WIDTH)-1:0]      combined_shift_A_Q;

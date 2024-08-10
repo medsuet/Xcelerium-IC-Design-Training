@@ -4,28 +4,28 @@
   +  Description : Implementation of sequential multiplier using booth algorithm.
 *********************************************************************************/
 
-parameter MUL_WIDTH = 16;
+parameter MUL_WIDTH = 4;
 
 module tb;
 
-    int Passed;                                         //No. of tests passes
-    int Failed;                                         //No. of tests fails
-    int test_cases = 1000;                             //No. of tests
+    int Pass;                                           //No. of tests passes
+    int Fail;                                           //No. of tests fails
+    int test_cases = 1000;                              //No. of tests
     logic signed   [(2*MUL_WIDTH)-1:0]   exp_product;   //Expected Product
 
 //=================== Declearing Input And Outputs For UUT ===================//
 
-    logic                                clk;
-    logic                                rst;
-    logic signed   [MUL_WIDTH-1:0]       multiplicand;
-    logic signed   [MUL_WIDTH-1:0]       multiplier;
-    logic signed   [(2*MUL_WIDTH)-1:0]   product;
-    logic                                start_bit;
-    logic                                ready_bit;
+    logic                                  clk;
+    logic                                  rst;
+    logic   signed   [MUL_WIDTH-1:0]       multiplicand;
+    logic   signed   [MUL_WIDTH-1:0]       multiplier;
+    logic   signed   [(2*MUL_WIDTH)-1:0]   product;
+    logic                                  start_bit;
+    logic                                  ready_bit;
 
 //=========================== Module Instantiation ===========================//
 
-    sequential_multiplier #(.MUL_WIDTH(MUL_WIDTH)) uut (
+    sequential_multiplier uut (
         .clk(clk),
         .rst(rst),
         .start_bit(start_bit),
@@ -45,7 +45,7 @@ module tb;
 
     task reset_circuit;
         rst = 0;
-        #5;
+        #45;
         rst = 1;
     endtask
 
@@ -58,6 +58,9 @@ module tb;
             start_bit = 1;
             @(posedge clk);
             start_bit = 0;
+            while (!ready_bit) begin
+                @(posedge clk);
+            end
         end
     endtask
 
@@ -65,18 +68,18 @@ module tb;
 
     task monitor_outputs;
         begin
-            exp_product = multiplicand * multiplier;
-            while (ready_bit == 0) begin
+            while (!ready_bit) begin
                 @(posedge clk);            
-            end;
+            end
+            exp_product = multiplicand * multiplier;
+            
             if(exp_product != product)begin
-                Failed++;
+                Fail++;
                 $display("Fail");
                 $display("multiplicand = %0d, multiplier = %0d, product = %0d, expected= %0d", multiplicand, multiplier, product,exp_product);
-            end
-            else
-            begin
-                Passed++;
+            end 
+            else begin
+                Pass++;
                 $display("Pass");
             end
         end
@@ -88,17 +91,21 @@ module tb;
         reset_circuit;
 
         // Direct Test
-        drive_inputs ($random % ((2^MUL_WIDTH)-1),$random % ((2^MUL_WIDTH)-1)); 
-        monitor_outputs;
+        fork
+            drive_inputs (1,1); 
+            monitor_outputs;        
+        join
 
         //Random Testing
         for(int i=0;i<test_cases-1;i++) begin 
-            drive_inputs ($random % ((2^MUL_WIDTH)-1),$random % ((2^MUL_WIDTH)-1)); 
-            monitor_outputs;
+            fork
+                drive_inputs ($random % ((2^MUL_WIDTH)-1),$random % ((2^MUL_WIDTH)-1)); 
+                monitor_outputs;            
+            join
         end
 
-        @(posedge clk);
-        $display("No. of test = %0d, Passed = %0d, Failed = %0d", test_cases,Passed, Failed);
+        // Showing No. Of Tests Pass And Fail 
+        $display("No. of test = %0d, Pass = %0d, Fail = %0d", test_cases,Pass, Fail);
         $finish;
     end
 
