@@ -25,35 +25,13 @@ The Sequential Multiplier is a hardware implementation of Booth's multiplication
 
 ## Simulation
 
-To run simulations of the Booth Multiplier, you can use either `VSIM` or `iverilog`.
+To run simulations of the Booth Multiplier using CocoTb use following commands.
 
-### Using VSIM
-
-1. Ensure that your simulation tool `vsim` is installed.
-2. Run the following command to compile and simulate using VSIM:
-
-```bash
-make sim TOOL=vsim
+### Compile
+Compile the Verilog Code:
 ```
-
-### Using Iverilog
-
-1. Ensure that iverilog and vvp are installed.
-2. Run the following command to compile and simulate using Iverilog:
-
-```bash
-make sim TOOL=iverilog
+make 
 ```
-
-### Using Verilator
-
-1. Ensure that Verilator is installed.
-2. Run the following command to compile and simulate using Verilator:
-
-```bash
-make sim TOOL=verilator
-```
-
 
 ### Cleaning Up
 

@@ -18,7 +18,7 @@ logic alu_op, count_comp, en_A, en_M, en_Q, en_count, sel_A, sel_Q;
 logic en_out, en_final, clear, sub_msb;
 
 // Controller instance to handle state transitions and control signals
-controller Controller(
+Controller Controller(
     .clk(clk),
     .reset(reset),
     .src_valid(src_valid),
@@ -41,7 +41,7 @@ controller Controller(
 );
 
 // Datapath instance to perform the division operation
-datapath #(
+Datapath #(
     .WIDTH_M(WIDTH)
 ) Datapath(
     .clk(clk),

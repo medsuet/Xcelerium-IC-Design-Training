@@ -1,4 +1,4 @@
-module datapath #(
+module Datapath #(
     parameter WIDTH_M = 16  // Width of the inputs and outputs
 ) (
     input logic                clk,             

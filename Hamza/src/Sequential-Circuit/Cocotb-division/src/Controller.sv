@@ -1,4 +1,4 @@
-module controller (
+module Controller (
     input logic       clk,         
     input logic       reset,       
     input logic       src_valid,   
