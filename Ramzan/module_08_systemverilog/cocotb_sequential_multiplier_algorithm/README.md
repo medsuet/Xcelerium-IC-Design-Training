@@ -3,7 +3,7 @@
 ## Introduction
 Ready valid handshake sequential multiplier.
 **A** and **B** are inputs, **PRODUCT** is output.<br>
-Used **src_valid_in** and **src_ready_in** incase of Source to Multiplier.<br>
+Used **src_valid_in**and **src_ready_in** incase of Source to Multiplier.<br>
 Used **src_valid_out** and **src_ready_out** incase of Destination to Multiplier.<br>
 Mealy state machine conist up on only two stages S0, S1, S2.<br>
 Total 16 Clock Cycles required for valid output .<br>
@@ -35,8 +35,6 @@ make clean
 ### Controller
 ![Datapath](docs/Controller.png)
 
-### Simulation Waveform
-![Datapath](docs/Waveform.png)
 
 ### Gate Count
 
