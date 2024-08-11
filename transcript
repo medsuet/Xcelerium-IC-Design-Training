@@ -1,0 +1,147 @@
+# Project file /home/muhammadramzan/XCELERIUM/modules/module_08/binary_adder_state_machine/ewfs.mpf was not found.
+# Unable to open project.
+# Loading project thtsr
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim work.sequential_binaryadder_tb
+# vsim work.sequential_binaryadder_tb 
+# Start time: 14:19:57 on Jul 28,2024
+# Loading sv_std.std
+# Loading work.sequential_binaryadder_tb
+# Loading work.sequential_binaryadder
+# WARNING: No extended dataflow license exists
+add wave -r sim:/sequential_binaryadder_tb/uut/*
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+run
+restart
+run
+# ** Note: $stop    : /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv(48)
+#    Time: 280 ps  Iteration: 1  Instance: /sequential_binaryadder_tb
+# Break in Module sequential_binaryadder_tb at /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv line 48
+quit -sim
+# End time: 14:20:46 on Jul 28,2024, Elapsed time: 0:00:49
+# Errors: 0, Warnings: 1
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim work.sequential_binaryadder_tb
+# vsim work.sequential_binaryadder_tb 
+# Start time: 14:21:16 on Jul 28,2024
+# Loading sv_std.std
+# Loading work.sequential_binaryadder_tb
+# Loading work.sequential_binaryadder
+add wave -r sim:/sequential_binaryadder_tb/uut/*
+run
+# ** Note: $stop    : /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv(48)
+#    Time: 280 ps  Iteration: 1  Instance: /sequential_binaryadder_tb
+# Break in Module sequential_binaryadder_tb at /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv line 48
+quit -sim
+# End time: 14:22:58 on Jul 28,2024, Elapsed time: 0:01:42
+# Errors: 0, Warnings: 2
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv failed with 2 errors.
+# 2 compiles, 1 failed with 2 errors.
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv failed with 1 errors.
+# 2 compiles, 1 failed with 1 error.
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv failed with 2 errors.
+# 2 compiles, 1 failed with 2 errors.
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv failed with 2 errors.
+# 2 compiles, 1 failed with 2 errors.
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim work.sequential_binaryadder_tb
+# vsim work.sequential_binaryadder_tb 
+# Start time: 14:50:15 on Jul 28,2024
+# Loading sv_std.std
+# Loading work.sequential_binaryadder_tb
+# Loading work.sequential_binaryadder
+add wave -r sim:/sequential_binaryadder_tb/uut/*
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+run
+# ** Note: $stop    : /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv(45)
+#    Time: 320 ps  Iteration: 1  Instance: /sequential_binaryadder_tb
+# Break in Module sequential_binaryadder_tb at /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv line 45
+quit -sim
+# End time: 15:06:16 on Jul 28,2024, Elapsed time: 0:16:01
+# Errors: 0, Warnings: 1
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim work.sequential_binaryadder_tb
+# vsim work.sequential_binaryadder_tb 
+# Start time: 15:07:15 on Jul 28,2024
+# Loading sv_std.std
+# Loading work.sequential_binaryadder_tb
+# Loading work.sequential_binaryadder
+add wave -r sim:/sequential_binaryadder_tb/uut/*
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+run
+# ** Note: $stop    : /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv(45)
+#    Time: 260 ps  Iteration: 1  Instance: /sequential_binaryadder_tb
+# Break in Module sequential_binaryadder_tb at /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv line 45
+quit -sim
+# End time: 15:12:10 on Jul 28,2024, Elapsed time: 0:04:55
+# Errors: 0, Warnings: 1
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim work.sequential_binaryadder_tb
+# vsim work.sequential_binaryadder_tb 
+# Start time: 15:12:21 on Jul 28,2024
+# Loading sv_std.std
+# Loading work.sequential_binaryadder_tb
+# Loading work.sequential_binaryadder
+add wave -r sim:/sequential_binaryadder_tb/uut/*
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+run
+# ** Note: $stop    : /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv(46)
+#    Time: 300 ps  Iteration: 1  Instance: /sequential_binaryadder_tb
+# Break in Module sequential_binaryadder_tb at /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv line 46
+quit -sim
+# End time: 15:15:58 on Jul 28,2024, Elapsed time: 0:03:37
+# Errors: 0, Warnings: 1
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim work.sequential_binaryadder_tb
+# vsim work.sequential_binaryadder_tb 
+# Start time: 15:16:06 on Jul 28,2024
+# Loading sv_std.std
+# Loading work.sequential_binaryadder_tb
+# Loading work.sequential_binaryadder
+add wave -r sim:/sequential_binaryadder_tb/uut/*
+run
+# ** Note: $stop    : /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv(46)
+#    Time: 300 ps  Iteration: 1  Instance: /sequential_binaryadder_tb
+# Break in Module sequential_binaryadder_tb at /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv line 46
+quit -sim
+# End time: 15:23:54 on Jul 28,2024, Elapsed time: 0:07:48
+# Errors: 0, Warnings: 2
+# Compile of sequential_binaryadder.sv was successful.
+# Compile of sequential_binaryadder_tb.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim work.sequential_binaryadder_tb
+# vsim work.sequential_binaryadder_tb 
+# Start time: 15:24:02 on Jul 28,2024
+# Loading sv_std.std
+# Loading work.sequential_binaryadder_tb
+# Loading work.sequential_binaryadder
+add wave -r sim:/sequential_binaryadder_tb/uut/*
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+run
+# ** Note: $stop    : /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv(45)
+#    Time: 360 ps  Iteration: 1  Instance: /sequential_binaryadder_tb
+# Break in Module sequential_binaryadder_tb at /home/muhammadramzan/XCELERIUM/modules/module_08_systemverilog/binary_adder_state_machine/sequential_binaryadder_tb.sv line 45
+quit -sim
+# End time: 17:04:21 on Jul 28,2024, Elapsed time: 1:40:19
+# Errors: 0, Warnings: 1
