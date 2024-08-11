@@ -25,22 +25,16 @@ dest_ready------------------------------>Indicator for getting output <br />
 Controller contains state machine having two states: <br />
 S0------------------------------>Starting state or Idle state <br />
 S1------------------------------>Processing state <br />
-S2------------------------------>Waiting state <br />
 ![STG](https://drive.google.com/uc?id=1Hy6SxX7PMi24NDgHHsMOXx7LOku5sxJ-)
-
 ## Simulation using Iverilog and Gtkwave
 
-To simulate code on iverilog, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul_val_ready directory:
+To simulate code on iverilog using cocotb, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul_cocotb directory:
 
     make
 
-To add waves, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul_val_ready  directory:
+To add waves, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul_cocotb directory:
 
-    make waveform
-To clean .vvp and .vcd, run the following command in Xcelerium-IC-Design-Training/Masooma/seq_mul_val_ready  directory:
-
-    make clean
-
+    gtkwave mul.dump
 
 
 
