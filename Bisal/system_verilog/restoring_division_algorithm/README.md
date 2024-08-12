@@ -1,12 +1,8 @@
-Certainly! Below is a sample `README.md` for a restoring division algorithm project using Cocotb:
-
----
-
 # Restoring Division Algorithm Project with Python Test
 
 ## Introduction
 
-This project implements a restoring division algorithm using Verilog, consisting of two main components: the Control Unit and the Data Path. The system divides two 16-bit signed numbers sequentially and outputs a 16-bit signed quotient and a 16-bit signed remainder. The project also includes a testbench for verification using Cocotb.
+This project implements a restoring division algorithm using system verilog. The system divides two 32-bit unsigned numbers sequentially and outputs a 32-bit unsigned quotient and a 32-bit unsigned remainder. The project also includes a testbench for verification using Cocotb.
 
 ## What is Cocotb?
 
@@ -94,87 +90,72 @@ gtkwave waveform.vcd
 ## Project Structure
 
 ### Top Module
-
 The Top Module integrates the Control Unit and Data Path, coordinating the overall division process.
 
-**Inputs:**
+#### Inputs
 - `clk`: Clock signal.
 - `reset`: Reset signal to initialize the state.
-- `start`: Signal to start the division process.
-- `Dividend`, `Divisor`: 32-bit input values for the division.
+- `src_valid`: Indicates when the input data is valid.
+- `dst_ready`: Indicates when the module is ready to output data.
+- `Dividend, Divisor`: 32-bit input values to be divided.
 
-**Outputs:**
-- `Quotient`: 32-bit quotient of the division.
-- `Remainder`: 32-bit remainder of the division.
-- `ready`: Indicates when the division is complete.
+#### Outputs
+- `Quotient`: 32-bit result of the division.
+- `Remainder`: 32-bit remainder after division.
+- `src_ready`: Indicates when the module is ready to accept new data.
+- `dst_valid`: Indicates when the output data is valid.
+
+#### Top-Level Module Diagram
 
 ### Control Unit
 
-The Control Unit manages state transitions during the division process, including initialization, iteration, and completion.
+The Control Unit module manages the state transitions and control signals required for the division process.
 
-**Inputs:**
-- `clk`: Clock signal.
-- `reset`: Reset signal to initialize the state.
-- `start`: Signal to start the division process.
-- `count`: Counter value indicating the current step in the division.
+**Key Features:**
+- State management using an FSM (Finite State Machine).
+- Control signals for enabling registers, counting, and shifting operations.
+- Handles the ready/valid handshake protocol for input and output signals.
 
-**Outputs:**
-- `enReg`: Enable signal for loading inputs into registers.
-- `mux_sel`: Enable selection for restoring value of Accumulator based on msb of 'Accumulator'.
-- `enCount`: Enable signal for the counter and calculation operations.
-- `enShift`: Enable signal for shifting during the division process.
-- `ready`: Indicates when the division is complete.
+### 3. `Data_Path.sv`
+The Data Path module performs the core division operation by iteratively shifting and subtracting.
 
-### Data Path
+**Key Features:**
+- Handles the arithmetic operations required for the restoring division.
+- Manages internal registers for the quotient and remainder.
+- Supports loading initial values, shifting, and counting operations.
 
-The Data Path performs the division operation, computing both the quotient and remainder.
+### 4. `tb_top_module.sv`
+A SystemVerilog testbench that instantiates the `Top_Module` and simulates the division operation.
 
-**Inputs:**
-- `clk`: Clock signal.
-- `reset`: Reset signal to initialize registers.
-- `enReg`: Enable signal to load the input values into internal registers.
-- `enCount`: Enable signal to increment the count.
-- `enShift`: Enable signal to perform shift operations.
-- `mux_sel`: Enable selection for restoring value of Accumulator based on msb of 'Accumulator'.
-- `Dividend`, `Divisor`: 32-bit input values for the division.
+**Key Features:**
+- Generates clock signals and applies reset conditions.
+- Provides stimulus to the `Top_Module` by setting the dividend (`Q`) and divisor (`M`).
+- Monitors and displays the results of the division, including the quotient and remainder.
 
-**Outputs:**
-- `Quotient`: 32-bit quotient of the division.
-- `Remainder`: 32-bit remainder of the division.
-- `count`: 5-bit counter value.
+### 5. `testbench.py`
+A Python-based testbench using Cocotb for automated verification of the division algorithm.
 
-## Testbench Explanation
+**Key Features:**
+- Clock generation using `cocotb`.
+- Functions to apply directed tests with predefined inputs and expected outputs.
+- Randomized tests to validate the robustness of the design.
+- Logs the results of each test, indicating pass or fail status.
 
-The testbench is written using Cocotb to verify the functionality of the restoring division algorithm. It consists of several key functions and test cases.
+*NOTE*: Current file tests the code for 100k runs.
 
-### Clock Generation
+### 6. `Makefile`
+A Makefile to automate the compilation and simulation process.
 
-A clock generation coroutine (`clk_gen`) creates a continuous clock signal for the DUT (Device Under Test).
+**Key Commands:**
+- `make`: Compiles the SystemVerilog files and runs the simulation.
+- `make view`: Opens the waveform in GTKWave after the simulation completes.
 
-
-### Directed Tests
-
-The `directed_tests` coroutine runs specific test cases with known inputs and expected outputs. It initializes the DUT, runs the directed test cases, and logs the pass/fail results.
-
-### Random Tests
-
-The `random_tests` coroutine performs a large number of random test cases to verify the robustness of the division algorithm. It initializes the DUT, runs random test cases, and logs the pass/fail results.
-
-By following this structure, the testbench thoroughly verifies the functionality of the restoring division algorithm, ensuring it handles both directed and random test cases correctly.
+### 7. `dump.vcd`
+This file is generated during the simulation and contains waveform data that can be viewed using GTKWave or any other waveform viewer.
 
 ## Running the Project
 
-To run the project, a Makefile is provided which can be used by the following commands:
+To compile and simulate the design:
 
-1. **To display the final outputs, run the command below within your virtual environment:**
-
-    ```bash
-    make 
-    ```
-
-2. **To see waveforms, run the command below:**
-
-    ```bash
-    gtkwave dump.vcd
-    ```
-
+```bash
+make
