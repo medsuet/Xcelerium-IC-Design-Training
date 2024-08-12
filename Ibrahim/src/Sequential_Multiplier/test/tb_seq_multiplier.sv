@@ -124,7 +124,7 @@ module tb_seq_multiplier;
         monitor_outputs();
 
         // Test case: Random Testing
-        for(int i = 0; i < 50000; i++) begin 
+        for(int i = 0; i < 100000; i++) begin 
             // Non-random testing
             drive_inputs(0 + i, 10 + i); 
             monitor_outputs();

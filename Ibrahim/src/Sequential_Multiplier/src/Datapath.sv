@@ -137,6 +137,13 @@ assign combined = {ALU_out, multiplier_out};
 assign shifted_combined = {combined[WIDTH_P-1], combined[WIDTH_P-1:1]};
 
 // Output product logic
-assign product = (en_out) ? {WIDTH_P{1'b0}} : shifted_combined;
+always_comb begin
+    if(multiplicand == {{1'b1}, {WIDTH_M-1{1'b0}}}) begin
+        product = (en_out) ? {WIDTH_P{1'b0}} : (~(shifted_combined) + 1);
+    end else begin
+        product = (en_out) ? {WIDTH_P{1'b0}} : shifted_combined;
+    end
+
+end
 
 endmodule
