@@ -107,32 +107,67 @@ The Top Module integrates the Control Unit and Data Path, coordinating the overa
 
 #### Top-Level Module Diagram
 
+<p align="center">
+  <img src="docs/images/top_module.png" alt="Top-Level Module Diagram" />
+</p>
+
 ### Control Unit
+The Control Unit manages the state transitions and control signals for the division process.
 
-The Control Unit module manages the state transitions and control signals required for the division process.
+#### Inputs
+- **clk**: Clock signal.
+- **reset**: Reset signal to initialize the state.
+- **start**: Signal to start the division process.
+- **count**: Counter value indicating the current step in the division.
 
-**Key Features:**
-- State management using an FSM (Finite State Machine).
-- Control signals for enabling registers, counting, and shifting operations.
-- Handles the ready/valid handshake protocol for input and output signals.
+#### Outputs
+- **enReg**: Enable signal for loading inputs into registers.
+- **enCount**: Enable signal for the counter and calculation operations.
+- **enShift**: Enable signal for shifting the intermediate results during the division process.
+- **enSub**: Enable signal for performing the subtraction operation.
+- **ready**: Indicates when the division is complete.
 
-### 3. `Data_Path.sv`
-The Data Path module performs the core division operation by iteratively shifting and subtracting.
+#### State Diagram
+The Control Unit operates as a finite state machine (FSM) with the following states:
 
-**Key Features:**
-- Handles the arithmetic operations required for the restoring division.
-- Manages internal registers for the quotient and remainder.
-- Supports loading initial values, shifting, and counting operations.
+- **IDLE**: The initial state where the system waits for a valid input (`src_valid`). If a valid input is detected, it loads the input into registers (`enReg = 1`) and transitions to the `CALC` state. Otherwise, it remains in the `IDLE` state.
+  
+- **CALC**: In this state, the division operation is performed by shifting the intermediate results and counting the steps. The `CALC` state continues to iterate through the bits of the dividend, and if the count reaches 32, the division process is complete. At this point, the system clears the registers (`clear = 1`), marks the result as valid (`dst_valid = 1`), and transitions to the `WAIT` state.
+  
+- **WAIT**: In this state, the system waits for the destination to be ready to accept the results (`dst_ready`). Once the destination is ready, the system transitions back to the `IDLE` state to be ready for the next operation. If the destination is not ready, the system remains in the `WAIT` state and continues to assert `dst_valid = 1`.
 
-### 4. `tb_top_module.sv`
-A SystemVerilog testbench that instantiates the `Top_Module` and simulates the division operation.
+#### Control Unit State Diagram
+<p align="center">
+  <img src="docs/images/control_state_machine.png" alt="Top-Level Module Diagram" />
+</p>
 
-**Key Features:**
-- Generates clock signals and applies reset conditions.
-- Provides stimulus to the `Top_Module` by setting the dividend (`Q`) and divisor (`M`).
-- Monitors and displays the results of the division, including the quotient and remainder.
+### Data Path
+The Data Path module performs the actual division operation, utilizing registers and combinational logic.
 
-### 5. `testbench.py`
+#### Inputs
+- **clk**: Clock signal.
+- **reset**: Reset signal to initialize registers.
+- **enReg**: Enable signal to load the input values into internal registers.
+- **enCount**: Enable signal to increment the count.
+- **enShift**: Enable signal to perform shift operations.
+- **enSub**: Enable signal to perform subtraction in the division process.
+- **Dividend, Divisor**: 32-bit input values to be divided.
+
+#### Outputs
+- **Quotient**: 32-bit result of the division.
+- **Remainder**: 32-bit remainder after division.
+- **count**: 6-bit counter value.
+
+The Data Path uses registers to store the dividend, divisor, and intermediate results. It performs subtraction and shifts the intermediate results in each clock cycle.
+
+#### Data Path Diagram
+<p align="center">
+  <img src="docs/images/data_path.png" alt="Top-Level Module Diagram" />
+</p>
+
+## Testbench Explanation
+
+### `testbench.py`
 A Python-based testbench using Cocotb for automated verification of the division algorithm.
 
 **Key Features:**
