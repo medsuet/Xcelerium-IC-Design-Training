@@ -111,6 +111,21 @@ The Top Module integrates the Control Unit and Data Path, coordinating the overa
   <img src="docs/images/top_module.png" alt="Top-Level Module Diagram" />
 </p>
 
+### AXI Interface
+
+The AXI interface facilitates communication between the Top Module and external components. It follows the VAL-READY protocol to synchronize data transfers:
+
+- **src_valid**: Indicates that the source data (A and B) is valid and ready to be processed.
+- **src_ready**: Indicates that the source is ready to accept new input data.
+- **dst_ready**: Indicates that the destination is ready to receive the computed product.
+- **dst_valid**: Indicates that the product is available and valid for reading.
+
+#### AXI Interface Diagram
+
+<p align="center">
+  <img src="docs/images/Val_ready.png" alt="AXI Interface Diagram" />
+</p>
+
 ### Control Unit
 The Control Unit manages the state transitions and control signals for the division process.
 
