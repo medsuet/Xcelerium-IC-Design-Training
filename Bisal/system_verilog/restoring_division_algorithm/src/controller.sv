@@ -56,6 +56,11 @@ module Control_Unit(
                     dst_valid = 1;
                     next_state = WAIT;
                 end
+                else if (count ==32 && dst_ready==1) begin
+                    clear = 1;
+                    dst_valid = 1;
+                    next_state = IDLE;
+                end
             end
             WAIT: begin
                 if (dst_ready) begin
