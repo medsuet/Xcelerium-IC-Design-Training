@@ -28,3 +28,4 @@ transcript
 cocotb
 requirements.txt
 results.xml
+*.wlf
