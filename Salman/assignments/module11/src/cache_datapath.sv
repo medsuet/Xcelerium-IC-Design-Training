@@ -3,14 +3,15 @@
 module cache_datapath(
     input logic clk,
     input logic rst,
-    input logic flush,
+    input logic flush_req,
+    input logic stall,
     input logic [31:0] addr,                // Address from processor
-    input logic [31:0] w_data,              // Data from processor
+    input logic [127:0] w_data,              // Data from processor
     input wire type_controller_out cache_i,
     input wire type_mem2cache mem2cache,
     output type_cache2mem cache2mem,
     output logic [31:0] r_data,              // Read data from cache
-    output logic dirty, flush_done, cache_hit
+    output logic dirty, flush_done, cache_hit, flush
 );
     logic [8:0] i;
     
@@ -39,7 +40,7 @@ module cache_datapath(
 
     //assign cache2controller.cpu_req = cpu_req;
     //assign cache2controller.req_type = req_type;
-    //assign cache2controller.flush = flush;
+    //assign cache2controller.controller_out.flush = controller_out.flush;
     assign dirty = dirty_bit;
     assign flush_done = (i == 256);
     assign cache_hit = ((cache.valid == 1) && (cache.tag == tag_mem[cache.index]));
@@ -50,6 +51,7 @@ module cache_datapath(
             begin
                 reg_valid <= #1 0;
                 reg_dirty <= #1 0;
+                flush <= #1 0;
             end
         else
             begin
@@ -73,6 +75,21 @@ module cache_datapath(
                         reg_dirty[cache.index] <= #1 0;
                         reg_valid[cache.index] <= #1 1;
                     end
+                else if (flush_req)
+                    begin
+                        reg_dirty <= reg_dirty;
+                        reg_valid <= #1 0;
+                    end
+                else
+                    begin
+                        reg_dirty <= reg_dirty;
+                        reg_valid <= reg_valid;
+                    end
+
+                if (stall)
+                    flush <= #1 flush;
+                else
+                    flush <= #1 flush_req;
             end
     end
 

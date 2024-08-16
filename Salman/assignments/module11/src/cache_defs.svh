@@ -29,6 +29,7 @@ typedef struct packed {
     logic req_type;
     logic cache_hit;
     logic dirty;
+    logic flush_req;
     logic flush;
     logic flush_done;
 } type_controller_in;
@@ -48,7 +49,7 @@ typedef struct packed {
     logic rd_en;
     logic mem_wr;
     logic mem_rd;
-    logic cache_clean;
+    logic cache_clean;      // For flush counter loop
 } type_controller_out;
 
 // Cache Controller Outputs

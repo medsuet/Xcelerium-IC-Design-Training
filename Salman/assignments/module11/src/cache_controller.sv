@@ -27,7 +27,7 @@ begin
         IDLE:               begin
                                 if (controller_i.cpu_req)
                                     n_state = PROCESS_REQUEST;
-                                else if (controller_i.flush)
+                                else if (controller_i.flush_req)
                                     n_state = FLUSH;
                                 else
                                     n_state = IDLE;
