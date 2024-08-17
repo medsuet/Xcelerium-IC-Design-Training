@@ -16,7 +16,6 @@ module memory_datapath
     output type_mem_datapath2controller_s datapath2controller,
     input type_mem_controller2datapath_s controller2datapath
 );
-
     logic [(DATA_BUSWIDTH-1):0] memory_file [0:((MEMORY_SIZE/DATA_BUSWIDTH)-1)];
     logic [(ADDRESS_BUSWIDTH-1):0] address;
 

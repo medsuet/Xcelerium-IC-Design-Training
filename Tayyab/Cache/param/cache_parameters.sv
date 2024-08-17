@@ -62,15 +62,15 @@ package cache_parameters;
     typedef struct {
         logic [1:0] operation;
         type_address_ps address;
-        logic [(DATA_BUSWIDTH-1):0] data;
+        logic [(DATA_BUSWIDTH-1):0] w_data;
         logic valid;
         logic ready;
     } type_processor2cache_s;
 
     typedef struct {
-        logic [(DATA_BUSWIDTH-1):0] data;
         logic valid;
         logic ready;
+        logic [(DATA_BUSWIDTH-1):0] r_data;
     } type_cache2processor_s;
 
 endpackage

@@ -29,36 +29,27 @@ module cache_tb();
         init_sequence();
         @(posedge clk);
         reset_sequence();
+        @(posedge clk);
+
 
         write(32'h1, 32'h2021EE83);
+        write(32'h2, 32'haaaaaaaaa);
+        //repeat(1) @(posedge clk);
+        read(32'h2);
+        read(32'h1);
+        //read(32'h13);
 
-
-        $finish();
+        //$finish();
     end
 
-/*    
-    typedef struct {
-        logic [1:0] operation;
-        type_address_ps address;
-        logic [(DATA_BUSWIDTH-1):0] data;
-        logic valid;
-        logic ready;
-    } type_processor2cache_s;
-
-    typedef struct {
-        logic [(DATA_BUSWIDTH-1):0] data;
-        logic valid;
-        logic ready;
-    } type_cache2processor_s;
-*/
     // Writes data to cache/memory
     task write(logic [(ADDRESS_BUSWIDTH-1):0] address, logic [(DATA_BUSWIDTH-1):0] data);
-        @(posedge clk)
         processor2cache.address = address;
-        processor2cache.data = data;
+        processor2cache.w_data = data;
         processor2cache.operation = OPWRITE;
         processor2cache.valid = 1;
 
+        @(posedge clk);
         while (!cache2processor.valid)
             @(posedge clk);
         
@@ -68,12 +59,12 @@ module cache_tb();
 
     // Reads data from cache/memory
     task read(logic [(ADDRESS_BUSWIDTH-1):0] address);
-        @(posedge clk)
         processor2cache.address = address;
         processor2cache.operation = OPREAD;
         processor2cache.valid = 1;
-
-        while (!cache2processor.valid)
+        
+        @(posedge clk);
+        while (!cache2processor.ready)
             @(posedge clk);
 
         processor2cache.valid = 0;
@@ -90,7 +81,7 @@ module cache_tb();
     
     task reset_sequence();
         reset = 0;
-        #30;
+        #25;
         reset = 1;
     endtask
 

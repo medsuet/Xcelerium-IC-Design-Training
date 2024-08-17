@@ -25,7 +25,8 @@ verilate: $(PARAMS) $(SOURCES)
 	@verilator --cc $?
 
 verilator_sim : $(TB_CPP) $(PARAMS) $(SOURCES)
-	@verilator --trace --build --cc $(PARAMS) $(SOURCES) --exe $(TB_CPP)
+	@verilator --trace --build --cc $(PARAMS) $(SOURCES) --exe $(TB_CPP) 
+#-Wno-fatal
 	./obj_dir/Vcache
 
 clean:

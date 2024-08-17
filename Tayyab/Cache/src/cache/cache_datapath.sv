@@ -24,8 +24,8 @@ module cache_datapath
 
     logic [((DATA_BUSWIDTH)-1):0] cache_mem [0:(NUM_LINES-1)];
     logic [(TAG_WIDTH-1):0] cache_tag_feild [0:(NUM_LINES-1)];
-    logic cache_valid_feild [0:(NUM_LINES-1)];
-    logic cache_dirty_feild [0:(NUM_LINES-1)];
+    logic [(NUM_LINES-1):0] cache_valid_feild;
+    logic [(NUM_LINES-1):0] cache_dirty_feild;
 
     //logic [(OFFSET_WIDTH-1):0] offset;
     logic [(INDEX_WIDTH-1):0] index;
@@ -33,11 +33,9 @@ module cache_datapath
     logic [(INDEX_WIDTH-1):0] cache_index_counter;
 
     // link memory, cache
-    assign cache2memory.aclk = clk;
-    assign cache2memory.aresetn = reset;
     assign cache2memory.rac.araddr = processor2cache.address;
     assign cache2memory.wac.awaddr = processor2cache.address;
-    assign cache2memory.wdc.wdata = processor2cache.data;
+    assign cache2memory.wdc.wdata = processor2cache.w_data;
 
     // get info signals
     assign index = (controller2datapath.cache_flush) ? cache_index_counter : processor2cache.address.index;
@@ -58,30 +56,37 @@ module cache_datapath
     end
     assign datapath2controller.cache_flush_done = cache_index_counter === ((2**INDEX_WIDTH)-1);
 
+    logic [31:0]a;
+    always_comb a = cache_mem[index];
+    
     // read data
     always_comb begin
         // cache line size = 1
-        cache2processor.data = cache_mem [index];
+        cache2processor.r_data = cache_mem[index];
     end
 
     // write data
     always @(posedge clk, negedge reset) begin
+        if (!reset) begin
+            cache_valid_feild <= 0;
+            cache_dirty_feild <= 0;
+        end
         if (controller2datapath.wr_en) begin
-            case (controller2datapath.wr_sel)
-                PROCESSOR_WRITE:
-                    begin
-                        cache_mem [index] <= processor2cache.data;
-                    end
-                MEMORY_WRITE:
-                    begin
-                        cache_mem [index] <= memory2cache.rdc.rdata;
-                    end
-            endcase
-
+            if(controller2datapath.wr_sel === MEMORY_WRITE)
+            begin
+                //cache_mem [index] <= memory2cache.rdc.rdata;
+                cache_mem [index] <= processor2cache.w_data;
+            end
+            else
+            begin
+                cache_mem [index] <= processor2cache.w_data;
+            end
+            
             cache_tag_feild [index] <= tag;
             cache_valid_feild [index] <= controller2datapath.set_valid;
             cache_dirty_feild [index] <= controller2datapath.set_valid;
         end
+
     end
 
     

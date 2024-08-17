@@ -48,7 +48,7 @@ module memory_controller
     //================================= Store current state =================================
     always_ff @(posedge clk, negedge reset) begin
         if (!reset)
-            current_state <= M_IDLE;
+            current_state <= SIDLE;
         else
             current_state <= next_state;
     end
@@ -56,7 +56,7 @@ module memory_controller
     //================================= Next state and output logic =================================
     always_comb 
     begin
-        next_state = M_IDLE;
+        next_state = SIDLE;
         arready = 0;
         rvalid = 0;
         awready = 0;
@@ -65,66 +65,47 @@ module memory_controller
         wr_en = 0;
 
         case (current_state)
-            M_IDLE: 
+            SIDLE: 
+            begin
+                arready = 1;
+                awready = 1;
+                rvalid = 0;
+                
+                if (arvalid)
                 begin
-                    arready = 1;
-                    awready = 1;
-                    wready = 1;
-                    wr_en = 1;
+                    next_state = SREAD;
+                end
+                else if (awvalid & wvalid)
+                begin
+                    next_state = SWRITE;
+                end
+                else
+                begin
+                    next_state = SIDLE;
+                end
+            end
 
-                    if (arvalid)
-                    begin
-                        next_state = READ;
-                        arready = 1;
-                    end
-                    else if (awvalid & wvalid)
-                    begin
-                        awready = 1;
-                        wready = 1;
-                        wr_en = 1;
-                    end
-                    else 
-                    begin
-                        next_state = M_IDLE;
-                    end
-                end
-            READ: 
-                begin
-                    if (rdata_done & rready)
-                    begin
-                        next_state = M_IDLE;
-                        rvalid = 1;
-                    end
-                    else if (rdata_done & !rready)
-                    begin
-                        next_state = READ;
-                        rvalid = 1;
-                    end
-                    else
-                    begin
-                        next_state = READ;
-                    end
-                end
-            WRITE:
-                begin
-                    if (wdata_done & bready)
-                    begin
-                        next_state = M_IDLE;
-                        bvalid = 1;
-                    end
-                    else if (wdata_done & !bready)
-                    begin
-                        next_state = WRITE;
-                        bvalid = 1;
-                    end
-                    else
-                    begin
-                        next_state = WRITE;
-                        wr_en = 1;
-                    end
-                end
+            SREAD:
+            begin
+                rvalid = 1;
+                if (rready)
+                    next_state = SIDLE;
+                else
+                    next_state = SREAD;
+            end
             
-            default: next_state = M_IDLE;
+            SWRITE:
+            begin
+                wready = 1;
+                if (wvalid)
+                begin
+                    next_state = SIDLE;
+                    wr_en = 1;
+                end
+                else
+                    next_state = SWRITE;
+            end
+            default: next_state = SIDLE;
         endcase
     end
 

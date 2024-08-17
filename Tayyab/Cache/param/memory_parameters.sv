@@ -12,7 +12,7 @@ package memory_parameters;
     parameter ADDRESS_BUSWIDTH = 32;
 
     // Define states
-    typedef enum logic [1:0] { M_IDLE, READ, WRITE } type_memory_states_e;
+    typedef enum logic [2:0] { SIDLE, SREAD, SWRITE } type_memory_states_e;
 
     typedef struct {
         logic wr_en;
