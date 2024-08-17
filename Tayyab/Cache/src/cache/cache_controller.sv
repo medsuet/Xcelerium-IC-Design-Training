@@ -159,6 +159,8 @@ module cache_controller
                 if (pready & cache_hit & wr_req)
                 begin
                     next_state = IDLE;
+                    set_valid = 1;
+                    set_dirty = 1;
                     wr_en = 1;
                     cvalid = 1;
                 end
@@ -171,6 +173,8 @@ module cache_controller
                 begin
                     next_state = WAIT;
                     wr_en = 1;
+                    set_valid = 1;
+                    set_dirty = 1;
                     cvalid = 1;
                 end
                 else if (cache_hit & !wr_req)
@@ -187,6 +191,20 @@ module cache_controller
                     else
                         next_state = PROCESS_REQUEST;
                 end
+                else if (!cache_hit & is_dirty)
+                begin
+                    awvalid = 1;
+                    wvalid = 1;
+                    if (awready & wready)
+                    begin
+                        next_state = WRITE_BACK;    
+                    end
+                    else
+                    begin
+                        next_state = PROCESS_REQUEST;
+                    end
+                    
+                end
 
             end
 
@@ -201,7 +219,7 @@ module cache_controller
                     set_valid = 1;
                     set_dirty = 0;
                     wr_en = 1;
-                    wr_req_done = 1;
+                    //wr_req_done = 1;
                 end
                 else
                 begin
@@ -286,10 +304,10 @@ module cache_controller
 
             WRITE_BACK:
             begin
+                bready = 1;
                 if (!bvalid)
                 begin
                     next_state = WRITE_BACK;
-                    bready = 1;
                 end
                 else if (cache_flush)
                 begin
@@ -297,9 +315,12 @@ module cache_controller
                 end
                 else
                 begin
-                    next_state = HANDSHAKE_MEM_READ;
                     arvalid = 1;
                     rready = 1;
+                    if (arready)
+                        next_state = MEM_READ;
+                    else
+                        next_state = WRITE_BACK;
                 end
             end
 

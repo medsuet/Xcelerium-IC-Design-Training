@@ -34,8 +34,8 @@ module cache_datapath
 
     // link memory, cache
     assign cache2memory.rac.araddr = processor2cache.address;
-    assign cache2memory.wac.awaddr = processor2cache.address;
-    assign cache2memory.wdc.wdata = processor2cache.w_data;
+    assign cache2memory.wac.awaddr = (datapath2controller.is_valid & datapath2controller.is_dirty & !datapath2controller.tag_match) ? {cache_tag_feild[index], index} : processor2cache.address;
+    assign cache2memory.wdc.wdata = (datapath2controller.is_valid & datapath2controller.is_dirty & !datapath2controller.tag_match) ? cache_mem[index] : processor2cache.w_data;
 
     // get info signals
     assign index = (controller2datapath.cache_flush) ? cache_index_counter : processor2cache.address.index;
@@ -74,8 +74,8 @@ module cache_datapath
         if (controller2datapath.wr_en) begin
             if(controller2datapath.wr_sel === MEMORY_WRITE)
             begin
-                //cache_mem [index] <= memory2cache.rdc.rdata;
-                cache_mem [index] <= processor2cache.w_data;
+                cache_mem [index] <= memory2cache.rdc.rdata;
+                //cache_mem [index] <= processor2cache.w_data;
             end
             else
             begin
@@ -88,9 +88,5 @@ module cache_datapath
         end
 
     end
-
-    
-    
-
 
 endmodule

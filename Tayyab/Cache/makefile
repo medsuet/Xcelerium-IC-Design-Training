@@ -7,27 +7,24 @@ TB_SV = sim/cache_tb.sv
 SIMTIME = 500
 
 # Flags for vsim
-VSIM_FLAGS = -c -quiet -voptargs=+acc=npr
-VSIM_WAVE_FLAGS = -do "vcd file waveform.vcd" -do "vcd add -r /$(TB)/*"
+VSIM_FLAGS = -c -quiet -voptargs=+acc=npr 
+VSIM_WAVE_FLAGS = -do "vcd file waveform.vcd" -do "vcd add -r /*"
 VSIM_RUN_FLAGS = -do "run $(SIMTIME) ps" -do "exit"
 
 # Modelsim
-vlog: work/_lib.qdb
+.PHONY: compile
+compile: work/_lib.qdb
+.PHONY: wave
+wave: waveform.vcd
 
 work/_lib.qdb: $(PARAMS) $(SOURCES) $(TB_SV)
-	vlog -nologo $?
+	vlog -nologo $? -suppress 13314
 
-vsim_sim: vlog
-	@vsim $(VSIM_FLAGS) $(basename $(notdir $(TB_SV))) $(VSIM_WAVE_FLAGS) $(VSIM_ADDWAVE_FLAGS) $(VSIM_RUN_FLAGS) -suppress 3839
+sim: compile
+	@vsim $(VSIM_FLAGS) $(basename $(notdir $(TB_SV))) $(VSIM_RUN_FLAGS)
 
-# Verilator
-verilate: $(PARAMS) $(SOURCES)
-	@verilator --cc $?
-
-verilator_sim : $(TB_CPP) $(PARAMS) $(SOURCES)
-	@verilator --trace --build --cc $(PARAMS) $(SOURCES) --exe $(TB_CPP) 
-#-Wno-fatal
-	./obj_dir/Vcache
+waveform.vcd: compile
+	@vsim $(VSIM_FLAGS) $(basename $(notdir $(TB_SV))) $(VSIM_WAVE_FLAGS) $(VSIM_RUN_FLAGS)
 
 clean:
-	@rm -r obj_dir *.vcd work
+	@rm -r waveform.vcd transcript work

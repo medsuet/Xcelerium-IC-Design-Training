@@ -13,12 +13,13 @@ module cache
 (
     input logic clk, reset,
     input type_processor2cache_s processor2cache,
-    output type_cache2processor_s cache2processor
+    output type_cache2processor_s cache2processor,
+    input type_axi4lite_slave2master_s memory2cache,
+    output type_axi4lite_master2slave_s cache2memory
 );
 
     type_cache2processor_s cache2processor_ctrl, cache2processor_dp;
-    type_axi4lite_slave2master_s memory2cache;
-    type_axi4lite_master2slave_s cache2memory, cache2memory_ctrl, cache2memory_dp;
+    type_axi4lite_master2slave_s cache2memory_ctrl, cache2memory_dp;
     type_cache_controller2datapath_s controller2datapath;
     type_cache_datapath2controller_s datapath2controller;
 
@@ -42,11 +43,6 @@ module cache
         .cache2memory(cache2memory_dp),
         .controller2datapath(controller2datapath),
         .datapath2controller(datapath2controller)
-    );
-
-    memory mem (
-        .memory2cache(memory2cache),
-        .cache2memory(cache2memory)
     );
 
     // Link cache controller, datapath signals with external signals
