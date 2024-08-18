@@ -22,7 +22,7 @@ module cache_controller
     input type_cache_datapath2controller_s datapath2controller
 );
 
-    logic hold_signal_info, wr_req, wr_req_done, cache_hit, cache_flush, cache_flush_done, cache_index_counter_wr, cache_index_counter_clear;
+    logic store_signals, wr_req, wr_req_done, cache_hit, cache_flush, cache_flush_done, cache_index_counter_wr, cache_index_counter_clear;
     logic is_valid, is_dirty, wr_en, wr_sel, set_dirty, set_valid;
     logic cvalid, cready, pvalid, pready;
     logic rvalid, arvalid, arready, rready, awvalid, wvalid, bready, awready, wready, bvalid;
@@ -70,7 +70,7 @@ module cache_controller
             cache_flush <= 0;
         else if (cache_flush_done)
             cache_flush <= 0;
-        else if (hold_signal_info)
+        else if (store_signals)
             cache_flush <= processor2cache.operation === OPFLUSH;
     end
 
@@ -80,7 +80,7 @@ module cache_controller
             wr_req <= 0;
         else if (wr_req_done)
             wr_req <= 0;
-        else if (hold_signal_info)
+        else if (store_signals)
             wr_req <= processor2cache.operation === OPWRITE;
     end
 
@@ -99,7 +99,7 @@ module cache_controller
         // Defaults
         next_state = IDLE;
 
-        hold_signal_info          = 0;
+        store_signals             = 0;
         wr_req_done               = 0;
         cache_index_counter_wr    = 0;
         cache_index_counter_clear = 0;
@@ -120,7 +120,7 @@ module cache_controller
             IDLE: 
             begin
                 cready = 1;
-                hold_signal_info = 1;
+                store_signals = 1;
 
                 if (!pvalid)
                 begin
@@ -138,20 +138,6 @@ module cache_controller
                 end
             end
 
-            WAIT:
-            begin
-                cvalid = 1;
-                cready = 1;
-                if (pready)
-                begin
-                    next_state = IDLE;
-                end
-                else
-                begin
-                    next_state = WAIT;
-                end
-            end
-
             PROCESS_REQUEST:
             begin
                 rready = 1;
@@ -163,26 +149,20 @@ module cache_controller
                     set_dirty = 1;
                     wr_en = 1;
                     cvalid = 1;
+                    //cready = 1;
                 end
                 else if (pready & cache_hit & !wr_req)
                 begin
                     next_state = IDLE;
                     cvalid = 1;
+                    //cready = 1;
                 end
-                else if (cache_hit & wr_req)
+                else if (cache_hit & !pready)
                 begin
-                    next_state = WAIT;
-                    wr_en = 1;
-                    set_valid = 1;
-                    set_dirty = 1;
+                    next_state = PROCESS_REQUEST;
                     cvalid = 1;
                 end
-                else if (cache_hit & !wr_req)
-                begin
-                    next_state = WAIT;
-                    cvalid = 1;
-                end
-                else if ((!wr_req & !cache_hit) | (wr_req & !is_valid))
+                else if (!cache_hit & !is_dirty)
                 begin
                     arvalid = 1;
                     rready = 1;
@@ -226,84 +206,11 @@ module cache_controller
                     next_state = MEM_READ;
                 end
             end
-            
-
-            HANDSHAKE_WRITE_BACK:
-            begin
-                awvalid = 1;
-                wvalid = 1;
-                if (awready & wready & !bvalid)
-                begin
-                    next_state = WRITE_BACK;
-                    bready = 1;
-                end
-                else if (awready & wready & bvalid & !cache_flush)
-                begin
-                    next_state = HANDSHAKE_MEM_READ;
-                    arvalid = 1;
-                    rready = 1;
-                end
-                else if (awready & wready & bvalid & cache_flush)
-                begin
-                    next_state = FLUSH;
-                    set_valid = 0;
-                    set_dirty = 0;
-                    wr_en = 1;
-                end
-                else if (awready & !wready)
-                begin
-                    next_state = ADDRESS_HANDSHAKE_WRITE_BACK;
-                    wvalid = 1;
-                    //bready = 0;
-                end
-                else if (!awready & wready)
-                begin
-                    next_state = DATA_HANDSHAKE_WRITE_BACK;
-                    awvalid = 1;
-                    //bready = 0;
-                end
-                else
-                begin
-                    next_state = HANDSHAKE_WRITE_BACK;
-                    awvalid = 1;
-                    wvalid = 1;
-                    bready = 1;
-                end
-            end
-
-            ADDRESS_HANDSHAKE_WRITE_BACK:
-            begin
-                awvalid = 1;
-                if (wready)
-                begin
-                    next_state = WRITE_BACK;
-                    bready = 1;
-                end
-                else
-                begin
-                    next_state = ADDRESS_HANDSHAKE_WRITE_BACK;
-                    wvalid = 1;
-                    //bready = 0;
-                end
-            end
-
-            DATA_HANDSHAKE_WRITE_BACK:
-            begin
-                if (awready)
-                begin
-                    next_state = WRITE_BACK;
-                    bready = 1;
-                end
-                else
-                begin
-                    next_state = DATA_HANDSHAKE_WRITE_BACK;
-                    awvalid = 1;
-                    //bready = 0;
-                end
-            end
 
             WRITE_BACK:
             begin
+                awvalid = 1;
+                wvalid = 1;
                 bready = 1;
                 if (!bvalid)
                 begin
@@ -312,6 +219,10 @@ module cache_controller
                 else if (cache_flush)
                 begin
                     next_state = FLUSH;
+                    set_valid = 0;
+                    set_dirty = 0;
+                    wr_en = 1;
+                    cache_index_counter_wr = 1;
                 end
                 else
                 begin
@@ -326,13 +237,7 @@ module cache_controller
 
             FLUSH:
             begin
-                if (cache_flush_done)
-                begin
-                    next_state = WAIT;
-                    cready=1;
-                    cvalid = 1;
-                end
-                else if (!is_dirty)
+                if (!cache_flush_done & !is_dirty)
                 begin
                     next_state = FLUSH;
                     cache_index_counter_wr = 1;
@@ -340,12 +245,25 @@ module cache_controller
                     set_dirty = 0;
                     wr_en = 1;
                 end
-                else
+                else if (!cache_flush_done & is_dirty & !(awready & wready))
                 begin
-                    next_state = HANDSHAKE_WRITE_BACK;
+                    next_state = FLUSH;
                     awvalid = 1;
                     wvalid = 1;
                     bready = 1;
+                end
+                else if (!cache_flush_done & is_dirty & (awready & wready))
+                begin
+                    next_state = WRITE_BACK;
+                    awvalid = 1;
+                    wvalid = 1;
+                    bready = 1;
+                end
+                else
+                begin
+                    next_state = IDLE;
+                    cready=1;
+                    cvalid = 1;
                 end
             end
 
