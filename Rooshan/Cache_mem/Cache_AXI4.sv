@@ -7,9 +7,7 @@ input logic [Tag_bits-1:0]Tag_Address,Tag_Cache,
 output logic Cache_hit,Cache_miss,
 output logic Load_from_Memory,Save_to_Memory
 );
-
     logic [2:0] c_state, n_state;
-
     //state register
     always_ff @ (posedge clk or negedge reset)
     begin
