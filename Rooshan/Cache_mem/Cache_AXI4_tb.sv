@@ -12,12 +12,29 @@ module Cache_TB();
     parameter Tag_bits=Address_bits-Offset_bits-Index_bits;
     parameter Memory_size=100;
     parameter Addressibility=8;
+    int num_tests=5;
+    int exit=0;
+    int num_tests_passed=0;
     logic [Address_bits-1:0]address;
     logic rd_en,wr_en,CPU_Request;
     logic [Addressibility-1:0]write_data,read_data;
     logic aw_ready,w_ready,b_valid,ar_ready,r_valid,aw_valid,w_valid,b_ready,ar_valid,r_ready,Main_Mem_ack,Main_Mem_ack1,start_write,start_read;
-    logic [Data_bytes*8-1:0]Main_Memory[Memory_size-1:0];
-    Cache#(.Addressibility(Addressibility),.C(C),.b(b),.Data_bytes(Data_bytes),.Address_bits(Address_bits),.Offset_bits($clog2(Data_bytes)),.Index_bits($clog2(C/b)),.Tag_bits(Address_bits-Offset_bits-Index_bits),.Memory_size(Memory_size))Cache1(clk,reset,CPU_Request,address,rd_en,wr_en,write_data,read_data,aw_ready,w_ready,b_valid,ar_ready,r_valid,aw_valid,w_valid,b_ready,ar_valid,r_ready,Main_Mem_ack1,Main_Mem_ack,start_write,start_read,Main_Memory);
+    logic Cache_hit,Cache_miss;
+    Cache#(.Addressibility(Addressibility),.C(C),.b(b),.Data_bytes(Data_bytes),.Address_bits(Address_bits),.Offset_bits($clog2(Data_bytes)),.Index_bits($clog2(C/b)),.Tag_bits(Address_bits-Offset_bits-Index_bits),.Memory_size(Memory_size))Cache1(clk,reset,CPU_Request,address,rd_en,wr_en,write_data,read_data,aw_ready,w_ready,b_valid,ar_ready,r_valid,aw_valid,w_valid,b_ready,ar_valid,r_ready,Main_Mem_ack1,Main_Mem_ack,start_write,start_read,Cache_hit,Cache_miss);
+    task monitor;
+    begin
+        for (int k=0;k<num_tests;k++)begin
+            while(!Cache_miss)begin
+                @(posedge clk);
+            end
+            while(!Cache_hit)begin
+                @(posedge clk);
+            end
+            num_tests_passed+=1;
+        end
+        exit=1;
+    end
+    endtask
     task driver_miss_dirty_bit1(input logic CPU_Request_driver,input logic rd_en_driver,input logic wr_en_driver,input logic [7:0]write_data_driver,input logic [31:0]address_driver);
     begin
         aw_ready=0;
@@ -118,9 +135,19 @@ module Cache_TB();
         #10
         reset = 1;
         #10;
-        driver_miss_dirty_bit0(1,0,1,210,0);
+        driver_miss_dirty_bit0(1,0,1,210,32'b000000); //cache index 0
+        driver_miss_dirty_bit0(1,0,1,210,32'b010000); //cache index 1
+        driver_miss_dirty_bit0(1,0,1,210,32'b100000); //cache index 2
+        driver_miss_dirty_bit0(1,0,1,210,32'b110000); //cache index 3
         driver_miss_dirty_bit1(1,0,1,-1,32'b1000000);
+        if( exit==1)
+            if (num_tests_passed==num_tests)begin
+                $display("All tests passed");
+            end
         #100
       $finish;
+    end
+    initial begin
+        monitor;
     end
 endmodule
