@@ -23,7 +23,7 @@ module cache_datapath(
     logic [255:0] reg_valid;              // Valid Bit Register
     logic [255:0] reg_dirty;              // Dirty Bit Register
 
-    // logic [127:0] data_mem [27:0];       // 4 GB Data Memory
+    // logic [127:0] data_mem [2*28:0];       // 4 GB Data Memory
 
     type_cache_address cache;
 
