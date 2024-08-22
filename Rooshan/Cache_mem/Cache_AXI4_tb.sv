@@ -11,16 +11,17 @@ module Cache_TB();
     parameter Index_bits=$clog2(C/b);
     parameter Tag_bits=Address_bits-Offset_bits-Index_bits;
     parameter Memory_size=100;
-    parameter Addressibility=8;
-    int num_tests=5;
+    parameter Addressability=8;
+    int num_tests=4;
     int exit=0;
     int num_tests_passed=0;
     logic [Address_bits-1:0]address;
     logic rd_en,wr_en,CPU_Request;
-    logic [Addressibility-1:0]write_data,read_data;
+    logic [Addressability-1:0]write_data,read_data;
     logic aw_ready,w_ready,b_valid,ar_ready,r_valid,aw_valid,w_valid,b_ready,ar_valid,r_ready,Main_Mem_ack,Main_Mem_ack1,start_write,start_read;
     logic Cache_hit,Cache_miss;
-    Cache#(.Addressibility(Addressibility),.C(C),.b(b),.Data_bytes(Data_bytes),.Address_bits(Address_bits),.Offset_bits($clog2(Data_bytes)),.Index_bits($clog2(C/b)),.Tag_bits(Address_bits-Offset_bits-Index_bits),.Memory_size(Memory_size))Cache1(clk,reset,CPU_Request,address,rd_en,wr_en,write_data,read_data,aw_ready,w_ready,b_valid,ar_ready,r_valid,aw_valid,w_valid,b_ready,ar_valid,r_ready,Main_Mem_ack1,Main_Mem_ack,start_write,start_read,Cache_hit,Cache_miss);
+    logic Cache_Flush;
+    Cache#(.Addressability(Addressability),.C(C),.b(b),.Data_bytes(Data_bytes),.Address_bits(Address_bits),.Offset_bits($clog2(Data_bytes)),.Index_bits($clog2(C/b)),.Tag_bits(Address_bits-Offset_bits-Index_bits),.Memory_size(Memory_size))Cache1(clk,reset,CPU_Request,address,rd_en,wr_en,write_data,read_data,aw_ready,w_ready,b_valid,ar_ready,r_valid,aw_valid,w_valid,b_ready,ar_valid,r_ready,Main_Mem_ack1,Main_Mem_ack,start_write,start_read,Cache_hit,Cache_miss,Cache_Flush);
     task monitor;
     begin
         for (int k=0;k<num_tests;k++)begin
@@ -135,16 +136,33 @@ module Cache_TB();
         #10
         reset = 1;
         #10;
-        driver_miss_dirty_bit0(1,0,1,210,32'b000000); //cache index 0
-        driver_miss_dirty_bit0(1,0,1,210,32'b010000); //cache index 1
-        driver_miss_dirty_bit0(1,0,1,210,32'b100000); //cache index 2
-        driver_miss_dirty_bit0(1,0,1,210,32'b110000); //cache index 3
-        driver_miss_dirty_bit1(1,0,1,-1,32'b1000000);
+        Cache_Flush=0;
+        driver_miss_dirty_bit0(1,0,1,8'hd3,32'b000000); //cache index 0
+        driver_miss_dirty_bit0(1,0,1,8'hd7,32'b010000); //cache index 1
+        driver_miss_dirty_bit0(1,0,1,8'h98,32'b100000); //cache index 2
+        driver_miss_dirty_bit0(1,0,1,8'h9d,32'b110000); //cache index 3
+        driver_miss_dirty_bit1(1,0,1,8'h92,32'b1000000);
+        CPU_Request=1;
+        rd_en=0;
+        wr_en=1;
+        write_data = 8'h99;
+        address=32'b000000;
+        #10;
+        CPU_Request=0;
+        
+        Cache_Flush=1;
+        aw_ready=1;
+        w_ready=1;
+        b_valid=1;
+        ar_ready=1;
+        r_valid=1;
+        #100
+        Cache_Flush=0;        
         if( exit==1)
             if (num_tests_passed==num_tests)begin
                 $display("All tests passed");
             end
-        #100
+        #1000
       $finish;
     end
     initial begin
