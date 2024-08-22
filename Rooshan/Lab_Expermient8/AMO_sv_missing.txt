@@ -1,0 +1,6 @@
+Things which I think are missing in Amo.sv file or weren't corect:
+1. Swapping not done correctly in line 128.
+    126    case (amo_ops)
+    127    AMO_OPS_SC  : amo_result = amo_operand_b;
+    128    AMO_OPS_SWAP: amo_result = amo_operand_b;
+2. Does not support Hypervisor mode.
