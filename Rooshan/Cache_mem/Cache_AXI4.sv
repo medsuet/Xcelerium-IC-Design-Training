@@ -91,16 +91,16 @@ output logic [Index_bits-1:0]flush_count
                         flush_count_update_enable=0;
                     end
                 end
-                if (!Flush_Done)begin
-                    if ((flush_count<2**Index_bits)&&(Dirty_bit==1))begin
+//                if (!Flush_Done)begin
+//                    if ((flush_count<2**Index_bits)&&(Dirty_bit==1))begin
+////                        Load_from_Memory=0;
+////                        Save_to_Memory=1;
+//                    end
+//                    else begin
 //                        Load_from_Memory=0;
-//                        Save_to_Memory=1;
-                    end
-                    else begin
-                        Load_from_Memory=0;
-                        Save_to_Memory=0;                        
-                    end
-                end
+//                        Save_to_Memory=0;                        
+//                    end
+//                end
             end
             default:begin
             end
@@ -188,7 +188,6 @@ input logic Cache_Flush
     Cache_Memory #(.Index_bits(Index_bits),.Tag_bits(Tag_bits),.Data_bytes(Data_bytes),.Offset_bits(Offset_bits),.Address_bits(Address_bits))CM(clk,reset,Cache_hit,Cache_miss,wr_en,rd_en,Main_Mem_ack1,Flush,Index_address,Offset_address,address,write_data,Data_New,Tag_Address,Tag_Cache,Valid_bit,Dirty_bit,Dirty_bit_Flush,Data_prev,Address_prev,read_data,Flush_Done,flush_count);    
 
     Controller#(.Tag_bits(Tag_bits),.Index_bits(Index_bits),.IDLE(3'd0),.PROCESS_REQUEST(3'd1),.CACHE_ALLOCATE(3'd2),.WRITEBACK(3'd3),.FLUSH(3'd4))CTRL(clk,reset,CPU_Request,Valid_bit,Dirty_bit,Dirty_bit_Flush,Main_Mem_ack1,Flush,Flush_Done,Cache_Flush,rd_en,wr_en,Tag_Address,Tag_Cache,Cache_hit,Cache_miss,Load_from_Memory,Save_to_Memory,flush_count_update_enable,flush_count);
-
 
 endmodule
 
