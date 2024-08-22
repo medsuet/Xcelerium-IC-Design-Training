@@ -192,43 +192,43 @@ task read_driver();
     begin
         while (simulation_run)
         begin
+            // Wait for axi_arvalid - Memory Read operation
+            while (!axi_arvalid)
+                @(posedge clk);
+
+            // Assert arready after random delay
+            random_delay = $random;
+            repeat (random_delay) @(posedge clk);
+            mem_arready <= #1 1;
+
+            // Store address during handshake
+            @(negedge clk);
+            cache2mem_addr = mem_araddr;
             @(posedge clk);
-            if (axi_arvalid)
+            mem_arready <= #1 0;
+
+            // Confirm if rready is asserted by controller
+            while (!axi_rready)
+                @(posedge clk);
+
+            // Assert rdata and rvalid after random delay
+            random_delay = $random;
+            repeat (random_delay) @(posedge clk);
+
+            // Confirm if the address key in memory exists, otherwise create one
+            if (!main_memory.exists(cache2mem_addr))
                 begin
-                    // Assert arready after random delay
-                    random_delay = $random;
-                    repeat (random_delay) @(posedge clk);
-                    mem_arready <= #1 1;
-
-                    // Store address during handshake
-                    @(negedge clk);
-                    cache2mem_addr = mem_araddr;
-                    @(posedge clk);
-                    mem_arready <= #1 0;
-
-                    // Confirm if rready is asserted by controller
-                    while (!axi_rready)
-                        @(posedge clk);
-
-                    // Assert rdata and rvalid after random delay
-                    random_delay = $random;
-                    repeat (random_delay) @(posedge clk);
-
-                    // Confirm if the address key in memory exists, otherwise create one
-                    if (!main_memory.exists(cache2mem_addr))
-                        begin
-                            main_memory[cache2mem_addr] = $random;
-                        end
-
-                    // Read the data
-                    mem_rdata   <= #1 main_memory[cache2mem_addr];
-                    mem_rvalid  <= #1 1;
-
-                    // Deassert rvalid as handshake occurs
-                    @(posedge clk);
-                    mem_rvalid  <= #1 0;
-                    mem_rdata   <= #1 0; 
+                    main_memory[cache2mem_addr] = $random;
                 end
+
+            // Read the data
+            mem_rdata   <= #1 main_memory[cache2mem_addr];
+            mem_rvalid  <= #1 1;
+
+            // Deassert rvalid as handshake occurs
+            @(posedge clk);
+            mem_rvalid  <= #1 0;
+            mem_rdata   <= #1 0; 
         end
     end
 endtask
@@ -240,55 +240,55 @@ task write_driver();
     begin
         while (simulation_run)
         begin
+            // Wait for axi_awvalid - Memory Write operation
+            while (!axi_awvalid)
+                @(posedge clk);
+            
+            // Assert awready after random delay
+            random_delay = $random;
+            repeat (random_delay) @(posedge clk);
+            mem_awready <= #1 1;
+
+            // Store address during handshake
+            @(negedge clk);
+            cache2mem_addr = mem_awaddr;
             @(posedge clk);
-            if (axi_awvalid)
-                begin
-                    // Assert awready after random delay
-                    random_delay = $random;
-                    repeat (random_delay) @(posedge clk);
-                    mem_awready <= #1 1;
+            mem_awready <= #1 0;
 
-                    // Store address during handshake
-                    @(negedge clk);
-                    cache2mem_addr = mem_awaddr;
-                    @(posedge clk);
-                    mem_awready <= #1 0;
+            // Confirm if controller asserted wvalid
+            while (!axi_wvalid)
+                @(posedge clk);
 
-                    // Confirm if controller asserted wvalid
-                    while (!axi_wvalid)
-                        @(posedge clk);
+            // Assert wready and store data in memory after random delay
+            random_delay = $random;
+            repeat (random_delay) @(posedge clk);
+            mem_wready <= #1 1;
 
-                    // Assert wready and store data in memory after random delay
-                    random_delay = $random;
-                    repeat (random_delay) @(posedge clk);
-                    mem_wready <= #1 1;
+            // Store data during handshake
+            @(negedge clk);
+            cache2mem_data = mem_wdata;
 
-                    // Store data during handshake
-                    @(negedge clk);
-                    cache2mem_data = mem_wdata;
+            // Deassert wready after handshake occurs
+            @(posedge clk);
+            mem_wready <= #1 0;
 
-                    // Deassert wready after handshake occurs
-                    @(posedge clk);
-                    mem_wready <= #1 0;
-
-                    // Confirm if controller asserted bready
-                    while (!axi_bready)
-                        @(posedge clk);
+            // Confirm if controller asserted bready
+            while (!axi_bready)
+            @(posedge clk);
                     
-                    // Store in main_memory and assert bresp after after random delay
-                    random_delay = $random;
-                    repeat (random_delay) @(posedge clk);
-                    main_memory[cache2mem_addr] = cache2mem_data;
-                    mem_bresp <= #1 1;
+            // Store in main_memory and assert bresp after after random delay
+            random_delay = $random;
+            repeat (random_delay) @(posedge clk);
+            main_memory[cache2mem_addr] = cache2mem_data;
+            mem_bresp <= #1 1;
 
-                    // Assert bvalid
-                    @(posedge clk);
-                    mem_bvalid <= #1 1;
+            // Assert bvalid
+            @(posedge clk);
+            mem_bvalid <= #1 1;
 
-                    // Deassert bvalid
-                    @(posedge clk);
-                    mem_bvalid <= #1 0;
-                end
+            // Deassert bvalid
+            @(posedge clk);
+            mem_bvalid <= #1 0;
         end
     end
 endtask
