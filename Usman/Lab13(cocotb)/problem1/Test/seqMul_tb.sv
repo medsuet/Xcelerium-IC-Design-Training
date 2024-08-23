@@ -13,7 +13,7 @@ module seqMul_tb;
     
     // DUT instantiation
     seqMul dut (
-        .A(A), .B(B), .clk(clk), .reset(reset),.src_valid(src_valid), .dst_ready(dst_ready),
+        .A(A), .B(B), .clk(clk), .reset(reset), .start(start),.src_valid(src_valid), .dst_ready(dst_ready),
         .src_ready(src_ready), .dst_valid(dst_valid), .out(out)
     );
 
@@ -25,7 +25,7 @@ module seqMul_tb;
     // Tasks
     task rst();
         begin
-         @(posedge clk) src_valid = 0;
+         
          @(posedge clk) reset = 0;
          @(posedge clk) reset = 1;
         end
@@ -33,14 +33,12 @@ module seqMul_tb;
       
     
     task direct_test(input logic [15:0] test_A, test_B);
+            src_valid = 1;
             A = test_A;
             B = test_B;
-            src_valid = 1;
-            @(posedge clk);
-            @(posedge clk);
-            while(~src_ready) 
-            begin
-                @(posedge clk);
+
+            while(~src_ready) begin
+                @(posedge clk)
             end    
             
             src_valid = 0;
@@ -48,29 +46,26 @@ module seqMul_tb;
 	    
     endtask
 
-    task driver(input logic [3:0]k);
+    task driver(k);
       for(int i =0;i<=k;i++) begin
-        A = $random;
-        B = $random;
-        src_valid = 1;
-        @(posedge clk);
-        @(posedge clk);
-        while(~src_ready) 
-        begin
+        src_valid=1;        
+        rand_A = $random;
+        rand_B = $random;
+        A = rand_A;
+        B = rand_B;
+        while(src_ready!=1)begin
             @(posedge clk);
-        end    
-            
+        end
         src_valid = 0;
-        @(posedge clk);
       end
-      src_valid = 0;
+      $finish;
     endtask
 
     task monitor();
-       dst_ready = 0;
       forever begin 
-           @(posedge clk);
-           while(~src_valid ) begin
+        
+        
+           while(src_valid) begin
               @(posedge clk);
             end  
             signed_A = A;
@@ -78,22 +73,18 @@ module seqMul_tb;
             expected_product = signed_A * signed_B;
             while(~dst_valid) begin
               @(posedge clk);
-            end
+            end  
             if (out !== expected_product) begin
-                $display("Test Failed: A = %d, B = %d, Expected = %x, Got = %x", signed_A, signed_B, expected_product, out);
+                $display("Test Failed: A = %d, B = %d, Expected = %d, Got = %d", signed_A, signed_B, expected_product, out);
             end else begin
-                $display("Test Passed: A = %d, B = %d, Expected = %x, Got = %x", signed_A, signed_B, expected_product, out);
+                $display("Test Passed: A = %d, B = %d, Product = %d", signed_A, signed_B, out);
             end
-        
          dst_ready = 1;
          @(posedge clk) 
          dst_ready =0;
       end 
     endtask
 
-initial begin
-	monitor(); 
-end
     // Testbench
     initial begin
         
