@@ -169,7 +169,7 @@ task random_test(int count);
                 num = $random;
                 $display(" -------------------------------------------");
                 $display(" ------    Running Test Number %2d    ------",i);
-                $display(" -------------------------------------------");
+                //$display(" -------------------------------------------");
                 // Randon tag,index,offset,data
                 random_tag      = $random;
                 random_index    = $random;
@@ -319,6 +319,7 @@ task monitor();
                             monitor_cache_tag       = cpu_addr[31:12];
                             monitor_cache_index     = cpu_addr[11:2];
                             monitor_cpu_wdata       = cpu_wdata;
+                            $display(" -------------------------------------------");
                             // In case of Cache hit
                             if (DUT.cache_hit)
                                 begin
@@ -341,7 +342,7 @@ task monitor();
                                     // Read request
                                     else
                                         begin
-                                            @(negedge clk);
+                                            //@(posedge clk);
                                             monitor_cache_rdata = DUT.datapath.cache_mem[monitor_cache_index];
                                             if (cpu_rdata != monitor_cache_rdata)
                                                 begin
@@ -352,6 +353,8 @@ task monitor();
                                             $display("Succesfull | Read from Cache | Index:%d | Tag:%d | Cache_rdata:%2d",monitor_cache_index,monitor_cache_tag,monitor_cache_rdata);
                                         end
                                 end
+                            else
+                                $display("Cache Miss | Sending memory write request to AXI Controller...");
                         end
                 end
             // --------------------------------
@@ -370,16 +373,18 @@ task monitor();
                     // --------------------------------------
                     if (axi_awvalid)
                         begin
-                            $display("Cache Miss | Sending memory write request to AXI Controller...");
                             // Store address of memory
                             monitor_mem_awaddr = mem_awaddr;
-                            while ( !(mem_bvalid && axi_bready) )
+                            while (!axi_wvalid)
                                 @(posedge clk);
                             monitor_mem_wdata = mem_wdata;
+                            while ( !(mem_bvalid && axi_bready) )
+                                @(posedge clk);
                             if (main_memory[monitor_mem_awaddr] != monitor_mem_wdata)
                                 begin
                                     $display("Error | Write to Memory | Stored Data Mismatch | Memory Address:%d | Mem_wdata = %d; Memory Data = %2d",monitor_mem_awaddr,monitor_mem_wdata,main_memory[monitor_mem_awaddr]);
                                     $error();
+                                    repeat (2) @(posedge clk);
                                     $stop();
                                 end
                             // Data from memory will be written to cache during a cycle
@@ -387,7 +392,17 @@ task monitor();
                             monitor_cache_rdata = DUT.datapath.cache_mem[monitor_cache_index];
                             if (monitor_mem_wdata != monitor_cache_rdata)
                                 begin
-                                    $display("Error | Write to Memory | Index:%d | Tag:%d | Mem_rdata = %d; Cache_data = %2d",monitor_cache_index,monitor_cache_tag,monitor_mem_rdata,monitor_cache_wdata);
+                                    $display("Error | Write to Memory | Index:%d | Tag:%d | Mem_rdata = %d; Cache_data = %2d",monitor_cache_index,monitor_cache_tag,monitor_mem_rdata,monitor_cache_rdata);
+                                    $error();
+                                    $stop();
+                                end
+                            if (mem_bresp)
+                                begin
+                                    $display("Memory Write Response | OK | Sending axi acknowledge to Cache Controller...");
+                                end
+                            else
+                                begin
+                                    $display("Memory Write Response | FAIL | Ending simulation...");
                                     $error();
                                     $stop();
                                 end
@@ -399,7 +414,6 @@ task monitor();
                     else if (axi_arvalid)
                         begin
                             // Store address of memory
-                            $display("Cache Miss | Sending memory read request to AXI Controller...");
                             monitor_mem_araddr = mem_araddr;
                             while ( !(mem_rvalid && axi_rready) )
                                 @(posedge clk);
@@ -427,7 +441,7 @@ task monitor();
                             // -----------------------------------------------------------------------------
                             if (DUT.cache_hit)
                                 begin
-                                    $display("Cache Hit  | Sending AXI Acknowledge to Cache Controller...");
+                                    $display("Cache Hit  | Sending read/write request to Cache Controller...");
                                     // Write request
                                     if (req_type)
                                         begin
@@ -455,6 +469,12 @@ task monitor();
                                                 end
                                             $display("Succesfull | Read from Cache | Index:%d | Tag:%d | Cache_rdata:%2d",monitor_cache_index,monitor_cache_tag,monitor_cache_rdata);
                                         end
+                                end
+                            else
+                                begin
+                                    $display("Error | Cache Miss After Cache Allocate | Ending simulation...");
+                                    $error();
+                                    $stop();
                                 end
                         end
                 end
@@ -501,16 +521,18 @@ begin
     begin
         cache_write(j+1,j,2'd0,$random);
     end
-
+    
+    
     // Reading whole cache - Cache Hit test
     for (j=0; j<1024; j++)
     begin
-        cache_read(j,j,2'd0);
+        cache_read(j+1,j,2'd0);
     end
-    
-    cache_flush();
     */
-
+    
+    //cache_flush();
+    
+    
     // ------------------------------------------
     // -------------- RANDOM TESTS --------------
     // ------------------------------------------

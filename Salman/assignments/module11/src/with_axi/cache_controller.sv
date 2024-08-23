@@ -199,8 +199,8 @@ module cache_controller(
                     end
                 else if(~cache_hit & dirty)
                     begin
-                        mem_wr_req = 1'b1;
-                        wr_en      = 1'b1;
+                        mem_wr_req  = 1'b1;
+                        wr_en       = 0;
                         dirty_sel   = 0;
                         valid_sel   = 0;
                         rd_en       = 0;
