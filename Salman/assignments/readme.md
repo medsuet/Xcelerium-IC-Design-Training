@@ -11,3 +11,4 @@
 - **Module 8: 4 bit Combinational Counter**
 - **Module 9: 4 bit Sequential Plus One Adder**
 - **Module 10: Sequential Signed Multiplier, Restoring Division with Cocotb Testbenches**
+- **Module 11: Cache Controller with AXI4-Lite Interface**
