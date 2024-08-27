@@ -13,29 +13,29 @@ module dcahche_controller  (
     input   logic       pro_ready,                      // signal tell processor is ready to take output
 
     // Inputs from datapath to controller
-    input   logic       dcache_hit_i,               // hit on the cache
-    input   logic       dcache_miss_i,              // miss on the cache
-    input   logic       dcache_dirty_i,             // dirty bit
-    input   logic       dcache_flush_done_i,        // signals that flushing has been done
+    input   logic       dcache_hit_i,                   // hit on the cache
+    input   logic       dcache_miss_i,                  // miss on the cache
+    input   logic       dcache_dirty_i,                 // dirty bit
+    input   logic       dcache_flush_done_i,            // signals that flushing has been done
     
     // Output from the controller to datapath
-    output  logic       cache_wr_o,cache_rd_o,      // cache_read and the cache_wr request
-    output  logic       cache_line_wr_o,            //  write signal to write in the cache line
-    output  logic       mem_wrb_addr_o,             // adrress selection in case of write back or the from where the data is brought in case of miss
-    output  logic       dcache_flush_o,             // flush signal for cache flushing 
-    output  logic       flush_index_next_o,         // go to the next index for flushing in case it is not dirty
-    output  logic       reserve_o,                  // reserver signal for storing the address and the data for the ld/st req
+    output  logic       cache_wr_o,cache_rd_o,          // cache_read and the cache_wr request
+    output  logic       cache_line_wr_o,                //  write signal to write in the cache line
+    output  logic       mem_wrb_addr_o,                 // adrress selection in case of write back or the from where the data is brought in case of miss
+    output  logic       dcache_flush_o,                 // flush signal for cache flushing 
+    output  logic       flush_index_next_o,             // go to the next index for flushing in case it is not dirty
+    output  logic       reserve_o,                      // reserver signal for storing the address and the data for the ld/st req
 
 
     // Output from the controller to processor
-    output  logic       dcache2pro_ack,             // when the hit occures (act as valid signal from the cache to processor)
-    output  logic       dcache_ready,               // ready signal that shows the cache is ready for the input
+    output  logic       dcache2pro_ack,                 // when the hit occures (act as valid signal from the cache to processor)
+    output  logic       dcache_ready,                   // ready signal that shows the cache is ready for the input
     
     // Output  from controller to the main memory     
-    output  logic       dcache2mem_req,             // when the the data and address transfer to main mem in case of the miss + dirty 
-    output  logic       mem_wrb_req,                // write in the main memory in case of the write back
+    output  logic       dcache2mem_req,                 // when the the data and address transfer to main mem in case of the miss + dirty 
+    output  logic       mem_wrb_req,                    // write in the main memory in case of the write back
     // Input from main memory to controller
-    input   logic       mem2cache_ack               // when data written to mem or when data is taken from the mem
+    input   logic       mem2cache_ack                   // when data written to mem or when data is taken from the mem
 
     
 );

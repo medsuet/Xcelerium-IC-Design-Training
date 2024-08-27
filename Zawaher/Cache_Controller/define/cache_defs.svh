@@ -13,7 +13,8 @@
 parameter DCACHE_ADDR_WIDTH = `XLEN;
 parameter DCACHE_DATA_WIDTH = `XLEN;
 parameter DCACHE_NO_OF_SETS  = `DCACHE_SETS; // 1024;
-parameter DCACHE_OFFSET_BITS = $clog2(4);
+parameter DCACHE_LINE_WIDTH  = 32 ;  // In bits
+parameter DCACHE_OFFSET_BITS = $clog2(DCACHE_LINE_WIDTH / 8);
 parameter DCACHE_IDX_BITS    = $clog2(DCACHE_NO_OF_SETS); 
 parameter DCACHE_TAG_BITS    = DCACHE_ADDR_WIDTH - DCACHE_IDX_BITS - DCACHE_OFFSET_BITS; 
 

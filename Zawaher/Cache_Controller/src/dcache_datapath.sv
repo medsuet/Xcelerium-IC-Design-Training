@@ -77,8 +77,8 @@ always_ff @( posedge clk or negedge reset  ) begin
 
 end
 
-assign pro2dcache_bits.tag_bits   = pro2dcache_reserve_addr[DCACHE_ADDR_WIDTH-1:DCACHE_IDX_BITS];
-assign pro2dcache_bits.index_bits = pro2dcache_reserve_addr[DCACHE_IDX_BITS-1:DCACHE_OFFSET_BITS];                   //starting from 2 because first two bits are offset bits
+assign pro2dcache_bits.tag_bits   = pro2dcache_reserve_addr[DCACHE_ADDR_WIDTH-1:DCACHE_IDX_BITS + DCACHE_OFFSET_BITS];
+assign pro2dcache_bits.index_bits = pro2dcache_reserve_addr[DCACHE_IDX_BITS + DCACHE_OFFSET_BITS - 1:DCACHE_OFFSET_BITS];
 assign pro2dcache_bits.valid_bit  = dcache_valid_bit[pro2dcache_bits.index_bits];
 assign pro2dcache_bits.dirty_bit  = dcache_dirty_bit[pro2dcache_bits.index_bits];
 
@@ -101,7 +101,7 @@ always_comb begin
                 dcache2mem_data =  dcache_data_bits[pro2dcache_bits.index_bits];
         end
         else if (dcache_flush_i && dcache_dirty_bit[flush_index] == 1'b1)begin
-
+                dcache_dirty_o  = 1'b1;
                 dcache2mem_data = dcache_data_bits[flush_index];
         end        
       
@@ -123,12 +123,12 @@ end
 always_comb begin
     if (mem_wrb_addr_i) begin
 
-        dcache2mem_addr =  {dcache_tag_bits[pro2dcache_bits.index_bits], pro2dcache_bits.index_bits, {{DCACHE_OFFSET_BITS}{1'b0}}};
+        dcache2mem_addr =  {{{DCACHE_TAG_BITS}{dcache_tag_bits[pro2dcache_bits.index_bits]}}, {{DCACHE_IDX_BITS}{pro2dcache_bits.index_bits}}, {{DCACHE_OFFSET_BITS}{1'b0}}};
    
     end
     else if (dcache_flush_i && dcache_dirty_bit[flush_index] == 1'b1)begin
 
-        dcache2mem_addr <= {dcache_tag_bits[flush_index], {{DCACHE_IDX_BITS}{flush_index}}, {{DCACHE_OFFSET_BITS}{1'b0}}};
+        dcache2mem_addr = {{{DCACHE_TAG_BITS}{dcache_tag_bits[flush_index]}}, {{DCACHE_IDX_BITS}{flush_index}}, {{DCACHE_OFFSET_BITS}{1'b0}}};
     end
     else begin
         
@@ -160,7 +160,7 @@ always_comb begin
         
         if ((dcache2pro_ack && pro_ready) || (dcache2pro_ack && ~pro_ready))begin
 
-            dcache2pro_data = pro2dcache_data;    
+            dcache2pro_data = dcache_data_bits[pro2dcache_bits.index_bits];    
         end
         else begin
             dcache2pro_data = 'h0; 
@@ -177,6 +177,11 @@ always_comb begin
             dcache_dirty_bit[pro2dcache_bits.index_bits] = 1'b0;
             dcache_data_bits[pro2dcache_bits.index_bits] = mem2dcache_data;
 
+        end
+        // In case the flush is :
+        if (flush_index_next_i)begin
+            dcache_dirty_bit[flush_index] = 1'b0;
+            dcache_valid_bit[flush_index] = 1'b0; 
         end
 
     end
@@ -198,14 +203,9 @@ always_ff @( posedge clk or negedge reset ) begin
             if (flush_index == `DCACHE_SETS-1) begin
                 flush_index         <= 'h0;
                 dcache_flush_done_o <= 1'b1;
-            end else begin
-                if (dcache_dirty_bit[flush_index] == 1'b1) begin
-                    dcache_dirty_o  <= 1'b1;
-                end 
+            end else begin 
                 if (flush_index_next_i) begin
-                    dcache_dirty_bit[flush_index] <= 1'b0;
-                    dcache_valid_bit[flush_index] <= 1'b0; 
-                    flush_index                   <= flush_index + 1; 
+                    flush_index <= flush_index + 1; 
                 end else begin 
                     flush_index <= flush_index; // flush index will retain its previous value
                 end
