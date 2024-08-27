@@ -156,3 +156,4 @@ clean:
 	rm -rf work 1 2 
 	rm -rf *.wlf
 	rm -rf transcript
+	rm -rf .Xil log 
