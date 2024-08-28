@@ -61,7 +61,7 @@ cache_controller controller(
     .data_sel(data_sel),
     .count_en(count_en),
     .count_clear(count_clear),
-    .reg_flush_en(reg_flush_en),
+    .flush_sel(flush_sel),
     .valid_clear(valid_clear)
     );
 
@@ -88,7 +88,7 @@ cache_datapath datapath(
     .wr_en(wr_en),
     .count_en(count_en),
     .count_clear(count_clear),
-    .reg_flush_en(reg_flush_en),
+    .flush_sel(flush_sel),
     .valid_clear(valid_clear),
     // Memory Pinout
     .mem_araddr(mem_araddr),

@@ -61,6 +61,7 @@ cache_top DUT(
 );
 
 int main_memory [int];              // Associative array for main memory
+int ref_memory [int];               // Associative array as reference memory
 int simulation_run;
 int j;
 
@@ -134,6 +135,8 @@ task cache_write(input logic [19:0] tag_in, input logic [9:0] index_in, input lo
             @(posedge clk);
         while (!src_ready)
             @(posedge clk);
+        // Send cache read request after cache write
+        cache_read(tag_in,index_in,offset_in);
     end
 endtask
 
@@ -153,6 +156,7 @@ task cache_flush();
             @(posedge clk);
         while (!src_ready)
             @(posedge clk);
+        flush_req       <= #1 0;
     end
 endtask
 
@@ -162,24 +166,39 @@ task random_test(int count);
     logic [19:0]    random_tag;
     logic [9:0]     random_index;
     logic [1:0]     random_offset;
-    logic [1:0]     random_data;
+    logic [31:0]     random_data;
     begin
         for (i=1; i<=count; i++)
             begin
-                num = $random;
-                $display(" -------------------------------------------");
-                $display(" ------    Running Test Number %2d    ------",i);
+                //while (!src_ready)
+                //    @(posedge clk);
+                @(posedge clk);
+                num = $random();
+                //$display(" -------------------------------------------");
+                //$display(" ------    Running Test Number %2d    ------",i);
+                $write("Test Number %1d | ",i);
                 //$display(" -------------------------------------------");
                 // Randon tag,index,offset,data
-                random_tag      = $random;
-                random_index    = $random;
-                random_offset   = $random;
-                random_data     = $random;
-                if (num%2)
-                    cache_read(random_tag,random_index,random_offset);
+                random_tag      = $random();
+                random_index    = $random();
+                random_offset   = $random();
+                random_data     = $random();
+                if (num == 1)
+                    begin
+                        cache_flush();
+                    end
+                else if (num%2)
+                    begin
+                        cache_read(random_tag,random_index,random_offset);
+                    end
                 else
-                    cache_write(random_tag,random_index,random_offset,random_data);
+                    begin
+                        cache_write(random_tag,random_index,random_offset,random_data);
+                    end
             end
+        while (!src_ready)
+            @(posedge clk);
+        @(posedge clk);
         $display(" -------------------------------------------");
         $display(" ------      All tests complete!      ------");
         $display(" -------------------------------------------");
@@ -294,204 +313,107 @@ task write_driver();
 endtask
 
 task monitor();
-    logic [9:0]     monitor_cpu_index        ;
-    logic [19:0]    monitor_cache_prev_index   ;
-    logic [19:0]    monitor_cpu_tag          ;
-    logic [31:0]    monitor_cpu_wdata          ;
-    logic [31:0]    monitor_cache_rdata        ;
-    logic [31:0]    monitor_cache_wdata        ;
-    logic [31:0]    monitor_mem_rdata          ;
-    logic [31:0]    monitor_mem_wdata          ;
-    logic [31:0]    monitor_mem_araddr         ;
-    logic [31:0]    monitor_mem_awaddr         ;
+    logic [9:0]     monitor_cpu_index           ;
+    logic [19:0]    monitor_cpu_tag             ;
+    logic [31:0]    monitor_cpu_wdata           ;
+    logic [31:0]    monitor_cache_rdata         ;
+    logic [31:0]    monitor_cache_wdata         ;
+    logic [31:0]    monitor_mem_rdata           ;
+    logic [31:0]    monitor_mem_wdata           ;
+    logic [31:0]    monitor_mem_araddr          ;
+    logic [31:0]    monitor_mem_awaddr          ;
     begin
         while (simulation_run)
         begin
-            @(posedge clk);
+            while (!(src_ready & src_valid))
+                @(posedge clk);
             // ---------------------------------
-            // --- Valid CPU Req - Cache HIT ---
+            // ----- IN CASE OF  FLUSH REQ -----
             // ---------------------------------
-            if (src_ready & src_valid)
+            // FLUSH request can only be tested by verifying its completion only
+            // Since every memory region is invisible in case of flush
+            // We will empty the reference memory only in that case
+            if (flush_req)
                 begin
-                    if (cpu_req)
+                    foreach(ref_memory[key])
+                        ref_memory[key] = 0;
+                    @(posedge clk);
+                    // Wait for flush request to complete
+                    while (!src_ready)
+                        @(posedge clk);
+                    $display("Succesfull | Cache Flush | Flushed the whole cache memory!");
+                end
+            // ---------------------------------
+            // ----- IN CASE OF CACHE READ -----
+            // ---------------------------------
+            else if (!req_type)
+                begin
+                    monitor_cpu_tag     = cpu_addr[31:12];
+                    monitor_cpu_index   = cpu_addr[11:2];
+                    @(posedge clk);
+                    // Wait for Cache Read operation to complete.
+                    while (!src_ready)
                         begin
+                            monitor_cache_rdata = cpu_rdata;        // Keep storing prev cycle's cpu_rdata value
                             @(posedge clk);
-                            monitor_cpu_tag         = cpu_addr[31:12];
-                            monitor_cpu_index       = cpu_addr[11:2];
-                            monitor_cpu_wdata       = cpu_wdata;
-                            $display(" -------------------------------------------");
-                            // In case of Cache hit
-                            if (flush_req)
-                                $display("Flush Request | Flushing the cache...");
-                            else
+                            // In case of Cache Allocate
+                            if (axi_arvalid)
                                 begin
-                                    if (DUT.cache_hit)
-                                        begin
-                                            $display("Cache Hit  | Sending read/write request to Cache Controller...");
-                                            // Write request
-                                            if (req_type)
-                                                begin
-                                                    @(negedge clk);
-                                                    //monitor_cache_prev_index = monitor_cpu_index;
-                                                    //@(posedge clk);
-                                                    monitor_cache_wdata = DUT.datapath.cache_mem[monitor_cpu_index];
-                                                    if (monitor_cpu_wdata != monitor_cache_wdata)
-                                                        begin
-                                                            $display("Error | Write to Cache | Index:%d | Tag:%d | Cpu_wdata = %d; Cache_wdata = %2d",monitor_cpu_index,monitor_cpu_tag,monitor_cpu_wdata,monitor_cache_wdata);
-                                                            $error();
-                                                            $stop();
-                                                        end
-                                                    $display("Succesfull | Write to Cache | Index:%d | Tag:%d | Cache_wdata:%2d",monitor_cpu_index,monitor_cpu_tag,monitor_cache_wdata);
-                                                end
-                                            // Read request
-                                            else
-                                                begin
-                                                    //@(posedge clk);
-                                                    monitor_cache_rdata = DUT.datapath.cache_mem[monitor_cpu_index];
-                                                    if (cpu_rdata != monitor_cache_rdata)
-                                                        begin
-                                                            $display("Error | Read from Cache | Index:%d | Tag:%d | Cpu_rdata = %d; Cache_rdata = %2d",monitor_cpu_index,monitor_cpu_tag,cpu_rdata,monitor_cache_rdata);
-                                                            $error();
-                                                            $stop();
-                                                        end
-                                                    $display("Succesfull | Read from Cache | Index:%d | Tag:%d | Cache_rdata:%2d",monitor_cpu_index,monitor_cpu_tag,monitor_cache_rdata);
-                                                end
-                                        end
-                                    else
-                                        $display("Cache Miss | Sending memory write request to AXI Controller...");
+                                    // Wait for Cache Allocate to complete
+                                    monitor_mem_araddr = mem_araddr;
+                                    while (!(axi_rready & mem_rvalid))
+                                        @(posedge clk);
+                                    // Once cache allocate is complete, data from main_memory will be stored in Cache Memory
+                                    // Store the same data in reference memory for further checks
+                                    ref_memory[monitor_cpu_index] = main_memory[monitor_mem_araddr];
                                 end
                         end
+                    // Once Cache Read operation is complete, compare cpu_rdata with reference memory.
+                    if (ref_memory[monitor_cpu_index] != monitor_cache_rdata)
+                        begin
+                            $display("Error | Cache Read | INDEX = %d | TAG = %d | CPU_RDATA = %d | REF_MEMORY DATA = %1d",monitor_cpu_index, monitor_cpu_tag, monitor_cache_rdata,ref_memory[monitor_cpu_index]);
+                            $error();
+                            $stop();
+                        end
+                    $display("Succesfull | Cache Read  | CPU_RDATA = %1d",monitor_cache_rdata);
                 end
-            // --------------------------------
-            // ----- In case - Cache MISS -----
-            // ----- NOT A VALID CPU REQ ------
-            // --------------------------------
+            // ----------------------------------
+            // ----- IN CASE OF CACHE WRITE -----
+            // ----------------------------------
+            // Read routine for same cache index will be sent after each Cache Write Routine
+            // This routine will ensure success of Cache Write w/o exiting DUT Boundary
+            else if (req_type)
+                begin
+                    monitor_cpu_tag     = cpu_addr[31:12];
+                    monitor_cpu_index   = cpu_addr[11:2];
+                    monitor_cpu_wdata   = cpu_wdata;
+                    @(posedge clk);
+                    // Wait for Cache Write operation to complete.
+                    while (!(src_ready & src_valid))
+                        begin
+                            @(posedge clk);
+                        end
+                    ref_memory[monitor_cpu_index] = monitor_cpu_wdata;
+                    // Wait for next Cache Ready operation to complete
+                    @(posedge clk);
+                    while (!src_ready)
+                        begin
+                            monitor_cache_rdata = cpu_rdata;        // Keep storing prev cycle's cpu_rdata
+                            @(posedge clk);
+                        end
+                    if (ref_memory[monitor_cpu_index] != monitor_cache_rdata)
+                        begin
+                            $display("Error | Cache Write | INDEX = %d | TAG = %d | CPU_WDATA = %d | CPU_RDATA = %1d",monitor_cpu_index,monitor_cpu_tag,monitor_cpu_wdata,monitor_cache_rdata);
+                            $error();
+                            $stop();
+                        end
+                    $display("Succesfull | Cache Write | CPU_WDATA = %1d",monitor_cpu_wdata);
+                end
             else
                 begin
-                    // Wait for a valid address from Cache - Cache Allocate/Writeback
-                    /*
-                    while ((!axi_arvalid) || (~axi_awvalid))
-                        @(posedge clk);
-                    */
-                    // --------------------------------------
-                    // Memory Write Request - Writeback Stage
-                    // --------------------------------------
-                    if (axi_awvalid)
-                        begin
-                            // Store address of memory
-                            monitor_mem_awaddr = mem_awaddr;
-                            while (!axi_wvalid)
-                                @(posedge clk);
-                            monitor_mem_wdata = mem_wdata;
-                            while ( !(mem_bvalid && axi_bready) )
-                                @(posedge clk);
-                            if (main_memory[monitor_mem_awaddr] != monitor_mem_wdata)
-                                begin
-                                    $display("Error | Write to Memory | Stored Data Mismatch | Memory Address:%d | Mem_wdata = %d; Memory Data = %2d",monitor_mem_awaddr,monitor_mem_wdata,main_memory[monitor_mem_awaddr]);
-                                    $error();
-                                    repeat (2) @(posedge clk);
-                                    $stop();
-                                end
-                            // Data from memory will be written to cache during a cycle
-                            @(posedge clk);
-                            if (flush_req)
-                                monitor_cache_rdata = DUT.datapath.cache_mem[DUT.datapath.index];   // Index in case of flush
-                            else
-                                monitor_cache_rdata = DUT.datapath.cache_mem[monitor_cpu_index];
-                            if (monitor_mem_wdata != monitor_cache_rdata)
-                                begin
-                                    $display("Error | Write to Memory | Index:%d | Tag:%d | Mem_rdata = %d; Cache_data = %2d",monitor_cpu_index,monitor_cpu_tag,monitor_mem_rdata,monitor_cache_rdata);
-                                    $error();
-                                    $stop();
-                                end
-                            if (mem_bresp)
-                                begin
-                                    $display("Memory Write Response | OK | Sending axi acknowledge to Cache Controller...");
-                                end
-                            else
-                                begin
-                                    $display("Memory Write Response | FAIL | Ending simulation...");
-                                    $error();
-                                    $stop();
-                                end
-
-                            if (flush_req)
-                                begin
-                                    $display("Succesfull | Flush | Write to Memory | Index:%d | Cache_data:%2d",DUT.datapath.index,monitor_cache_rdata);
-                                    $display(" -------------------------------------------");
-                                end
-                            else
-                                $display("Succesfull | Write to Memory | Index:%d | Tag:%d | Cache_data:%2d",monitor_cpu_index,monitor_cpu_tag,monitor_cache_rdata);
-                        end
-                    // ------------------------------------------
-                    // Memory Read Request - Cache Allocate Stage
-                    // ------------------------------------------
-                    else if (axi_arvalid)
-                        begin
-                            // Store address of memory
-                            monitor_mem_araddr = mem_araddr;
-                            while ( !(mem_rvalid && axi_rready) )
-                                @(posedge clk);
-                            monitor_mem_rdata = mem_rdata;
-                            if (main_memory[monitor_mem_araddr] != monitor_mem_rdata)
-                                begin
-                                    $display("Error | Read from Memory | Loaded Data Mismatch | Memory Address:%d | Mem_rdata = %d; Memory Data = %2d",monitor_mem_araddr,monitor_mem_rdata,main_memory[monitor_mem_araddr]);
-                                    $error();
-                                    $stop();
-                                end
-                            // Data from memory will be written to cache during a cycle
-                            //@(posedge clk);
-                            monitor_cache_wdata = DUT.datapath.cache_mem[monitor_cpu_index];
-                            if (monitor_mem_rdata != monitor_cache_wdata)
-                                begin
-                                    $display("Error | Read from Memory | Index:%d | Tag:%d | Mem_rdata = %d; Cache_data = %2d",monitor_cpu_index,monitor_cpu_tag,monitor_mem_rdata,monitor_cache_wdata);
-                                    $error();
-                                    $stop();
-                                end
-                            $display("Succesfull | Read from Memory | Index:%d | Tag:%d | Cache_data:%2d",monitor_cpu_index,monitor_cpu_tag,monitor_cache_wdata);
-
-                            @(posedge clk);
-                            // -----------------------------------------------------------------------------
-                            // Cache Read/Write Request - Process Request Stage - After Cache Allocate Stage
-                            // -----------------------------------------------------------------------------
-                            if (DUT.cache_hit)
-                                begin
-                                    $display("Cache Hit  | Sending read/write request to Cache Controller...");
-                                    // Write request
-                                    if (req_type)
-                                        begin
-                                            @(posedge clk);
-                                            monitor_cache_wdata = DUT.datapath.cache_mem[monitor_cpu_index];
-                                            if (monitor_cpu_wdata != monitor_cache_wdata)
-                                                begin
-                                                    $display("Error | Write to Cache | Index:%d | Tag:%d | Cpu_wdata = %d; Cache_wdata = %2d",monitor_cpu_index,monitor_cpu_tag,monitor_cpu_wdata,monitor_cache_wdata);
-                                                    $error();
-                                                    $stop();
-                                                end
-                                            $display("Succesfull | Write to Cache | Index:%d | Tag:%d | Cache_wdata:%2d",monitor_cpu_index,monitor_cpu_tag,monitor_cache_wdata);
-                                        end
-                                    // Read request
-                                    else
-                                        begin
-                                            monitor_cache_rdata = DUT.datapath.cache_mem[monitor_cpu_index];
-                                            //@(posedge clk);
-                                            //@(negedge clk);
-                                            if (cpu_rdata != monitor_cache_rdata)
-                                                begin
-                                                    $display("Error | Read from Cache | Index:%d | Tag:%d | Cpu_rdata = %d; Cache_rdata = %2d",monitor_cpu_index,monitor_cpu_tag,cpu_rdata,monitor_cache_rdata);
-                                                    $error();
-                                                    $stop();
-                                                end
-                                            $display("Succesfull | Read from Cache | Index:%d | Tag:%d | Cache_rdata:%2d",monitor_cpu_index,monitor_cpu_tag,monitor_cache_rdata);
-                                        end
-                                end
-                            else
-                                begin
-                                    $display("Error | Cache Miss After Cache Allocate | Ending simulation...");
-                                    $error();
-                                    $stop();
-                                end
-                        end
+                    $display("Illegal Instruction | Ending Simulation...");
+                    $error();
+                    $stop();
                 end
         end
     end
@@ -519,7 +441,7 @@ begin
     // ------------------------------------------
     // ------------- DIRECTED TESTS -------------
     // ------------------------------------------
-    /*
+    
     cache_read(20'd2,10'd1,2'd0);
 
     cache_write(20'd2,10'd1,2'd0,32'd3);
@@ -538,6 +460,7 @@ begin
     end
     
     
+    
     // Reading whole cache - Cache Hit test
     for (j=0; j<1024; j++)
     begin
@@ -545,15 +468,17 @@ begin
     end
     
     
+    
     cache_flush();
-    */
+    
     
     // ------------------------------------------
     // -------------- RANDOM TESTS --------------
     // ------------------------------------------
-    random_test(1000000);
+    @(posedge clk);
+    random_test(100000);
 
-
+    repeat (10) @(posedge clk);
     simulation_run = 0;
     $stop;
     $finish;

@@ -19,7 +19,7 @@ module cache_datapath(
     input  logic            wr_en,
     input  logic            count_en,
     input  logic            count_clear,
-    input  logic            reg_flush_en,
+    input  logic            flush_sel,
     input  logic            valid_clear,
     // Memory Pinout
     output logic [31:0]     mem_araddr,         // Address Read
@@ -47,6 +47,8 @@ module cache_datapath(
     logic [1:0]     offset;
     logic valid;
     //logic dirty;
+
+    logic flush_in;
 
     // logic [127:0] data_mem [2*28:0];       // 4 GB Data Memory
 
@@ -107,6 +109,15 @@ module cache_datapath(
             end
     end
 
+    // Flush mux logic
+    always_comb
+    begin
+        if (flush_sel)
+            flush_in = 1;
+        else
+            flush_in = 0;
+    end
+
     // Flush register logic
     always_ff @(posedge clk or negedge reset)
     begin
@@ -114,10 +125,7 @@ module cache_datapath(
             flush <= #1 0;
         else
             begin
-                if (reg_flush_en)
-                    flush <= #1 flush_req;
-                else
-                    flush <= flush;
+                flush <= #1 flush_in;
             end
     end
 

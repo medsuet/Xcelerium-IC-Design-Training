@@ -22,7 +22,7 @@ module cache_controller(
     output logic data_sel,
     output logic count_en,        //count enable signal
     output logic count_clear,      //count clear signa
-    output logic reg_flush_en,
+    output logic flush_sel,
     output logic valid_clear
 );
 
@@ -143,17 +143,17 @@ module cache_controller(
                 src_ready = 1'b1;
                 if(flush_req & src_valid)
                 begin
-                    count_clear  = 1'b1;
-                    index_sel    = 1'b1;
-                    reg_flush_en = 1'b1;
-                    valid_clear  = 1;
+                    count_clear = 1'b1;
+                    index_sel   = 1'b1;
+                    flush_sel   = 1'b1;
+                    valid_clear = 1;
                 end
                 else
                 begin
-                    count_clear  = 1'b0;
-                    index_sel    = 1'b0;
-                    reg_flush_en = 1'b0;
-                    valid_clear  = 0;
+                    count_clear = 1'b0;
+                    index_sel   = 1'b0;
+                    flush_sel   = 1'b0;
+                    valid_clear = 0;
                 end
                 //src_ready       = 0;
                 dirty_sel       = 0;
@@ -166,7 +166,7 @@ module cache_controller(
                 data_sel        = 0;
                 count_en        = 0;
                 //count_clear     = 0;
-                //reg_flush_en    = 0;
+                //flush_sel    = 0;
             end
             //S1
             PROCESS_REQ : begin
@@ -217,7 +217,7 @@ module cache_controller(
                 data_sel        = 0;
                 count_en        = 0;
                 count_clear     = 0;
-                reg_flush_en    = 0;
+                flush_sel    = 0;
                 valid_clear     = 0;
             end
             //S2
@@ -247,7 +247,7 @@ module cache_controller(
                 //data_sel        = 0;
                 count_en        = 0;
                 count_clear     = 0;
-                reg_flush_en    = 0;
+                flush_sel    = 0;
                 valid_clear     = 0;
             end
             //S3
@@ -257,6 +257,7 @@ module cache_controller(
                     mem_rd_req  = 1'b1;
                     mem_wr_req  = 0;
                     dirty_sel   = 0;
+                    flush_sel   = 1'b0;
                     index_sel   = 0;
                     rd_en       = 0;
                 end
@@ -265,6 +266,7 @@ module cache_controller(
                     dirty_sel   = 2'b01;
                     index_sel   = 1'b1;
                     mem_rd_req  = 0;
+                    flush_sel   = 1'b1;
                     mem_wr_req  = 0;
                     rd_en       = 0;
                 end
@@ -273,6 +275,7 @@ module cache_controller(
                     mem_wr_req  = 1'b1;
                     rd_en       = 1'b1;
                     dirty_sel   = 0;
+                    flush_sel   = 1'b0;
                     index_sel   = 0;
                     mem_rd_req  = 0;
                 end
@@ -281,6 +284,7 @@ module cache_controller(
                     mem_wr_req  = 1'b1;
                     rd_en       = 1'b1;
                     index_sel   = 1'b1;
+                    flush_sel   = 1'b1;
                     dirty_sel   = 0;
                     mem_rd_req  = 0;
                 end
@@ -300,7 +304,7 @@ module cache_controller(
                 data_sel        = 0;
                 count_en        = 0;
                 count_clear     = 0;
-                reg_flush_en    = 0;
+                //flush_sel    = 0;
                 valid_clear     = 0;
             end
             //S4
@@ -309,7 +313,7 @@ module cache_controller(
                 begin
                     mem_wr_req      = 1'b1;
                     index_sel       = 1'b1;
-                    reg_flush_en    = 0;
+                    flush_sel       = 1;
                     count_en        = 0;
                 end
                 else if(~dirty & ~flush_done)
@@ -317,11 +321,11 @@ module cache_controller(
                     count_en        = 1'b1;
                     index_sel       = 1'b1;
                     mem_wr_req      = 0;
-                    reg_flush_en    = 0;
+                    flush_sel       = 1;
                 end
                 else if(flush_done)
                 begin
-                    reg_flush_en    = 1'b1;
+                    flush_sel       = 0;
                     count_en        = 0;
                     index_sel       = 0;
                     mem_wr_req      = 0;
@@ -337,7 +341,7 @@ module cache_controller(
                 data_sel        = 0;
                 //count_en        = 0;
                 count_clear     = 0;
-                //reg_flush_en    = 0;
+                //flush_sel    = 0;
                 valid_clear     = 0;
             end
         endcase
