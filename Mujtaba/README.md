@@ -51,3 +51,6 @@ This repository contains all the Excercises that is important for the IC Design 
 ## Implementation of Sequential Binary Multiplication and Sequential Binary Divider with Ready/Valid Protocol using COCOTB
 
 - **Description:** Read the `README.md` file in `cocotb_task` folder which contains folder that implement sequential binary multiplier and sequential binary divider with Ready/Valid Protocol aims to ensures the good communication. 
+
+## Implementation of Cache Memory having Ready/Val at CPU interface and AXI4 Lite at Memory interface
+- **Description:** Read the `README.md` file in `Cache_Controller_AXI4` folder which contains folder that implement cache memory. 
