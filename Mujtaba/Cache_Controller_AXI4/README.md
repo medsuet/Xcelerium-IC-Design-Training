@@ -18,7 +18,7 @@ To verify chip, you have to first download the compiler that compiles the system
 - **To visualize the vcd file** `gtkwave <file_name_with_extension_.vcd>`
 
 # Top Level Diagram
-![Top Level of Cache Memory ](docs/top_module.drawio.svg)
+![Top Level of Cache Memory ](docs/top_level.drawio.svg)
 
 # Circuit Diagram
 ![Circuit Diagram of Datapath and controller](docs/datapath.drawio.svg)
