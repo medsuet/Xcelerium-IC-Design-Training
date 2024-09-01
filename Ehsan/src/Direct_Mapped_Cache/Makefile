@@ -18,7 +18,7 @@ view_simulation: compile
 	vsim -L $(WORK_DIR) $(TOP_MODULE) -do "add wave -radix Decimal sim:/$(TOP_MODULE)/*; run -all"
 
 # Show the simulation output
-run: compile
+simulate: compile
 	vsim -c -do "run -all; quit;" -L $(WORK_DIR) $(TOP_MODULE)
 
 # Clean up generated files
