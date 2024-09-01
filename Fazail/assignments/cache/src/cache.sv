@@ -24,21 +24,33 @@ module cache (
 	output logic [19:0] tag_read,
 	output logic 		cache_ready,
 	output logic 		cache_wr_en,
-	output logic 		flush_done
+	output logic 		flush_done,
+
+	// testbench -> axi4 
+    input logic aw_ready,
+    input logic w_ready,
+    input logic b_valid,
+    input logic ar_ready,
+    input logic r_valid,
+
+	// axi4 -> testbench
+    output logic aw_valid,
+    output logic w_valid,
+    output logic b_ready,
+    output logic ar_valid,
+    output logic r_ready,
+
+	// axi controller -> cache controller
+    output logic axi_ready
 );
 
-//logic cache_wr_en;
 logic cpu_wr_req;
 logic cache_hit; 
 logic dirty_bit;
 
 logic flush;
 logic flush_count_en;
-//logic flush_done;
 logic flush_req;
-
-
-//logic mem_wr_req;
 
 assign data_read = mem_data_write;
 
@@ -58,17 +70,17 @@ cache_datapath cache_datapath (
 	.cache_wr_en 	(cache_wr_en),
 	.cpu_wr_req	 	(cpu_wr_req),
 
-	.flush(flush),
-	.flush_count_en(flush_count_en),
-	.flush_done(flush_done),
-	.flush_req(flush_req),
+	.flush			(flush),
+	.flush_count_en	(flush_count_en),
+	.flush_done		(flush_done),
+	.flush_req		(flush_req),
 
 	.tag_read		(tag_read),
 	.dirty_bit		(dirty_bit),
 	.cache_hit		(cache_hit)
 );
 
-cache_controller cache_controller (
+cache_axi_controller cache_axi_controller (
 	.clk			(clk),
 	.n_rst			(n_rst),
 
@@ -77,20 +89,32 @@ cache_controller cache_controller (
 	.cpu_wr_req		(cpu_wr_req),
 	.cpu_flush		(cpu_flush),			
 
-	.main_mem_ack	(main_mem_ack),
-	//.mem_wr_req		(mem_wr_req),
 	.mem_rw			(mem_rw),
 
-	.flush(flush),
-	.flush_count_en(flush_count_en),
-	.flush_done(flush_done),
-	.flush_req(flush_req),
+	.flush			(flush),
+	.flush_count_en	(flush_count_en),
+	.flush_done		(flush_done),
+	.flush_req		(flush_req),
 
 	.dirty_bit		(dirty_bit),
 	.cache_hit		(cache_hit),
 
 	.cache_wr_en	(cache_wr_en),
-	.cache_ready	(cache_ready)
+	.cache_ready	(cache_ready),
+
+	.aw_ready		(aw_ready),
+	.w_ready		(w_ready),
+	.b_valid		(b_valid),
+	.ar_ready		(ar_ready),
+	.r_valid		(r_valid),
+
+	.aw_valid		(aw_valid),
+	.w_valid		(w_valid),
+	.b_ready		(b_ready),
+	.ar_valid		(ar_valid),
+	.r_ready		(r_ready),
+
+	.axi_ready		(axi_ready)
 );
 
 endmodule

@@ -154,12 +154,12 @@ task cpu_driver;
 			while (!cache_ready)
 				@(posedge clk);
 			cache_ref_model (cpu_rw,cpu_addr, cpu_data, mem_data_read);
-			cpu_req <= 0;// cpu_rw <= 0;
+			cpu_req <= 0;
 			@(posedge clk);
 		end	
 	end
 endtask
-
+/*
 task cache_read (
 	input logic [31:0]addr);
 	cpu_addr <= addr;
@@ -189,7 +189,7 @@ task cache_write (
 	cpu_rw 	<= 0;
 	@(posedge clk);
 endtask
-
+*/
 task mem_aw_ready;
 	while (1) begin
 		@(posedge clk);
@@ -204,7 +204,6 @@ endtask
 task mem_w_ready;
 	while(1) begin
 		@(posedge clk);
-
 		w_valid <= 1;
 		@(posedge clk);
 		while (!w_ready)

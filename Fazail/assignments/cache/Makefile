@@ -1,16 +1,16 @@
-SRC_SV:= src/cache.sv		\
-	src/cache_controller.sv \
-	src/cache_datapath.sv	\
-	src/main_mem.sv		\
-	test/tb_cache.sv
+SRC_SV:= src/cache.sv				\
+	src/cache_controller.sv 		\
+	src/cache_datapath.sv			\
+	src/axi4.sv						\
+	src/cache_axi_controller.sv 	\
+	test/tb_cache_axi.sv
 
 DEFINES_VER:= src/defines/verilator.svh
-DEFINES_VIV:= src/defines/vivado.svh
 
 COMP_OPTS_SV := --incr --relax
 
-TB_TOP := tb_cache
-MODULE := tb_cache
+TB_TOP := tb_cache_axi
+MODULE := tb_cache_axi
 
 WORK_DIR = work
 
@@ -59,7 +59,7 @@ else
 	@echo "run all" >> xsim_cfg.tcl
 	@echo "exit" >> xsim_cfg.tcl
 	#verilog -VIVADO  
-	xvlog -sv $(COMP_OPTS_SV) $(SRC_SV) $(DEFINES_VIV)
+	xvlog -sv $(COMP_OPTS_SV) $(SRC_SV) #$(DEFINES_VIV)
 	touch $@
 endif
 
@@ -92,41 +92,6 @@ else
 	xvhdl $(COMP_OPTS) $(SRC_VHDL)
 	touch $@
 endif
-
-#----------------------#
-#----- VERILATOR ------#
-#----------------------#
-
-.PHONY: verilator ver_waves 
-
-ver_waves: verilator
-	@echo
-	@echo "### WAVES ###"
-	gtkwave waveform.vcd &
-
-verilator: ./obj_dir/V$(MODULE)
-	@echo
-	@echo "### SIMULATING ###"
-	@./obj_dir/V$(MODULE)
-
-./obj_dir/V$(MODULE): .stamp.verilate
-	@echo
-	@echo "### BUILDING SIM ###"
-	make -C obj_dir -f V$(MODULE).mk V$(MODULE)
-
-.stamp.verilate: ./src/*.sv ./test/$(TB_TOP).*
-	@echo
-	@echo "### VERILATING ###"
-	verilator --trace -cc $(SRC_SV) $(DEFINES_VER) 	\
-	  	  --top-module $(MODULE) 		\
-		  -Wno-DECLFILENAME 			\
-		  -Wno-WIDTH 				\
-		  -Wno-REDEFMACRO			\
-		  -Wno-INITIALDLY			\
-		  -Wno-STMTDLY				\
-		  --exe ./test/$(TB_TOP).cpp 		\
-		  --timing
-	@touch .stamp.verilate
 	
 #----------------------#
 #----- MODEL SIM ------#

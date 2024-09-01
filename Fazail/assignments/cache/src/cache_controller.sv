@@ -10,9 +10,8 @@ module cache_controller (
 	output logic cpu_wr_req,
 	output logic flush_req,
 	output logic flush,
-	//output logic //mem_wr_req,
 	
-	// mem -> cache_controller
+	// axi -> cache_controller
 	input logic main_mem_ack,
 	
 	// cache controller -> mem
@@ -26,8 +25,11 @@ module cache_controller (
 
 	input logic flush_done,
 	output logic flush_count_en,
-	output logic cache_ready
+	output logic cache_ready,
 
+	// cache_controller -> axi 
+	output logic axi_read,
+	output logic axi_write
 );
 
 typedef enum {
@@ -97,6 +99,9 @@ always_comb begin
 
 				cache_ready 	= 1;
 
+				axi_read		= 0;
+				axi_write		= 0;
+
 				if (cpu_flush) begin
 					flush_req	= 1;
 					cache_ready = '0;
@@ -127,14 +132,20 @@ always_comb begin
 			else if (!cache_hit && !dirty_bit) begin
 				mem_rw 		= 0;
 				cache_wr_en = 1;
+				axi_read    = 1;
+				axi_write	= 0;
 			end
 			else if (!cache_hit && dirty_bit) begin
 				mem_rw 		= 1;
-				cache_wr_en = 0;
+				cache_wr_en = '0;
+				axi_write   = 1;
+				axi_read	= '0;
 			end
 			else begin
-				mem_rw = '0;
+				mem_rw 		= '0;
 				cache_wr_en = '0;
+				axi_write   = '0;
+				axi_read	= '0;
 			end
 		end
 
@@ -145,9 +156,11 @@ always_comb begin
 			cache_ready = 0;
 			if (main_mem_ack) begin
 				cache_wr_en = 0;
+				axi_read	= 1;
 			end
 			else begin
 				cache_wr_en = 1;
+				axi_read	= 1;
 			end 
 		end
 
@@ -155,33 +168,45 @@ always_comb begin
 		begin
 			cpu_wr_req  = '0;
 			cache_wr_en = '0;
-			cache_ready = 0;
-			if (main_mem_ack) begin
+			cache_ready = '0;
+			if (main_mem_ack && !cpu_flush) begin
 				mem_rw 		= 0;
+				axi_write	= 0;
+				axi_read	= 1;
+			end
+			if (main_mem_ack && cpu_flush) begin
+				mem_rw 		= 0;
+				axi_write	= 0;
+				axi_read	= 0;
 			end
 			else begin
 				mem_rw		= 1;
+				axi_write	= 1;
+				axi_read	= 0;
 			end
 		end
 
 		FLUSH:
 		begin
-			flush_req = 0;
+			flush_req   = 0;
 			cache_ready = 0;
 			if (flush_done) begin
 				flush_count_en = 0;
 				flush  		   = 0;
 				cache_ready    = 1;
+				axi_write	   = 0;
 			end
 			else if (cpu_flush && !dirty_bit) begin
-				flush_count_en = 1;
-				flush  = 0;
-				mem_rw = 0;
+				flush_count_en 	= 1;
+				flush  			= 0;
+				mem_rw 			= 0;
+				axi_write		= 0;
 			end
 			else if (cpu_flush && dirty_bit) begin
-				flush_count_en = 0;
-				flush  = 1;
-				mem_rw = 1;
+				flush_count_en 	= 0;
+				flush  			= 1;
+				mem_rw		 	= 1;
+				axi_write 		= 1;
 			end
 		end
 	endcase
