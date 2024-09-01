@@ -13,7 +13,7 @@ module axi4_controller (
     output logic b_ready,
     output logic ar_valid,
     output logic r_ready,
-    output logic axi_ready
+    output logic axi_ack
 );
 
 typedef enum logic [2:0] { 
@@ -115,7 +115,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else if (start_read && !ar_ready) begin
                 aw_valid  = 1'b0;
@@ -123,7 +123,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b1;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else if (start_read && ar_ready) begin
                 aw_valid  = 1'b0;
@@ -131,7 +131,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b1;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else if (start_write && !aw_ready) begin
                 aw_valid  = 1'b1;
@@ -139,7 +139,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else if (start_write && aw_ready) begin
                 aw_valid  = 1'b1;
@@ -147,7 +147,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else begin
                 aw_valid  = 1'b0;
@@ -155,7 +155,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
         end
         WADDR: begin
@@ -165,7 +165,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else begin
                 aw_valid  = 1'b1;
@@ -173,7 +173,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
         end
         WDATA: begin
@@ -183,7 +183,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else begin
                 aw_valid  = 1'b0;
@@ -191,7 +191,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
         end
         BRESP: begin
@@ -201,7 +201,7 @@ always_comb begin
                 b_ready   = 1'b1;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else if(b_valid) begin
                 aw_valid  = 1'b0;
@@ -209,7 +209,7 @@ always_comb begin
                 b_ready   = 1'b1;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b1;
+                axi_ack = 1'b1;
             end
         end
         RADDR: begin
@@ -219,7 +219,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b1;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else begin
                 aw_valid  = 1'b0;
@@ -227,7 +227,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b1;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
         end
         RDATA: begin
@@ -237,7 +237,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b1;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
             end
             else begin
                 aw_valid  = 1'b0;
@@ -245,7 +245,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b1;
-                axi_ready = 1'b1;
+                axi_ack = 1'b1;
             end
         end
         default: begin
@@ -254,7 +254,7 @@ always_comb begin
                 b_ready   = 1'b0;
                 ar_valid  = 1'b0;
                 r_ready   = 1'b0;
-                axi_ready = 1'b0;
+                axi_ack = 1'b0;
         end 
     endcase
 end

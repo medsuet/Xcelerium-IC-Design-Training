@@ -4,6 +4,7 @@ parameter CPU_WRITE_DATA = 32;
 parameter R_DATA = 32;
 parameter W_DATA = 32;
 parameter CACHE_LINE_SIZE = 32;
+
 parameter CACHE_LINES = 8;
 parameter CACHE_TAG_BITS = 27;
 parameter CACHE_INDEX_BITS = 3;
@@ -31,13 +32,12 @@ module cache_datapath (
     input    logic   flush_en_i,              //For Flushing
     input    logic   flush_counter_en_i,      //For Flushing
     output   logic   cache_hit_o,             //Cache Hit  (To Controller)
-    output   logic   cache_miss_o,            //Cache Miss (To Controller)
     output   logic   dirty_bit_o,             //Dirty Bit  (To Controller)
     output   logic   flush_done_o             //Flushing Complete Signal
 );
 
 typedef struct packed {
-  logic [CPU_READ_DATA-1:0]    data;
+  logic [CPU_READ_DATA-1:0]  data;
   logic [CACHE_TAG_BITS-1:0] tag;
   logic                      valid_bit;
   logic                      dirty_bit;
@@ -53,40 +53,43 @@ logic [CACHE_TAG_BITS-1:0]      tag;            // tag bits
 logic [CACHE_INDEX_BITS-1:0]    index;          // index bits
 logic [CACHE_BLOCK_OFFSET-1:0]  block_offset;   // block offset
 
-// Cache Decoder
+//============================== Cache Decoder ===============================//
+
 assign  tag          = cpu_address_i[CACHE_TAG_BITS-1:CACHE_INDEX_BITS];
 assign  index        = cpu_address_i[CACHE_INDEX_BITS-1:CACHE_BLOCK_OFFSET];
 assign  block_offset = cpu_address_i[CACHE_BLOCK_OFFSET-1:0];
 
-// Checking Tag And Valid Bit
+//=========================== Checking Hit Or Miss ===========================//
+
 always_comb begin
     if (cache[index].tag == tag && cache[index].valid_bit == 1) begin    
         cache_hit_o  = 1;
-        cache_miss_o = 0;
     end
     else begin
         cache_hit_o  = 0;
-        cache_miss_o = 1;
     end
 end
 
-// Dirty Bit From Datapath To Controller 
+//================== Dirty Bit From Datapath To Controller ===================//
+
 assign dirty_bit_o = (flush_en_i == 1) ? cache[flush_counter].dirty_bit : cache[index].dirty_bit;
 
-// Asynchronous Read
+//============================ Asynchronous Read =============================//
+ 
 assign cpu_read_data_o = cache[index].data;
 assign ar_address_o    = cpu_address_i; 
 assign aw_address_o    = {cache[index].tag, index, block_offset};
 assign w_data_o        = (flush_en_i == 1) ? cache[flush_counter].data : cache[index].data; 
 
-// Synchronous Write
+//============================ Synchronous Write =============================//
+
 always_ff @(posedge clk_i or negedge rst_i) begin
     if (!rst_i) begin
         for (int i = 0; i < CACHE_LINES; i++) begin
             cache[i].valid_bit <= 0;
             cache[i].dirty_bit <= 0;
-            cache[i].tag       <= 0;
-            cache[i].data      <= 0;
+            cache[i].tag       <= 1;
+            cache[i].data      <= 1;
         end
     end
 
@@ -107,9 +110,14 @@ always_ff @(posedge clk_i or negedge rst_i) begin
 
 end
 
-// Flushing 
+//================================ Flushing ==================================//
+
 always_ff @( posedge clk_i or negedge rst_i ) begin
-    if (flush_en_i) begin
+    if (!rst_i) begin
+        flush_counter <= 0;              
+        counter <= 0;  
+    end
+    else if (flush_en_i) begin
         if (cache[flush_counter].dirty_bit == 0) begin
             cache[flush_counter].valid_bit <= 0;
         end
@@ -123,33 +131,28 @@ always_ff @( posedge clk_i or negedge rst_i ) begin
         else if (!change_dirty_bit_i) begin
             cache[flush_counter].dirty_bit <= cache[flush_counter].dirty_bit; 
         end
+
+        if (flush_counter_en_i) begin
+            flush_counter <= counter;         //starts from 0
+            counter <= adder;                 //starts from 1
+        end
+        else if (!flush_counter_en_i) begin
+            flush_counter <= flush_counter;
+            counter <= counter;
+        end
     end 
-    else begin
+    else if (!flush_en_i) begin
         flush_counter <= 0;
         counter <= 0;
     end
 end
 
-// Counter For Flushing 
-always_ff @( posedge clk_i or negedge rst_i ) begin
-    if (!rst_i) begin
-        flush_counter <= 0;              
-        counter <= 0;                    
-    end
-    else if (flush_counter_en_i) begin
-        flush_counter <= counter;         //starts from 0
-        counter <= adder;                 //starts from 1
-    end
-    else if (!flush_counter_en_i) begin
-        flush_counter <= flush_counter;
-        counter <= counter;
-    end
-end
+//========================== Adder For Flushing ==============================//
 
-// Adder
 assign adder = counter + 1;
 
-// Comparator
-assign flush_done_o = (flush_counter == 8) ? 1 : 0;
+//======================= Comparator For Flushing ============================//
+
+assign flush_done_o = (flush_counter == 4) ? 1 : 0;
 
 endmodule
