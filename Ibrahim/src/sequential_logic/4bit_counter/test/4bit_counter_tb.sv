@@ -1,23 +1,36 @@
-module counter_tb;
+/* verilator lint_off NULLPORT */
 
+module counter_tb(
+    `ifdef VERILATOR
+    input logic clk
+    `endif
+);
     parameter WIDTH_C = 4;  // Testbench parameter for the counter width
+    parameter MAX_COUNT = 13;
 
+    `ifndef VERILATOR
     logic clk;
+    `endif
     logic reset;
     logic [WIDTH_C-1:0] reg_out;
 
-    // Instantiate the counter with the testbench parameter
-    counter #(.WIDTH_C(WIDTH_C)) uut (
+    // Instantiate the reg_outer with the testbench parameter
+    counter #(
+        .WIDTH_C(WIDTH_C),
+        .MAX_COUNT(MAX_COUNT)
+    ) uut (
         .clk(clk),
         .reset(reset),
         .reg_out(reg_out)
     );
 
+    `ifndef VERILATOR
     // Clock generation
     initial begin
         clk = 0;
-        forever #5 clk = ~clk; // 10 time units period
+        forever #5 clk = ~clk;
     end
+    `endif
 
     // Task to assert and de-assert reset
     task assert_reset;
@@ -36,13 +49,13 @@ module counter_tb;
         // Call the reset task
         assert_reset;
 
-        // Run the counter for some more time
-        repeat (15) @(posedge clk);
+        // Run the reg_outer for some more time
+        repeat(15) @(posedge clk);
 
         // Call the reset task again
         assert_reset;
         
-        // Again run the counter for 15 cycles to see if it gets 0 after count is 13
+        // Again run the reg_outer for 15 cycles to see if it gets 0 after reg_out is 13
         repeat(15) @(posedge clk);
         
         // Finish simulation
@@ -58,7 +71,9 @@ module counter_tb;
     // Generate waveform dump for visualization
     initial begin
         $dumpfile("counter.vcd");
-        $dumpvars(0, counter_tb);
+        $dumpvars(0);
     end
 
 endmodule
+
+/* verilator lint_on NULLPORT */

@@ -1,3 +1,5 @@
+/* verilator lint_off LATCH */
+
 module sequential_adder (
     input logic        clk,       // Clock input
     input logic        reset,     // Reset input
@@ -97,3 +99,5 @@ module sequential_adder (
     end
 
 endmodule
+
+/* verilator lint_on LATCH */

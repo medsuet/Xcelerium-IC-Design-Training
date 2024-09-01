@@ -8,6 +8,7 @@ The files in this project are:
 - `docs/4bit_adder`: This is the state transition graph(STG) of the adder.
 - `src/adder.sv`: The Verilog module implementing the sequential adder.
 - `test/adder_tb.sv`: The testbench for the sequential adder.
+- `test/adder_tb.cpp`: The C++ testbench for sequential adder.
 
 ## Prerequisites
 
@@ -21,87 +22,58 @@ A Makefile is provided to simplify the process of compiling, simulating, and vie
 
 ### Targets
 
-- `all`: Compile the Verilog files and simulate the testbench.
-- `compile`: Compile the Verilog files.
-- `simulate`: Simulate the testbench.
+- `all`: Display the help message.
+- `verilator`: Compile, run simulation, and view waveform with Verilator.
+- `iverilog`: Compile and run simulation with Icarus Verilog.
+- `vsim`: Compile and run simulation with ModelSim.
 - `view`: View the waveform in GTKWave.
 - `clean`: Clean the generated files and directories.
 - `help`: Display help information.
 
+
 ### How to Use
 
-1. **Compile and Simulate:**
+1. **Compile and Simulate with ModelSim:**
     ```bash
-    make all
+    make vsim
     ```
     This command will:
-    - Compile the Verilog files.
-    - Simulate the testbench.
+    - Compile the Verilog files using ModelSim.
+    - Run the simulation.
 
-2. **Compile Only:**
+2. **Compile and Simulate with Verilator:**
     ```bash
-    make compile
+    make verilator
     ```
-    This command will only compile the Verilog files.
+    This command will:
+    - Compile the Verilog files using Verilator.
+    - Run the simulation.
+    - Open the generated waveform in GTKWave.
 
-3. **Simulate Only:**
+
+3. **Compile and Simulate with Icarus Verilog:**
     ```bash
-    make simulate
+    make iverilog
     ```
-    This command will simulate the testbench.
+    This command will:
+    - Compile the Verilog files using Icarus Verilog.
+    - Run the simulation.
 
-4. **View the Waveform:**
+
+4. **View Waveform:**
     ```bash
     make view
     ```
-    This command will open the waveform in GTKWave if the VCD file already exists.
+    This command will open the generated waveform in GTKWave.
 
-5. **Clean the Project:**
+5. **Clean Generated Files:**
     ```bash
     make clean
     ```
     This command will clean the generated files and directories.
 
-6. **Display Help Information:**
+6. **Display Help:**
     ```bash
     make help
     ```
-    This command will display the help information.
-
-## Example Output
-
-After running `make all`, you will see the following steps in your terminal:
-
-1. **Compiling Verilog Files:**
-    ```
-    Compiling Verilog files...
-    ```
-    Compilation messages will follow.
-
-2. **Simulating the Testbench:**
-    ```
-    Simulating the testbench...
-    ```
-    Simulation messages will follow.
-After running make view, you will see the following in your terminal:
-3. **Opening Waveform in GTKWave:**
-    ```
-    Opening waveform in GTKWave...
-    ```
-    GTKWave will open with the generated waveform file `sequential_adder.vcd`.
-
-## Project Files
-
-### src/adder.sv
-
-This file contains the Verilog implementation of the sequential adder. It includes the state machine logic to process the 4-bit input number and generate the output.
-
-### test/adder_tb.sv
-
-This file contains the testbench for the sequential adder. It includes:
-- Clock generation.
-- Reset logic.
-- Test case application.
-- Output monitoring.
-- VCD file generation for waveform analysis.
-
+    This command will display the help information on how to use the Makefile.

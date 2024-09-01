@@ -1,61 +1,85 @@
-# Makefile for compiling and simulating Verilog files using ModelSim
-
-# Directories
+# Variables 
 SRC_DIR = src
 TEST_DIR = test
+SRC_FILE := $(SRC_DIR)/adder.sv
+TB_FILE := $(TEST_DIR)/adder_tb.sv
 
-# Files
-VERILOG_FILES = $(SRC_DIR)/adder.sv $(TEST_DIR)/adder_tb.sv
-TB_MODULE = tb_sequential_adder
-VCD_FILE = sequential_adder.vcd
+TB_CPP := adder_tb
+MODULE := tb_sequential_adder
 
-# Simulation command
-VSIM_CMD = vsim -c -do "run -all; exit"
+# Define Iverilog and VSIM variables
+IVERILOG = iverilog
+VVP = vvp
+VSIM = vsim
+VSIM_FLAGS = -c -do "run -all; quit"
 
-# Targets
-all: compile simulate
+IVERILOG_OUT = iverilog_sim.vvp
+VSIM_OUT = modelsim_sim.out
+GTKWAVE = adder.vcd
 
-# Compile the Verilog files
-compile:
-	@echo "Compiling Verilog files..."
-	vlib work
-	vlog $(VERILOG_FILES)
-	@echo "Compilation complete."
+# Define Verilator variable
+VERILATOR = verilator
+VERILATOR_FLAGS = -Wall --cc
 
-# Simulate the testbench
-simulate:
-	@echo "Simulating the testbench..."
-	$(VSIM_CMD) $(TB_MODULE)
-	@echo "Simulation complete."
+DEFINES_VER:= src/defines/verilator.svh
 
-# View the waveform
-view: $(VCD_FILE)
-	@echo "Opening waveform in GTKWave..."
-	gtkwave $(VCD_FILE)
+# Default target
+all: help
 
-# Clean the build directory
+# Verilator Compile and run and view waveform
+verilator: 
+	@echo "Running Verilator simulation..."
+	verilator --trace -cc $(SRC_FILE) $(TB_FILE) $(DEFINES_VER) \
+	  	  --top-module $(MODULE)     \
+		  -Wno-DECLFILENAME 		 \
+		  -Wno-WIDTH 				 \
+		  -Wno-REDEFMACRO			 \
+		  -Wno-INITIALDLY			 \
+		  --exe ./test/$(TB_CPP).cpp \
+		  --timing
+	make -C obj_dir -f V$(MODULE).mk V$(MODULE)
+	./obj_dir/V$(MODULE)
+	@echo "Opening waveform with GTKWave..."
+	gtkwave $(GTKWAVE)
+
+# Icarus Verilog compile and run
+iverilog: $(SRC_FILE) $(TB_FILE)
+	@echo "Compiling with Icarus Verilog..."
+	$(IVERILOG) -g2012 -o $(IVERILOG_OUT) $(TB_FILE) $(SRC_FILE)
+	@echo "Running simulation with Icarus Verilog..."
+	$(VVP) $(IVERILOG_OUT)
+
+# ModelSim compile and run
+vsim: $(SRC_FILE) $(TB_FILE)
+	@echo "Compiling with ModelSim..."
+	vlog $(SRC_FILE) $(TB_FILE)
+	@echo "Running simulation with ModelSim..."
+	$(VSIM) $(VSIM_FLAGS) $(MODULE)
+
+# View waveform using GTKWave
+view: 
+	@echo "Opening waveform with GTKWave..."
+	gtkwave $(GTKWAVE)
+
+# Clean up generated files
 clean:
 	@echo "Cleaning up..."
-	rm -rf work
-	rm -f $(VCD_FILE)
+	rm -f $(IVERILOG_OUT) $(VSIM_OUT) $(VCD_FILE) $(GTKWAVE) .stamp.verilate
+	rm -rf work obj_dir
 	@echo "Clean complete."
 
-# Help target to give instructions
+# Help target
 help:
-	@echo "Makefile for compiling and simulating Verilog files using ModelSim"
-	@echo
-	@echo "Targets:"
-	@echo "  all      : Compile and simulate the waveform"
-	@echo "  compile  : Compile the Verilog files"
-	@echo "  simulate : Simulate the testbench"
-	@echo "  view     : View the waveform in GTKWave"
-	@echo "  clean    : Clean the build directory and generated files"
-	@echo "  help     : Display this help message"
+	@echo "Makefile for compiling and running simulations with Verilator, Icarus Verilog and ModelSim"
 	@echo
 	@echo "Usage:"
-	@echo "  make all     : To compile and simulate the waveform"
-	@echo "  make view    : To just view the waveform if the VCD file already exists"
-	@echo "  make clean   : To clean the build directory and generated files"
-	@echo "  make help    : To display this help message"
+	@echo "  make all            Display this help message"
+	@echo "  make verilator      Compile, run simulation and view waveform with Verilator"
+	@echo "  make iverilog       Compile and run simulation with Icarus Verilog"
+	@echo "  make vsim           Compile and run simulation with ModelSim"
+	@echo "  make view           View waveform using GTKWave"
+	@echo "  make clean          Clean up generated files"
+	@echo "  make help           Display this help message"
 
-.PHONY: all compile simulate view clean help
+# Phony targets
+.PHONY: all iverilog vsim view clean help verilator

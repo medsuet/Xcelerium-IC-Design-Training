@@ -1,15 +1,21 @@
-module pop_quiz_tb;
+module pop_quiz_tb(
+    `ifdef VERILATOR
+    input logic clk
+    `endif
+);
 
     // Parameters
-    parameter CLK_PERIOD = 10; // Clock perioD in time units
+    parameter CLK_PERIOD = 10; // Clock period in time units
 
     // Testbench signals
+    `ifndef VERILATOR
     logic clk;
+    `endif
     logic reset;
     logic D;
     logic A;
 
-    // Instantiate the pop_quiz moDule
+    // Instantiate the pop_quiz module
     pop_quiz uut (
         .clk(clk),
         .reset(reset),
@@ -18,12 +24,14 @@ module pop_quiz_tb;
     );
 
     // Clock generation
+    `ifndef VERILATOR
     initial begin
         clk = 0;
-        forever #(CLK_PERIOD / 2) clk = ~clk; // Clock perioD of 10 time units
+        forever #(CLK_PERIOD / 2) clk = ~clk; // Clock period of 10 time units
     end
+    `endif
 
-    // Task to assert anD De-assert reset
+    // Task to assert and de-assert reset
     task assert_reset;
         begin
             @(posedge clk);
@@ -69,7 +77,7 @@ module pop_quiz_tb;
     // Generate waveform Dump for visualization
     initial begin
         $dumpfile("pop_quiz.vcd");
-        $dumpvars(0, pop_quiz_tb);
+        $dumpvars(0);
     end
 
 endmodule

@@ -6,9 +6,9 @@ module d_flip_flop (
 );
     always_ff @(posedge clk or posedge reset) begin
         if (reset)
-            q <= #1 0;
+            q <= 0;
         else
-            q <= #1 d;
+            q <= d;
     end
 endmodule
 

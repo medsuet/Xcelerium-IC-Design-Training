@@ -79,4 +79,5 @@ dkms.conf
 *venv/
 *sim_build/
 *__pycache__/
+*.stamp.verilate
 

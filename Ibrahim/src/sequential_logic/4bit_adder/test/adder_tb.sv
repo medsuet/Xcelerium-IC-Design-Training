@@ -1,7 +1,15 @@
-module tb_sequential_adder;
+/* verilator lint_off LATCH */
+
+module tb_sequential_adder(
+    `ifdef VERILATOR
+    input logic clk
+    `endif
+);
 
     // Testbench signals
+    `ifndef VERILATOR
     logic clk;
+    `endif
     logic reset;
     logic [3:0] number;
     logic output_lsb;
@@ -14,11 +22,13 @@ module tb_sequential_adder;
         .output_lsb(output_lsb)
     );
 
+    `ifndef VERILATOR
     // Clock generation
     initial begin
         clk = 0;
-        forever #5 clk = ~clk; // 10ns period clock
+        forever #5 clk = ~clk;
     end
+    `endif
 
     // Task to apply reset
     task apply_reset();
@@ -41,7 +51,9 @@ module tb_sequential_adder;
     // Test sequence
     initial begin
         // Initialize signals
+        `ifndef VERILATOR
         clk = 0;
+        `endif
         reset = 0;
         number = 4'b0000;
 
@@ -64,8 +76,10 @@ module tb_sequential_adder;
 
     // Generate VCD file for waveform analysis
     initial begin
-        $dumpfile("sequential_adder.vcd");
-        $dumpvars(0, tb_sequential_adder);
+        $dumpfile("adder.vcd");
+        $dumpvars(0);
     end
 
 endmodule
+
+/* verilator lint_on LATCH */

@@ -8,6 +8,7 @@ The files in this project are:
 - `docs/4bit_counter.drawio`: The draw.io file for the datapath of 4bit_counter.
 - `src/4bit_counter.sv`: The Verilog module implementing the 4-bit counter.
 - `test/4bit_counter_tb.sv`: The testbench for the 4-bit counter.
+- `test/4bit_counter_tb.cpp`: The C++ testbench for verilator for 4-bit counter.
 
 ## Prerequisites
 
@@ -21,33 +22,42 @@ A Makefile is provided to simplify the process of compiling, simulating, and vie
 
 ### Targets
 
-- `all`: Compile the Verilog files and simulate the testbench.
-- `compile`: Compile the Verilog files.
-- `simulate`: Simulate the testbench.
+- `all`: Display the help message.
+- `verilator`: Compile, run simulation, and view waveform with Verilator.
+- `iverilog`: Compile and run simulation with Icarus Verilog.
+- `vsim`: Compile and run simulation with ModelSim.
 - `view`: View the waveform in GTKWave.
 - `clean`: Clean the generated files and directories.
 - `help`: Display help information.
 
 ### How to Use
 
-1. **Compile and Simulate:**
+1. **Compile and Simulate with ModelSim:**
     ```bash
-    make all
+    make vsim
     ```
     This command will:
-    - Compile the Verilog files.
-    - Simulate the testbench.
-2. **Compile Only:**
-    ```bash
-    make compile
-    ```
-    This command will only compile the Verilog files.
+    - Compile the Verilog files using ModelSim.
+    - Run the simulation.
 
-3. **Simulate Only:**
+2. **Compile and Simulate with Verilator:**
     ```bash
-    make simulate
+    make verilator
     ```
-    This command will compile and simulate the testbench.
+    This command will:
+    - Compile the Verilog files using Verilator.
+    - Run the simulation.
+    - Open the generated waveform in GTKWave.
+
+
+3. **Compile and Simulate with Icarus Verilog:**
+    ```bash
+    make iverilog
+    ```
+    This command will:
+    - Compile the Verilog files using Icarus Verilog.
+    - Run the simulation.
+
 
 4. **View Waveform:**
     ```bash
