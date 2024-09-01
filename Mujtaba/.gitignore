@@ -1,0 +1,31 @@
+.*
+*.o
+*.s
+*.exe
+*.pdf
+*.txt
+*.bin
+*.vscode
+*.log
+<<<<<<< HEAD
+/Lab1/template_code_Part0
+
+/Lab2/Booth_Multiplier
+
+/Lab2/memory_maze
+
+/Lab2/template_code_Part1
+=======
+Lab1/template_code_Part0
+
+Lab2/Booth_Multiplier
+
+Lab2/memory_maze
+
+Lab2/template_code_Part1
+>>>>>>> 415f60f (Remove unneccessary files)
+
+Lab3/Excercise_Lab5/Advanced_Makefile/main
+
+*.vvp
+*.vcd
