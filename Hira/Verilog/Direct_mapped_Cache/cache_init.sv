@@ -27,7 +27,8 @@ module cache_init(
     input logic wr_dcache,
     input logic d_clear, 
     input logic en_line, 
-    input logic tag_en
+    input logic tag_en,
+    input logic en_valid
 );
 
 `define CACHE_BLOCKS 256
@@ -35,7 +36,7 @@ logic [19:0] tag [`CACHE_BLOCKS-1:0]='{default: 0};
 logic [19:0] tag_addr, tag_addr_ff;
 logic [7:0] index, index_ff;
 logic [1:0] offset, offset_ff;
-logic [32:0] r_data_mux_out;
+logic [31:0] r_data_mux_out;
 logic [`CACHE_BLOCKS-1:0] valid_reg;
 logic [`CACHE_BLOCKS-1:0] dirty_reg;
 logic [`CACHE_LINE_SIZE-1:0] cache_line [`CACHE_BLOCKS-1:0]= '{default: 0};
@@ -54,37 +55,34 @@ always_comb begin
     cache_miss = 0;
     rd_req = 0;
     wr_req = 0;
-
     if ((opcode == `OPCODE_L) || (opcode == `OPCODE_S)) begin
         cpu_request = 1;
         rd_req = (opcode == `OPCODE_L);
         wr_req = (opcode == `OPCODE_S);
-
-        if ((valid_ff == 1) && (tag[index_ff] == tag_addr_ff)) begin
+        if (init) begin
+            cache_miss = 0;
+            cache_hit=0;
+        end else if ((valid_ff == 1) && (tag[index_ff] == tag_addr_ff)) begin
             cache_hit = 1;
             cache_miss=0;
             if (rd_dcache) begin
                 r_data = r_data_mux_out;
+            end else begin
+                r_data = 32'hxxxxxxxx;
             end
-        end
-        else if (init) begin
-            cache_miss = 0;
-            cache_hit=0;
         end else begin
-            
             cache_miss = 1;
-            cache_hit=0;
-            
+            cache_hit=0;  
         end
     end
 end
 
 always_comb begin
     if (arvalid) begin
-        addr_mem = {tag_addr_ff, index_ff, offset_ff, 2'b0};
+        addr_mem = {tag_addr_ff, index_ff, 4'b0};
     end
     else if (awvalid) begin
-        addr_mem = {tag[index_ff], index_ff, offset_ff, 2'b0};
+        addr_mem = {tag[index_ff], index_ff, 4'b0};
     end
 end
 
@@ -117,6 +115,10 @@ always_ff @(posedge clk,negedge rst) begin
         tag_addr_ff <= tag[index];
         valid_ff <= valid_reg[index];
         dirty_ff <= dirty_reg[index];
+    end
+    else if (en_valid) begin
+        valid_ff <= 1;
+        valid_reg[index_ff] <= 1;
     end
 
 end
@@ -191,7 +193,12 @@ always_ff @(posedge clk,negedge rst) begin
         end else begin
             clear_valid <= 1;
             i <= 0;
+            en_for_flush<=0;
+            i_set <= 0;
+            d_clear_flush <= 0;
         end
+    end else begin
+        clear_valid <= 0;
     end
 end
 

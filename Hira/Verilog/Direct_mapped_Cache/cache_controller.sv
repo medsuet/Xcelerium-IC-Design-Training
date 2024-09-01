@@ -5,7 +5,7 @@ output logic wr_dcache, input logic cache_miss, output logic en, input logic val
 output logic flushing, input logic flush, output logic d_clear, tag_en, en_line
 , input logic arready,input logic  rvalid, input logic wready, input logic awready, 
 output logic arvalid, output logic rready, output logic wvalid, output logic awvalid, output logic bready
-, output logic ready);
+, output logic ready, output logic init);
 typedef enum logic [2:0]{
     IDLE,
     PROCESSREQUEST, 
@@ -36,10 +36,12 @@ always_comb begin
         wvalid=0;
         awvalid=0;
         bready=0;
-        ready=1;
+        ready=0;
+        init=0;
         if (valid&&cpu_request) begin //cpu_request 1 when load or store instruction encounters
             next_state=PROCESSREQUEST;
             en=1;
+            init=1;
         end else begin
             en=0;
             next_state=IDLE;
@@ -60,8 +62,10 @@ always_comb begin
         arvalid=0;
         rready=0;
         ready=0;
+        init=0;
         if (cache_hit) begin
             next_state=IDLE;
+            ready=1;
             if (rd_req) begin
                 rd_dcache=1;
                 wr_dcache=0;
@@ -69,11 +73,11 @@ always_comb begin
                 wr_dcache=1;
                 rd_dcache=0;
         end
-        end else if ((cache_miss)&&(~dirty_ff|(dirty_ff&rd_req))&&(arready)) begin
+        end else if ((cache_miss)&&(~dirty_ff)&&(arready)) begin
             next_state=CACHEALLOCATE;
             arvalid=1;
             rready=1;
-        end else if ((cache_miss)&&(~dirty_ff|(dirty_ff&rd_req))&&(~arready)) begin
+        end else if ((cache_miss)&&(~dirty_ff)&&(~arready)) begin
             next_state=PROCESSREQUEST;
             arvalid=1;
             rready=1;
@@ -163,6 +167,7 @@ always_comb begin
         end else if (flush_done) begin
             flushing=0;
             next_state=IDLE;
+            ready=1;
         end
     end
     endcase

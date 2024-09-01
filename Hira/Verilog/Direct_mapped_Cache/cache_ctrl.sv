@@ -1,7 +1,7 @@
 `include "defs.svh"
 module cache_ctrl(input logic clk, 
 input logic rst, 
-input logic valid,
+input logic src_valid,
 input logic cpu_request,
 input logic flush_done, 
 input logic cache_hit, 
@@ -19,12 +19,14 @@ input logic ready_mem,
 output logic rd_mem_req,
 output logic wr_mem_req, 
 output logic wr_rd_mem_req, 
-output logic ready,
+output logic dest_valid,
 output logic arvalid,
 output logic wvalid,
 output logic awvalid,
-output logic init, //sample
-input logic  bvalid
+input logic  bvalid, 
+output logic src_ready,
+input logic dest_ready,
+output logic init
 );
 typedef enum logic [1:0]{
     IDLE,
@@ -45,7 +47,6 @@ always_comb begin
     case(current_state) 
     IDLE: begin
         flushing=0;
-        ready=0;
         en=0;
         wr_mem_req=0;
         rd_mem_req=0;
@@ -55,22 +56,24 @@ always_comb begin
         arvalid=0;
         rd_dcache=0;
         wr_dcache=0;
+        src_ready=1;
+        dest_valid=0;
         init=0;
-        if (valid&&cpu_request) begin //cpu_request 1 when load or store instruction encounters
+        if (src_valid&&cpu_request) begin //cpu_request 1 when load or store instruction encounters
             next_state=PROCESSREQUEST;
             en=1;
             init=1;
         end else begin
             next_state=IDLE;
         end
-        if (flush) begin
+        if (src_valid&&flush) begin
             next_state=FLUSH;
             flushing=1;
         end
     end
     PROCESSREQUEST: begin
         en=0;
-        ready=0;
+        src_ready=0;
         flushing=0;
         wr_mem_req=0;
         rd_mem_req=0;
@@ -78,10 +81,18 @@ always_comb begin
         wvalid=0;
         awvalid=0;
         arvalid=0;
+        src_ready=0;
         init=0;
+        dest_valid=0;
         if (cache_hit) begin
-            next_state=IDLE;
-            ready=1;
+            dest_valid=1;
+            if (dest_ready) begin
+                src_ready=1;
+                next_state=IDLE;
+            end
+            else begin
+                next_state=PROCESSREQUEST;
+            end
             if (rd_req) begin
                 rd_dcache=1;
                 wr_dcache=0;
@@ -105,11 +116,12 @@ always_comb begin
     end
     WAIT: begin
         en=0;
-        ready=0;
         wvalid=0;
         awvalid=0;
         arvalid=0;
-        if (bvalid) begin
+        src_ready=0;
+        dest_valid=0;
+        if (~flush&bvalid) begin
             arvalid=1;
         end
         else begin
@@ -131,13 +143,14 @@ always_comb begin
     end
     FLUSH: begin
         en=0;
-        ready=0;
         wr_mem_req=0;
         rd_mem_req=0;
         wr_rd_mem_req=0;
         wvalid=0;
         awvalid=0;
         arvalid=0;
+        src_ready=0;
+        dest_valid=0;
         if (dirty_ff&~flush_done) begin
             next_state=WAIT;
             flushing=1;
@@ -149,8 +162,13 @@ always_comb begin
             flushing=1;
         end else if (flush_done) begin
             flushing=0;
-            next_state=IDLE;
-            ready=1;
+            if (dest_ready) begin
+                src_ready=1;
+                next_state=IDLE;
+            end else begin
+                next_state=FLUSH;
+            end
+            dest_valid=1;
         end
     end
     endcase
