@@ -11,6 +11,7 @@ parameter CACHE_INDEX_BITS = 3;
 parameter CACHE_BLOCK_OFFSET = 2;
 
 module cache_datapath (
+    
     input    logic   clk_i,
     input    logic   rst_i,
 

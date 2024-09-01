@@ -1,16 +1,16 @@
 # Direct Mapped Cache With AXI-4 Lite
 
 ## Top level
-![top_level](./docs/top_level.png)
+![top_level](./docs/top_level.jpg)
 
 ## Pinout 
-![pinout](./docs/pinout.png)
+![pinout](./docs/pinout.jpg)
 
 ## Cache controller
-![cache_controller](./docs/cache_controller.png)
+![cache_controller](./docs/cache_controller.jpg)
 
 ## AXI4 Lite controller
-![axi4_controller](./docs/axi4_lite_controller.png)
+![axi4_controller](./docs/axi4_lite_controller.jpg)
 
 # Run simulation
 To compile design

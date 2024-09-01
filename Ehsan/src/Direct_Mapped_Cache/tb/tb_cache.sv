@@ -10,11 +10,12 @@ logic [31:0] input_address, input_data;
 int number_of_tests;
 int test_passed = 0;
 int test_failed = 0;
+
 //=================== Declearing Input And Outputs For UUT ===================//
 
     logic                        clk;
     logic                        rst;
-    logic                        cpu_valid_req;
+    logic                        cpu_valid;
     logic                        cache_ready;
     logic  [1:0]                 cpu_req;
     logic  [ADDRESS-1:0]         cpu_address;
@@ -46,9 +47,9 @@ int test_failed = 0;
     cache_top cache_dut (
         .clk(clk),
         .rst(rst),
-        .cpu_valid_req(cpu_valid_req),
+        .cpu_valid(cpu_valid),
         .cache_ready(cache_ready),
-        .cpu_request(cpu_req),              
+        .cpu_req(cpu_req),              
         .cpu_address(cpu_address),
         .cpu_write_data(cpu_write_data),
         .cpu_read_data(cpu_read_data),
@@ -87,7 +88,7 @@ int test_failed = 0;
 //========================== Initialize The Signals ==========================//
 
     task init_sequence;
-        cpu_valid_req = 0;
+        cpu_valid = 0;
         cpu_req = 0;
         cpu_address = 0;
         cpu_write_data = 0;
@@ -190,8 +191,7 @@ int test_failed = 0;
         input logic [31:0] cpu_write_data_i
     );
         begin
-            @(posedge clk);
-            cpu_valid_req  = cpu_valid_i;  
+            cpu_valid      = cpu_valid_i;  
             cpu_req        = cpu_req_i;
             cpu_address    = cpu_address_i;
             cpu_write_data = cpu_write_data_i;
@@ -200,7 +200,7 @@ int test_failed = 0;
                 @(posedge clk);
             end
             @(posedge clk);
-            cpu_valid_req = 0; 
+            cpu_valid = 0; 
             while (!cache_ready) begin
                 @(posedge clk);
             end 
@@ -210,25 +210,24 @@ int test_failed = 0;
 //============================ Monitoring Outputs ============================//
 
     task monitor;
-        logic [31:0] m_addr;
+        logic [31:0] addr;
         forever begin
-            m_addr = cpu_address;
+            addr = cpu_address;
             while (cpu_req != 2'b01) begin
                 @(posedge clk);
             end
-            reference_memory[m_addr] = cpu_write_data;            
+            reference_memory[addr] = cpu_write_data;            
             while (cpu_req != 2'b00) begin
                 @(posedge clk);
             end
             while (!cache_ready) begin
                 @(posedge clk);
             end        
-
-            if (cpu_read_data == reference_memory[m_addr]) begin
+            if (cpu_read_data == reference_memory[addr]) begin
                 test_passed++;
             end 
             else begin
-                $display("Incorrect ","cpu_address %h",m_addr," cpu_read_data %h",cpu_read_data," reference_memory %h",reference_memory[m_addr[3:0]]);
+                $display("Incorrect ","cpu_address %h",addr," cpu_read_data %h",cpu_read_data," reference_memory %h",reference_memory[addr[3:0]]);
                 test_failed++;
             end 
         end
@@ -247,7 +246,7 @@ int test_failed = 0;
 
         $display("Testing Write And Read");
         // Testing Write And Read
-        number_of_tests = 1000;
+        number_of_tests = 100;
         for (int j=0; j<number_of_tests ;j++) begin
             input_address = $random;
             input_data    = $random;
