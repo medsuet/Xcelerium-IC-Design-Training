@@ -9,12 +9,15 @@ This repository contains a cache design implemented in System Verilog. The desig
 Below are images of the cache design to help visualize its components and structure:
 
 ![Top Module Diagram](docs/Top-Module.png)
+
 *Figure 1: Top Module Diagram*
 
 ![Cache Controller Diagram](docs/Cache-controller.png)
+
 *Figure 2: Cache Controller Diagram*
 
 ![AXI4-lite Controller Diagram](docs/axi-controller.png)
+
 *Figure 2: AXI4-lite Controller Diagram*
 
 ## Simulation
@@ -33,7 +36,7 @@ To simulate the cache design using Vivado, follow these steps:
 To simulate the cache design using ModelSim, follow these steps:
 
 1. Open ModelSim and create a new project.
-2. Add the VHDL files from this repository to the project.
+2. Add the system verilog files from this repository to the project.
 3. Set the top-level entity to **[cache]**.
 4. Run the simulation using the `make vsim` command.
 
