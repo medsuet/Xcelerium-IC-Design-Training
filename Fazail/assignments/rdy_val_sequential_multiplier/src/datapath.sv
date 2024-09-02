@@ -1,4 +1,6 @@
-module datapath (
+module datapath #(
+    WIDTH = 16
+) (
     input logic signed [WIDTH-1:0] multiplicand,
     input logic signed [WIDTH-1:0] multiplier,
 
@@ -10,6 +12,7 @@ module datapath (
     input logic count_lb,
     input logic count_en,
     input logic clr,
+    input logic en_fp,
 
     // Datapath -> Controller
     output logic count_15,
@@ -20,10 +23,8 @@ module datapath (
     output logic signed [2*WIDTH-1:0] product
 );
 
-localparam WIDTH = 16;
-
 logic signed [WIDTH-1 : 0] in_a;
-logic signed [2*WIDTH-1 : 0] ext_a, mux_a, mux_lb, shft_a, pp, add_pp;
+logic signed [2*WIDTH-1 : 0] ext_a, mux_a, mux_lb, shft_a, pp, add_pp, reg_pp;
 logic [(WIDTH/2)+1:0] count_value, value;
 
 always_ff @( posedge clk or negedge n_rst ) begin : Register_a
@@ -59,9 +60,9 @@ always_ff @( posedge clk or negedge n_rst ) begin : counter
     if (!n_rst) 
         count_value <= '0;
     else begin
-        if (count_en) count_value <= value;
-        else if (clr) count_value <= '0;
-        else count_value <= '0;
+        if (count_en)   count_value <= value;
+        else if (clr)   count_value <= '0;
+        else            count_value <= '0;
     end
 end
 
@@ -77,20 +78,23 @@ assign shft_a = mux_lb << count_value;
 
 // Product Register
 always_ff @( posedge clk or negedge n_rst ) begin : partial_product
-    if (!n_rst) pp <= '0;
-    else if (clr) pp <= '0;
-    else pp <= add_pp;
+    if (!n_rst)     pp <= '0;
+    else if (en_fp) pp <= pp;
+    else if (clr)   pp <= '0;
+    else            pp <= add_pp;
 end
 
 // adder
-assign add_pp =  pp + shft_a;
+assign add_pp =  (clr) ? '0 : pp + shft_a;
 
 // product mux
-assign product =  (clr) ? pp : '0; 
+assign product =  (en_fp) ? pp : '0;
 
 endmodule
 
-module shift_register (
+module shift_register #(
+    WIDTH = 16
+)(
     input logic signed [WIDTH-1:0]in,
     input logic en,
 
@@ -98,8 +102,6 @@ module shift_register (
 
     output logic signed out_b
 );
-
-localparam WIDTH = 16;
 
 logic signed [WIDTH-1:0] in_b;
 

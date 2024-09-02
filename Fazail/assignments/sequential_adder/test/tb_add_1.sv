@@ -1,12 +1,20 @@
 localparam WIDTH = 4;
 
-module tb_add_1;
+module tb_add_1 (
+    `ifdef VERILATOR
+        input logic clk
+    `endif
+    );
+
 logic in;
-logic clk, n_rst;
+logic n_rst;
 logic out;
 
+`ifndef VERILATOR
+    logic clk; 
+`endif
+
 logic [WIDTH-1:0]value;
-int i = 1;
 
 add_1 UUT (
     .in(in),
@@ -14,13 +22,15 @@ add_1 UUT (
     .reset(n_rst),
     .out(out)
 );
-    
+
+`ifndef VERILATOR
 initial begin
     clk = 1;
     forever begin
         #20 clk = ~clk;
     end
 end
+`endif
 
 initial begin
     // initialize all the signals
