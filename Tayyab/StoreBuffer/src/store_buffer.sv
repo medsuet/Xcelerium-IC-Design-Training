@@ -22,17 +22,15 @@ module store_buffer (
     output type_lsummu2dcache_s        sb2dcache_o
 );
  
-    logic top_que_en;
     logic bottom_que_en;
     logic wr_en;
-    logic set_valid;
     logic clear_valid;
+    logic kill_valid;
     logic read_en;
     logic read_sel;
     logic tq_eq_bq;
-    logic is_valid_tq;
     logic is_valid_bq;
-    logic [SB_NO_OF_LINES-1:0] addr_availables;
+    logic addr_not_available;
 
     assign dmem_sel_o = dmem_sel_i;
 
@@ -41,17 +39,15 @@ module store_buffer (
         .rst_n                         (rst_n),
 
         // Interface signals to/from store_buffer_controller
-        .top_que_en                    (top_que_en),
         .bottom_que_en                 (bottom_que_en),
         .wr_en                         (wr_en),
-        .set_valid                     (set_valid),
         .clear_valid                   (clear_valid),
+        .kill_valid                    (kill_valid),
         .read_en                       (read_en),
         .read_sel                      (read_sel),
         .tq_eq_bq                      (tq_eq_bq),
-        .is_valid_tq                   (is_valid_tq),
         .is_valid_bq                   (is_valid_bq),
-        .addr_availables               (addr_availables),
+        .addr_not_available            (addr_not_available),
 
         // Interface data signals LSU/MMU to/from store buffer 
         .lsummu2sb_i_addr              (lsummu2sb_i.addr),
@@ -76,17 +72,15 @@ module store_buffer (
         .dcache_kill_o                 (dcache_kill_o),
 
         // Interface signals to/from store_buffer_controller
-        .top_que_en                    (top_que_en),
         .bottom_que_en                 (bottom_que_en),
         .wr_en                         (wr_en),
-        .set_valid                     (set_valid),
         .clear_valid                   (clear_valid),
+        .kill_valid                    (kill_valid),
         .read_en                       (read_en),
         .read_sel                      (read_sel),
         .tq_eq_bq                      (tq_eq_bq),
-        .is_valid_tq                   (is_valid_tq),
         .is_valid_bq                   (is_valid_bq),
-        .addr_availables               (addr_availables),
+        .addr_not_available            (addr_not_available),
 
         // Interface control signals LSU/MMU to/from store buffer 
         .lsummu2sb_i_w_en              (lsummu2sb_i.w_en),

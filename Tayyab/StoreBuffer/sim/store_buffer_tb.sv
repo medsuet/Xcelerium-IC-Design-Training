@@ -4,8 +4,8 @@
 module store_buffer_tb ();
 
     parameter NUM_RAND_TESTS = 12;
-    parameter RAND_DELAY = 0;
-    parameter RANDOM_SEED = 1;
+    parameter RAND_DELAY = 5;
+    parameter RANDOM_SEED = 1725359095;
     parameter ADDR_RANGE = 10;
 
 // Signals
@@ -54,11 +54,12 @@ module store_buffer_tb ();
         @(posedge clk);
 
         fork
-            test_random_load_store();
-            // Directed test
+            test_random_signals();
+            //Directed test
             // begin
             //     store_data(1,1,100);
             //     store_data(2,1,200);
+            //     buffer_flush();
             //     load_data(2,1);
             // end
             dummy_dcache();
@@ -71,15 +72,18 @@ module store_buffer_tb ();
         $stop();
     end
     
-    // Task to send random load/store requests to store buffer
+    // Task to send random load/store/flush/kill requests to store buffer
     int i;
-    task test_random_load_store();
+    int choice;
+    task test_random_signals();
         for (i=0; i<NUM_RAND_TESTS; i++) begin
-            if ($urandom() % 2)
-                store_data($urandom() % ADDR_RANGE, $urandom(), $urandom());
-            else
-                load_data($urandom() % ADDR_RANGE, $urandom());
-            
+            choice = $urandom() % 8;
+            case (choice)
+                0: buffer_flush();
+                1: buffer_kill();
+                2,3,4: store_data($urandom() % ADDR_RANGE, $urandom(), $urandom());
+                5,6,7: load_data($urandom() % ADDR_RANGE, $urandom());
+            endcase
             repeat($urandom() % RAND_DELAY + 1) @(posedge clk);
         end
     endtask
@@ -135,17 +139,38 @@ module store_buffer_tb ();
         while (!(sb2lsummu_o.ack))
             @(posedge clk);
         
-        $display("\nr_data = %d\n",sb2lsummu_o.r_data);
         lsummu2sb_i.w_en = 0;
         lsummu2sb_i.req = 0;
     endtask
 
-    // Task to simulate performance of cache
-    int dcache[int];
+    // Task to send flush signal to store buffer
+    task buffer_flush();
+        dcache_flush_i = 1;
+        @(posedge clk);
+        while (!(sb2lsummu_o.ack))
+            @(posedge clk);
+        dcache_flush_i = 0;
+        @(posedge clk);
+    endtask
+
+    // Task to send kill signal to store buffer
+    task buffer_kill();
+        dcache_kill_i = 1;
+        @(posedge clk);
+        while (!(sb2lsummu_o.ack))
+            @(posedge clk);
+        dcache_kill_i = 0;
+        @(posedge clk);
+    endtask
+
+
+    // Task to simulate working of cache
+    // int dcache[int];
+    logic [31:0]dcache[0:31];
     task dummy_dcache();
         forever begin
             dcache2sb_i.ack = 0;
-            while (!sb2dcache_o.req)
+            while (!sb2dcache_o.req & !dcache_flush_o & !dcache_kill_o)
                 @(posedge clk)
 
             repeat($urandom() % RAND_DELAY) @(posedge clk);
@@ -160,7 +185,6 @@ module store_buffer_tb ();
             @(posedge clk);
         end
     endtask
-
     
     task reset_sequence();
         #7;

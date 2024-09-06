@@ -6,17 +6,15 @@ module store_buffer_datapath (
     input wire                            rst_n,
 
     // Interface signals to/from store_buffer_controller
-    input logic                           top_que_en,
     input logic                           bottom_que_en,
     input logic                           wr_en,
-    input logic                           set_valid,
     input logic                           clear_valid,
+    input logic                           kill_valid,
     input logic                           read_en,
     input logic                           read_sel,
     output logic                          tq_eq_bq,
-    output logic                          is_valid_tq,
     output logic                          is_valid_bq,
-    output logic [SB_NO_OF_LINES-1:0]     addr_availables,
+    output logic                          addr_not_available,
 
     // Interface data signals LSU/MMU to/from store buffer 
     input logic  [DCACHE_ADDR_WIDTH-1:0]  lsummu2sb_i_addr,
@@ -41,11 +39,12 @@ module store_buffer_datapath (
     logic [$clog2(SB_NO_OF_LINES)-1:0]    bottom_que;
 
     logic [DCACHE_DATA_WIDTH-1:0]         data_buffer_out;
-    logic [DCACHE_ADDR_WIDTH-1:0]         data_buffer_index;
+    logic [DCACHE_ADDR_WIDTH-1:0]         data_buffer_read_index;
     logic [$clog2(SB_NO_OF_LINES)-1:0]    encoded_index, encoded_index_high, encoded_index_low;
-
+    logic [SB_NO_OF_LINES-1:0]            addr_availables;
 
     assign tq_eq_bq = top_que == bottom_que;
+    assign addr_not_available = addr_availables == 0;
 
     // top_que, bottom_que counter
     always_ff @(posedge clk) begin
@@ -54,7 +53,7 @@ module store_buffer_datapath (
         bottom_que <= '0;
       end 
       else begin
-          top_que <= (top_que_en) ? top_que + 1 : top_que;
+          top_que <= (wr_en) ? top_que + 1 : top_que;
           bottom_que <= (bottom_que_en) ? bottom_que + 1 : bottom_que;
       end     
     end
@@ -64,9 +63,12 @@ module store_buffer_datapath (
       if (!rst_n) begin
         valid_buffer <= '0;
       end
+      else if (kill_valid) begin
+        valid_buffer <= '0;
+      end
       else begin
         valid_buffer[bottom_que] <= (clear_valid) ? 1'b0 : valid_buffer[bottom_que];
-        valid_buffer[top_que] <= (set_valid) ? 1'b1 : valid_buffer[top_que];
+        valid_buffer[top_que] <= (wr_en) ? 1'b1 : valid_buffer[top_que];
       end
     end
 
@@ -79,16 +81,11 @@ module store_buffer_datapath (
       end
     end
 
-    // read from valid buffer
+    // read from valid_buffer, addr buffer, data buffer, selbyte buffer
     always_comb begin
-      is_valid_tq = valid_buffer[top_que];
       is_valid_bq = valid_buffer[bottom_que];
-    end
-
-    // read from addr buffer, data buffer, selbyte buffer
-    always_comb begin
-      data_buffer_index = (read_sel) ? encoded_index : bottom_que;
-      data_buffer_out = data_buffer[data_buffer_index];
+      data_buffer_read_index = (read_sel) ? encoded_index : bottom_que;
+      data_buffer_out = data_buffer[data_buffer_read_index];
       sb2dcache_o_w_data = data_buffer_out;
       sb2dcache_o_addr = (read_en) ? lsummu2sb_i_addr : addr_buffer[bottom_que];
       sb2dcache_o_sel_byte = (read_en) ? lsummu2sb_i_sel_byte : selbyte_buffer[bottom_que];
@@ -98,7 +95,7 @@ module store_buffer_datapath (
     // load request
     genvar j;
     for (j=0; j<SB_NO_OF_LINES; j++) begin
-      assign addr_availables[j] = (addr_buffer[j] == lsummu2sb_i_addr) & (selbyte_buffer[j] == lsummu2sb_i_sel_byte) & valid_buffer[j];
+      assign addr_availables[j] = (addr_buffer[j] == lsummu2sb_i_addr) & valid_buffer[j];// & (selbyte_buffer[j] == lsummu2sb_i_sel_byte);
     end
 
     assign encoded_index = (top_que > bottom_que) ? encoded_index_high : encoded_index_low;

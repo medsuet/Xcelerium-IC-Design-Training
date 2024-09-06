@@ -27,6 +27,7 @@ sim: compile
 	@vsim $(VSIM_FLAGS) $(basename $(notdir $(TB_SV))) $(VSIM_RUN_FLAGS) $(VSIM_PRAMS) -suppress 3829
 
 waveform.vcd: compile
+	echo $(RANDOM_SEED)
 	@vsim $(VSIM_FLAGS) $(basename $(notdir $(TB_SV))) $(VSIM_WAVE_FLAGS) $(VSIM_RUN_FLAGS) $(VSIM_PRAMS) -suppress 3829
 
 clean:
