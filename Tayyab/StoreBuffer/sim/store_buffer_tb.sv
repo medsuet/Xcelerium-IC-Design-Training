@@ -1,11 +1,13 @@
 
-`include "../param/sb_defs.svh"
+`timescale 1 ns / 100 ps
+
+`include "../defines/sb_defs.svh"
 
 module store_buffer_tb ();
 
-    parameter NUM_RAND_TESTS = 12;
+    parameter NUM_RAND_TESTS = 1000;
     parameter RAND_DELAY = 5;
-    parameter RANDOM_SEED = 1725359095;
+    parameter RANDOM_SEED = 1727191328;
     parameter ADDR_RANGE = 10;
 
 // Signals
@@ -25,13 +27,11 @@ module store_buffer_tb ();
     type_lsummu2dcache_s         sb2dcache_o;
 
 // Instantization
-    store_buffer DUT (
+    store_buffer_top DUT (
         .clk                     (clk),
         .rst_n                   (rst_n),
-        .dmem_sel_i              (dmem_sel_i),
         .dcache_flush_i          (dcache_flush_i),
         .dcache_kill_i           (dcache_kill_i),
-        .dmem_sel_o              (dmem_sel_o),
         .dcache_flush_o          (dcache_flush_o),
         .dcache_kill_o           (dcache_kill_o),
         .lsummu2sb_i             (lsummu2sb_i),
@@ -46,6 +46,12 @@ module store_buffer_tb ();
         forever #5 clk = ~clk;
     end
 
+// Waveform
+    initial begin
+        $dumpfile("waveform.vcd");
+        $dumpvars(0);
+    end
+
 // Tests
     initial begin
         $urandom(RANDOM_SEED);
@@ -54,19 +60,19 @@ module store_buffer_tb ();
         @(posedge clk);
 
         fork
-            test_random_signals();
+            //test_random_signals();
             //Directed test
-            // begin
-            //     store_data(1,1,100);
-            //     store_data(2,1,200);
-            //     buffer_flush();
-            //     load_data(2,1);
-            // end
+            begin
+                store_data(1,1,100);
+                store_data(1,2,400);
+                store_data(2,1,200);
+                load_data(1,5);
+            end
             dummy_dcache();
             monitor();
         join_any
 
-        $display("\nTests passed.\n");
+        $display("\n\nTests passed.\n\n");
 
         repeat (5) @(posedge clk);
         $stop();
@@ -103,8 +109,9 @@ module store_buffer_tb ();
                 while (!sb2lsummu_o.ack)
                     @(posedge clk);
                 if (monitor_mem[lsummu2sb_i.addr] != sb2lsummu_o.r_data) begin
-                    $display("\nTest failed: %d.\n",i);
-                    #1 $stop();
+                    $display("\n\nTest failed: %d.\n\n",i);
+                    repeat(2) @(posedge clk);
+                    $stop();
                 end
             end
             @(posedge clk);
@@ -115,7 +122,7 @@ module store_buffer_tb ();
     task store_data(int addr, int sel_byte, int w_data);
         lsummu2sb_i.addr = addr;
         lsummu2sb_i.w_data = w_data;
-        lsummu2sb_i.sel_byte = sel_byte;
+        lsummu2sb_i.sel_byte = sel_byte[3:0];
         lsummu2sb_i.w_en = 1;
         lsummu2sb_i.req = 1;
 
@@ -131,7 +138,7 @@ module store_buffer_tb ();
     task load_data(int addr, int sel_byte);
         lsummu2sb_i.addr = addr;
         lsummu2sb_i.w_data = 'x;
-        lsummu2sb_i.sel_byte = sel_byte;
+        lsummu2sb_i.sel_byte = sel_byte[3:0];
         lsummu2sb_i.w_en = 0;
         lsummu2sb_i.req = 1;
 

@@ -1,5 +1,21 @@
+// Copyright 2024 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: Datapath for store buffer
+//
+// Author: Muhammad Tayyab, UET Lahore
+// Date: 7.9.2023
 
-`include "../param/sb_defs.svh"
+`timescale 1 ns / 100 ps
+
+`ifndef VERILATOR
+`include "../../defines/cache_defs.svh"
+`include "../../defines/sb_defs.svh"
+`else
+`include "cache_defs.svh"
+`include "sb_defs.svh"
+`endif
 
 module store_buffer_datapath (
     input wire                            clk,
@@ -39,7 +55,7 @@ module store_buffer_datapath (
     logic [$clog2(SB_NO_OF_LINES)-1:0]    bottom_que;
 
     logic [DCACHE_DATA_WIDTH-1:0]         data_buffer_out;
-    logic [DCACHE_ADDR_WIDTH-1:0]         data_buffer_read_index;
+    logic [2:0]         data_buffer_read_index;
     logic [$clog2(SB_NO_OF_LINES)-1:0]    encoded_index, encoded_index_high, encoded_index_low;
     logic [SB_NO_OF_LINES-1:0]            addr_availables;
 
@@ -95,7 +111,7 @@ module store_buffer_datapath (
     // load request
     genvar j;
     for (j=0; j<SB_NO_OF_LINES; j++) begin
-      assign addr_availables[j] = (addr_buffer[j] == lsummu2sb_i_addr) & valid_buffer[j];// & (selbyte_buffer[j] == lsummu2sb_i_sel_byte);
+      assign addr_availables[j] = (addr_buffer[j] == lsummu2sb_i_addr) & valid_buffer[j] & (selbyte_buffer[j] == lsummu2sb_i_sel_byte);
     end
 
     assign encoded_index = (top_que > bottom_que) ? encoded_index_high : encoded_index_low;

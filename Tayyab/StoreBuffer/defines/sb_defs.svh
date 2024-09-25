@@ -1,3 +1,7 @@
+
+`ifndef SB_DEFS
+`define SB_DEFS
+
 `define XLEN 32
 parameter DCACHE_ADDR_WIDTH  = `XLEN;
 parameter DCACHE_DATA_WIDTH  = `XLEN;
@@ -26,3 +30,5 @@ typedef enum logic [1:0] {
     SB_CACHE_WRITE,
     SB_CACHE_FLUSH
 } type_sb_cachehandler_states_e;
+
+`endif

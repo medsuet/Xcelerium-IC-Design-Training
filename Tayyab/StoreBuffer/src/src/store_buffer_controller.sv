@@ -1,5 +1,23 @@
+// Copyright 2024 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: Controller for store buffer
+//
+// Author: Muhammad Tayyab, UET Lahore
+// Date: 7.9.2023
 
-`include "../param/sb_defs.svh"
+`timescale 1 ns / 100 ps
+
+//`define VERILATOR
+
+`ifndef VERILATOR
+`include "../../defines/cache_defs.svh"
+`include "../../defines/sb_defs.svh"
+`else
+`include "cache_defs.svh"
+`include "sb_defs.svh"
+`endif
 
 module store_buffer_controller (
     input wire                            clk,
@@ -40,7 +58,7 @@ module store_buffer_controller (
     logic                                 stall;
 
     assign stall = tq_eq_bq & is_valid_bq;
-    assign sb2lsummu_o_ack = sb2lsummu_o_ack_read | sb2lsummu_o_ack_write | sb2lsummu_o_ack_flush;
+    assign sb2lsummu_o_ack = sb2lsummu_o_ack_read || sb2lsummu_o_ack_write || sb2lsummu_o_ack_flush;
 
     // State machines
     always_ff @(posedge clk) begin
@@ -69,7 +87,7 @@ module store_buffer_controller (
         end
         
     end
-    
+
     // Logic for storing data in buffer
     always_comb begin
         if (lsummu2sb_i_req & lsummu2sb_i_w_en & !stall) begin
@@ -101,9 +119,8 @@ module store_buffer_controller (
             else begin
                 // load from cache
                 cache_read = 1;
-
-                if (dcache2sb_i_ack) begin
-                    sb2lsummu_o_ack_read = 1;
+                if (cache_read_ack) begin
+                    sb2lsummu_o_ack_read = 1; // debug here
                 end
             end
         end
@@ -111,6 +128,7 @@ module store_buffer_controller (
     
     // dcache handler
     always_comb begin
+        sb_cachehandler_next = SB_CACHE_IDLE;
         cache_read_ack = 0;
         cache_write_ack = 0;
         sb2dcache_o_w_en = 0;
@@ -119,13 +137,13 @@ module store_buffer_controller (
         dcache_kill_o = 0;
         read_en = 0;
         kill_valid = 0;
+        sb2lsummu_o_ack_flush = 0;
 
         case (sb_cachehandler_ff)
             SB_CACHE_IDLE:
             begin
                 if (dcache_kill_i) begin
                     sb_cachehandler_next = SB_CACHE_FLUSH;
-                    kill_valid = 1;
                     dcache_kill_o = 1;
                 end
                 else if (dcache_flush_i) begin
@@ -155,7 +173,6 @@ module store_buffer_controller (
                     
                     if (dcache_kill_i) begin
                         sb_cachehandler_next = SB_CACHE_FLUSH;
-                        kill_valid = 1;
                         dcache_kill_o = 1;
                     end
                     if (cache_read) begin
@@ -188,7 +205,6 @@ module store_buffer_controller (
 
                     if (dcache_kill_i) begin
                         sb_cachehandler_next = SB_CACHE_FLUSH;
-                        kill_valid = 1;
                         dcache_kill_o = 1;
                     end
                     if (cache_read) begin

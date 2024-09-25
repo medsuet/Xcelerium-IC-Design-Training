@@ -1,15 +1,29 @@
+// Copyright 2024 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: Store buffer connected between lsu/mmu and wb_dcache.
+//
+// Author: Muhammad Tayyab, UET Lahore
+// Date: 7.9.2023
 
-`include "../param/sb_defs.svh"
+`timescale 1 ns / 100 ps
 
-module store_buffer (
+`ifndef VERILATOR
+`include "../../defines/cache_defs.svh"
+`include "../../defines/sb_defs.svh"
+`else
+`include "cache_defs.svh"
+`include "sb_defs.svh"
+`endif
+
+module store_buffer_top (
     input wire                         clk,
     input wire                         rst_n,
     
-    input wire                         dmem_sel_i,
     input wire                         dcache_flush_i,
     input wire                         dcache_kill_i,
 
-    output wire                        dmem_sel_o,
     output wire                        dcache_flush_o,
     output wire                        dcache_kill_o,
 
@@ -32,7 +46,6 @@ module store_buffer (
     logic is_valid_bq;
     logic addr_not_available;
 
-    assign dmem_sel_o = dmem_sel_i;
 
     store_buffer_datapath store_buffer_datapath_module (
         .clk                           (clk),
