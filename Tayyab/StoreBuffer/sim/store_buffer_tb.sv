@@ -1,7 +1,15 @@
 
 `timescale 1 ns / 100 ps
 
-`include "../defines/sb_defs.svh"
+`ifndef VERILATOR
+`include "../defines/mmu_defs.svh"
+`include "../defines/cache_defs.svh"
+`include "../defines/ddr_defs.svh"
+`else
+`include "mmu_defs.svh"
+`include "cache_defs.svh"
+`include "ddr_defs.svh"
+`endif
 
 module store_buffer_tb ();
 

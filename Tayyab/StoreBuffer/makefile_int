@@ -1,9 +1,9 @@
 
-# Make file for unit testing
+# Makefile for integation testing
 
 PARAMS = defines/*.svh
-SOURCES = src/src/*.sv
-TB_SV = sim/store_buffer_tb.sv
+SOURCES = uetrv_pcore_memory_storebuffer/*.sv uetrv_pcore_memory_storebuffer/*/*.sv
+TB_SV = sim/store_buffer_integartion_tb.sv
 
 SIMTIME = 1 ms
 NUM_RAND_TESTS = 100
@@ -13,7 +13,7 @@ RANDOM_SEED = `date +%s`
 VSIM_FLAGS = -c -quiet -voptargs=+acc=npr 
 VSIM_WAVE_FLAGS = -do "vcd file waveform.vcd" -do "vcd add -r /*"
 VSIM_RUN_FLAGS = -do "run $(SIMTIME)" -do "exit"
-VSIM_PRAMS = -g NUM_RAND_TESTS=$(NUM_RAND_TESTS) #-g RANDOM_SEED=$(RANDOM_SEED)
+VSIM_PRAMS = -g NUM_RAND_TESTS=$(NUM_RAND_TESTS) -g RANDOM_SEED=$(RANDOM_SEED)
 
 # Modelsim
 .PHONY: compile
