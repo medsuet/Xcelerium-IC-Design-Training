@@ -106,11 +106,5 @@ module store_buffer_top (
         .dcache2sb_i_ack               (dcache2sb_i.ack)
     );
 
-    
-
-
-
-
-
 
 endmodule
