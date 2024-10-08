@@ -46,18 +46,20 @@ module store_buffer_datapath (
 
 );
 
-    logic [DCACHE_ADDR_WIDTH-1:0]         addr_buffer    [SB_NO_OF_LINES-1:0];
+    logic [DCACHE_ADDR_WIDTH-1:0]         addr_buffer    [SB_NO_OF_LINES-1:0];    
     logic [DCACHE_DATA_WIDTH-1:0]         data_buffer    [SB_NO_OF_LINES-1:0];
-    logic [SB_NO_OF_LINES-1:0]            valid_buffer;
+    logic [SB_NO_OF_LINES-1:0]            valid_buffer;                           // Stores (1) if data at each index data_buffer is yet to be evacuated to cache.
     logic [3:0]                           selbyte_buffer [SB_NO_OF_LINES-1:0];
 
-    logic [$clog2(SB_NO_OF_LINES)-1:0]    top_que;
-    logic [$clog2(SB_NO_OF_LINES)-1:0]    bottom_que;
+    logic [$clog2(SB_NO_OF_LINES)-1:0]    top_que;            // Points to index of data_buffer where next data from processor will be saved.
+    logic [$clog2(SB_NO_OF_LINES)-1:0]    bottom_que;         // Points to index of data_buffer from where data is being evacuated to cache.
 
-    logic [DCACHE_DATA_WIDTH-1:0]         data_buffer_out;
-    logic [2:0]         data_buffer_read_index;
-    logic [$clog2(SB_NO_OF_LINES)-1:0]    encoded_index, encoded_index_high, encoded_index_low;
-    logic [SB_NO_OF_LINES-1:0]            addr_availables;
+    logic [DCACHE_DATA_WIDTH-1:0]         data_buffer_out;    // Output of data_buffer at data_buffer_read_index
+    logic [2:0]                           data_buffer_read_index;
+    logic [$clog2(SB_NO_OF_LINES)-1:0]    encoded_index;      // Index of data_buffer containing data for lsu's input address
+    logic [$clog2(SB_NO_OF_LINES)-1:0]    encoded_index_high; // Highest index of data_buffer containing data for lsu's input address
+    logic [$clog2(SB_NO_OF_LINES)-1:0]    encoded_index_low;  // Lowest index of data_buffer containing data for lsu's input address
+    logic [SB_NO_OF_LINES-1:0]            addr_availables;    // Index of this array is HIGH if data for lsu's input address if present at corresponding index of data_buffer
 
     assign tq_eq_bq = top_que == bottom_que;
     assign addr_not_available = addr_availables == 0;
