@@ -1,0 +1,40 @@
+----------------------------------Task1----------------------------------
+
+==========Code Description==========
+This code contains three parts.
+1- How to calculate time period in nanoseconds using frequency in MHz.
+Formula Used:
+    T(ns)=1000/f(MHz)
+
+2- A procedure that takes capacitance in picofarad, voltage in V and frequency in MHz as arguments 
+and calculates the power in microWatts.
+Formula Used:
+    Power(uW)=capacitance(pF)*voltage(V)*voltage(V)*f(MHz)
+
+3- Calculate the max frequency in MHz using propagational delay(ns) and setup time(ns)
+Formula Used:
+    Max_f=1000/(prop_delay+setup_time)
+
+4- Calculate number of cycle using f(MHz) and time period(ns)
+Formula Used:
+    no of cycles=f(MHz)*1000/t(ns)
+
+Errors in given code:
+1- Line # 7 should be ended with a backslash or curly bracket in line # 8 should be in line # 7.
+
+2- Calculated power should be in microWatts not in miliWatts
+
+==========Output==========
+Clock period: 10.0 ns
+Power consumption: 1439.9999999999998 uW
+Maximum frequency: 333.3333333333333 MHz
+Number of cycles are 10000.0
+
+Floating Point precision issue: The output should be 1440 but it is 1439.9999999999998. To resolve it use format command:
+format "%.2f" power_uW
+
+Advantages:
+
+More Readable
+Reuseability
+Easy to debug code as we have to debug and test that specific procedure
