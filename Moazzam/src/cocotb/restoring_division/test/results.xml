@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1723150168" />
+    <testcase name="test_seq_mul" classname="tb_py_cocotb" file="/home/moazzamali/training/Xcelerium-IC-Design-Training/Moazzam/src/cocotb/restoring_division/test/tb_py_cocotb.py" lineno="110" time="2777.1596047878265" sim_time_ns="168740.0" ratio_time="60.7599216512771">
+      <failure message="Test failed with RANDOM_SEED=1723150168" />
+    </testcase>
+  </testsuite>
+</testsuites>
