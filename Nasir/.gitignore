@@ -1,0 +1,105 @@
+# Object files
+*.o
+*.obj
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (shared libraries)
+*.so
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+
+# Debug files
+*.dSYM/
+*.stackdump
+
+# IDE and editor-specific files
+.vscode/
+*.code-workspace
+.idea/
+*.iml
+*.swp
+*.swo
+
+# Makefile and CMake build directories
+/build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# vs code .Identifiers files
+*.Identifiers
+
+# readme.txt
+Readme.txt
+
+# Ignore files in src/exp2
+src/exp2/day2
+src/exp2/student.txt
+src/exp2/student1.dat
+src/exp2/finalTask
+src/exp2/maze
+src/exp2/logfile.txt
+# Ignore files in src/exp5
+src/exp5/examples/example
+src/exp5/examples/htif
+src/exp5/problems/e1p1
+src/exp5/problems/e1p2
+src/exp5/problems/factorial
+src/exp5/problems/reverseArray
+src/exp5/problems/insertionSort
+src/exp5/tasks/restoringDivision
+src/exp5/tasks/nonRestoringDivision
+src/exp5/tasks/nonRestoringDivision2
+src/exp5/tasks/restoringDivisionRiscV
+src/exp5/tasks/setClearBit
+src/exp5/test
+src/exp5/insertionSort
+src/exp5/insertionSort.o
+
+src/exp3/lab5/advancedMakefile/function.d
+src/exp3/lab5/advancedMakefile/main.d
+src/exp3/lab5/advancedMakefile/myprogram
+src/exp3/lab5/basicMakefile/myprogram
+
+src/comb_multiplier/mul
+
+.sv_cache/files/comb_16_bit_multiplier.sv
+docs/.Identifier
+src/sequential_adder/adder
+src/4_bit_counter/counter
+src/4_bit_counter/docs/wavedrom (1).png:Zone.Identifier
+# ignore dump files .vcd
+*.vcd
+# ignore executable of 16_bit_sequential_multiplier
+src/16_bit_sequential_multiplier/signed_multiplier
+src/valid_ready_interface_seq_multiplier/signed_multiplier
+src/valid_ready_interface_seq_multiplier/valid_ready_signed_multiplier
+
+# ignore cocotb_tasks extra files
+src/cocotb_tasks/tests/__pycache__
+*.xml
+src/cocotb_tasks/sim_build
+
+# ignore cocotb_tasks extra files
+src/cocotb_tasks/seq_multiplier_16_bit_signed/tests/__pycache__
+*.xml
+src/cocotb_tasks/seq_multiplier_16_bit_signed/sim_build
+src/cocotb_tasks/restoring_division/tests/__pycache__
+src/cocotb_tasks/restoring_division/sim_build
