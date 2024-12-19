@@ -1,0 +1,11 @@
+# Ignore all files
+*
+
+# Except .c files
+!*.c
+
+# Ignore specific files mentioned in the ls output
+a.out
+a.out:Zone.Identifier
+template_code_Part0.c:Zone.Identifier:Zone.Identifier
+template_code_Part0.c:Zone.Identifier

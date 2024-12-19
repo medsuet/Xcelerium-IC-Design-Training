@@ -1,0 +1,471 @@
+$date
+	Tue Aug  6 11:35:32 2024
+$end
+$version
+	QuestaSim Version 2021.1
+$end
+$timescale
+	1ns
+$end
+
+$scope module tb_top_multiplier $end
+
+$scope module dut $end
+$var wire 1 ! clk $end
+$var wire 1 " rst $end
+$var wire 1 # start $end
+$var wire 1 $ A [15] $end
+$var wire 1 % A [14] $end
+$var wire 1 & A [13] $end
+$var wire 1 ' A [12] $end
+$var wire 1 ( A [11] $end
+$var wire 1 ) A [10] $end
+$var wire 1 * A [9] $end
+$var wire 1 + A [8] $end
+$var wire 1 , A [7] $end
+$var wire 1 - A [6] $end
+$var wire 1 . A [5] $end
+$var wire 1 / A [4] $end
+$var wire 1 0 A [3] $end
+$var wire 1 1 A [2] $end
+$var wire 1 2 A [1] $end
+$var wire 1 3 A [0] $end
+$var wire 1 4 B [15] $end
+$var wire 1 5 B [14] $end
+$var wire 1 6 B [13] $end
+$var wire 1 7 B [12] $end
+$var wire 1 8 B [11] $end
+$var wire 1 9 B [10] $end
+$var wire 1 : B [9] $end
+$var wire 1 ; B [8] $end
+$var wire 1 < B [7] $end
+$var wire 1 = B [6] $end
+$var wire 1 > B [5] $end
+$var wire 1 ? B [4] $end
+$var wire 1 @ B [3] $end
+$var wire 1 A B [2] $end
+$var wire 1 B B [1] $end
+$var wire 1 C B [0] $end
+$var wire 1 D product [31] $end
+$var wire 1 E product [30] $end
+$var wire 1 F product [29] $end
+$var wire 1 G product [28] $end
+$var wire 1 H product [27] $end
+$var wire 1 I product [26] $end
+$var wire 1 J product [25] $end
+$var wire 1 K product [24] $end
+$var wire 1 L product [23] $end
+$var wire 1 M product [22] $end
+$var wire 1 N product [21] $end
+$var wire 1 O product [20] $end
+$var wire 1 P product [19] $end
+$var wire 1 Q product [18] $end
+$var wire 1 R product [17] $end
+$var wire 1 S product [16] $end
+$var wire 1 T product [15] $end
+$var wire 1 U product [14] $end
+$var wire 1 V product [13] $end
+$var wire 1 W product [12] $end
+$var wire 1 X product [11] $end
+$var wire 1 Y product [10] $end
+$var wire 1 Z product [9] $end
+$var wire 1 [ product [8] $end
+$var wire 1 \ product [7] $end
+$var wire 1 ] product [6] $end
+$var wire 1 ^ product [5] $end
+$var wire 1 _ product [4] $end
+$var wire 1 ` product [3] $end
+$var wire 1 a product [2] $end
+$var wire 1 b product [1] $end
+$var wire 1 c product [0] $end
+$var wire 1 d done $end
+$var wire 1 e load $end
+$var wire 1 f calc $end
+$var wire 1 g dp_done $end
+
+$scope module dp $end
+$var wire 1 ! clk $end
+$var wire 1 " rst $end
+$var wire 1 e load $end
+$var wire 1 f calc $end
+$var wire 1 $ A [15] $end
+$var wire 1 % A [14] $end
+$var wire 1 & A [13] $end
+$var wire 1 ' A [12] $end
+$var wire 1 ( A [11] $end
+$var wire 1 ) A [10] $end
+$var wire 1 * A [9] $end
+$var wire 1 + A [8] $end
+$var wire 1 , A [7] $end
+$var wire 1 - A [6] $end
+$var wire 1 . A [5] $end
+$var wire 1 / A [4] $end
+$var wire 1 0 A [3] $end
+$var wire 1 1 A [2] $end
+$var wire 1 2 A [1] $end
+$var wire 1 3 A [0] $end
+$var wire 1 4 B [15] $end
+$var wire 1 5 B [14] $end
+$var wire 1 6 B [13] $end
+$var wire 1 7 B [12] $end
+$var wire 1 8 B [11] $end
+$var wire 1 9 B [10] $end
+$var wire 1 : B [9] $end
+$var wire 1 ; B [8] $end
+$var wire 1 < B [7] $end
+$var wire 1 = B [6] $end
+$var wire 1 > B [5] $end
+$var wire 1 ? B [4] $end
+$var wire 1 @ B [3] $end
+$var wire 1 A B [2] $end
+$var wire 1 B B [1] $end
+$var wire 1 C B [0] $end
+$var reg 32 h product [31:0] $end
+$var reg 1 i done $end
+$var reg 32 j product_reg [31:0] $end
+$var reg 5 k bit_index [4:0] $end
+$var reg 32 l partial_product [31:0] $end
+$var integer 32 m WIDTH $end
+$upscope $end
+
+$scope module cu $end
+$var wire 1 ! clk $end
+$var wire 1 " rst $end
+$var wire 1 # start $end
+$var wire 1 g done $end
+$var reg 1 n load $end
+$var reg 1 o calc $end
+$var reg 3 p state [2:0] $end
+$var reg 3 q next_state [2:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 h
+0i
+b0 j
+b0 k
+b0 l
+0n
+0o
+b0 p
+b0 q
+b10000 m
+0e
+0f
+0g
+xC
+xB
+xA
+x@
+x?
+x>
+x=
+x<
+x;
+x:
+x9
+x8
+x7
+x6
+x5
+x4
+x3
+x2
+x1
+x0
+x/
+x.
+x-
+x,
+x+
+x*
+x)
+x(
+x'
+x&
+x%
+x$
+x#
+1"
+0!
+0c
+0b
+0a
+0`
+0_
+0^
+0]
+0\
+0[
+0Z
+0Y
+0X
+0W
+0V
+0U
+0T
+0S
+0R
+0Q
+0P
+0O
+0N
+0M
+0L
+0K
+0J
+0I
+0H
+0G
+0F
+0E
+0D
+0d
+$end
+#5
+1!
+#10
+0"
+0!
+#15
+1!
+#20
+1C
+1B
+1A
+1@
+1?
+1>
+1=
+1<
+1;
+1:
+19
+18
+17
+16
+15
+14
+13
+12
+01
+00
+0/
+0.
+0-
+0,
+0+
+0*
+0)
+0(
+0'
+0&
+0%
+0$
+1#
+0!
+1n
+b1 q
+1e
+#25
+1!
+b1 p
+0n
+1o
+0e
+1f
+b11 l
+b1000000000000011 l
+b1000000000000011 j
+#30
+0#
+0!
+0o
+1o
+#35
+1!
+b1 k
+b11 l
+b1000000000000011 l
+b10000000000000110 l
+b11000000000001001 j
+#40
+0!
+#45
+1!
+b10 k
+b11 l
+b1000000000000011 l
+b100000000000001100 l
+b111000000000010101 j
+#50
+0!
+#55
+1!
+b11 k
+b11 l
+b1000000000000011 l
+b1000000000000011000 l
+b1111000000000101101 j
+#60
+0!
+#65
+1!
+b100 k
+b11 l
+b1000000000000011 l
+b10000000000000110000 l
+b11111000000001011101 j
+#70
+0!
+#75
+1!
+b101 k
+b11 l
+b1000000000000011 l
+b100000000000001100000 l
+b111111000000010111101 j
+#80
+0!
+#85
+1!
+b110 k
+b11 l
+b1000000000000011 l
+b1000000000000011000000 l
+b1111111000000101111101 j
+#90
+0!
+#95
+1!
+b111 k
+b11 l
+b1000000000000011 l
+b10000000000000110000000 l
+b11111111000001011111101 j
+#100
+0!
+#105
+1!
+b1000 k
+b11 l
+b1000000000000011 l
+b100000000000001100000000 l
+b111111111000010111111101 j
+#110
+0!
+#115
+1!
+b1001 k
+b11 l
+b1000000000000011 l
+b1000000000000011000000000 l
+b1111111111000101111111101 j
+#120
+0!
+#125
+1!
+b1010 k
+b11 l
+b1000000000000011 l
+b10000000000000110000000000 l
+b11111111111001011111111101 j
+#130
+0!
+#135
+1!
+b1011 k
+b11 l
+b1000000000000011 l
+b100000000000001100000000000 l
+b111111111111010111111111101 j
+#140
+0!
+#145
+1!
+b1100 k
+b11 l
+b1000000000000011 l
+b1000000000000011000000000000 l
+b1111111111111101111111111101 j
+#150
+0!
+#155
+1!
+b1101 k
+b11 l
+b1000000000000011 l
+b10000000000000110000000000000 l
+b100000000000000011111111111101 j
+#160
+0!
+#165
+1!
+b1110 k
+b11 l
+b1000000000000011 l
+b100000000000001100000000000000 l
+b1000000000000001111111111111101 j
+#170
+0!
+#175
+1!
+b1111 k
+b11 l
+b1000000000000011 l
+b11111111111111110111111111111100 l
+b10111111111111100000000000000000 l
+b11111111111111101111111111111101 j
+b11111111111111111111111111111101 j
+#180
+0!
+#185
+1!
+b10000 k
+b11111111111111111111111111111101 h
+1i
+1c
+1a
+1`
+1_
+1^
+1]
+1\
+1[
+1Z
+1Y
+1X
+1W
+1V
+1U
+1T
+1S
+1R
+1Q
+1P
+1O
+1N
+1M
+1L
+1K
+1J
+1I
+1H
+1G
+1F
+1E
+1D
+1g
+1d
+0o
+1o
+b0 q
+b0 l
+b1000000000000000 l
+b10000000000000000000000000000000 l
+b1111111111111111111111111111101 j
+#190
+0!
