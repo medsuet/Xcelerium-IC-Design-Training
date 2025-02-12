@@ -1,0 +1,188 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+d/home/usman/Documents/Xclerium/Decimator/Design
+vaccumulator
+Z0 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+!s110 1739244117
+!i10b 1
+!s100 9T;RW0U`6nnFYd9RfRnVF0
+Z1 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IUN[Z;R<7LVz2coL1PISk70
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+S1
+Z3 d/home/usman/Documents/Xclerium/Design
+w1739244112
+8src/accumulator.sv
+Fsrc/accumulator.sv
+!i122 23
+L0 1 56
+Z4 OV;L;2020.1;71
+r1
+!s85 0
+31
+!s108 1739244117.000000
+!s107 src/accumulator.sv|
+!s90 -nologo|src/accumulator.sv|
+!i113 1
+Z5 o-nologo
+Z6 tCvgOpt 0
+vconvolution_datapath
+R0
+Z7 !s110 1739243643
+!i10b 1
+!s100 z:IZ<fk?^Y`c?zUIaZRco3
+R1
+Ij]4od;T<:1U:_oRd8ffC>1
+R2
+S1
+R3
+w1739208491
+8src/convolution_datapath.sv
+Fsrc/convolution_datapath.sv
+!i122 19
+Z8 L0 1 40
+R4
+r1
+!s85 0
+31
+Z9 !s108 1739243643.000000
+Z10 !s107 src/FIR_filter.sv|src/demux.sv|src/decimator.sv|src/convolution_stateMachine.sv|src/convolution_datapath.sv|src/accumulator.sv|
+Z11 !s90 -nologo|src/accumulator.sv|src/convolution_datapath.sv|src/convolution_stateMachine.sv|src/decimator.sv|src/demux.sv|src/FIR_filter.sv|
+!i113 1
+R5
+R6
+vconvolution_stateMachine
+R0
+R7
+!i10b 1
+!s100 aNIA2k]fTU9URZ8<lQ0=e2
+R1
+IZWiX50SJ5A=4j;dOEG0ml2
+R2
+S1
+R3
+w1739208639
+8src/convolution_stateMachine.sv
+Fsrc/convolution_stateMachine.sv
+!i122 19
+L0 1 77
+R4
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R5
+R6
+nconvolution_state@machine
+vdecimator
+R0
+!s110 1739244082
+!i10b 1
+!s100 bfkzZJPY@;`BXOhd2h3QU2
+R1
+I=Klk7C1YR[82zG4SN`<Y93
+R2
+S1
+R3
+w1739244009
+8src/decimator.sv
+Fsrc/decimator.sv
+!i122 22
+R8
+R4
+r1
+!s85 0
+31
+!s108 1739244082.000000
+!s107 src/decimator.sv|src/accumulator.sv|
+!s90 -nologo|src/accumulator.sv|src/decimator.sv|
+!i113 1
+R5
+R6
+vdecimator_tb
+R0
+!s110 1739244322
+!i10b 1
+!s100 MY?c?lHBK@1z>[QI8CcmU3
+R1
+I:8X8II[3ejWViM4c_UFa52
+R2
+S1
+R3
+w1739244319
+8sim/decimator_tb.sv
+Fsim/decimator_tb.sv
+!i122 25
+L0 1 125
+R4
+r1
+!s85 0
+31
+!s108 1739244322.000000
+!s107 sim/decimator_tb.sv|
+!s90 -nologo|sim/decimator_tb.sv|
+!i113 1
+R5
+R6
+vdemux
+R0
+R7
+!i10b 1
+!s100 i93J`4aMIW<_WeCGT6lDJ2
+R1
+IiAbg?1WbQ2iE;@W[RM4CE1
+R2
+S1
+R3
+w1738898609
+8src/demux.sv
+Fsrc/demux.sv
+!i122 19
+L0 1 43
+R4
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R5
+R6
+vFIR_filter
+R0
+!s110 1739244283
+!i10b 1
+!s100 Og9<XDjoJb`B1mLzE6Od32
+R1
+IGKbAMTHPknT1UYbPo6[EU2
+R2
+S1
+R3
+w1739244280
+8src/FIR_filter.sv
+Fsrc/FIR_filter.sv
+!i122 24
+L0 2 67
+R4
+r1
+!s85 0
+31
+!s108 1739244283.000000
+!s107 src/FIR_filter.sv|
+!s90 -nologo|src/FIR_filter.sv|
+!i113 1
+R5
+R6
+n@f@i@r_filter

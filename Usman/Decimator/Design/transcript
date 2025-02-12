@@ -1,0 +1,9 @@
+# vsim -c -quiet decimator_tb -do "run 4400 ns" -do "exit" 
+# Start time: 08:25:22 on Feb 11,2025
+# ** Warning: (vsim-PLI-3691) Expected a system task, not a system function '$sscanf'.
+#    Time: 0 ps  Iteration: 0  Instance: /decimator_tb File: sim/decimator_tb.sv Line: 70
+# run 4400 ns
+# File processing completed.
+# exit
+# End time: 08:25:29 on Feb 11,2025, Elapsed time: 0:00:07
+# Errors: 0, Warnings: 1
