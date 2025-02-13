@@ -34,8 +34,8 @@ dividing it by 2^(Fractional part) after receiving it when outout valid becomes 
      
 ## Top level Diagram
 
-        
-             ![Top Level ](/doc/DecimatorTop.drawio.png)
+              ![Top Level](doc/DecimatorTop.drawio.png)
+             
              
 ## DataPath
 
