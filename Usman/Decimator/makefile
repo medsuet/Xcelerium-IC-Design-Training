@@ -22,4 +22,4 @@ compare:simulate
 	@diff build/output_file.txt build/sv_outputs.txt
 
 clean:
-	rm -rf build work
+	rm -rf build work  transcript
