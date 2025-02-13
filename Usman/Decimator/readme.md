@@ -35,23 +35,23 @@ dividing it by 2^(Fractional part) after receiving it when outout valid becomes 
 ## Top level Diagram
 
         
-             ![Top Level ](doc/design/DecimatorTop.drawio.png)
+             ![Top Level ](doc/DecimatorTop.drawio.png)
              
 ## DataPath
 
-             ![DataPath](doc/design/DataPath.drawio.png)
+             ![DataPath](doc/DataPath.drawio.png)
             
 ## Filter
 
-             ![Filter](doc/design/filter.drawio.png)
+             ![Filter](doc/filter.drawio.png)
              
 ## Filter DataPath
 
-             ![Filter DataPath](doc/design/Convolution_DataPath.drawio.png)
+             ![Filter DataPath](doc/Convolution_DataPath.drawio.png)
              
 ## Filter Controller
 
-             ![Filter StateMachine](doc/design/FIR_StateMachine.drawio.png)
+             ![Filter StateMachine](doc/FIR_StateMachine.drawio.png)
             
 # TestBech Environment             
                                       
