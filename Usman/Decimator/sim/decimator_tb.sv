@@ -50,7 +50,7 @@ module decimator_tb;
     end
 
     initial begin
-        svInputs = $fopen("../build/input_file.txt", "r");
+        svInputs = $fopen("build/input_file.txt", "r");
         if (svInputs == 0) begin
             $display("Error: Failed to open file!");
           //  $finish;
@@ -87,7 +87,7 @@ module decimator_tb;
    
     initial begin 
         // Open the file in write mode
-        svOutputs = $fopen("../build/sv_outputs.txt", "w");
+        svOutputs = $fopen("build/sv_outputs.txt", "w");
         if (svOutputs == 0) 
             $display("Error: Could not open file for writing.");  
         if(!$feof(svInputs) && output_valid) begin 

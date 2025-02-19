@@ -19,7 +19,7 @@ generate_cases:
 	@python3 sim/generate_test_cases.py
 
 compare:simulate
-	@diff build/output_file.txt build/sv_outputs.txt
+	 python3 sim/compare.py
 
 clean:
 	rm -rf build work  transcript
